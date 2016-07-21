@@ -62,7 +62,7 @@ BuildRequires:  libicu-devel >= 5.4
 
 Name:		chromium%{chromium_channel}
 Version:	52.0.2743.82
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -1390,10 +1390,14 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %endif
 
 %changelog
+* Thu Jul 21 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.82-2
+- try to fix cups 2.2 support again (hackishly)
+
 * Thu Jul 21 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.82-1
 - update to 52.0.2743.82
 - handle locales properly
 - cleanup spec
+
 
 * Tue Jul 19 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.75-1
 - update to 52.0.2743.75
