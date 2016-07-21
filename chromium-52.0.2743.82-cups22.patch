@@ -1,0 +1,24 @@
+diff -up chromium-52.0.2743.82/printing/BUILD.gn.cups22 chromium-52.0.2743.82/printing/BUILD.gn
+--- chromium-52.0.2743.82/printing/BUILD.gn.cups22	2016-07-21 11:27:05.597507544 -0400
++++ chromium-52.0.2743.82/printing/BUILD.gn	2016-07-21 11:27:25.565390048 -0400
+@@ -147,7 +147,7 @@ component("printing") {
+                                  ],
+                                  "trim string")
+ 
+-      if (cups_version == "1.6" || cups_version == "1.7") {
++      if (cups_version == "1.6" || cups_version == "1.7" || cups_version == "2.2") {
+         cflags += [
+           # CUPS 1.6 deprecated the PPD APIs, but we will stay with this
+           # API for now as supported Linux and Mac OS'es are still using
+diff -up chromium-52.0.2743.82/printing/printing.gyp.cups22 chromium-52.0.2743.82/printing/printing.gyp
+--- chromium-52.0.2743.82/printing/printing.gyp.cups22	2016-07-21 11:26:26.622746918 -0400
++++ chromium-52.0.2743.82/printing/printing.gyp	2016-07-21 11:26:44.517632794 -0400
+@@ -142,7 +142,7 @@
+             'cups_version': '<!(python cups_config_helper.py --api-version <(sysroot))',
+           },
+           'conditions': [
+-            ['cups_version in ["1.6", "1.7"]', {
++            ['cups_version in ["1.6", "1.7", "2.2"]', {
+               'cflags': [
+                 # CUPS 1.6 deprecated the PPD APIs, but we will stay with this
+                 # API for now as supported Linux and Mac OS'es are still using

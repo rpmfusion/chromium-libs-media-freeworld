@@ -66,7 +66,6 @@ Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
-Group:		Applications/Internet
 
 ### Chromium Fedora Patches ###
 Patch0:		chromium-46.0.2490.71-gcc5.patch
@@ -93,6 +92,9 @@ Patch9:		chromium-48.0.2564.116-libusb_interrupt_event_handler.patch
 Patch10:	chromium-50.0.2661.94-unbundle-re2-fix.patch
 # Fix PNGImageDecoder code
 Patch11:	chromium-52.0.2723.2-PNGImageDecoder-fix-cast.patch
+# Ignore deprecations in cups 2.2
+# https://bugs.chromium.org/p/chromium/issues/detail?id=622493
+Patch12:	chromium-52.0.2743.82-cups22.patch
 
 ### Chromium Tests Patches ###
 Patch100:	chromium-46.0.2490.86-use_system_opus.patch
@@ -123,8 +125,6 @@ Source8:	get_linux_tests_names.py
 Source9:	chromium-browser.xml
 Source10:	https://dl.google.com/dl/edgedl/chrome/policy/policy_templates.zip
 Source11:	chrome-remote-desktop.service
-
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 # We can assume gcc and binutils.
 BuildRequires:	gcc-c++
@@ -384,6 +384,7 @@ Remote desktop support for google-chrome & chromium.
 %patch9 -p1 -b .modern-libusbx
 %patch10 -p1 -b .unbundle-fix
 %patch11 -p1 -b .fixcast
+%patch12 -p1 -b .cups22
 
 ### Chromium Tests Patches ###
 %patch100 -p1 -b .use_system_opus
@@ -1245,9 +1246,6 @@ cp -a %{SOURCE9} %{buildroot}%{_datadir}/gnome-control-center/default-apps/
 	fi
 %endif
 
-%clean
-rm -rf %{buildroot}
-
 %post
 # Set SELinux labels - semanage itself will adjust the lib directory naming
 semanage fcontext -a -t bin_t /usr/lib/%{chromium_browser_channel}
@@ -1281,7 +1279,6 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %systemd_postun_with_restart chrome-remote-desktop.service
 
 %files
-%defattr(-,root,root,-)
 %{_bindir}/%{chromium_browser_channel}
 %dir %{chromium_path}
 %{chromium_path}/*.bin
@@ -1301,7 +1298,60 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 # %%{chromium_path}/plugins/
 %{chromium_path}/pyproto/
 %attr(4755, root, root) %{chromium_path}/chrome-sandbox
-%{chromium_path}/locales/
+%dir %{chromium_path}/locales/
+%lang(am) %{chromium_path}/locales/am.pak
+%lang(ar) %{chromium_path}/locales/ar.pak
+%lang(bg) %{chromium_path}/locales/bg.pak
+%lang(bn) %{chromium_path}/locales/bn.pak
+%lang(ca) %{chromium_path}/locales/ca.pak
+%lang(cs) %{chromium_path}/locales/cs.pak
+%lang(da) %{chromium_path}/locales/da.pak
+%lang(de) %{chromium_path}/locales/de.pak
+%lang(el) %{chromium_path}/locales/el.pak
+%lang(en_GB) %{chromium_path}/locales/en-GB.pak
+%lang(en_US) %{chromium_path}/locales/en-US.pak
+%lang(es) %{chromium_path}/locales/es.pak
+%lang(es) %{chromium_path}/locales/es-419.pak
+%lang(et) %{chromium_path}/locales/et.pak
+%lang(fa) %{chromium_path}/locales/fa.pak
+%lang(fi) %{chromium_path}/locales/fi.pak
+%lang(fil) %{chromium_path}/locales/fil.pak
+%lang(fr) %{chromium_path}/locales/fr.pak
+%lang(gu) %{chromium_path}/locales/gu.pak
+%lang(he) %{chromium_path}/locales/he.pak
+%lang(hi) %{chromium_path}/locales/hi.pak
+%lang(hr) %{chromium_path}/locales/hr.pak
+%lang(hu) %{chromium_path}/locales/hu.pak
+%lang(id) %{chromium_path}/locales/id.pak
+%lang(it) %{chromium_path}/locales/it.pak
+%lang(ja) %{chromium_path}/locales/ja.pak
+%lang(kn) %{chromium_path}/locales/kn.pak
+%lang(ko) %{chromium_path}/locales/ko.pak
+%lang(lt) %{chromium_path}/locales/lt.pak
+%lang(lv) %{chromium_path}/locales/lv.pak
+%lang(ml) %{chromium_path}/locales/ml.pak
+%lang(mr) %{chromium_path}/locales/mr.pak
+%lang(ms) %{chromium_path}/locales/ms.pak
+%lang(nb) %{chromium_path}/locales/nb.pak
+%lang(nl) %{chromium_path}/locales/nl.pak
+%lang(pl) %{chromium_path}/locales/pl.pak
+%lang(pt_BR) %{chromium_path}/locales/pt-BR.pak
+%lang(pt_PT) %{chromium_path}/locales/pt-PT.pak
+%lang(ro) %{chromium_path}/locales/ro.pak
+%lang(ru) %{chromium_path}/locales/ru.pak
+%lang(sk) %{chromium_path}/locales/sk.pak
+%lang(sl) %{chromium_path}/locales/sl.pak
+%lang(sr) %{chromium_path}/locales/sr.pak
+%lang(sv) %{chromium_path}/locales/sv.pak
+%lang(sw) %{chromium_path}/locales/sw.pak
+%lang(ta) %{chromium_path}/locales/ta.pak
+%lang(te) %{chromium_path}/locales/te.pak
+%lang(th) %{chromium_path}/locales/th.pak
+%lang(tr) %{chromium_path}/locales/tr.pak
+%lang(uk) %{chromium_path}/locales/uk.pak
+%lang(vi) %{chromium_path}/locales/vi.pak
+%lang(zh_CN) %{chromium_path}/locales/zh-CN.pak
+%lang(zh_TW) %{chromium_path}/locales/zh-TW.pak
 %{chromium_path}/resources/
 %{_mandir}/man1/%{chromium_browser_channel}.*
 %{_datadir}/icons/hicolor/256x256/apps/%{chromium_browser_channel}.png
@@ -1340,6 +1390,11 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %endif
 
 %changelog
+* Thu Jul 21 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.82-1
+- update to 52.0.2743.82
+- handle locales properly
+- cleanup spec
+
 * Tue Jul 19 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.75-1
 - update to 52.0.2743.75
 
