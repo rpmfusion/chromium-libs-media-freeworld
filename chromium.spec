@@ -95,6 +95,8 @@ Patch11:	chromium-52.0.2723.2-PNGImageDecoder-fix-cast.patch
 # Ignore deprecations in cups 2.2
 # https://bugs.chromium.org/p/chromium/issues/detail?id=622493
 Patch12:	chromium-52.0.2743.82-cups22.patch
+# Fix widevine compilation
+Patch13:	chromium-52.0.2743.82-widevinefix.patch
 
 ### Chromium Tests Patches ###
 Patch100:	chromium-46.0.2490.86-use_system_opus.patch
@@ -385,6 +387,7 @@ Remote desktop support for google-chrome & chromium.
 %patch10 -p1 -b .unbundle-fix
 %patch11 -p1 -b .fixcast
 %patch12 -p1 -b .cups22
+%patch13 -p1 -b .widevinefix
 
 ### Chromium Tests Patches ###
 %patch100 -p1 -b .use_system_opus
@@ -583,6 +586,9 @@ export CHROMIUM_BROWSER_GYP_DEFINES="\
 	-Dremove_webcore_debug_symbols=1 \
 	-Dlogging_like_official_build=1 \
 	-Denable_hotwording=0 \
+	-Denable_pepper_cdms=1 \
+	-Denable_webrtc=1 \
+	-Denable_widevine=1 \
 %if 0
 	-Dbuildtype=Official \
 %endif
@@ -1391,7 +1397,8 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 %changelog
 * Thu Jul 21 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.82-2
-- try to fix cups 2.2 support again (hackishly)
+- fix cups 2.2 support
+- try to enable widevine compatibility (you still need to get the binary .so files from chrome)
 
 * Thu Jul 21 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.82-1
 - update to 52.0.2743.82
