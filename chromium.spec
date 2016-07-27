@@ -62,7 +62,7 @@ BuildRequires:  libicu-devel >= 5.4
 
 Name:		chromium%{chromium_channel}
 Version:	52.0.2743.82
-Release:	2%{?dist}
+Release:	4%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -175,7 +175,7 @@ BuildRequires:	libstdc++-devel, openssl-devel
 BuildRequires:	nacl-gcc, nacl-binutils, nacl-newlib
 BuildRequires:	nacl-arm-gcc, nacl-arm-binutils, nacl-arm-newlib
 # pNaCl needs this monster
-BuildRequires:	native_client >= 50.0.2661.86
+BuildRequires:	chromium-native_client >= 50.0.2661.86
 %ifarch x86_64
 BuildRequires:  glibc-devel(x86-32) libgcc(x86-32)
 %endif
@@ -597,6 +597,7 @@ export CHROMIUM_BROWSER_GYP_DEFINES="\
 	-Dcomponent=shared_library \
 %endif
 	-Duse_sysroot=0 \
+	-Drelease_extra_cflags="-fno-delete-null-pointer-checks" \
 	-Dwerror= -Dsysroot="
 
 # Remove most of the bundled libraries. Libraries specified below (taken from
@@ -1396,6 +1397,13 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %endif
 
 %changelog
+* Wed Jul 27 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.82-4
+- compile with -fno-delete-null-pointer-checks (fixes v8 crashes, nacl/pnacl)
+- turn nacl/pnacl off until chromium-native_client lands in Fedora
+
+* Tue Jul 26 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.82-3
+- turn nacl back on for x86_64
+
 * Thu Jul 21 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.82-2
 - fix cups 2.2 support
 - try to enable widevine compatibility (you still need to get the binary .so files from chrome)
@@ -1404,7 +1412,6 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 - update to 52.0.2743.82
 - handle locales properly
 - cleanup spec
-
 
 * Tue Jul 19 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.75-1
 - update to 52.0.2743.75
