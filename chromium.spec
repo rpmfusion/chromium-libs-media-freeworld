@@ -18,7 +18,9 @@
 %global asan 0
 
 # Only flip this on if stuff is really broken re: nacl.
-%if 0
+# chromium-native_client doesn't build on Fedora 23 because
+# clang is too old and buggy.
+%if 0%{?fedora} <= 23
 %global killnacl 1
 %else
 %global killnacl 0
@@ -1415,6 +1417,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %endif
 
 %changelog
+* Thu Jul 28 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.82-8
+- disable nacl/pnacl for Fedora 23 (and older)
+
 * Thu Jul 28 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.82-7
 - fix post scriptlet so that selinux stuff only happens when selinux is enabled
 
