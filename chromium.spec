@@ -62,7 +62,7 @@ BuildRequires:  libicu-devel >= 5.4
 
 Name:		chromium%{chromium_channel}
 Version:	52.0.2743.82
-Release:	6%{?dist}
+Release:	7%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -1269,10 +1269,13 @@ cp -a %{SOURCE9} %{buildroot}%{_datadir}/gnome-control-center/default-apps/
 
 %post
 # Set SELinux labels - semanage itself will adjust the lib directory naming
-semanage fcontext -a -t bin_t /usr/lib/%{chromium_browser_channel}
-semanage fcontext -a -t bin_t /usr/lib/%{chromium_browser_channel}/%{chromium_browser_channel}.sh
-semanage fcontext -a -t chrome_sandbox_exec_t /usr/lib/chrome-sandbox
-restorecon -R -v %{chromium_path}/%{chromium_browser_channel}
+# But only do it when selinux is enabled, otherwise, it gets noisy.
+if selinuxenabled; then
+	semanage fcontext -a -t bin_t /usr/lib/%{chromium_browser_channel}
+	semanage fcontext -a -t bin_t /usr/lib/%{chromium_browser_channel}/%{chromium_browser_channel}.sh
+	semanage fcontext -a -t chrome_sandbox_exec_t /usr/lib/chrome-sandbox
+	restorecon -R -v %{chromium_path}/%{chromium_browser_channel}
+fi
 
 touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
 update-desktop-database &> /dev/null || :
@@ -1412,6 +1415,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %endif
 
 %changelog
+* Thu Jul 28 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.82-7
+- fix post scriptlet so that selinux stuff only happens when selinux is enabled
+
 * Thu Jul 28 2016 Richard Hughes <richard@hughsie.com> 52.0.2743.82-6
 - Add an AppData file so that Chromium appears in the software center
 
