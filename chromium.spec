@@ -18,7 +18,7 @@
 %global asan 0
 
 # Only flip this on if stuff is really broken re: nacl.
-%if 0%{?fedora} >= 24
+%if 0
 %global killnacl 1
 %else
 %global killnacl 0
@@ -62,7 +62,7 @@ BuildRequires:  libicu-devel >= 5.4
 
 Name:		chromium%{chromium_channel}
 Version:	52.0.2743.82
-Release:	4%{?dist}
+Release:	5%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -175,9 +175,16 @@ BuildRequires:	libstdc++-devel, openssl-devel
 BuildRequires:	nacl-gcc, nacl-binutils, nacl-newlib
 BuildRequires:	nacl-arm-gcc, nacl-arm-binutils, nacl-arm-newlib
 # pNaCl needs this monster
-BuildRequires:	chromium-native_client >= 50.0.2661.86
+# It's possible that someday this dep will stabilize, but 
+# right now, it needs to be updated everytime chromium bumps
+# a major version.
+BuildRequires:	chromium-native_client >= 52.0.2743.82
 %ifarch x86_64
-BuildRequires:  glibc-devel(x86-32) libgcc(x86-32)
+# Really, this is what we want:
+# BuildRequires:  glibc-devel(x86-32) libgcc(x86-32)
+# But, koji only offers glibc32. Maybe that's enough.
+# This BR will pull in either glibc.i686 or glibc32.
+BuildRequires:	/lib/libc.so.6 /usr/lib/libc.so
 %endif
 %endif
 # Fedora tries to use system libs whenever it can.
@@ -846,10 +853,10 @@ rm -rf %{buildroot}
 mkdir -p %{buildroot}%{_bindir}
 mkdir -p %{buildroot}%{chromium_path}
 cp -a %{SOURCE3} %{buildroot}%{chromium_path}/%{chromium_browser_channel}.sh
-export BUILDTARGET=`cat /etc/redhat-release`
+export BUILD_TARGET=`cat /etc/redhat-release`
 export CHROMIUM_PATH=%{chromium_path}
 export CHROMIUM_BROWSER_CHANNEL=%{chromium_browser_channel}
-sed -i "s|@@BUILDTARGET@@|$BUILDTARGET|g" %{buildroot}%{chromium_path}/%{chromium_browser_channel}.sh
+sed -i "s|@@BUILD_TARGET@@|$BUILD_TARGET|g" %{buildroot}%{chromium_path}/%{chromium_browser_channel}.sh
 sed -i "s|@@CHROMIUM_PATH@@|$CHROMIUM_PATH|g" %{buildroot}%{chromium_path}/%{chromium_browser_channel}.sh
 sed -i "s|@@CHROMIUM_BROWSER_CHANNEL@@|$CHROMIUM_BROWSER_CHANNEL|g" %{buildroot}%{chromium_path}/%{chromium_browser_channel}.sh
 %if "%{chromium_channel}" == "%%{nil}"
@@ -1397,6 +1404,10 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %endif
 
 %changelog
+* Wed Jul 27 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.82-5
+- enable nacl/pnacl (chromium-native_client has landed in Fedora)
+- fix chromium-browser.sh to report Fedora build target properly
+
 * Wed Jul 27 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.82-4
 - compile with -fno-delete-null-pointer-checks (fixes v8 crashes, nacl/pnacl)
 - turn nacl/pnacl off until chromium-native_client lands in Fedora
