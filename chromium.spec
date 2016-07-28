@@ -62,7 +62,7 @@ BuildRequires:  libicu-devel >= 5.4
 
 Name:		chromium%{chromium_channel}
 Version:	52.0.2743.82
-Release:	5%{?dist}
+Release:	6%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -127,6 +127,7 @@ Source8:	get_linux_tests_names.py
 Source9:	chromium-browser.xml
 Source10:	https://dl.google.com/dl/edgedl/chrome/policy/policy_templates.zip
 Source11:	chrome-remote-desktop.service
+Source12:	chromium-browser.appdata.xml
 
 # We can assume gcc and binutils.
 BuildRequires:	gcc-c++
@@ -167,6 +168,9 @@ BuildRequires:	liberation-sans-fonts
 # For sandbox initialization
 BuildRequires:	sudo
 %endif
+
+# for /usr/bin/appstream-util
+BuildRequires: libappstream-glib
 
 # Fedora turns on NaCl
 # NaCl needs these
@@ -953,6 +957,9 @@ cp -a chrome/app/theme/chromium/product_logo_256.png %{buildroot}%{_datadir}/ico
 mkdir -p %{buildroot}%{_datadir}/applications/
 desktop-file-install --dir %{buildroot}%{_datadir}/applications %{SOURCE4}
 
+install -D -m0644 %{SOURCE12} ${RPM_BUILD_ROOT}%{_datadir}/appdata/%{chromium_browser_channel}.appdata.xml
+appstream-util validate-relax --nonet ${RPM_BUILD_ROOT}%{_datadir}/appdata/%{chromium_browser_channel}.appdata.xml
+
 mkdir -p %{buildroot}%{_datadir}/gnome-control-center/default-apps/
 cp -a %{SOURCE9} %{buildroot}%{_datadir}/gnome-control-center/default-apps/
 
@@ -1370,6 +1377,7 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{_mandir}/man1/%{chromium_browser_channel}.*
 %{_datadir}/icons/hicolor/256x256/apps/%{chromium_browser_channel}.png
 %{_datadir}/applications/*.desktop
+%{_datadir}/appdata/*.appdata.xml
 %{_datadir}/gnome-control-center/default-apps/chromium-browser.xml
 
 %dir %{_sysconfdir}/chromium/policies/managed
@@ -1404,6 +1412,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %endif
 
 %changelog
+* Thu Jul 28 2016 Richard Hughes <richard@hughsie.com> 52.0.2743.82-6
+- Add an AppData file so that Chromium appears in the software center
+
 * Wed Jul 27 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.82-5
 - enable nacl/pnacl (chromium-native_client has landed in Fedora)
 - fix chromium-browser.sh to report Fedora build target properly
