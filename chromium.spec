@@ -53,6 +53,16 @@ BuildRequires:  libicu-devel >= 5.4
 
 %global bundlere2 0
 
+%global gtk3 1
+
+%if 0%{?rhel} == 7
+%global bundleopus 1
+%global bundlelibusbx 1
+%else
+%global bundleopus 0
+%global bundlelibusbx 0
+%endif
+
 ### Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
 ### Note: These are for Fedora use ONLY.
 ### For your own distribution, please get your own set of keys.
@@ -63,8 +73,8 @@ BuildRequires:  libicu-devel >= 5.4
 %global chromoting_client_id 449907151817-8vnlfih032ni8c4jjps9int9t86k546t.apps.googleusercontent.com 
 
 Name:		chromium%{chromium_channel}
-Version:	52.0.2743.82
-Release:	9%{?dist}
+Version:	52.0.2743.116
+Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -99,6 +109,16 @@ Patch11:	chromium-52.0.2723.2-PNGImageDecoder-fix-cast.patch
 Patch12:	chromium-52.0.2743.82-cups22.patch
 # Fix widevine compilation
 Patch13:	chromium-52.0.2743.82-widevinefix.patch
+# Add ICU Text Codec aliases (from openSUSE via Russian Fedora)
+Patch14:	chromium-52.0.2743.82-more-codec-aliases.patch
+# Use PIE in the Linux sandbox (from openSUSE via Russian Fedora)
+Patch15:	chromium-52.0.2743.82-sandbox-pie.patch
+# Enable ARM CPU detection for webrtc (from archlinux via Russian Fedora)
+Patch16:	chromium-52.0.2743.82-arm-webrtc.patch
+# Do not force -m32 in icu compile on ARM (from archlinux via Russian Fedora)
+Patch17:	chromium-52.0.2743.82-arm-icu-fix.patch
+# Use /etc/chromium for master_prefs
+Patch18:	chromium-52.0.2743.82-master-prefs-path.patch
 
 ### Chromium Tests Patches ###
 Patch100:	chromium-46.0.2490.86-use_system_opus.patch
@@ -130,6 +150,7 @@ Source9:	chromium-browser.xml
 Source10:	https://dl.google.com/dl/edgedl/chrome/policy/policy_templates.zip
 Source11:	chrome-remote-desktop.service
 Source12:	chromium-browser.appdata.xml
+Source13:	master_preferences
 
 # We can assume gcc and binutils.
 BuildRequires:	gcc-c++
@@ -218,8 +239,12 @@ BuildRequires:	libpng-devel
 BuildRequires:	libsrtp-devel >= 1.4.4
 %endif
 BuildRequires:	libudev-devel
+%if %{bundlelibusbx}
+# Do nothing
+%else
 Requires:	libusbx >= 1.0.21-0.1.git448584a
 BuildRequires:	libusbx-devel >= 1.0.21-0.1.git448584a
+%endif
 # We don't use libvpx anymore because Chromium loves to
 # use bleeding edge revisions here that break other things
 # ... so we just use the bundled libvpx.
@@ -229,8 +254,15 @@ BuildRequires:	libxslt-devel
 # BuildRequires:	libyuv-devel
 BuildRequires:	minizip-devel
 BuildRequires:	nspr-devel
+%if %{bundleopus}
+# Do nothing
+%else
 BuildRequires:	opus-devel
+%endif
 BuildRequires:	perl(Switch)
+%if 0%{gtk3}
+BuildRequires:	pkgconfig(gtk+-3.0)
+%endif
 BuildRequires:	pulseaudio-libs-devel
 BuildRequires:	python-beautifulsoup4
 BuildRequires:	python-BeautifulSoup
@@ -281,6 +313,8 @@ Provides:	webrtc = 0.2
 Obsoletes:	webrtc <= 0.1
 %if 0%{?shared}
 Requires:       chromium-libs%{_isa} = %{version}-%{release}
+# This is broken out so it can be replaced.
+Requires:	chromium-libs-media%{_isa} = %{version}-%{release}
 # Nothing to do here. chromium-libs is real.
 %else
 Provides:	chromium-libs = %{version}-%{release}
@@ -320,6 +354,9 @@ Provides: bundled(libaddressinput) = 0
 Provides: bundled(libjingle) = 9564
 Provides: bundled(libphonenumber) = svn584
 Provides: bundled(libsrtp) = 1.5.2
+%if %{bundlelibusbx}
+Provides: bundled(libusbx) = 1.0.17
+%endif
 Provides: bundled(libvpx) = 1.4.0
 Provides: bundled(libwebp) = 0.4.3
 Provides: bundled(libXNVCtrl) = 302.17
@@ -330,6 +367,9 @@ Provides: bundled(mesa) = 9.0.3
 Provides: bundled(NSBezierPath) = 1.0
 Provides: bundled(mozc)
 Provides: bundled(mt19937ar) = 2002.1.26
+%if %{bundleopus}
+Provides: bundled(opus) = 1.1.2
+%endif
 Provides: bundled(ots) = 767d6040439e6ebcdb867271fcb686bd3f8ac739
 Provides: bundled(protobuf) = r476
 Provides: bundled(qcms) = 4
@@ -359,9 +399,16 @@ Chromium is an open-source web browser, powered by WebKit (Blink).
 %if 0%{?shared}
 %package libs
 Summary: Shared libraries used by chromium (and chrome-remote-desktop)
+Requires: chromium-libs-media%{_isa} = %{version}
 
 %description libs
 Shared libraries used by chromium (and chrome-remote-desktop).
+
+%package libs-media
+Summary: Shared libraries used by the chromium media subsystem
+
+%description libs-media
+Shared libraries used by the chromium media subsystem.
 %endif
 
 %package -n chrome-remote-desktop
@@ -377,6 +424,23 @@ Summary: Remote desktop support for google-chrome & chromium
 
 %description -n chrome-remote-desktop
 Remote desktop support for google-chrome & chromium.
+
+%package -n chromedriver
+Summary:	WebDriver for Google Chrome/Chromium
+%if 0%{?shared}
+Requires:       chromium-libs%{_isa} = %{version}-%{release}
+%endif
+# From Russian Fedora (minus the epoch)
+Provides:	chromedriver-stable = %{version}-%{release}
+Conflicts:	chromedriver-testing
+Conflicts:	chromedriver-unstable
+
+%description -n chromedriver
+WebDriver is an open source tool for automated testing of webapps across many
+browsers. It provides capabilities for navigating to web pages, user input,
+JavaScript execution, and more. ChromeDriver is a standalone server which
+implements WebDriver's wire protocol for Chromium. It is being developed by
+members of the Chromium and WebDriver teams.
 
 %prep
 %setup -q -T -c -n %{name}-policies -a 10
@@ -401,6 +465,11 @@ Remote desktop support for google-chrome & chromium.
 %patch11 -p1 -b .fixcast
 %patch12 -p1 -b .cups22
 %patch13 -p1 -b .widevinefix
+%patch14 -p1 -b .morealiases
+%patch15 -p1 -b .sandboxpie
+%patch16 -p1 -b .armwebrtc
+%patch17 -p1 -b .armfix
+%patch18 -p1 -b .etc
 
 ### Chromium Tests Patches ###
 %patch100 -p1 -b .use_system_opus
@@ -523,6 +592,7 @@ export CHROMIUM_BROWSER_GYP_DEFINES="\
         -Dhost_clang=0 \
 %endif
 	-Ddisable_glibc=1 \
+	-Dlinux_fpic=1 \
 	-Ddisable_sse2=1 \
 %if 0%{?nonacl}
 	-Ddisable_nacl=1 \
@@ -541,6 +611,7 @@ export CHROMIUM_BROWSER_GYP_DEFINES="\
 	-Duse_system_flac=1 \
 	-Duse_system_harfbuzz=1 \
 %if 0%{?bundleicu}
+	-Duse_system_icu=0 \
 %else
 	-Duse_system_icu=1 \
 %endif
@@ -550,12 +621,20 @@ export CHROMIUM_BROWSER_GYP_DEFINES="\
 	-Duse_system_libexif=1 \
 	-Duse_system_libjpeg=1 \
 	-Duse_system_libpng=1 \
+%if %{bundlelibusbx}
+	-Duse_system_libusb=0 \
+%else
 	-Duse_system_libusb=1 \
+%endif
 	-Duse_system_libxml=1 \
 	-Duse_system_libxslt=1 \
 	-Duse_system_minizip=1 \
 	-Duse_system_nspr=1 \
+%if %{bundleopus}
+	-Duse_system_opus=0 \
+%else
 	-Duse_system_opus=1 \
+%endif
 	-Duse_system_protobuf=0 \
 %if 0%{?bundlere2}
 %else
@@ -582,7 +661,9 @@ export CHROMIUM_BROWSER_GYP_DEFINES="\
 	-Dlinux_use_libgps=0 \
 	\
 	-Dusb_ids_path=/usr/share/hwdata/usb.ids \
+%if 0%{?fedora}
 	-Dlibspeechd_h_prefix=speech-dispatcher/ \
+%endif
 	\
 	-Dffmpeg_branding=Chromium \
 	-Dproprietary_codecs=0 \
@@ -599,9 +680,17 @@ export CHROMIUM_BROWSER_GYP_DEFINES="\
 	-Dremove_webcore_debug_symbols=1 \
 	-Dlogging_like_official_build=1 \
 	-Denable_hotwording=0 \
+	-Duse_aura=1 \
+	-Denable_hidpi=1 \
+	-Denable_touch_ui=1 \
 	-Denable_pepper_cdms=1 \
 	-Denable_webrtc=1 \
 	-Denable_widevine=1 \
+%if 0%{gtk3}
+	-Duse_gtk3=1 \
+%else
+	-Dtoolkit_uses_gtk=0 \
+%endif
 %if 0
 	-Dbuildtype=Official \
 %endif
@@ -764,8 +853,12 @@ build/gyp_chromium \
 %endif
 	$CHROMIUM_BROWSER_GYP_DEFINES
 
+%if %{bundlelibusbx}
+# no hackity hack hack
+%else
 # hackity hack hack
 rm -rf third_party/libusb/src/libusb/libusb.h
+%endif
 
 %build
 
@@ -841,7 +934,7 @@ export CHROMIUM_BROWSER_UNIT_TESTS=
 
 %global target out/Release
 
-../depot_tools/ninja -C %{target} -vvv chrome chrome_sandbox policy_templates $CHROMIUM_BROWSER_UNIT_TESTS
+../depot_tools/ninja -C %{target} -vvv chrome chrome_sandbox chromedriver widevinecdmadapter clearkeycdm policy_templates $CHROMIUM_BROWSER_UNIT_TESTS
 
 # remote client
 pushd remoting
@@ -893,6 +986,10 @@ cp -a snapshot_blob.bin %{buildroot}%{chromium_path}
 %if 0%{?shared}
 cp -a lib %{buildroot}%{chromium_path}
 %endif
+
+# chromedriver
+cp -a chromedriver %{buildroot}%{chromium_path}/chromedriver
+ln -s %{chromium_path}/chromedriver %{buildroot}%{_bindir}/chromedriver
 
 # Remote desktop bits
 mkdir -p %{buildroot}%{crd_path}
@@ -956,6 +1053,10 @@ cp -a out/Release/gen/chrome/app/policy/linux/examples/chrome.json .
 mkdir -p %{buildroot}%{_datadir}/icons/hicolor/256x256/apps
 cp -a chrome/app/theme/chromium/product_logo_256.png %{buildroot}%{_datadir}/icons/hicolor/256x256/apps/%{chromium_browser_channel}.png
 
+# Install the master_preferences file
+mkdir -p %{buildroot}%{_sysconfdir}/%{name}
+install -m 0644 %{SOURCE13} %{buildroot}%{_sysconfdir}/%{name}/
+
 mkdir -p %{buildroot}%{_datadir}/applications/
 desktop-file-install --dir %{buildroot}%{_datadir}/applications %{SOURCE4}
 
@@ -964,6 +1065,8 @@ appstream-util validate-relax --nonet ${RPM_BUILD_ROOT}%{_datadir}/appdata/%{chr
 
 mkdir -p %{buildroot}%{_datadir}/gnome-control-center/default-apps/
 cp -a %{SOURCE9} %{buildroot}%{_datadir}/gnome-control-center/default-apps/
+
+mkdir -p %{buildroot}%{chromium_path}/PepperFlash
 
 %check
 %if 0%{tests}
@@ -1305,6 +1408,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %systemd_postun_with_restart chrome-remote-desktop.service
 
 %files
+%doc AUTHORS
+%license LICENSE
+%config %{_sysconfdir}/%{name}/
 %{_bindir}/%{chromium_browser_channel}
 %dir %{chromium_path}
 %{chromium_path}/*.bin
@@ -1315,6 +1421,7 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %if 0%{?nacl}
 %{chromium_path}/nacl_helper*
 %{chromium_path}/*.nexe
+%dir %{chromium_path}/PepperFlash/
 %{chromium_path}/pnacl/
 %{chromium_path}/tls_edit
 %endif
@@ -1385,13 +1492,17 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{_datadir}/appdata/*.appdata.xml
 %{_datadir}/gnome-control-center/default-apps/chromium-browser.xml
 
-%dir %{_sysconfdir}/chromium/policies/managed
-%dir %{_sysconfdir}/chromium/policies/recommended
 %doc chrome_policy_list.html *.json
 
 %if 0%{?shared}
 %files libs
+%exclude %{chromium_path}/lib/libffmpeg.so*
+%exclude %{chromium_path}/lib/libmedia.so*
 %{chromium_path}/lib/
+
+%files libs-media
+%{chromium_path}/lib/libffmpeg.so*
+%{chromium_path}/lib/libmedia.so*
 %endif
 
 %files -n chrome-remote-desktop
@@ -1416,7 +1527,44 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %endif
 %endif
 
+%files -n chromedriver
+%doc AUTHORS
+%license LICENSE
+%{_bindir}/chromedriver
+%{chromium_path}/chromedriver
+
 %changelog
+* Mon Aug  8 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.116-1
+- update to 52.0.2743.116
+
+* Thu Aug  4 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.82-13
+- change libs split to "libs-media", as that actually works.
+- add PepperFlash directory (nothing in it though, sorry)
+
+* Wed Aug  3 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.82-12
+- split out libs package beyond ffmpeg, into libs and libs-content
+- fix libusbx conditional for el7 to not nuke libusb headers
+- disable speech-dispatcher header prefix setting if not fedora (el7)
+
+* Wed Aug  3 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.82-11
+- split out chromium-libs-ffmpeg so it can be easily replaced
+- conditionalize opus and libusbx for el7
+
+* Wed Aug  3 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.82-10
+- Add ICU Text Codec aliases (from openSUSE via Russian Fedora)
+- Use PIE in the Linux sandbox (from openSUSE via Russian Fedora)
+- Enable ARM CPU detection for webrtc (from archlinux via Russian Fedora)
+- Do not force -m32 in icu compile on ARM (from archlinux via Russian Fedora)
+- Enable gtk3 support (via conditional)
+- Enable fpic on linux
+- Enable hidpi
+- Force aura on
+- Enable touch_ui
+- Add chromedriver subpackage (from Russian Fedora)
+- Set default master_preferences location to /etc/chromium
+- Add master_preferences file as config file
+- Improve chromium-browser.desktop (from Russian Fedora)
+
 * Thu Jul 28 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.82-9
 - fix conditional to disable verbose logging output unless beta/dev
 
