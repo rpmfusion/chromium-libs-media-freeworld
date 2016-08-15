@@ -77,7 +77,7 @@ BuildRequires:  libicu-devel >= 5.4
 
 Name:		chromium%{chromium_channel}
 Version:	52.0.2743.116
-Release:	6%{?dist}
+Release:	7%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -400,6 +400,10 @@ Provides: bundled(xdg-mime)
 Provides: bundled(xdg-user-dirs)
 Provides: bundled(x86inc) = 0
 Provides: bundled(zlib) = 1.2.5
+
+# For selinux scriptlet
+Requires(post): /sbin/semanage
+Requires(post): /usr/sbin/restorecon
 
 %description
 Chromium is an open-source web browser, powered by WebKit (Blink).
@@ -1581,6 +1585,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Mon Aug 15 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.116-7
+- add Requires(post) items for selinux scriptlets
+
 * Mon Aug 15 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.116-6
 - disable the "hidpi" setting
 - unset MADV_FREE if set (should get F25+ working again)
