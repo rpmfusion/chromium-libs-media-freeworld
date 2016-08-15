@@ -1,3 +1,6 @@
+# NEVER EVER EVER turn this on in official builds
+%global freeworld 0
+
 # %%{nil} for Stable; -beta for Beta; -dev for Devel
 # dash in -beta and -dev is intentional !
 %global chromium_channel %{nil}
@@ -74,7 +77,7 @@ BuildRequires:  libicu-devel >= 5.4
 
 Name:		chromium%{chromium_channel}
 Version:	52.0.2743.116
-Release:	1%{?dist}
+Release:	6%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -107,8 +110,6 @@ Patch11:	chromium-52.0.2723.2-PNGImageDecoder-fix-cast.patch
 # Ignore deprecations in cups 2.2
 # https://bugs.chromium.org/p/chromium/issues/detail?id=622493
 Patch12:	chromium-52.0.2743.82-cups22.patch
-# Fix widevine compilation
-Patch13:	chromium-52.0.2743.82-widevinefix.patch
 # Add ICU Text Codec aliases (from openSUSE via Russian Fedora)
 Patch14:	chromium-52.0.2743.82-more-codec-aliases.patch
 # Use PIE in the Linux sandbox (from openSUSE via Russian Fedora)
@@ -119,6 +120,9 @@ Patch16:	chromium-52.0.2743.82-arm-webrtc.patch
 Patch17:	chromium-52.0.2743.82-arm-icu-fix.patch
 # Use /etc/chromium for master_prefs
 Patch18:	chromium-52.0.2743.82-master-prefs-path.patch
+# Disable MADV_FREE (if set by glibc)
+# https://bugzilla.redhat.com/show_bug.cgi?id=1361157
+Patch19:	chromium-52.0.2743.116-unset-madv_free.patch
 
 ### Chromium Tests Patches ###
 Patch100:	chromium-46.0.2490.86-use_system_opus.patch
@@ -130,7 +134,11 @@ Patch102:	chromium-52.0.2723.2-sync_link_zlib.patch
 # For Chromium Fedora use chromium-latest.py --stable --ffmpegclean --ffmpegarm
 # If you want to include the ffmpeg arm sources append the --ffmpegarm switch
 # https://commondatastorage.googleapis.com/chromium-browser-official/chromium-%%{version}.tar.xz
+%if %{freeworld}
+Source0:	https://commondatastorage.googleapis.com/chromium-browser-official/chromium-%{version}.tar.xz
+%else
 Source0:	chromium-%{version}-clean.tar.xz
+%endif
 %if 0%{tests}
 Source1:	https://commondatastorage.googleapis.com/chromium-browser-official/chromium-%{version}-testdata.tar.xz
 %endif
@@ -404,11 +412,24 @@ Requires: chromium-libs-media%{_isa} = %{version}
 %description libs
 Shared libraries used by chromium (and chrome-remote-desktop).
 
+%if %{freeworld}
+%package libs-media-freeworld
+Summary: Chromium media libraries built with all possible codecs
+Provides: chromium-libs-media = %{version}-%{release}
+Provides: chromium-libs-media%{_isa} = %{version}-%{release}
+
+%description libs-media-freeworld
+Chromium media libraries built with all possible codecs. Chromium is an
+open-source web browser, powered by WebKit (Blink). This package replaces
+the default chromium-libs-media package, which is limited in what it
+can include.
+%else
 %package libs-media
 Summary: Shared libraries used by the chromium media subsystem
 
 %description libs-media
 Shared libraries used by the chromium media subsystem.
+%endif
 %endif
 
 %package -n chrome-remote-desktop
@@ -464,12 +485,12 @@ members of the Chromium and WebDriver teams.
 %patch10 -p1 -b .unbundle-fix
 %patch11 -p1 -b .fixcast
 %patch12 -p1 -b .cups22
-%patch13 -p1 -b .widevinefix
 %patch14 -p1 -b .morealiases
 %patch15 -p1 -b .sandboxpie
 %patch16 -p1 -b .armwebrtc
 %patch17 -p1 -b .armfix
 %patch18 -p1 -b .etc
+%patch19 -p1 -b .madv_free
 
 ### Chromium Tests Patches ###
 %patch100 -p1 -b .use_system_opus
@@ -665,8 +686,13 @@ export CHROMIUM_BROWSER_GYP_DEFINES="\
 	-Dlibspeechd_h_prefix=speech-dispatcher/ \
 %endif
 	\
+%if %{freeworld}
+        -Dffmpeg_branding=ChromeOS \
+        -Dproprietary_codecs=1 \
+%else
 	-Dffmpeg_branding=Chromium \
 	-Dproprietary_codecs=0 \
+%endif
 %if 0%{?shared}
 	-Dbuild_ffmpegsumo=1 \
 	-Dffmpeg_component=shared_library \
@@ -681,7 +707,7 @@ export CHROMIUM_BROWSER_GYP_DEFINES="\
 	-Dlogging_like_official_build=1 \
 	-Denable_hotwording=0 \
 	-Duse_aura=1 \
-	-Denable_hidpi=1 \
+	-Denable_hidpi=0 \
 	-Denable_touch_ui=1 \
 	-Denable_pepper_cdms=1 \
 	-Denable_webrtc=1 \
@@ -721,6 +747,9 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/libwebp' \
 	'third_party/libxml' \
 	'third_party/libxslt' \
+%if %{freeworld}
+	'third_party/openh264' \
+%endif
 %if 0%{?bundlere2}
 	'third_party/re2' \
 %endif
@@ -860,6 +889,13 @@ build/gyp_chromium \
 rm -rf third_party/libusb/src/libusb/libusb.h
 %endif
 
+# make up a version for widevine
+sed '14i#define WIDEVINE_CDM_VERSION_STRING "Something fresh"' -i "third_party/widevine/cdm/stub/widevine_cdm_version.h"
+
+# Hard code extra version
+FILE=chrome/common/channel_info_posix.cc
+sed -i.orig -e 's/getenv("CHROME_VERSION_EXTRA")/"Fedora Project"/' $FILE
+
 %build
 
 %if %{?tests}
@@ -986,6 +1022,12 @@ cp -a snapshot_blob.bin %{buildroot}%{chromium_path}
 %if 0%{?shared}
 cp -a lib %{buildroot}%{chromium_path}
 %endif
+# clearkeycdm and widevine bits
+# EXCEPT libwidevinecdm*.so*. At least libwidevinecdm.so is just an empty shim, 
+# because the chromium sources don't have the prebuilt binary. 
+# You'll have to get libwidevinecdm*.so*
+# from Google Chrome and copy it in /usr/lib64/chromium-browser/
+cp -a libclearkeycdm.so* %{buildroot}%{chromium_path}
 
 # chromedriver
 cp -a chromedriver %{buildroot}%{chromium_path}/chromedriver
@@ -1421,10 +1463,10 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %if 0%{?nacl}
 %{chromium_path}/nacl_helper*
 %{chromium_path}/*.nexe
-%dir %{chromium_path}/PepperFlash/
 %{chromium_path}/pnacl/
 %{chromium_path}/tls_edit
 %endif
+%dir %{chromium_path}/PepperFlash/
 %{chromium_path}/protoc
 # %%{chromium_path}/remoting_locales/
 %{chromium_path}/pseudo_locales/
@@ -1499,8 +1541,13 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %exclude %{chromium_path}/lib/libffmpeg.so*
 %exclude %{chromium_path}/lib/libmedia.so*
 %{chromium_path}/lib/
+%{chromium_path}/libclearkeycdm.so*
 
+%if %{freeworld}
+%files libs-media-freeworld
+%else
 %files libs-media
+%endif
 %{chromium_path}/lib/libffmpeg.so*
 %{chromium_path}/lib/libmedia.so*
 %endif
@@ -1534,6 +1581,24 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Mon Aug 15 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.116-6
+- disable the "hidpi" setting
+- unset MADV_FREE if set (should get F25+ working again)
+
+* Fri Aug 12 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.116-5
+- do not package libwidevinecdm*.so, they are just empty shells
+  instead, to enable widevine, get these files from Google Chrome
+
+* Fri Aug 12 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.116-4
+- add "freeworld" conditional for testing netflix/widevine
+
+* Fri Aug 12 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.116-3
+- move PepperFlash directory out of the nacl conditional (thanks to churchyard)
+- fix widevine (thanks to David Vásquez and UnitedRPMS)
+
+* Wed Aug 10 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.116-2
+- include clearkeycdm and widevinecdm files in libs-media
+
 * Mon Aug  8 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.116-1
 - update to 52.0.2743.116
 
