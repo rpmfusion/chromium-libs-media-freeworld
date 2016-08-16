@@ -8,6 +8,13 @@
 %global chromium_path %{_libdir}/chromium-browser%{chromium_channel}
 %global crd_path %{_libdir}/chrome-remote-desktop
 %global tests 0
+
+# We don't want any libs in these directories to generate Provides
+# Requires is trickier. 
+%global __provides_exclude_from %{chromium_path}/.*\\.so|%{chromium_path}/lib/.*\\.so
+%global privlibs libaccessibility|libaura_extra|libaura|libbase_i18n|libbase|libblink_common|libblink_platform|libblink_web|libboringssl|libbrowser_ui_views|libcaptive_portal|libcc_blink|libcc_ipc|libcc_proto|libcc|libcc_surfaces|libchromium_sqlite3|libcloud_policy_proto_generated_compile|libcloud_policy_proto|libcompositor|libcontent|libcrcrypto|libdbus|libdevice_battery|libdevice_bluetooth|libdevice_core|libdevice_event_log_component|libdevice_vibration|libdisplay_compositor|libdisplay|libdisplay_types|libdisplay_util|libdomain_reliability|libEGL|libevents_base|libevents_devices|libevents_devices_x11|libevents_ipc|libevents_ozone_layout|libevents_platform|libevents|libevents_x|libffmpeg|libgcm_driver_common|libgcm|libgesture_detection|libgfx_geometry|libgfx_ipc_geometry|libgfx_ipc_skia|libgfx_ipc|libgfx_range|libgfx|libgfx_vector_icons|libgfx_x11|libgin|libgles2_c_lib|libgles2_implementation|libgles2_utils|libGLESv2|libgl_init|libgl_wrapper|libgpu|libgtk2ui|libicui18n|libicuuc|libipc_mojo|libipc|libkeyboard|libkeyboard_with_content|libkeycodes_x11|libkeyed_service_content|libkeyed_service_core|libmedia_blink|libmedia_gpu|libmedia|libmessage_center|libmidi|libmodules|libmojo_common_lib|libmojo_geometry_lib|libmojo_system_impl|libnative_theme|libnet|libnet_with_v8|libonc_component|libplatform_handle|libpolicy_component|libppapi_host|libppapi_proxy|libppapi_shared|libprefs|libprinting|libprotobuf_lite|libproxy_config|libsandbox_services|libscheduler|libseccomp_bpf_helpers|libseccomp_bpf|libsessions_content|libshared_memory_support|libshell_dialogs|libskia|libsnapshot|libsql|libstorage_common|libstorage|libsuid_sandbox_client|libsurface|libsync_core|libsync_proto|libtracing|libtranslator|libui_base_ime|libui_base|libui_base_x|libui_data_pack|libui_touch_selection|liburl_ipc|liburl_lib|liburl_matcher|libuser_prefs|libv8|libviews|libwallpaper|libwebcore_shared|libwebdata_common|libweb_dialogs|libwebview|libwm|libwtf|libx11_events_platform
+%global __requires_exclude ^(%{privlibs})\\.so
+
 # Try to not use the Xvfb as it is slow..
 %global tests_force_display 0
 # If we build with shared on, then chrome-remote-desktop depends on chromium libs.
@@ -77,7 +84,7 @@ BuildRequires:  libicu-devel >= 5.4
 
 Name:		chromium%{chromium_channel}
 Version:	52.0.2743.116
-Release:	8%{?dist}
+Release:	9%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -430,6 +437,7 @@ can include.
 %else
 %package libs-media
 Summary: Shared libraries used by the chromium media subsystem
+Requires: chromium-libs%{_isa} = %{version}
 
 %description libs-media
 Shared libraries used by the chromium media subsystem.
@@ -1585,6 +1593,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Tue Aug 16 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.116-9
+- filter out Requires/Provides for chromium-only libs and plugins
+
 * Tue Aug 16 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.116-8
 - fix path on Requires(post) line for semanage
 
