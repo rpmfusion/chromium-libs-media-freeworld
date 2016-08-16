@@ -77,7 +77,7 @@ BuildRequires:  libicu-devel >= 5.4
 
 Name:		chromium%{chromium_channel}
 Version:	52.0.2743.116
-Release:	7%{?dist}
+Release:	8%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -402,7 +402,7 @@ Provides: bundled(x86inc) = 0
 Provides: bundled(zlib) = 1.2.5
 
 # For selinux scriptlet
-Requires(post): /sbin/semanage
+Requires(post): /usr/sbin/semanage
 Requires(post): /usr/sbin/restorecon
 
 %description
@@ -1585,6 +1585,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Tue Aug 16 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.116-8
+- fix path on Requires(post) line for semanage
+
 * Mon Aug 15 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.116-7
 - add Requires(post) items for selinux scriptlets
 
