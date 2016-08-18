@@ -85,7 +85,7 @@ BuildRequires:  libicu-devel >= 5.4
 
 Name:		chromium%{chromium_channel}
 Version:	52.0.2743.116
-Release:	10%{?dist}
+Release:	11%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -313,8 +313,10 @@ Requires:	nss-mdns%{_isa}
 # GTK modules it expects to find for some reason.
 Requires:	libcanberra-gtk2%{_isa}
 
+%if 0%{?fedora}
 # This enables support for u2f tokens
 Requires:	u2f-hidraw-policy
+%endif
 
 # Once upon a time, we tried to split these out... but that's not worth the effort anymore.
 Provides:	chromium-ffmpegsumo = %{version}-%{release}
@@ -1594,6 +1596,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Thu Aug 18 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.116-11
+- conditionalize Requires: u2f-hidraw-policy so that it is only used on Fedora
+
 * Thu Aug 18 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.116-10
 - disable gtk3 because it breaks lots of things
 - re-enable hidpi setting
