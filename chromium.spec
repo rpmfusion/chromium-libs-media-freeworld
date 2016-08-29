@@ -69,7 +69,9 @@ BuildRequires:  libicu-devel >= 5.4
 %if 0%{?rhel} == 7
 %global bundleopus 1
 %global bundlelibusbx 1
+%global bundleharfbuzz 1
 %else
+%global bundleharfbuzz 0
 %global bundleopus 0
 %global bundlelibusbx 0
 %endif
@@ -361,6 +363,9 @@ Provides: bundled(fips181) = 2.2.3
 Provides: bundled(fontconfig) = 2.11.0
 Provides: bundled(gperftools) = svn144
 Provides: bundled(gtk3) = 3.1.4
+%if 0%{?bundleharfbuzz}
+Provides: bundled(harfbuzz) = 1.2.7
+%endif
 Provides: bundled(hunspell) = 1.3.2
 Provides: bundled(iccjpeg)
 %if 0%{?bundleicu}
@@ -645,7 +650,11 @@ export CHROMIUM_BROWSER_GYP_DEFINES="\
 	-Duse_pulseaudio=1 \
 	-Duse_system_bzip2=1 \
 	-Duse_system_flac=1 \
+%if 0%{?bundleharfbuzz}
+	-Duse_system_harfbuzz=0 \
+%else
 	-Duse_system_harfbuzz=1 \
+%endif
 %if 0%{?bundleicu}
 	-Duse_system_icu=0 \
 %else
@@ -1596,8 +1605,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
-* Thu Aug 18 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.116-11
+* Mon Aug 29 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.116-11
 - conditionalize Requires: u2f-hidraw-policy so that it is only used on Fedora
+- use bundled harfbuzz on EL7
 
 * Thu Aug 18 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.116-10
 - disable gtk3 because it breaks lots of things
