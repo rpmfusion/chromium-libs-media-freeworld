@@ -1,6 +1,12 @@
 # NEVER EVER EVER turn this on in official builds
 %global freeworld 0
 
+# gn is the new new new buildtool. *sigh*
+%global use_gn 0
+
+# Leave this alone, please.
+%global target out/Release
+
 # %%{nil} for Stable; -beta for Beta; -dev for Devel
 # dash in -beta and -dev is intentional !
 %global chromium_channel %{nil}
@@ -61,7 +67,7 @@ BuildRequires:  libicu-devel >= 5.4
 %global bundleicu 1
 %endif
 
-%global bundlere2 0
+%global bundlere2 1
 
 # Chromium breaks on wayland, hidpi, and colors with gtk3 enabled.
 %global gtk3 0
@@ -69,7 +75,9 @@ BuildRequires:  libicu-devel >= 5.4
 %if 0%{?rhel} == 7
 %global bundleopus 1
 %global bundlelibusbx 1
+%global bundleharfbuzz 1
 %else
+%global bundleharfbuzz 0
 %global bundleopus 0
 %global bundlelibusbx 0
 %endif
@@ -84,8 +92,8 @@ BuildRequires:  libicu-devel >= 5.4
 %global chromoting_client_id 449907151817-8vnlfih032ni8c4jjps9int9t86k546t.apps.googleusercontent.com 
 
 Name:		chromium%{chromium_channel}
-Version:	52.0.2743.116
-Release:	10%{?dist}
+Version:	53.0.2785.92
+Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -107,14 +115,10 @@ Patch4:		chromium-46.0.2490.71-notest.patch
 Patch6:		chromium-47.0.2526.80-pnacl-fgnu-inline-asm.patch
 # Ignore broken nacl open fd counter
 Patch7:		chromium-47.0.2526.80-nacl-ignore-broken-fd-counter.patch
-# Fixups for gcc6
-Patch8:		chromium-48.0.2564.103-gcc6.patch
 # Use libusb_interrupt_event_handler from current libusbx (1.0.21-0.1.git448584a)
 Patch9:		chromium-48.0.2564.116-libusb_interrupt_event_handler.patch
 # Fix re2 unbundle gyp
 Patch10:	chromium-50.0.2661.94-unbundle-re2-fix.patch
-# Fix PNGImageDecoder code
-Patch11:	chromium-52.0.2723.2-PNGImageDecoder-fix-cast.patch
 # Ignore deprecations in cups 2.2
 # https://bugs.chromium.org/p/chromium/issues/detail?id=622493
 Patch12:	chromium-52.0.2743.82-cups22.patch
@@ -131,6 +135,13 @@ Patch18:	chromium-52.0.2743.82-master-prefs-path.patch
 # Disable MADV_FREE (if set by glibc)
 # https://bugzilla.redhat.com/show_bug.cgi?id=1361157
 Patch19:	chromium-52.0.2743.116-unset-madv_free.patch
+# Use gn system files
+Patch20:	chromium-53.0.2785.92-gn-system.patch
+# Fix last commit position issue
+# https://groups.google.com/a/chromium.org/forum/#!topic/gn-dev/7nlJv486bD4
+Patch21:	chromium-53.0.2785.92-last-commit-position.patch
+# Fix issue where timespec is not defined when sys/stat.h is included.
+Patch22:	chromium-53.0.2785.92-boringssl-time-fix.patch
 
 ### Chromium Tests Patches ###
 Patch100:	chromium-46.0.2490.86-use_system_opus.patch
@@ -189,7 +200,6 @@ BuildRequires:	gperf
 BuildRequires:	libatomic
 BuildRequires:	libcap-devel
 BuildRequires:	libdrm-devel
-BuildRequires:	libexif-devel
 BuildRequires:	libgcrypt-devel
 BuildRequires:	libudev-devel
 BuildRequires:	libusb-devel
@@ -236,10 +246,8 @@ BuildRequires:	dbus-glib-devel
 BuildRequires:	elfutils-libelf-devel
 BuildRequires:	flac-devel
 BuildRequires:	hwdata
-BuildRequires:	jsoncpp-devel
 BuildRequires:	kernel-headers
 BuildRequires:	libevent-devel
-BuildRequires:	libexif-devel
 BuildRequires:	libffi-devel
 %if 0%{?bundleicu}
 # If this is true, we're using the bundled icu.
@@ -268,8 +276,6 @@ BuildRequires:	libusbx-devel >= 1.0.21-0.1.git448584a
 BuildRequires:	libxslt-devel
 # Same here, it seems.
 # BuildRequires:	libyuv-devel
-BuildRequires:	minizip-devel
-BuildRequires:	nspr-devel
 %if %{bundleopus}
 # Do nothing
 %else
@@ -294,7 +300,6 @@ Requires:	re2 >= 20160401
 BuildRequires:	re2-devel >= 20160401
 %endif
 BuildRequires:	speech-dispatcher-devel
-BuildRequires:	speex-devel = 1.2
 BuildRequires:	yasm
 BuildRequires:	pkgconfig(gnome-keyring-1)
 # remote desktop needs this
@@ -313,8 +318,10 @@ Requires:	nss-mdns%{_isa}
 # GTK modules it expects to find for some reason.
 Requires:	libcanberra-gtk2%{_isa}
 
+%if 0%{?fedora}
 # This enables support for u2f tokens
 Requires:	u2f-hidraw-policy
+%endif
 
 # Once upon a time, we tried to split these out... but that's not worth the effort anymore.
 Provides:	chromium-ffmpegsumo = %{version}-%{release}
@@ -359,6 +366,9 @@ Provides: bundled(fips181) = 2.2.3
 Provides: bundled(fontconfig) = 2.11.0
 Provides: bundled(gperftools) = svn144
 Provides: bundled(gtk3) = 3.1.4
+%if 0%{?bundleharfbuzz}
+Provides: bundled(harfbuzz) = 1.2.7
+%endif
 Provides: bundled(hunspell) = 1.3.2
 Provides: bundled(iccjpeg)
 %if 0%{?bundleicu}
@@ -493,10 +503,8 @@ members of the Chromium and WebDriver teams.
 %patch4 -p1 -b .notest
 %patch6 -p1 -b .gnu-inline
 %patch7 -p1 -b .ignore-fd-count
-# %%patch8 -p1 -b .gcc6
 %patch9 -p1 -b .modern-libusbx
 %patch10 -p1 -b .unbundle-fix
-%patch11 -p1 -b .fixcast
 %patch12 -p1 -b .cups22
 %patch14 -p1 -b .morealiases
 %patch15 -p1 -b .sandboxpie
@@ -504,6 +512,9 @@ members of the Chromium and WebDriver teams.
 %patch17 -p1 -b .armfix
 %patch18 -p1 -b .etc
 %patch19 -p1 -b .madv_free
+%patch20 -p1 -b .gnsystem
+%patch21 -p1 -b .lastcommit
+%patch22 -p1 -b .timefix
 
 ### Chromium Tests Patches ###
 %patch100 -p1 -b .use_system_opus
@@ -606,6 +617,36 @@ ln -s ../../out/Release/gen/sdk/linux_x86 linux_x86
 popd
 %endif
 
+CHROMIUM_BROWSER_GN_DEFINES=""
+%ifarch x86_64
+CHROMIUM_BROWSER_GN_DEFINES+=' system_libdir="lib64"'
+%endif
+CHROMIUM_BROWSER_GN_DEFINES+=' google_api_key="%{api_key}" google_default_client_id="%{default_client_id}" google_default_client_secret="%{default_client_secret}"'
+CHROMIUM_BROWSER_GN_DEFINES+=' is_clang=false use_sysroot=false use_gio=true use_pulseaudio=true icu_use_data_file_flag=true'
+%if 0%{?nonacl}
+CHROMIUM_BROWSER_GN_DEFINES+=' enable_nacl=false'
+%endif
+%if %{freeworld}
+CHROMIUM_BROWSER_GN_DEFINES+=' ffmpeg_branding="ChromeOS" proprietary_codecs=true'
+%else
+CHROMIUM_BROWSER_GN_DEFINES+=' ffmpeg_branding="Chromium" proprietary_codecs=false'
+%endif
+%if 0%{?shared}
+CHROMIUM_BROWSER_GN_DEFINES+=' is_component_ffmpeg=true is_component_build=true'
+%else
+CHROMIUM_BROWSER_GN_DEFINES+=' is_component_ffmpeg=false is_component_build=false'
+%endif
+CHROMIUM_BROWSER_GN_DEFINES+=' remove_webcore_debug_symbols=true enable_hangout_services_extension=true'
+CHROMIUM_BROWSER_GN_DEFINES+=' enable_hotwording=false use_aura=true enable_hidpi=true'
+CHROMIUM_BROWSER_GN_DEFINES+=' enable_webrtc=true enable_widevine=true'
+%if 0%{gtk3}
+CHROMIUM_BROWSER_GN_DEFINES+=' use_gtk3=true'
+%else
+CHROMIUM_BROWSER_GN_DEFINES+=' use_gtk3=false'
+%endif
+CHROMIUM_BROWSER_GN_DEFINES+=' extra_cflags="-fno-delete-null-pointer-checks" treat_warnings_as_errors=false'
+export CHROMIUM_BROWSER_GN_DEFINES
+
 export CHROMIUM_BROWSER_GYP_DEFINES="\
 %ifarch x86_64
 	-Dtarget_arch=x64 \
@@ -643,16 +684,18 @@ export CHROMIUM_BROWSER_GYP_DEFINES="\
 	-Duse_pulseaudio=1 \
 	-Duse_system_bzip2=1 \
 	-Duse_system_flac=1 \
+%if 0%{?bundleharfbuzz}
+	-Duse_system_harfbuzz=0 \
+%else
 	-Duse_system_harfbuzz=1 \
+%endif
 %if 0%{?bundleicu}
 	-Duse_system_icu=0 \
 %else
 	-Duse_system_icu=1 \
 %endif
 	-Dicu_use_data_file_flag=1 \
-	-Duse_system_jsoncpp=1 \
 	-Duse_system_libevent=1 \
-	-Duse_system_libexif=1 \
 	-Duse_system_libjpeg=1 \
 	-Duse_system_libpng=1 \
 %if %{bundlelibusbx}
@@ -662,8 +705,6 @@ export CHROMIUM_BROWSER_GYP_DEFINES="\
 %endif
 	-Duse_system_libxml=1 \
 	-Duse_system_libxslt=1 \
-	-Duse_system_minizip=1 \
-	-Duse_system_nspr=1 \
 %if %{bundleopus}
 	-Duse_system_opus=0 \
 %else
@@ -674,7 +715,6 @@ export CHROMIUM_BROWSER_GYP_DEFINES="\
 %else
 	-Duse_system_re2=1 \
 %endif
-	-Duse_system_speex=1 \
 	-Duse_system_libsrtp=0 \
 	-Duse_system_xdg_utils=1 \
 	-Duse_system_yasm=1 \
@@ -786,11 +826,13 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'chrome/third_party/mozilla_security_manager' \
 	'courgette/third_party' \
 	'native_client/src/third_party/dlmalloc' \
+	'native_client/src/third_party/valgrind' \
 	'net/third_party/mozilla_security_manager' \
 	'net/third_party/nss' \
 	'third_party/WebKit' \
 	'third_party/analytics' \
 	'third_party/angle' \
+	'third_party/angle/src/common/third_party/numerics' \
 	'third_party/angle/src/third_party/compiler' \
 	'third_party/angle/src/third_party/libXNVCtrl' \
 	'third_party/angle/src/third_party/murmurhash' \
@@ -803,6 +845,7 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/catapult/tracing/third_party/d3' \
 	'third_party/catapult/tracing/third_party/gl-matrix' \
 	'third_party/catapult/tracing/third_party/jszip' \
+	'third_party/catapult/tracing/third_party/mannwhitneyu' \
 	'third_party/catapult/third_party/py_vulcanize' \
 	'third_party/catapult/third_party/py_vulcanize/third_party/rcssmin' \
 	'third_party/catapult/third_party/py_vulcanize/third_party/rjsmin' \
@@ -883,6 +926,41 @@ ln -s %{python_sitearch}/markupsafe third_party/markupsafe
 # Fix hardcoded path in remoting code
 sed -i 's|/opt/google/chrome-remote-desktop|%{crd_path}|g' remoting/host/setup/daemon_controller_delegate_linux.cc
 
+export PATH=$PATH:%{_builddir}/depot_tools
+
+%if %{use_gn}
+build/linux/unbundle/replace_gn_files.py --system-libraries \
+	flac \
+%if 0%{?bundleharfbuzz}
+%else
+	harfbuzz-ng \
+%endif
+%if 0%{?bundleicu}
+%else
+	icu \
+%endif
+	libevent \
+	libjpeg \
+	libpng \
+%if %{bundlelibusbx}
+%else
+	libusb \
+%endif
+	libxml \
+	libxslt \
+%if %{bundleopus}
+%else
+	opus \
+%endif
+%if 0%{?bundlere2}
+%else
+	re2 \
+%endif
+	yasm
+
+tools/gn/bootstrap/bootstrap.py -v --gn-gen-args "$CHROMIUM_BROWSER_GN_DEFINES"
+%{target}/gn gen --args="$CHROMIUM_BROWSER_GN_DEFINES" %{target}
+%else
 # Update gyp files according to our configuration
 # If you will change something in the configuration please update it
 # for build/gyp_chromium as well (and vice versa).
@@ -894,6 +972,7 @@ build/gyp_chromium \
 	-Drelease_extra_cflags="-O1 -fno-inline-functions -fno-inline" \
 %endif
 	$CHROMIUM_BROWSER_GYP_DEFINES
+%endif
 
 %if %{bundlelibusbx}
 # no hackity hack hack
@@ -1594,6 +1673,15 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Wed Sep  7 2016 Tom Callaway <spot@fedoraproject.org> 53.0.2785.92-1
+- add basic framework for gn tooling (disabled because it doesn't work yet)
+- update to 53.0.2785.92
+- fix HOME environment issue in chrome-remote-desktop service file
+
+* Mon Aug 29 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.116-11
+- conditionalize Requires: u2f-hidraw-policy so that it is only used on Fedora
+- use bundled harfbuzz on EL7
+
 * Thu Aug 18 2016 Tom Callaway <spot@fedoraproject.org> 52.0.2743.116-10
 - disable gtk3 because it breaks lots of things
 - re-enable hidpi setting
