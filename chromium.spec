@@ -18,7 +18,7 @@
 # We don't want any libs in these directories to generate Provides
 # Requires is trickier. 
 %global __provides_exclude_from %{chromium_path}/.*\\.so|%{chromium_path}/lib/.*\\.so
-%global privlibs libaccessibility|libaura_extra|libaura|libbase_i18n|libbase|libblink_common|libblink_platform|libblink_web|libboringssl|libbrowser_ui_views|libcaptive_portal|libcc_blink|libcc_ipc|libcc_proto|libcc|libcc_surfaces|libchromium_sqlite3|libcloud_policy_proto_generated_compile|libcloud_policy_proto|libcompositor|libcontent|libcrcrypto|libdbus|libdevice_battery|libdevice_bluetooth|libdevice_core|libdevice_event_log_component|libdevice_vibration|libdisplay_compositor|libdisplay|libdisplay_types|libdisplay_util|libdomain_reliability|libEGL|libevents_base|libevents_devices|libevents_devices_x11|libevents_ipc|libevents_ozone_layout|libevents_platform|libevents|libevents_x|libffmpeg|libgcm_driver_common|libgcm|libgesture_detection|libgfx_geometry|libgfx_ipc_geometry|libgfx_ipc_skia|libgfx_ipc|libgfx_range|libgfx|libgfx_vector_icons|libgfx_x11|libgin|libgles2_c_lib|libgles2_implementation|libgles2_utils|libGLESv2|libgl_init|libgl_wrapper|libgpu|libgtk2ui|libicui18n|libicuuc|libipc_mojo|libipc|libkeyboard|libkeyboard_with_content|libkeycodes_x11|libkeyed_service_content|libkeyed_service_core|libmedia_blink|libmedia_gpu|libmedia|libmessage_center|libmidi|libmodules|libmojo_common_lib|libmojo_geometry_lib|libmojo_system_impl|libnative_theme|libnet|libnet_with_v8|libonc_component|libplatform_handle|libpolicy_component|libppapi_host|libppapi_proxy|libppapi_shared|libprefs|libprinting|libprotobuf_lite|libproxy_config|libsandbox_services|libscheduler|libseccomp_bpf_helpers|libseccomp_bpf|libsessions_content|libshared_memory_support|libshell_dialogs|libskia|libsnapshot|libsql|libstorage_common|libstorage|libsuid_sandbox_client|libsurface|libsync_core|libsync_proto|libtracing|libtranslator|libui_base_ime|libui_base|libui_base_x|libui_data_pack|libui_touch_selection|liburl_ipc|liburl_lib|liburl_matcher|libuser_prefs|libv8|libviews|libwallpaper|libwebcore_shared|libwebdata_common|libweb_dialogs|libwebview|libwm|libwtf|libx11_events_platform
+%global privlibs libaccessibility|libaura_extra|libaura|libbase_i18n|libbase|libblink_common|libblink_platform|libblink_web|libboringssl|libbrowser_ui_views|libcaptive_portal|libcapture|libcc_blink|libcc_ipc|libcc_proto|libcc|libcc_surfaces|libchromium_sqlite3|libcloud_policy_proto_generated_compile|libcloud_policy_proto|libcompositor|libcontent|libcrcrypto|libdbus|libdevice_battery|libdevice_bluetooth|libdevice_core|libdevice_event_log_component|libdevice_gamepad|libdevice_power_save_blocker|libdevice_vibration|libdisplay_compositor|libdisplay|libdisplay_types|libdisplay_util|libdomain_reliability|libEGL|libevents_base|libevents_devices|libevents_devices_x11|libevents_ipc|libevents_ozone_layout|libevents_platform|libevents|libevents_x|libffmpeg|libgcm_driver_common|libgcm|libgesture_detection|libgfx_geometry|libgfx_ipc_geometry|libgfx_ipc_skia|libgfx_ipc|libgfx_range|libgfx|libgfx_vector_icons|libgfx_x11|libgin|libgles2_c_lib|libgles2_implementation|libgles2_utils|libGLESv2|libgl_init|libgl_wrapper|libgpu|libgtk2ui|libicui18n|libicuuc|libipc_mojo|libipc|libkeyboard|libkeyboard_with_content|libkeycodes_x11|libkeyed_service_content|libkeyed_service_core|libmedia_blink|libmedia_gpu|libmedia|libmessage_center|libmidi|libmodules|libmojo_common_lib|libmojo_geometry_lib|libmojo_public_system|libmojo_system_impl|libnative_theme|libnet|libnet_with_v8|libonc_component|libplatform_handle|libpolicy_component|libppapi_host|libppapi_proxy|libppapi_shared|libprefs|libprinting|libprotobuf_lite|libproxy_config|libsandbox_services|libscheduler|libseccomp_bpf_helpers|libseccomp_bpf|libsessions_content|libshared_memory_support|libshell_dialogs|libskia|libsnapshot|libsql|libstorage_common|libstorage|libsuid_sandbox_client|libsurface|libsync_core|libsync_proto|libtracing|libtranslator|libui_base_ime|libui_base|libui_base_x|libui_data_pack|libui_touch_selection|liburl_ipc|liburl_lib|liburl_matcher|libuser_prefs|libv8|libviews|libwallpaper|libwebcore_shared|libwebdata_common|libweb_dialogs|libwebview|libwm|libwtf|libx11_events_platform
 %global __requires_exclude ^(%{privlibs})\\.so
 
 # Try to not use the Xvfb as it is slow..
@@ -92,7 +92,7 @@ BuildRequires:  libicu-devel >= 5.4
 %global chromoting_client_id 449907151817-8vnlfih032ni8c4jjps9int9t86k546t.apps.googleusercontent.com 
 
 Name:		chromium%{chromium_channel}
-Version:	53.0.2785.92
+Version:	53.0.2785.101
 Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
@@ -142,6 +142,9 @@ Patch20:	chromium-53.0.2785.92-gn-system.patch
 Patch21:	chromium-53.0.2785.92-last-commit-position.patch
 # Fix issue where timespec is not defined when sys/stat.h is included.
 Patch22:	chromium-53.0.2785.92-boringssl-time-fix.patch
+# Fix gn build on Linux
+# https://crrev.com/415208
+Patch23:	chromium-53.0.2785.101-crrev-415028.patch
 
 ### Chromium Tests Patches ###
 Patch100:	chromium-46.0.2490.86-use_system_opus.patch
@@ -257,7 +260,7 @@ BuildRequires:	libffi-devel
 BuildRequires:	libicu-devel = 54.1
 %endif
 BuildRequires:	libjpeg-devel
-BuildRequires:	libpng-devel
+# BuildRequires:	libpng-devel
 %if 0
 # see https://code.google.com/p/chromium/issues/detail?id=501318
 BuildRequires:	libsrtp-devel >= 1.4.4
@@ -379,6 +382,7 @@ Provides: bundled(leveldb) = r80
 Provides: bundled(libaddressinput) = 0
 Provides: bundled(libjingle) = 9564
 Provides: bundled(libphonenumber) = svn584
+Provides: bundled(libpng) = 1.6.22
 Provides: bundled(libsrtp) = 1.5.2
 %if %{bundlelibusbx}
 Provides: bundled(libusbx) = 1.0.17
@@ -515,6 +519,7 @@ members of the Chromium and WebDriver teams.
 %patch20 -p1 -b .gnsystem
 %patch21 -p1 -b .lastcommit
 %patch22 -p1 -b .timefix
+%patch23 -p1 -b .415208
 
 ### Chromium Tests Patches ###
 %patch100 -p1 -b .use_system_opus
@@ -941,7 +946,6 @@ build/linux/unbundle/replace_gn_files.py --system-libraries \
 %endif
 	libevent \
 	libjpeg \
-	libpng \
 %if %{bundlelibusbx}
 %else
 	libusb \
@@ -1673,6 +1677,10 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Thu Sep  8 2016 Tom Callaway <spot@fedoraproject.org> 53.0.2785.101-1
+- 53.0.2785.101
+- happy star trek day. live long and prosper.
+
 * Wed Sep  7 2016 Tom Callaway <spot@fedoraproject.org> 53.0.2785.92-1
 - add basic framework for gn tooling (disabled because it doesn't work yet)
 - update to 53.0.2785.92
