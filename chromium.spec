@@ -92,7 +92,7 @@ BuildRequires:  libicu-devel >= 5.4
 %global chromoting_client_id 449907151817-8vnlfih032ni8c4jjps9int9t86k546t.apps.googleusercontent.com 
 
 Name:		chromium%{chromium_channel}
-Version:	53.0.2785.101
+Version:	53.0.2785.113
 Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
@@ -1677,6 +1677,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Wed Sep 14 2016 Tom Callaway <spot@fedoraproject.org> 53.0.2785.113-1
+- 53.0.2785.113
+
 * Thu Sep  8 2016 Tom Callaway <spot@fedoraproject.org> 53.0.2785.101-1
 - 53.0.2785.101
 - happy star trek day. live long and prosper.
