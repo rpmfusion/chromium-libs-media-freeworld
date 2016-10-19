@@ -150,6 +150,8 @@ Patch23:	chromium-53.0.2785.101-crrev-415028.patch
 Patch24:	chromium-54.0.2840.59-nullfix.patch
 # Add explicit includedir for jpeglib.h
 Patch25:	chromium-54.0.2840.59-jpeg-include-dir.patch
+# On i686, pass --no-keep-memory --reduce-memory-overheads to ld.
+Patch26:	chromium-54.0.2840.59-i686-ld-memory-tricks.patch
 
 
 ### Chromium Tests Patches ###
@@ -527,6 +529,7 @@ members of the Chromium and WebDriver teams.
 %patch23 -p1 -b .415208
 %patch24 -p1 -b .nullfix
 %patch25 -p1 -b .jpegfix
+%patch26 -p1 -b .ldmemory
 
 ### Chromium Tests Patches ###
 %patch100 -p1 -b .use_system_opus

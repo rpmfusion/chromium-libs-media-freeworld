@@ -1,0 +1,11 @@
+diff -up chromium-54.0.2840.59/build/toolchain/linux/BUILD.gn.ldmemory chromium-54.0.2840.59/build/toolchain/linux/BUILD.gn
+--- chromium-54.0.2840.59/build/toolchain/linux/BUILD.gn.ldmemory	2016-10-19 15:56:20.253096784 -0400
++++ chromium-54.0.2840.59/build/toolchain/linux/BUILD.gn	2016-10-19 15:58:17.940833948 -0400
+@@ -72,6 +72,7 @@ gcc_toolchain("x86") {
+   ar = "ar"
+   ld = cxx
+   extra_cppflags = "-fno-delete-null-pointer-checks"
++  extra_ldflags = "--no-keep-memory --reduce-memory-overheads"
+ 
+   toolchain_args = {
+     current_cpu = "x86"
