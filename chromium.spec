@@ -903,7 +903,9 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/libxml/chromium' \
 	'third_party/libwebm' \
 	'third_party/libyuv' \
+%if 0%{?nacl}
 	'third_party/llvm-build' \
+%endif
 	'third_party/lss' \
 	'third_party/lzma_sdk' \
 	'third_party/mesa' \
