@@ -94,7 +94,7 @@ BuildRequires:  libicu-devel >= 5.4
 
 Name:		chromium%{chromium_channel}
 Version:	54.0.2840.71
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -641,6 +641,7 @@ popd
 %endif
 
 CHROMIUM_BROWSER_GN_DEFINES=""
+CHROMIUM_BROWSER_GN_DEFINES+=' is_debug=false'
 %ifarch x86_64
 CHROMIUM_BROWSER_GN_DEFINES+=' system_libdir="lib64"'
 %endif
@@ -1708,6 +1709,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Tue Nov  1 2016 Tom Callaway <spot@fedoraproject.org> 54.0.2840.71-2
+- disable debugging
+
 * Wed Oct 26 2016 Tom Callaway <spot@fedoraproject.org> 54.0.2840.71-1
 - update to 54.0.2840.71
 
