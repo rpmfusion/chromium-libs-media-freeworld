@@ -93,7 +93,7 @@ BuildRequires:  libicu-devel >= 5.4
 %global chromoting_client_id 449907151817-8vnlfih032ni8c4jjps9int9t86k546t.apps.googleusercontent.com 
 
 Name:		chromium%{chromium_channel}
-Version:	54.0.2840.71
+Version:	54.0.2840.90
 Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
@@ -641,6 +641,7 @@ popd
 %endif
 
 CHROMIUM_BROWSER_GN_DEFINES=""
+CHROMIUM_BROWSER_GN_DEFINES+=' is_debug=false'
 %ifarch x86_64
 CHROMIUM_BROWSER_GN_DEFINES+=' system_libdir="lib64"'
 %endif
@@ -1708,6 +1709,13 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Wed Nov  2 2016 Tom Callaway <spot@fedoraproject.org> 54.0.2840.90-1
+- update to 54.0.2840.90
+- undo ld manipulation for i686, just use -g1 there
+
+* Tue Nov  1 2016 Tom Callaway <spot@fedoraproject.org> 54.0.2840.71-2
+- disable debugging
+
 * Wed Oct 26 2016 Tom Callaway <spot@fedoraproject.org> 54.0.2840.71-1
 - update to 54.0.2840.71
 
