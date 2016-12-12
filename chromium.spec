@@ -1,9 +1,6 @@
 # NEVER EVER EVER turn this on in official builds
 %global freeworld 0
 
-# gn is the new new new buildtool. *sigh*
-%global use_gn 1
-
 # Leave this alone, please.
 %global target out/Release
 
@@ -92,20 +89,19 @@ BuildRequires:  libicu-devel >= 5.4
 %global default_client_secret miEreAep8nuvTdvLums6qyLK
 %global chromoting_client_id 449907151817-8vnlfih032ni8c4jjps9int9t86k546t.apps.googleusercontent.com 
 
+%global majorversion 55
+
 Name:		chromium%{chromium_channel}
-Version:	54.0.2840.90
-Release:	3%{?dist}
+Version:	%{majorversion}.0.2883.75
+Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
 
 ### Chromium Fedora Patches ###
-Patch0:		chromium-54.0.2840.59-gcc5.patch
+Patch0:		chromium-55.0.2883.75-gcc5.patch
 Patch1:		chromium-45.0.2454.101-linux-path-max.patch
-Patch2:		chromium-50.0.2661.86-addrfix.patch
-# Google patched their bundled copy of icu 54 to include API functionality that wasn't added until 55.
-# :P
-Patch3:		chromium-52.0.2723.2-system-icu-54-does-not-have-detectHostTimeZone.patch
+Patch2:		chromium-55.0.2883.75-addrfix.patch
 Patch4:		chromium-46.0.2490.71-notest.patch
 # In file included from ../linux/directory.c:21:
 # In file included from ../../../../native_client/src/nonsfi/linux/abi_conversion.h:20:
@@ -118,19 +114,15 @@ Patch6:		chromium-47.0.2526.80-pnacl-fgnu-inline-asm.patch
 Patch7:		chromium-47.0.2526.80-nacl-ignore-broken-fd-counter.patch
 # Use libusb_interrupt_event_handler from current libusbx (1.0.21-0.1.git448584a)
 Patch9:		chromium-48.0.2564.116-libusb_interrupt_event_handler.patch
-# Fix re2 unbundle gyp
-Patch10:	chromium-50.0.2661.94-unbundle-re2-fix.patch
 # Ignore deprecations in cups 2.2
 # https://bugs.chromium.org/p/chromium/issues/detail?id=622493
-Patch12:	chromium-52.0.2743.82-cups22.patch
+Patch12:	chromium-55.0.2883.75-cups22.patch
 # Add ICU Text Codec aliases (from openSUSE via Russian Fedora)
-Patch14:	chromium-52.0.2743.82-more-codec-aliases.patch
+Patch14:	chromium-55.0.2883.75-more-codec-aliases.patch
 # Use PIE in the Linux sandbox (from openSUSE via Russian Fedora)
-Patch15:	chromium-52.0.2743.82-sandbox-pie.patch
+Patch15:	chromium-55.0.2883.75-sandbox-pie.patch
 # Enable ARM CPU detection for webrtc (from archlinux via Russian Fedora)
 Patch16:	chromium-52.0.2743.82-arm-webrtc.patch
-# Do not force -m32 in icu compile on ARM (from archlinux via Russian Fedora)
-Patch17:	chromium-54.0.2840.59-arm-icu-fix.patch
 # Use /etc/chromium for master_prefs
 Patch18:	chromium-52.0.2743.82-master-prefs-path.patch
 # Disable MADV_FREE (if set by glibc)
@@ -143,9 +135,6 @@ Patch20:	chromium-54.0.2840.59-gn-system.patch
 Patch21:	chromium-53.0.2785.92-last-commit-position.patch
 # Fix issue where timespec is not defined when sys/stat.h is included.
 Patch22:	chromium-53.0.2785.92-boringssl-time-fix.patch
-# Fix gn build on Linux
-# https://crrev.com/415208
-Patch23:	chromium-53.0.2785.101-crrev-415028.patch
 # I wouldn't have to do this if there was a standard way to append extra compiler flags
 Patch24:	chromium-54.0.2840.59-nullfix.patch
 # Add explicit includedir for jpeglib.h
@@ -162,7 +151,7 @@ Patch28:	chromium-54.0.2840.90-aura-browser-link-to-snapshot.patch
 
 ### Chromium Tests Patches ###
 Patch100:	chromium-46.0.2490.86-use_system_opus.patch
-Patch101:	chromium-52.0.2723.2-use_system_harfbuzz.patch
+Patch101:	chromium-55.0.2883.75-use_system_harfbuzz.patch
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
 # http://build.chromium.org/buildbot/official/
@@ -446,7 +435,7 @@ Chromium is an open-source web browser, powered by WebKit (Blink).
 %if 0%{?shared}
 %package libs
 Summary: Shared libraries used by chromium (and chrome-remote-desktop)
-Requires: chromium-libs-media%{_isa} = %{version}
+Requires: chromium-libs-media%{_isa} >= %{majorversion}
 
 %description libs
 Shared libraries used by chromium (and chrome-remote-desktop).
@@ -516,23 +505,19 @@ members of the Chromium and WebDriver teams.
 %patch0 -p1 -b .gcc5
 %patch1 -p1 -b .pathmax
 %patch2 -p1 -b .addrfix
-%patch3 -p1 -b .system-icu
 %patch4 -p1 -b .notest
-%patch6 -p1 -b .gnu-inline
+# %%patch6 -p1 -b .gnu-inline
 %patch7 -p1 -b .ignore-fd-count
 %patch9 -p1 -b .modern-libusbx
-%patch10 -p1 -b .unbundle-fix
 %patch12 -p1 -b .cups22
 %patch14 -p1 -b .morealiases
 %patch15 -p1 -b .sandboxpie
 %patch16 -p1 -b .armwebrtc
-%patch17 -p1 -b .armfix
 %patch18 -p1 -b .etc
 %patch19 -p1 -b .madv_free
 %patch20 -p1 -b .gnsystem
 %patch21 -p1 -b .lastcommit
 %patch22 -p1 -b .timefix
-%patch23 -p1 -b .415208
 %patch24 -p1 -b .nullfix
 %patch25 -p1 -b .jpegfix
 %patch26 -p1 -b .ldmemory
@@ -681,140 +666,6 @@ CHROMIUM_BROWSER_GN_DEFINES+=' use_gtk3=false'
 CHROMIUM_BROWSER_GN_DEFINES+=' treat_warnings_as_errors=false'
 export CHROMIUM_BROWSER_GN_DEFINES
 
-export CHROMIUM_BROWSER_GYP_DEFINES="\
-%ifarch x86_64
-	-Dtarget_arch=x64 \
-	-Dsystem_libdir=lib64 \
-%endif
-	-Dgoogle_api_key="%{api_key}" \
-	-Dgoogle_default_client_id="%{default_client_id}" \
-	-Dgoogle_default_client_secret="%{default_client_secret}" \
-%if 0%{?asan}
-	-Dasan=1 \
-	-Dclang=1 \
-	-Dhost_clang=1 \
-	-Dclang_dynlib_flags="" \
-	-Dclang_plugin_args="" \
-	-Dclang_chrome_plugins_flags="" \
-%else
-	-Dclang=0 \
-        -Dhost_clang=0 \
-%endif
-	-Ddisable_glibc=1 \
-	-Dlinux_fpic=1 \
-	-Ddisable_sse2=1 \
-%if 0%{?nonacl}
-	-Ddisable_nacl=1 \
-%else
-	-Ddisable_newlib_untar=1 \
-	-Ddisable_pnacl_untar=1 \
-	-Dpnacl_newlib_toolchain=out/Release/gen/sdk/linux_x86/pnacl_newlib/ \
-	-Dpnacl_translator_dir=/usr/pnacl_translator \
-%endif
-	\
-	-Duse_gconf=0 \
-	-Duse_gio=1 \
-	-Duse_gnome_keyring=1 \
-	-Duse_pulseaudio=1 \
-	-Duse_system_bzip2=1 \
-	-Duse_system_flac=1 \
-%if 0%{?bundleharfbuzz}
-	-Duse_system_harfbuzz=0 \
-%else
-	-Duse_system_harfbuzz=1 \
-%endif
-%if 0%{?bundleicu}
-	-Duse_system_icu=0 \
-%else
-	-Duse_system_icu=1 \
-%endif
-	-Dicu_use_data_file_flag=1 \
-	-Duse_system_libevent=0 \
-	-Duse_system_libjpeg=1 \
-	-Duse_system_libpng=1 \
-%if %{bundlelibusbx}
-	-Duse_system_libusb=0 \
-%else
-	-Duse_system_libusb=1 \
-%endif
-	-Duse_system_libxml=1 \
-	-Duse_system_libxslt=1 \
-%if %{bundleopus}
-	-Duse_system_opus=0 \
-%else
-	-Duse_system_opus=1 \
-%endif
-	-Duse_system_protobuf=0 \
-%if 0%{?bundlere2}
-%else
-	-Duse_system_re2=1 \
-%endif
-	-Duse_system_libsrtp=0 \
-	-Duse_system_xdg_utils=1 \
-	-Duse_system_yasm=1 \
-	-Duse_system_zlib=0 \
-	\
-	-Dlinux_link_libspeechd=1 \
-	-Dlinux_link_gnome_keyring=1 \
-	-Dlinux_link_gsettings=1 \
-	-Dlinux_link_libpci=1 \
-	-Dlinux_link_libgps=0 \
-	-Dlinux_sandbox_path=%{chromium_path}/chrome-sandbox \
-	-Dlinux_sandbox_chrome_path=%{chromium_path}/chromium-browser \
-	-Dlinux_strip_binary=1 \
-	-Dlinux_use_bundled_binutils=0 \
-	-Dlinux_use_bundled_gold=0 \
-	-Dlinux_use_gold_binary=0 \
-	-Dlinux_use_gold_flags=0 \
-	-Dlinux_use_libgps=0 \
-	\
-	-Dusb_ids_path=/usr/share/hwdata/usb.ids \
-%if 0%{?fedora}
-	-Dlibspeechd_h_prefix=speech-dispatcher/ \
-%endif
-	\
-%if %{freeworld}
-        -Dffmpeg_branding=ChromeOS \
-        -Dproprietary_codecs=1 \
-%else
-	-Dffmpeg_branding=Chromium \
-	-Dproprietary_codecs=0 \
-%endif
-%if 0%{?shared}
-	-Dbuild_ffmpegsumo=1 \
-	-Dffmpeg_component=shared_library \
-%else
-	-Dffmpeg_component=static_library \
-%endif
-	\
-	-Dno_strict_aliasing=1 \
-	-Dv8_no_strict_aliasing=1 \
-	\
-	-Dremove_webcore_debug_symbols=1 \
-	-Dlogging_like_official_build=1 \
-	-Denable_hotwording=0 \
-	-Duse_aura=1 \
-	-Denable_hidpi=1 \
-	-Denable_touch_ui=1 \
-	-Denable_pepper_cdms=1 \
-	-Denable_webrtc=1 \
-	-Denable_widevine=1 \
-%if 0%{gtk3}
-	-Duse_gtk3=1 \
-%else
-	-Dtoolkit_uses_gtk=0 \
-%endif
-%if 0
-	-Dbuildtype=Official \
-%endif
-	\
-%if 0%{?shared}
-	-Dcomponent=shared_library \
-%endif
-	-Duse_sysroot=0 \
-	-Drelease_extra_cflags="-fno-delete-null-pointer-checks" \
-	-Dwerror= -Dsysroot="
-
 # Remove most of the bundled libraries. Libraries specified below (taken from
 # Gentoo's Chromium ebuild) are the libraries that needs to be preserved.
 build/linux/unbundle/remove_bundled_libraries.py \
@@ -843,7 +694,6 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/snappy' \
 	'third_party/speech-dispatcher' \
 	'third_party/usb_ids' \
-	'third_party/woff2' \
 	'third_party/xdg-utils' \
 	'third_party/yasm' \
 	'third_party/zlib' \
@@ -887,8 +737,8 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/catapult/third_party/py_vulcanize/third_party/rjsmin' \
         'third_party/ced' \
 	'third_party/cld_2' \
+	'third_party/cld_3' \
 	'third_party/cros_system_api' \
-	'third_party/cython/python_flags.py' \
 	'third_party/devscripts' \
 	'third_party/dom_distiller_js' \
 	'third_party/expat' \
@@ -908,6 +758,7 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/libjingle' \
 	'third_party/libphonenumber' \
 	'third_party/libsecret' \
+        'third_party/libsrtp' \
 	'third_party/libudev' \
 	'third_party/libusb' \
 	'third_party/libvpx' \
@@ -934,6 +785,8 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/pdfium/third_party/lcms2-2.6' \
 	'third_party/pdfium/third_party/libjpeg' \
 	'third_party/pdfium/third_party/libopenjpeg20' \
+        'third_party/pdfium/third_party/libpng16' \
+        'third_party/pdfium/third_party/libtiff' \
 	'third_party/pdfium/third_party/zlib_v128' \
 	'third_party/polymer' \
 	'third_party/protobuf' \
@@ -952,6 +805,7 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/webdriver' \
 	'third_party/webrtc' \
 	'third_party/widevine' \
+        'third_party/woff2' \
 	'third_party/x86inc' \
 	'third_party/zlib/google' \
 	'url/third_party/mozilla' \
@@ -970,7 +824,6 @@ sed -i 's|/opt/google/chrome-remote-desktop|%{crd_path}|g' remoting/host/setup/d
 
 export PATH=$PATH:%{_builddir}/depot_tools
 
-%if %{use_gn}
 build/linux/unbundle/replace_gn_files.py --system-libraries \
 	flac \
 %if 0%{?bundleharfbuzz}
@@ -1002,19 +855,6 @@ build/linux/unbundle/replace_gn_files.py --system-libraries \
 
 tools/gn/bootstrap/bootstrap.py -v --gn-gen-args "$CHROMIUM_BROWSER_GN_DEFINES"
 %{target}/gn gen --args="$CHROMIUM_BROWSER_GN_DEFINES" %{target}
-%else
-# Update gyp files according to our configuration
-# If you will change something in the configuration please update it
-# for build/gyp_chromium as well (and vice versa).
-build/linux/unbundle/replace_gyp_files.py $CHROMIUM_BROWSER_GYP_DEFINES
-
-build/gyp_chromium \
-	--depth . \
-%if 0%{?asan}
-	-Drelease_extra_cflags="-O1 -fno-inline-functions -fno-inline" \
-%endif
-	$CHROMIUM_BROWSER_GYP_DEFINES
-%endif
 
 %if %{bundlelibusbx}
 # no hackity hack hack
@@ -1717,6 +1557,12 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Mon Dec 12 2016 Tom Callaway <spot@fedoraproject.org> 55.0.2883.75-1
+- update to 55.0.2883.75
+
+* Fri Dec  2 2016 Tom Callaway <spot@fedoraproject.org> 54.0.2840.100-1
+- update to 54.0.2840.100
+
 * Fri Nov  4 2016 Tom Callaway <spot@fedoraproject.org> 54.0.2840.90-3
 - when use_aura is on, chrome/browser needs to link to ui/snapshot
 
