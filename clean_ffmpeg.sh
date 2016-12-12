@@ -174,8 +174,6 @@ other_files="	BUILD.gn \
 		COPYING.LGPLv3 \
 		CREDITS \
 		CREDITS.chromium \
-		ffmpeg.gyp \
-		ffmpeg_generated.gypi \
 		ffmpeg_generated.gni \
 		ffmpeg_options.gni \
 		ffmpegsumo.ver \
