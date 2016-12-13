@@ -752,6 +752,7 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/google_input_tools/third_party/closure_library/third_party/closure' \
 	'third_party/hunspell' \
 	'third_party/iccjpeg' \
+	'third_party/jinja2' \
 	'third_party/jstemplate' \
 	'third_party/khronos' \
 	'third_party/leveldatabase' \
