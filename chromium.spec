@@ -93,7 +93,7 @@ BuildRequires:  libicu-devel >= 5.4
 
 Name:		chromium%{chromium_channel}
 Version:	%{majorversion}.0.2883.87
-Release:	1%{?dist}
+Release:	1%{?dist}.1
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -295,7 +295,9 @@ BuildRequires:	pulseaudio-libs-devel
 BuildRequires:	python-beautifulsoup4
 BuildRequires:	python-BeautifulSoup
 BuildRequires:	python-html5lib
+%if 0%{?fedora} >= 23
 BuildRequires:	python-jinja2
+%endif
 BuildRequires:	python-markupsafe
 BuildRequires:	python-ply
 BuildRequires:	python-simplejson
@@ -813,8 +815,11 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	--do-remove
 
 # Look, I don't know. This package is spit and chewing gum. Sorry.
+# RHEL jinja2 is too old, even in 7.
+%if 0%{?fedora} >= 23
 rm -rf third_party/jinja2
 ln -s %{python_sitelib}/jinja2 third_party/jinja2
+%endif
 rm -rf third_party/markupsafe
 ln -s %{python_sitearch}/markupsafe third_party/markupsafe
 # We should look on removing other python packages as well i.e. ply
@@ -1557,6 +1562,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Tue Dec 13 2016 Tom Callaway <spot@fedoraproject.org> 55.0.2883.87-1.1
+- use bundled jinja2 on RHEL (or Fedora older than 23)
+
 * Tue Dec 13 2016 Tom Callaway <spot@fedoraproject.org> 55.0.2883.87-1
 - update to 55.0.2883.87
 
