@@ -148,6 +148,9 @@ Patch27:	chromium-54.0.2840.90-setopaque.patch
 # /usr/bin/ld.bfd: note: '_ZN2ui31GrabWindowSnapshotAndScaleAsyncEPN4aura6WindowERKN3gfx4RectERKNS3_4SizeE13scoped_refptrIN4base10TaskRunnerEERKNSB_8CallbackIFvRKNS3_5ImageEELNSB_8internal8CopyModeE1EEE' is defined in DSO ./libsnapshot.so so try adding it to the linker command line
 # ./libsnapshot.so: could not read symbols: Invalid operation
 Patch28:	chromium-54.0.2840.90-aura-browser-link-to-snapshot.patch
+# Fix rvalue issue in remoting code
+# https://chromium.googlesource.com/chromium/src.git/+/29bfbecb49572b61264de7acccf8b23942bba43d%5E%21/#F0
+Patch29:	chromium-55.0.2883.87-rvalue-fix.patch
 
 ### Chromium Tests Patches ###
 Patch100:	chromium-46.0.2490.86-use_system_opus.patch
@@ -525,6 +528,7 @@ members of the Chromium and WebDriver teams.
 %patch26 -p1 -b .ldmemory
 %patch27 -p1 -b .setopaque
 %patch28 -p1 -b .aurasnapshot
+%patch29 -p1 -b .rvalue
 
 ### Chromium Tests Patches ###
 %patch100 -p1 -b .use_system_opus
@@ -1565,6 +1569,7 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %changelog
 * Tue Dec 13 2016 Tom Callaway <spot@fedoraproject.org> 55.0.2883.87-1.1
 - use bundled jinja2 on RHEL (or Fedora older than 23)
+- fix rvalue issue in remoting code
 
 * Tue Dec 13 2016 Tom Callaway <spot@fedoraproject.org> 55.0.2883.87-1
 - update to 55.0.2883.87
