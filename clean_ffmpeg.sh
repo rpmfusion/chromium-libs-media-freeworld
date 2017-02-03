@@ -66,10 +66,12 @@ header_files="	libavcodec/x86/inline_asm.h \
 		libavcodec/fft-internal.h \
 		libavcodec/fft_table.h \
 		libavcodec/flac.h \
+		libavcodec/flacdsp.h \
 		libavcodec/frame_thread_encoder.h \
 		libavcodec/get_bits.h \
 		libavcodec/h263dsp.h \
 		libavcodec/h264chroma.h \
+		libavcodec/hpeldsp.h \
 		libavcodec/idctdsp.h \
 		libavcodec/internal.h \
 		libavcodec/mathops.h \
@@ -91,11 +93,17 @@ header_files="	libavcodec/x86/inline_asm.h \
 		libavcodec/rl.h \
 		libavcodec/rnd_avg.h \
 		libavcodec/thread.h \
+		libavcodec/unary.h \
 		libavcodec/version.h \
+		libavcodec/videodsp.h \
+		libavcodec/vlc.h \
+		libavcodec/vorbisdsp.h \
 		libavcodec/vp3data.h \
+		libavcodec/vp3dsp.h \
 		libavcodec/vp56.h \
 		libavcodec/vp56dsp.h \
 		libavcodec/vp8data.h \
+		libavcodec/vp8dsp.h \
 		libavformat/audiointerleave.h \
 		libavformat/avformat.h \
 		libavformat/dv.h \
@@ -128,6 +136,9 @@ header_files="	libavcodec/x86/inline_asm.h \
 		libavutil/cpu.h \
 		libavutil/cpu_internal.h \
 		libavutil/dynarray.h \
+		libavutil/ffmath.h \
+		libavutil/fixed_dsp.h \
+		libavutil/float_dsp.h \
 		libavutil/internal.h \
 		libavutil/intfloat.h \
 		libavutil/intreadwrite.h \
@@ -147,20 +158,32 @@ header_files="	libavcodec/x86/inline_asm.h \
 
 manual_files="	libavcodec/x86/hpeldsp_rnd_template.c \
 		libavcodec/x86/rnd_template.c \
+		libavcodec/x86/videodsp.asm \
 		libavcodec/x86/videodsp_init.c \
 		libavcodec/x86/vorbisdsp_init.c \
 		libavcodec/bit_depth_template.c \
 		libavcodec/fft_template.c \
+		libavcodec/flacdec.c \
+		libavcodec/flacdsp.c \
+		libavcodec/flacdsp_template.c \
+		libavcodec/flacdsp_lpc_template.c \
 		libavcodec/h264pred_template.c \
 		libavcodec/hpel_template.c \
+		libavcodec/hpeldsp.c \
 		libavcodec/mdct_template.c \
 		libavcodec/pel_template.c \
 		libavcodec/utils.c \
+		libavcodec/videodsp.c \
 		libavcodec/videodsp_template.c \
+		libavcodec/vorbisdsp.c \
+		libavcodec/vp3dsp.c \
+		libavcodec/vp8dsp.c \
 		libavformat/options.c \
 		libavformat/pcm.c \
 		libavformat/utils.c \
 		libavutil/cpu.c \
+		libavutil/fixed_dsp.c \
+		libavutil/float_dsp.c \
 		libavutil/x86/cpu.c \
 		libavutil/x86/float_dsp_init.c \
 		libavutil/x86/x86inc.asm \
