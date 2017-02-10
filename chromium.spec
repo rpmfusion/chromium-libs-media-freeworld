@@ -93,7 +93,7 @@ BuildRequires:  libicu-devel >= 5.4
 
 Name:		chromium%{chromium_channel}
 Version:	%{majorversion}.0.2924.87
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -199,6 +199,8 @@ BuildRequires:	GConf2-devel
 BuildRequires:	glib2-devel
 BuildRequires:	gnome-keyring-devel
 BuildRequires:	gtk2-devel
+# Yes. This too.
+BuildRequires:	gtk3-devel
 BuildRequires:	glibc-devel
 BuildRequires:	gperf
 BuildRequires:	libatomic
@@ -1564,6 +1566,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Fri Feb 10 2017 Tom Callaway <spot@fedoraproject.org> 56.0.2924.87-2
+- add BR: gtk3-devel
+
 * Fri Feb 10 2017 Tom Callaway <spot@fedoraproject.org> 56.0.2924.87-1
 - update to 56.0.2924.87
 
