@@ -1564,7 +1564,7 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
-* Thu Feb  9 2017 Tom Callaway <spot@fedoraproject.org> 56.0.2924.87-1
+* Fri Feb 10 2017 Tom Callaway <spot@fedoraproject.org> 56.0.2924.87-1
 - update to 56.0.2924.87
 
 * Fri Feb 10 2017 Fedora Release Engineering <releng@fedoraproject.org> - 55.0.2883.87-2.1
