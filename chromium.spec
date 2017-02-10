@@ -1567,6 +1567,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 * Thu Feb  9 2017 Tom Callaway <spot@fedoraproject.org> 56.0.2924.87-1
 - update to 56.0.2924.87
 
+* Fri Feb 10 2017 Fedora Release Engineering <releng@fedoraproject.org> - 55.0.2883.87-2.1
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
+
 * Tue Dec 13 2016 Tom Callaway <spot@fedoraproject.org> 55.0.2883.87-1.1
 - use bundled jinja2 on RHEL (or Fedora older than 23)
 - fix rvalue issue in remoting code
