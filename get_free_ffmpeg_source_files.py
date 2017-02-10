@@ -50,19 +50,24 @@ def parse_ffmpeg_gyni_file(gyni_path, arch_not_arm):
   # Get all the sections.
   sections = re.findall(r"if (.*?})", content, re.DOTALL)
   for section in sections:
-    # Get all the conditions (first group) and sources (second group)for the
+    # Get all the conditions (first group) and sources (second group) for the
     # current section.
     blocks = re.findall(r"(\(.*?\))\s\{(.*?)\}", section, re.DOTALL)
     for block in blocks:
       conditions = re.findall(r"\(?\((.*?)\)", block[0])
+      inserted = False
       for condition in conditions:
-        limitations = ['is_linux', 'ffmpeg_branding == "Chromium"']
-        if all(limitation in condition for limitation in limitations):
+        if inserted:
+          break
+        limitations = ['ffmpeg_branding == "Chrome"', 'ffmpeg_branding == "ChromeOS"']
+        if ('is_linux' in condition) and not any(limitation in condition for limitation in limitations):
           if (arch_not_arm):
             if ('x64' in condition) or ('x86' in condition):
               parse_sources (block[1], output_sources, arch_not_arm)
+              inserted = True
           else:
             parse_sources (block[1], output_sources, arch_not_arm)
+            inserted = True
 
   print ' '.join(output_sources)
 

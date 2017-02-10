@@ -16,7 +16,7 @@
 # Requires is trickier. 
 
 %global __provides_exclude_from %{chromium_path}/.*\\.so|%{chromium_path}/lib/.*\\.so
-%global privlibs libaccessibility|libaura_extra|libaura|libbase_i18n|libbase|libbindings|libblink_common|libblink_core|libblink_modules|libblink_platform|libblink_web|libbluetooth|libboringssl|libbrowser_ui_views|libcaptive_portal|libcapture|libcc_blink|libcc_ipc|libcc_proto|libcc|libcc_surfaces|libchromium_sqlite3|libcloud_policy_proto_generated_compile|libcommon|libcompositor|libcontent|libcrcrypto|libdbus|libdevice_battery|libdevice_core|libdevice_event_log|libdevice_gamepad|libdevices|libdevice_vibration|libdisplay_compositor|libdisplay|libdisplay_types|libdisplay_util|libdomain_reliability|libEGL|libevents_base|libevents_devices_x11|libevents_ipc|libevents_ozone_layout|libevents|libevents_x|libffmpeg|libfont_service_library|libgcm|libgeometry|libgeolocation|libgesture_detection|libgfx_ipc_color|libgfx_ipc_geometry|libgfx_ipc_skia|libgfx_ipc|libgfx|libgfx_x11|libgin|libgles2_c_lib|libgles2_implementation|libgles2_utils|libGLESv2|libgl_init|libgl_wrapper|libgpu|libgtk2ui|libicui18n|libicuuc|libipc|libkeyboard|libkeyboard_with_content|libkeycodes_x11|libkeyed_service_content|libkeyed_service_core|libmedia_blink|libmedia_gpu|libmedia|libmessage_center|libmidi|libmojo_common_lib|libmojo_ime_lib|libmojo_public_system_cpp|libmojo_public_system|libmojo_system_impl|libnative_theme|libnet|libnet_with_v8|libonc|libplatform|libpolicy_component|libpolicy_proto|libpower_save_blocker|libppapi_host|libppapi_proxy|libppapi_shared|libprefs|libprinting|libprotobuf_lite|libproxy_config|librange|libsandbox_services|libseccomp_bpf|libsessions|libshared_memory_support|libshell_dialogs|libskia|libsnapshot|libsql|libstartup_tracing|libstorage_browser|libstorage_common|libstub_window|libsuid_sandbox_client|libsurface|libtest_ime_driver_library|libtime_zone_monitor|libtracing_library|libtracing|libtranslator|libui_base_ime|libui_base|libui_base_x|libui_data_pack|libui_library|libui_touch_selection|libui_views_mus_lib|liburl_ipc|liburl_matcher|liburl|libuser_manager|libuser_prefs|libv8|libviews|libwebdata_common|libweb_dialogs|libwebview|libwidevinecdm|libwm|libwtf|libx11_events_platform|libx11_window
+%global privlibs libaccessibility|libaura_extra|libaura|libbase_i18n|libbase|libbindings|libblink_common|libblink_core|libblink_modules|libblink_platform|libblink_web|libbluetooth|libboringssl|libbrowser_ui_views|libcaptive_portal|libcapture|libcc_blink|libcc_ipc|libcc_proto|libcc|libcc_surfaces|libchromium_sqlite3|libclearkeycdm|libcloud_policy_proto_generated_compile|libcommon|libcompositor|libcontent|libcpp|libcrcrypto|libdbus|libdevice_base|libdevice_battery|libdevice_event_log|libdevice_gamepad|libdevices|libdevice_vibration|libdiscardable_memory_client|libdiscardable_memory_common|libdiscardable_memory_service|libdisplay_compositor|libdisplay|libdisplay_types|libdisplay_util|libdomain_reliability|libEGL|libevents_base|libevents_devices_x11|libevents_ipc|libevents_ozone_layout|libevents|libevents_x|libffmpeg|libfont_service_library|libgcm|libgeneric_sensor|libgeolocation|libgeometry|libgesture_detection|libgfx_ipc_color|libgfx_ipc_geometry|libgfx_ipc_skia|libgfx_ipc|libgfx|libgfx_x11|libgin|libgles2_c_lib|libgles2_implementation|libgles2_utils|libGLESv2|libgl_init|libgl_wrapper|libgpu|libgtk2ui|libicui18n|libicuuc|libipc|libjs|libkeyboard|libkeyboard_with_content|libkeycodes_x11|libkeyed_service_content|libkeyed_service_core|libmedia_blink|libmedia_gpu|libmedia|libmessage_center|libmidi|libmojo_common_lib|libmojo_ime_lib|libmojo_public_system_cpp|libmojo_public_system|libmojo_system_impl|libnative_theme|libnet|libnet_with_v8|libonc|libplatform|libpolicy_component|libpolicy_proto|libpower_monitor|libpower_save_blocker|libppapi_host|libppapi_proxy|libppapi_shared|libprefs|libprinting|libprotobuf_lite|libproxy_config|librange|libsandbox_services|libseccomp_bpf|libsessions|libshared_memory_support|libshell_dialogs|libskia|libsnapshot|libsql|libstartup_tracing|libstorage_browser|libstorage_common|libstub_window|libsuid_sandbox_client|libsurface|libtest_ime_driver_library|libtime_zone_monitor|libtracing_library|libtracing|libui_base_ime|libui_base|libui_base_x|libui_data_pack|libui_library|libui_touch_selection|libui_views_mus_lib|liburl_ipc|liburl_matcher|liburl|libuser_manager|libuser_prefs|libv8_libbase|libv8_libplatform|libv8|libviews|libwebdata_common|libweb_dialogs|libwebview|libwidevinecdmadapter|libwidevinecdm|libwm|libwtf|libx11_events_platform|libx11_window
 %global __requires_exclude ^(%{privlibs})\\.so
 
 # Try to not use the Xvfb as it is slow..
@@ -89,17 +89,17 @@ BuildRequires:  libicu-devel >= 5.4
 %global default_client_secret miEreAep8nuvTdvLums6qyLK
 %global chromoting_client_id 449907151817-8vnlfih032ni8c4jjps9int9t86k546t.apps.googleusercontent.com 
 
-%global majorversion 55
+%global majorversion 56
 
 Name:		chromium%{chromium_channel}
-Version:	%{majorversion}.0.2883.87
-Release:	1%{?dist}
+Version:	%{majorversion}.0.2924.87
+Release:	2%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
 
 ### Chromium Fedora Patches ###
-Patch0:		chromium-55.0.2883.75-gcc5.patch
+Patch0:		chromium-56.0.2924.87-gcc5.patch
 Patch1:		chromium-45.0.2454.101-linux-path-max.patch
 Patch2:		chromium-55.0.2883.75-addrfix.patch
 Patch4:		chromium-46.0.2490.71-notest.patch
@@ -144,10 +144,9 @@ Patch26:	chromium-54.0.2840.59-i686-ld-memory-tricks.patch
 # obj/content/renderer/renderer/child_frame_compositing_helper.o: In function `content::ChildFrameCompositingHelper::OnSetSurface(cc::SurfaceId const&, gfx::Size const&, float, cc::SurfaceSequence const&)':
 # /builddir/build/BUILD/chromium-54.0.2840.90/out/Release/../../content/renderer/child_frame_compositing_helper.cc:214: undefined reference to `cc_blink::WebLayerImpl::setOpaque(bool)'
 Patch27:	chromium-54.0.2840.90-setopaque.patch
-# /usr/bin/ld.bfd: obj/chrome/browser/libbrowser.a(native_desktop_media_list.o): undefined reference to symbol '_ZN2ui31GrabWindowSnapshotAndScaleAsyncEPN4aura6WindowERKN3gfx4RectERKNS3_4SizeE13scoped_refptrIN4base10TaskRunnerEERKNSB_8CallbackIFvRKNS3_5ImageEELNSB_8internal8CopyModeE1EEE'
-# /usr/bin/ld.bfd: note: '_ZN2ui31GrabWindowSnapshotAndScaleAsyncEPN4aura6WindowERKN3gfx4RectERKNS3_4SizeE13scoped_refptrIN4base10TaskRunnerEERKNSB_8CallbackIFvRKNS3_5ImageEELNSB_8internal8CopyModeE1EEE' is defined in DSO ./libsnapshot.so so try adding it to the linker command line
-# ./libsnapshot.so: could not read symbols: Invalid operation
-Patch28:	chromium-54.0.2840.90-aura-browser-link-to-snapshot.patch
+# Fix rvalue issue in remoting code
+# https://chromium.googlesource.com/chromium/src.git/+/29bfbecb49572b61264de7acccf8b23942bba43d%5E%21/#F0
+Patch29:	chromium-55.0.2883.87-rvalue-fix.patch
 
 ### Chromium Tests Patches ###
 Patch100:	chromium-46.0.2490.86-use_system_opus.patch
@@ -200,6 +199,8 @@ BuildRequires:	GConf2-devel
 BuildRequires:	glib2-devel
 BuildRequires:	gnome-keyring-devel
 BuildRequires:	gtk2-devel
+# Yes. This too.
+BuildRequires:	gtk3-devel
 BuildRequires:	glibc-devel
 BuildRequires:	gperf
 BuildRequires:	libatomic
@@ -295,7 +296,9 @@ BuildRequires:	pulseaudio-libs-devel
 BuildRequires:	python-beautifulsoup4
 BuildRequires:	python-BeautifulSoup
 BuildRequires:	python-html5lib
+%if 0%{?fedora} >= 23
 BuildRequires:	python-jinja2
+%endif
 BuildRequires:	python-markupsafe
 BuildRequires:	python-ply
 BuildRequires:	python-simplejson
@@ -522,7 +525,7 @@ members of the Chromium and WebDriver teams.
 %patch25 -p1 -b .jpegfix
 %patch26 -p1 -b .ldmemory
 %patch27 -p1 -b .setopaque
-%patch28 -p1 -b .aurasnapshot
+%patch29 -p1 -b .rvalue
 
 ### Chromium Tests Patches ###
 %patch100 -p1 -b .use_system_opus
@@ -750,6 +753,8 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/google_input_tools/third_party/closure_library/third_party/closure' \
 	'third_party/hunspell' \
 	'third_party/iccjpeg' \
+	'third_party/inspector_protocol' \
+	'third_party/jinja2' \
 	'third_party/jstemplate' \
 	'third_party/khronos' \
 	'third_party/leveldatabase' \
@@ -809,12 +814,16 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/x86inc' \
 	'third_party/zlib/google' \
 	'url/third_party/mozilla' \
+	'v8/third_party/inspector_protocol' \
 	'v8/src/third_party/valgrind' \
 	--do-remove
 
 # Look, I don't know. This package is spit and chewing gum. Sorry.
+# RHEL jinja2 is too old, even in 7.
+%if 0%{?fedora} >= 23
 rm -rf third_party/jinja2
 ln -s %{python_sitelib}/jinja2 third_party/jinja2
+%endif
 rm -rf third_party/markupsafe
 ln -s %{python_sitearch}/markupsafe third_party/markupsafe
 # We should look on removing other python packages as well i.e. ply
@@ -1019,7 +1028,7 @@ popd
 %endif
 
 # See remoting/host/installer/linux/Makefile for logic
-cp -a native_messaging_host %{buildroot}%{crd_path}/native-messaging-host
+cp -a remoting_native_messaging_host %{buildroot}%{crd_path}/native-messaging-host
 cp -a remote_assistance_host %{buildroot}%{crd_path}/remote-assistance-host
 cp -a remoting_locales %{buildroot}%{crd_path}/
 cp -a remoting_me2me_host %{buildroot}%{crd_path}/chrome-remote-desktop-host
@@ -1557,6 +1566,19 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Fri Feb 10 2017 Tom Callaway <spot@fedoraproject.org> 56.0.2924.87-2
+- add BR: gtk3-devel
+
+* Fri Feb 10 2017 Tom Callaway <spot@fedoraproject.org> 56.0.2924.87-1
+- update to 56.0.2924.87
+
+* Fri Feb 10 2017 Fedora Release Engineering <releng@fedoraproject.org> - 55.0.2883.87-2.1
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
+
+* Tue Dec 13 2016 Tom Callaway <spot@fedoraproject.org> 55.0.2883.87-1.1
+- use bundled jinja2 on RHEL (or Fedora older than 23)
+- fix rvalue issue in remoting code
+
 * Tue Dec 13 2016 Tom Callaway <spot@fedoraproject.org> 55.0.2883.87-1
 - update to 55.0.2883.87
 
