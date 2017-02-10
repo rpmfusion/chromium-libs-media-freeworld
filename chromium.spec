@@ -93,7 +93,7 @@ BuildRequires:  libicu-devel >= 5.4
 
 Name:		chromium%{chromium_channel}
 Version:	%{majorversion}.0.2883.87
-Release:	1%{?dist}.1
+Release:	2%{?dist}.1
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -1567,6 +1567,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Fri Feb 10 2017 Fedora Release Engineering <releng@fedoraproject.org> - 55.0.2883.87-2.1
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_26_Mass_Rebuild
+
 * Tue Dec 13 2016 Tom Callaway <spot@fedoraproject.org> 55.0.2883.87-1.1
 - use bundled jinja2 on RHEL (or Fedora older than 23)
 - fix rvalue issue in remoting code
