@@ -301,9 +301,6 @@ BuildRequires:	pulseaudio-libs-devel
 BuildRequires:	python-beautifulsoup4
 BuildRequires:	python-BeautifulSoup
 BuildRequires:	python-html5lib
-%if 0%{?fedora} >= 23
-BuildRequires:	python-jinja2
-%endif
 BuildRequires:	python-markupsafe
 BuildRequires:	python-ply
 BuildRequires:	python-simplejson
@@ -826,11 +823,6 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	--do-remove
 
 # Look, I don't know. This package is spit and chewing gum. Sorry.
-# RHEL jinja2 is too old, even in 7.
-%if 0%{?fedora} >= 23
-rm -rf third_party/jinja2
-ln -s %{python_sitelib}/jinja2 third_party/jinja2
-%endif
 rm -rf third_party/markupsafe
 ln -s %{python_sitearch}/markupsafe third_party/markupsafe
 # We should look on removing other python packages as well i.e. ply
@@ -1576,6 +1568,7 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 * Mon Feb 13 2017 Tom Callaway <spot@fedoraproject.org> 56.0.2924.87-3
 - fix compilation issue
 - build third_party/WebKit with -fpermissive
+- use bundled jinja everywhere
 
 * Fri Feb 10 2017 Tom Callaway <spot@fedoraproject.org> 56.0.2924.87-2
 - add BR: gtk3-devel
