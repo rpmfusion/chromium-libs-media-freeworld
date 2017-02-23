@@ -4,6 +4,10 @@
 # Leave this alone, please.
 %global target out/Release
 
+# Debuginfo packages aren't very useful here. If you need to debug
+# you should do a proper debug build (not implemented in this spec yet)
+%global debug_package %{nil}
+
 # %%{nil} for Stable; -beta for Beta; -dev for Devel
 # dash in -beta and -dev is intentional !
 %global chromium_channel %{nil}
@@ -1565,6 +1569,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Tue Feb 21 2017 Tom Callaway <spot@fedoraproject.org> 56.0.2924.87-4
+- disable debuginfo
+
 * Mon Feb 13 2017 Tom Callaway <spot@fedoraproject.org> 56.0.2924.87-3
 - fix compilation issue
 - build third_party/WebKit with -fpermissive
