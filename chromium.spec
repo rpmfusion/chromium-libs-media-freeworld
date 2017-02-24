@@ -97,7 +97,7 @@ BuildRequires:  libicu-devel >= 5.4
 
 Name:		chromium%{chromium_channel}
 Version:	%{majorversion}.0.2924.87
-Release:	4%{?dist}.1
+Release:	5%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -1573,6 +1573,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Fri Feb 24 2017 Tom Callaway <spot@fedoraproject.org> 56.0.2924.87-5
+- versioning sync build on rawhide
+
 * Fri Feb 24 2017 Tom Callaway <spot@fedoraproject.org> 56.0.2924.87-4.1
 - fix issue with unique_ptr move on return with old gcc
 
