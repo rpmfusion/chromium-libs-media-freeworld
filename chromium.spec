@@ -4,6 +4,10 @@
 # Leave this alone, please.
 %global target out/Release
 
+# Debuginfo packages aren't very useful here. If you need to debug
+# you should do a proper debug build (not implemented in this spec yet)
+%global debug_package %{nil}
+
 # %%{nil} for Stable; -beta for Beta; -dev for Devel
 # dash in -beta and -dev is intentional !
 %global chromium_channel %{nil}
@@ -93,7 +97,7 @@ BuildRequires:  libicu-devel >= 5.4
 
 Name:		chromium%{chromium_channel}
 Version:	%{majorversion}.0.2924.87
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -147,6 +151,11 @@ Patch27:	chromium-54.0.2840.90-setopaque.patch
 # Fix rvalue issue in remoting code
 # https://chromium.googlesource.com/chromium/src.git/+/29bfbecb49572b61264de7acccf8b23942bba43d%5E%21/#F0
 Patch29:	chromium-55.0.2883.87-rvalue-fix.patch
+# Fix compiler issue with gcc 4.9
+# https://chromium.googlesource.com/external/webrtc/trunk/webrtc/+/69556b1c264da9e0f484eaab890ebd555966630c%5E%21/#F0
+Patch30:	chromium-56.0.2924.87-gcc-49.patch
+# Use -fpermissive to build WebKit
+Patch31:	chromium-56.0.2924.87-fpermissive.patch
 
 ### Chromium Tests Patches ###
 Patch100:	chromium-46.0.2490.86-use_system_opus.patch
@@ -296,9 +305,6 @@ BuildRequires:	pulseaudio-libs-devel
 BuildRequires:	python-beautifulsoup4
 BuildRequires:	python-BeautifulSoup
 BuildRequires:	python-html5lib
-%if 0%{?fedora} >= 23
-BuildRequires:	python-jinja2
-%endif
 BuildRequires:	python-markupsafe
 BuildRequires:	python-ply
 BuildRequires:	python-simplejson
@@ -526,6 +532,8 @@ members of the Chromium and WebDriver teams.
 %patch26 -p1 -b .ldmemory
 %patch27 -p1 -b .setopaque
 %patch29 -p1 -b .rvalue
+%patch30 -p1 -b .gcc49
+%patch31 -p1 -b .permissive
 
 ### Chromium Tests Patches ###
 %patch100 -p1 -b .use_system_opus
@@ -819,11 +827,6 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	--do-remove
 
 # Look, I don't know. This package is spit and chewing gum. Sorry.
-# RHEL jinja2 is too old, even in 7.
-%if 0%{?fedora} >= 23
-rm -rf third_party/jinja2
-ln -s %{python_sitelib}/jinja2 third_party/jinja2
-%endif
 rm -rf third_party/markupsafe
 ln -s %{python_sitearch}/markupsafe third_party/markupsafe
 # We should look on removing other python packages as well i.e. ply
@@ -1566,6 +1569,14 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Tue Feb 21 2017 Tom Callaway <spot@fedoraproject.org> 56.0.2924.87-4
+- disable debuginfo
+
+* Mon Feb 13 2017 Tom Callaway <spot@fedoraproject.org> 56.0.2924.87-3
+- fix compilation issue
+- build third_party/WebKit with -fpermissive
+- use bundled jinja everywhere
+
 * Fri Feb 10 2017 Tom Callaway <spot@fedoraproject.org> 56.0.2924.87-2
 - add BR: gtk3-devel
 
