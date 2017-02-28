@@ -97,7 +97,7 @@ BuildRequires:  libicu-devel >= 5.4
 
 Name:		chromium%{chromium_channel}
 Version:	%{majorversion}.0.2924.87
-Release:	5%{?dist}
+Release:	6%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -158,6 +158,9 @@ Patch30:	chromium-56.0.2924.87-gcc-49.patch
 Patch31:	chromium-56.0.2924.87-fpermissive.patch
 # Fix issue with unique_ptr move on return with older gcc
 Patch32:	chromium-56.0.2924.87-unique-ptr-fix.patch
+# Fix issue with compilation on gcc7
+# Thanks to Ben Noordhuis
+Patch33:	chromium-56.0.2924.87-gcc7.patch
 
 
 ### Chromium Tests Patches ###
@@ -538,6 +541,7 @@ members of the Chromium and WebDriver teams.
 %patch30 -p1 -b .gcc49
 %patch31 -p1 -b .permissive
 %patch32 -p1 -b .unique-ptr-fix
+%patch33 -p1 -b .gcc7
 
 ### Chromium Tests Patches ###
 %patch100 -p1 -b .use_system_opus
@@ -1573,6 +1577,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Tue Feb 28 2017 Tom Callaway <spot@fedoraproject.org> 56.0.2924.87-6
+- fix issue with gcc7 compile in v8 (thanks to Ben Noordhuis)
+
 * Fri Feb 24 2017 Tom Callaway <spot@fedoraproject.org> 56.0.2924.87-5
 - versioning sync build on rawhide
 
