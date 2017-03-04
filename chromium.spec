@@ -97,7 +97,7 @@ BuildRequires:  libicu-devel >= 5.4
 
 Name:		chromium%{chromium_channel}
 Version:	%{majorversion}.0.2924.87
-Release:	6%{?dist}
+Release:	7%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -1577,6 +1577,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Sat Mar  4 2017 Tom Callaway <spot@fedoraproject.org> 56.0.2924.87-7
+- fix desktop file to have "new window" and "new private window" actions
+
 * Tue Feb 28 2017 Tom Callaway <spot@fedoraproject.org> 56.0.2924.87-6
 - fix issue with gcc7 compile in v8 (thanks to Ben Noordhuis)
 
