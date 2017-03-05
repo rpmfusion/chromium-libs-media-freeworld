@@ -189,6 +189,29 @@ manual_files="	libavcodec/x86/hpeldsp_rnd_template.c \
 		libavutil/x86/x86inc.asm \
 		libavutil/x86/x86util.asm "
 
+mp3_files="	libavcodec/autorename_libavcodec_mpegaudiodsp.c \
+		libavcodec/autorename_libavcodec_sbrdsp.c \
+		libavcodec/cbrt_data.c \
+		libavcodec/dct.c \
+		libavcodec/dct32_fixed.c \
+		libavcodec/dct32_float.c \
+		libavcodec/imdct15.c \
+		libavcodec/kbdwin.c \
+		libavcodec/mpegaudio.c \
+		libavcodec/mpegaudio_parser.c \
+		libavcodec/mpegaudiodec_fixed.c \
+		libavcodec/mpegaudiodecheader.c \
+		libavcodec/mpegaudiodsp_data.c \
+		libavcodec/mpegaudiodsp_fixed.c \
+		libavcodec/mpegaudiodsp_float.c \
+		libavcodec/sinewin.c \
+		libavcodec/sinewin_fixed.c \
+		libavformat/apetag.c \
+		libavformat/img2.c \
+		libavformat/mov.c \
+		libavformat/mov_chan.c \
+		libavformat/mp3dec.c "
+
 other_files="	BUILD.gn \
 		Changelog \
 		COPYING.GPLv2 \
@@ -216,6 +239,7 @@ copy_files "$generated_files_headers" 0
 copy_files "$manual_files" 1
 copy_files "$other_files" 1
 copy_files "$header_files" 1
+copy_files "$mp3_files" 1
 
 mkdir -p ../tmp_ffmpeg/tmp_chromium/config
 cp -r chromium/config ../tmp_ffmpeg/tmp_chromium

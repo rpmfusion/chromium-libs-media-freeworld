@@ -97,7 +97,7 @@ BuildRequires:  libicu-devel >= 5.4
 
 Name:		chromium%{chromium_channel}
 Version:	%{majorversion}.0.2924.87
-Release:	7%{?dist}
+Release:	8%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -161,6 +161,8 @@ Patch32:	chromium-56.0.2924.87-unique-ptr-fix.patch
 # Fix issue with compilation on gcc7
 # Thanks to Ben Noordhuis
 Patch33:	chromium-56.0.2924.87-gcc7.patch
+# Enable mp3 support
+Patch34:	chromium-56.0.2924.87-enable-mp3.patch
 
 
 ### Chromium Tests Patches ###
@@ -542,6 +544,7 @@ members of the Chromium and WebDriver teams.
 %patch31 -p1 -b .permissive
 %patch32 -p1 -b .unique-ptr-fix
 %patch33 -p1 -b .gcc7
+%patch34 -p1 -b .mp3
 
 ### Chromium Tests Patches ###
 %patch100 -p1 -b .use_system_opus
@@ -1577,6 +1580,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Sun Mar  5 2017 Tom Callaway <spot@fedoraproject.org> 56.0.2924.87-8
+- enable mp3 support
+
 * Sat Mar  4 2017 Tom Callaway <spot@fedoraproject.org> 56.0.2924.87-7
 - fix desktop file to have "new window" and "new private window" actions
 
