@@ -201,6 +201,7 @@ mp3_files="	libavcodec/autorename_libavcodec_mpegaudiodsp.c \
 		libavcodec/mpegaudio_parser.c \
 		libavcodec/mpegaudiodec_fixed.c \
 		libavcodec/mpegaudiodecheader.c \
+		libavcodec/mpegaudiodsp.c \
 		libavcodec/mpegaudiodsp_data.c \
 		libavcodec/mpegaudiodsp_fixed.c \
 		libavcodec/mpegaudiodsp_float.c \
