@@ -56,10 +56,12 @@ generated_files_headers="$generated_files_headers ${generated_files//.asm/.h}"
 header_files="	libavcodec/x86/inline_asm.h \
 		libavcodec/x86/mathops.h \
 		libavcodec/x86/vp56_arith.h \
+		libavcodec/aac.h \
 		libavcodec/avcodec.h \
 		libavcodec/blockdsp.h \
 		libavcodec/bytestream.h \
 		libavcodec/cbrt_data.h \
+		libavcodec/cbrt_tablegen.h \
 		libavcodec/dct.h \
 		libavcodec/dct32.h \
 		libavcodec/error_resilience.h \
