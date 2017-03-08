@@ -59,7 +59,9 @@ header_files="	libavcodec/x86/inline_asm.h \
 		libavcodec/avcodec.h \
 		libavcodec/blockdsp.h \
 		libavcodec/bytestream.h \
+		libavcodec/cbrt_data.h \
 		libavcodec/dct.h \
+		libavcodec/dct32.h \
 		libavcodec/error_resilience.h \
 		libavcodec/fdctdsp.h \
 		libavcodec/fft.h \
@@ -77,6 +79,7 @@ header_files="	libavcodec/x86/inline_asm.h \
 		libavcodec/mathops.h \
 		libavcodec/me_cmp.h \
 		libavcodec/motion_est.h \
+		libavcodec/mpegaudiodsp.h \
 		libavcodec/mpegpicture.h \
 		libavcodec/mpegutils.h \
 		libavcodec/mpegvideo.h \
@@ -195,6 +198,7 @@ mp3_files="	libavcodec/autorename_libavcodec_mpegaudiodsp.c \
 		libavcodec/dct.c \
 		libavcodec/dct32_fixed.c \
 		libavcodec/dct32_float.c \
+		libavcodec/dct32_template.c \
 		libavcodec/imdct15.c \
 		libavcodec/kbdwin.c \
 		libavcodec/mpegaudio.c \
@@ -205,6 +209,7 @@ mp3_files="	libavcodec/autorename_libavcodec_mpegaudiodsp.c \
 		libavcodec/mpegaudiodsp_data.c \
 		libavcodec/mpegaudiodsp_fixed.c \
 		libavcodec/mpegaudiodsp_float.c \
+		libavcodec/sbrdsp.c \
 		libavcodec/sinewin.c \
 		libavcodec/sinewin_fixed.c \
 		libavformat/apetag.c \
