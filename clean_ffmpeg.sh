@@ -57,6 +57,12 @@ header_files="	libavcodec/x86/inline_asm.h \
 		libavcodec/x86/mathops.h \
 		libavcodec/x86/vp56_arith.h \
 		libavcodec/aac.h \
+		libavcodec/aacps.h \
+		libavcodec/aacpsdsp.h \
+		libavcodec/aacsbrdata.h \
+		libavcodec/aac_defines.h \
+		libavcodec/ac3.h \
+		libavcodec/ac3tab.h \
 		libavcodec/avcodec.h \
 		libavcodec/blockdsp.h \
 		libavcodec/bytestream.h \
@@ -77,17 +83,25 @@ header_files="	libavcodec/x86/inline_asm.h \
 		libavcodec/h264chroma.h \
 		libavcodec/hpeldsp.h \
 		libavcodec/idctdsp.h \
+		libavcodec/imdct15.h \
 		libavcodec/internal.h \
+		libavcodec/kbdwin.h \
 		libavcodec/mathops.h \
 		libavcodec/me_cmp.h \
 		libavcodec/motion_est.h \
+		libavcodec/mpeg12data.h \
+		libavcodec/mpegaudio.h \
+		libavcodec/mpegaudiodecheader.h \
+		libavcodec/mpegaudiodectab.h \
 		libavcodec/mpegaudiodsp.h \
+		libavcodec/mpegaudio_tablegen.h \
 		libavcodec/mpegpicture.h \
 		libavcodec/mpegutils.h \
 		libavcodec/mpegvideo.h \
 		libavcodec/mpegvideodsp.h \
 		libavcodec/mpegvideoencdsp.h \
 		libavcodec/options_table.h \
+		libavcodec/opus_rc.h \
 		libavcodec/pcm_tablegen.h \
 		libavcodec/pixblockdsp.h \
 		libavcodec/pixels.h \
@@ -97,6 +111,10 @@ header_files="	libavcodec/x86/inline_asm.h \
 		libavcodec/rectangle.h \
 		libavcodec/rl.h \
 		libavcodec/rnd_avg.h \
+		libavcodec/sbr.h \
+		libavcodec/sbrdsp.h \
+		libavcodec/sinewin.h \
+		libavcodec/sinewin_tablegen.h \
 		libavcodec/thread.h \
 		libavcodec/unary.h \
 		libavcodec/version.h \
@@ -109,10 +127,13 @@ header_files="	libavcodec/x86/inline_asm.h \
 		libavcodec/vp56dsp.h \
 		libavcodec/vp8data.h \
 		libavcodec/vp8dsp.h \
+		libavformat/apetag.h \
 		libavformat/audiointerleave.h \
 		libavformat/avformat.h \
 		libavformat/dv.h \
+		libavformat/img2.h \
 		libavformat/internal.h \
+		libavformat/mov_chan.h \
 		libavformat/pcm.h \
 		libavformat/rdt.h \
 		libavformat/rtp.h \
@@ -153,6 +174,8 @@ header_files="	libavcodec/x86/inline_asm.h \
 		libavutil/pixfmt.h \
 		libavutil/qsort.h \
 		libavutil/replaygain.h \
+		libavutil/softfloat.h \
+		libavutil/softfloat_tables.h \
 		libavutil/thread.h \
 		libavutil/timer.h \
 		libavutil/timestamp.h \
@@ -194,7 +217,16 @@ manual_files="	libavcodec/x86/hpeldsp_rnd_template.c \
 		libavutil/x86/x86inc.asm \
 		libavutil/x86/x86util.asm "
 
-mp3_files="	libavcodec/autorename_libavcodec_mpegaudiodsp.c \
+mp3_files="	libavcodec/aac_ac3_parser.c \
+		libavcodec/aac_parser.c \
+		libavcodec/aacadtsdec.c \
+		libavcodec/aacps_float.c \
+		libavcodec/aacpsdsp_float.c \
+		libavcodec/aacsbr.c \
+		libavcodec/aactab.c \
+		libavcodec/ac3tab.c \
+		libavcodec/autorename_libavcodec_aacdec.c \
+		libavcodec/autorename_libavcodec_mpegaudiodsp.c \
 		libavcodec/autorename_libavcodec_sbrdsp.c \
 		libavcodec/cbrt_data.c \
 		libavcodec/dct.c \
@@ -206,14 +238,24 @@ mp3_files="	libavcodec/autorename_libavcodec_mpegaudiodsp.c \
 		libavcodec/mpegaudio.c \
 		libavcodec/mpegaudio_parser.c \
 		libavcodec/mpegaudiodec_fixed.c \
+		libavcodec/mpegaudiodec_template.c \
 		libavcodec/mpegaudiodecheader.c \
 		libavcodec/mpegaudiodsp.c \
 		libavcodec/mpegaudiodsp_data.c \
 		libavcodec/mpegaudiodsp_fixed.c \
 		libavcodec/mpegaudiodsp_float.c \
+		libavcodec/mpegaudiodsp_template.c \
 		libavcodec/sbrdsp.c \
+		libavcodec/sbrdsp_template.c \
 		libavcodec/sinewin.c \
 		libavcodec/sinewin_fixed.c \
+		libavcodec/x86/dct_init.c \
+		libavcodec/x86/dct32.asm \
+		libavcodec/x86/imdct36.asm \
+		libavcodec/x86/mpegaudiodsp.c \
+		libavcodec/x86/sbrdsp_init.c \
+		libavcodec/x86/sbrdsp.asm \
+		libavformat/aacdec.c \
 		libavformat/apetag.c \
 		libavformat/img2.c \
 		libavformat/mov.c \

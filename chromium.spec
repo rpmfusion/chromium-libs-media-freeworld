@@ -93,11 +93,11 @@ BuildRequires:  libicu-devel >= 5.4
 %global default_client_secret miEreAep8nuvTdvLums6qyLK
 %global chromoting_client_id 449907151817-8vnlfih032ni8c4jjps9int9t86k546t.apps.googleusercontent.com 
 
-%global majorversion 56
+%global majorversion 57
 
 Name:		chromium%{chromium_channel}
-Version:	%{majorversion}.0.2924.87
-Release:	8%{?dist}
+Version:	%{majorversion}.0.2987.110
+Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -148,9 +148,6 @@ Patch26:	chromium-54.0.2840.59-i686-ld-memory-tricks.patch
 # obj/content/renderer/renderer/child_frame_compositing_helper.o: In function `content::ChildFrameCompositingHelper::OnSetSurface(cc::SurfaceId const&, gfx::Size const&, float, cc::SurfaceSequence const&)':
 # /builddir/build/BUILD/chromium-54.0.2840.90/out/Release/../../content/renderer/child_frame_compositing_helper.cc:214: undefined reference to `cc_blink::WebLayerImpl::setOpaque(bool)'
 Patch27:	chromium-54.0.2840.90-setopaque.patch
-# Fix rvalue issue in remoting code
-# https://chromium.googlesource.com/chromium/src.git/+/29bfbecb49572b61264de7acccf8b23942bba43d%5E%21/#F0
-Patch29:	chromium-55.0.2883.87-rvalue-fix.patch
 # Fix compiler issue with gcc 4.9
 # https://chromium.googlesource.com/external/webrtc/trunk/webrtc/+/69556b1c264da9e0f484eaab890ebd555966630c%5E%21/#F0
 Patch30:	chromium-56.0.2924.87-gcc-49.patch
@@ -162,8 +159,7 @@ Patch32:	chromium-56.0.2924.87-unique-ptr-fix.patch
 # Thanks to Ben Noordhuis
 Patch33:	chromium-56.0.2924.87-gcc7.patch
 # Enable mp3 support
-Patch34:	chromium-56.0.2924.87-enable-mp3.patch
-
+Patch34:	chromium-57.0.2987.110-enable-mp3.patch
 
 ### Chromium Tests Patches ###
 Patch100:	chromium-46.0.2490.86-use_system_opus.patch
@@ -531,7 +527,7 @@ members of the Chromium and WebDriver teams.
 %patch15 -p1 -b .sandboxpie
 %patch16 -p1 -b .armwebrtc
 %patch18 -p1 -b .etc
-%patch19 -p1 -b .madv_free
+# %%patch19 -p1 -b .madv_free
 %patch20 -p1 -b .gnsystem
 %patch21 -p1 -b .lastcommit
 %patch22 -p1 -b .timefix
@@ -539,7 +535,6 @@ members of the Chromium and WebDriver teams.
 %patch25 -p1 -b .jpegfix
 %patch26 -p1 -b .ldmemory
 %patch27 -p1 -b .setopaque
-%patch29 -p1 -b .rvalue
 %patch30 -p1 -b .gcc49
 %patch31 -p1 -b .permissive
 %patch32 -p1 -b .unique-ptr-fix
@@ -678,7 +673,7 @@ CHROMIUM_BROWSER_GN_DEFINES+=' is_component_ffmpeg=false is_component_build=fals
 CHROMIUM_BROWSER_GN_DEFINES+=' remove_webcore_debug_symbols=true enable_hangout_services_extension=true'
 CHROMIUM_BROWSER_GN_DEFINES+=' enable_hotwording=false use_aura=true'
 CHROMIUM_BROWSER_GN_DEFINES+=' enable_webrtc=true enable_widevine=true'
-CHROMIUM_BROWSER_GN_DEFINES+=' use_gold=false'
+CHROMIUM_BROWSER_GN_DEFINES+=' use_gold=false fieldtrial_testing_like_official_build=true'
 %if 0%{gtk3}
 CHROMIUM_BROWSER_GN_DEFINES+=' use_gtk3=true'
 %else
@@ -1580,6 +1575,12 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Mon Mar 20 2017 Tom Callaway <spot@fedoraproject.org> 57.0.2987.110-1
+- update to 57.0.2987.110
+
+* Tue Mar 14 2017 Tom Callaway <spot@fedoraproject.org> 57.0.2987.98-1
+- update to 57.0.2987.98
+
 * Sun Mar  5 2017 Tom Callaway <spot@fedoraproject.org> 56.0.2924.87-8
 - enable mp3 support
 
