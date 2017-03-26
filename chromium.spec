@@ -549,7 +549,7 @@ members of the Chromium and WebDriver teams.
 %patch100 -p1 -b .use_system_opus
 %patch101 -p1 -b .use_system_harfbuzz
 
-%if ! %{?fedora}
+%if !%{?fedora}
 cp -a %{SOURCE14} third_party/ffmpeg/libavutil/
 %endif
 
