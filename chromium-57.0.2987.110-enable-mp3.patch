@@ -99,3 +99,30 @@ diff -up chromium-57.0.2987.110/third_party/ffmpeg/libavcodec/sbrdsp.c.mp3 chrom
  #include "config.h"
  #include "libavutil/attributes.h"
  #include "libavutil/intfloat.h"
+diff -up chromium-57.0.2987.110/media/base/mime_util_internal.cc.mp3 chromium-57.0.2987.110/media/base/mime_util_internal.cc
+--- chromium-57.0.2987.110/media/base/mime_util_internal.cc.mp3	2017-03-26 11:11:41.480377812 -0400
++++ chromium-57.0.2987.110/media/base/mime_util_internal.cc	2017-03-26 11:13:19.289810708 -0400
+@@ -291,10 +291,10 @@ void MimeUtil::AddSupportedMediaFormats(
+   CodecSet webm_codecs(webm_audio_codecs);
+   webm_codecs.insert(webm_video_codecs.begin(), webm_video_codecs.end());
+ 
+-#if defined(USE_PROPRIETARY_CODECS)
+   CodecSet mp3_codecs;
+   mp3_codecs.insert(MP3);
+ 
++#if defined(USE_PROPRIETARY_CODECS)
+   CodecSet aac;
+   aac.insert(MPEG2_AAC);
+   aac.insert(MPEG4_AAC);
+@@ -335,10 +335,10 @@ void MimeUtil::AddSupportedMediaFormats(
+   AddContainerWithCodecs("application/ogg", ogg_codecs, false);
+   AddContainerWithCodecs("audio/flac", implicit_codec, false);
+ 
+-#if defined(USE_PROPRIETARY_CODECS)
+   AddContainerWithCodecs("audio/mpeg", mp3_codecs, true);  // Allow "mp3".
+   AddContainerWithCodecs("audio/mp3", implicit_codec, true);
+   AddContainerWithCodecs("audio/x-mp3", implicit_codec, true);
++#if defined(USE_PROPRIETARY_CODECS)
+   AddContainerWithCodecs("audio/aac", implicit_codec, true);  // AAC / ADTS.
+   AddContainerWithCodecs("audio/mp4", mp4_audio_codecs, true);
+   DCHECK(!mp4_video_codecs.empty());

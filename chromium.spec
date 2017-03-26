@@ -97,7 +97,7 @@ BuildRequires:  libicu-devel >= 5.4
 
 Name:		chromium%{chromium_channel}
 Version:	%{majorversion}.0.2987.110
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -539,7 +539,14 @@ members of the Chromium and WebDriver teams.
 %patch31 -p1 -b .permissive
 %patch32 -p1 -b .unique-ptr-fix
 %patch33 -p1 -b .gcc7
+# RHEL 7 compiler is too old
+# does not have stdatomic.h
+# In file included from ../../third_party/ffmpeg/libavutil/autorename_libavutil_cpu.c:2:0:
+# ../../third_party/ffmpeg/libavutil/cpu.c:24:23: fatal error: stdatomic.h: No such file or directory
+#  #include <stdatomic.h>
+%if 0%{?fedora}
 %patch34 -p1 -b .mp3
+%endif
 
 ### Chromium Tests Patches ###
 %patch100 -p1 -b .use_system_opus
@@ -1575,6 +1582,10 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Sun Mar 26 2017 Tom Callaway <spot@fedoraproject.org> 57.0.2987.110-3
+- fix mp3 enablement
+- disable mp3 enablement on RHEL (compiler too old)
+
 * Tue Mar 21 2017 Tom Callaway <spot@fedoraproject.org> 57.0.2987.110-2
 - fix privlibs
 
