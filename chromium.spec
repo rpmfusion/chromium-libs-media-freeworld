@@ -549,7 +549,9 @@ members of the Chromium and WebDriver teams.
 %patch100 -p1 -b .use_system_opus
 %patch101 -p1 -b .use_system_harfbuzz
 
-%if !%{?fedora}
+%if 0%{?fedora} >= 24
+# Do nothing. We're modern enough to not need it.
+%else
 cp -a %{SOURCE14} third_party/ffmpeg/libavutil/
 %endif
 
