@@ -552,7 +552,7 @@ members of the Chromium and WebDriver teams.
 %if 0%{?fedora} >= 24
 # Do nothing. We're modern enough to not need it.
 %else
-cp -a %{SOURCE14} third_party/ffmpeg/libavutil/
+cp -a %{SOURCE14} third_party/ffmpeg/
 %endif
 
 %if 0%{?asan}
