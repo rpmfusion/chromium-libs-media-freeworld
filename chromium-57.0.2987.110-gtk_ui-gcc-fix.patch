@@ -1,0 +1,12 @@
+diff -up chromium-57.0.2987.110/chrome/browser/ui/libgtkui/gtk_ui.cc.b95cf28 chromium-57.0.2987.110/chrome/browser/ui/libgtkui/gtk_ui.cc
+--- chromium-57.0.2987.110/chrome/browser/ui/libgtkui/gtk_ui.cc.b95cf28	2017-03-28 11:42:53.308857207 -0400
++++ chromium-57.0.2987.110/chrome/browser/ui/libgtkui/gtk_ui.cc	2017-03-28 11:43:04.172579015 -0400
+@@ -676,7 +676,7 @@ std::unique_ptr<views::Border> GtkUi::Cr
+             : nullptr);
+   }
+ 
+-  return gtk_border;
++  return std::move(gtk_border);
+ }
+ 
+ void GtkUi::AddWindowButtonOrderObserver(

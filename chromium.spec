@@ -160,6 +160,9 @@ Patch32:	chromium-56.0.2924.87-unique-ptr-fix.patch
 Patch33:	chromium-56.0.2924.87-gcc7.patch
 # Enable mp3 support
 Patch34:	chromium-57.0.2987.110-enable-mp3.patch
+# Fix issue in gtk_ui.cc
+# https://chromium.googlesource.com/chromium/src.git/+/b95cf280873664a44297368676ff589721ddb6f2%5E%21/#F5
+Patch35:	chromium-57.0.2987.110-gtk_ui-gcc-fix.patch
 
 ### Chromium Tests Patches ###
 Patch100:	chromium-46.0.2490.86-use_system_opus.patch
@@ -544,6 +547,7 @@ members of the Chromium and WebDriver teams.
 %patch32 -p1 -b .unique-ptr-fix
 %patch33 -p1 -b .gcc7
 %patch34 -p1 -b .mp3
+%patch35 -p1 -b .gtkuifix
 
 ### Chromium Tests Patches ###
 %patch100 -p1 -b .use_system_opus
@@ -1587,6 +1591,7 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %changelog
 * Sun Mar 26 2017 Tom Callaway <spot@fedoraproject.org> 57.0.2987.110-4
 - copy compat stdatomic.h in for RHEL. Re-enable mp3 enablement.
+- fix issue in gtk_ui.cc revealed by RHEL build
 
 * Sun Mar 26 2017 Tom Callaway <spot@fedoraproject.org> 57.0.2987.110-3
 - fix mp3 enablement
