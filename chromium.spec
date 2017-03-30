@@ -96,8 +96,8 @@ BuildRequires:  libicu-devel >= 5.4
 %global majorversion 57
 
 Name:		chromium%{chromium_channel}
-Version:	%{majorversion}.0.2987.110
-Release:	3%{?dist}
+Version:	%{majorversion}.0.2987.133
+Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -160,6 +160,9 @@ Patch32:	chromium-56.0.2924.87-unique-ptr-fix.patch
 Patch33:	chromium-56.0.2924.87-gcc7.patch
 # Enable mp3 support
 Patch34:	chromium-57.0.2987.110-enable-mp3.patch
+# Fix issue in gtk_ui.cc
+# https://chromium.googlesource.com/chromium/src.git/+/b95cf280873664a44297368676ff589721ddb6f2%5E%21/#F5
+Patch35:	chromium-57.0.2987.110-gtk_ui-gcc-fix.patch
 
 ### Chromium Tests Patches ###
 Patch100:	chromium-46.0.2490.86-use_system_opus.patch
@@ -195,7 +198,11 @@ Source10:	https://dl.google.com/dl/edgedl/chrome/policy/policy_templates.zip
 Source11:	chrome-remote-desktop.service
 Source12:	chromium-browser.appdata.xml
 Source13:	master_preferences
-
+# Only needed for platforms where gcc doesn't have stdatomic.h
+# RHEL 7 or older
+# Taken from https://raw.githubusercontent.com/FFmpeg/FFmpeg/master/compat/atomics/gcc/stdatomic.h
+# on 2017-03-26
+Source14:	stdatomic.h
 # We can assume gcc and binutils.
 BuildRequires:	gcc-c++
 
@@ -539,18 +546,18 @@ members of the Chromium and WebDriver teams.
 %patch31 -p1 -b .permissive
 %patch32 -p1 -b .unique-ptr-fix
 %patch33 -p1 -b .gcc7
-# RHEL 7 compiler is too old
-# does not have stdatomic.h
-# In file included from ../../third_party/ffmpeg/libavutil/autorename_libavutil_cpu.c:2:0:
-# ../../third_party/ffmpeg/libavutil/cpu.c:24:23: fatal error: stdatomic.h: No such file or directory
-#  #include <stdatomic.h>
-%if 0%{?fedora}
 %patch34 -p1 -b .mp3
-%endif
+%patch35 -p1 -b .gtkuifix
 
 ### Chromium Tests Patches ###
 %patch100 -p1 -b .use_system_opus
 %patch101 -p1 -b .use_system_harfbuzz
+
+%if 0%{?fedora} >= 24
+# Do nothing. We're modern enough to not need it.
+%else
+cp -a %{SOURCE14} third_party/ffmpeg/
+%endif
 
 %if 0%{?asan}
 export CC="clang"
@@ -986,6 +993,10 @@ GOOGLE_CLIENT_ID_REMOTING_IDENTITY_API=%{chromoting_client_id} ../../depot_tools
 %endif
 popd
 
+# Nuke nacl/pnacl bits at the end of the build
+rm -rf out/Release/gen/sdk
+rm -rf native_client/toolchain
+rm -rf third_party/llvm-build/*
 
 %install
 rm -rf %{buildroot}
@@ -1582,6 +1593,13 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Thu Mar 30 2017 Tom Callaway <spot@fedoraproject.org> 57.0.2987.133-1
+- update to 57.0.2987.133
+
+* Sun Mar 26 2017 Tom Callaway <spot@fedoraproject.org> 57.0.2987.110-4
+- copy compat stdatomic.h in for RHEL. Re-enable mp3 enablement.
+- fix issue in gtk_ui.cc revealed by RHEL build
+
 * Sun Mar 26 2017 Tom Callaway <spot@fedoraproject.org> 57.0.2987.110-3
 - fix mp3 enablement
 - disable mp3 enablement on RHEL (compiler too old)
