@@ -96,8 +96,8 @@ BuildRequires:  libicu-devel >= 5.4
 %global majorversion 57
 
 Name:		chromium%{chromium_channel}
-Version:	%{majorversion}.0.2987.110
-Release:	4%{?dist}
+Version:	%{majorversion}.0.2987.133
+Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -993,6 +993,10 @@ GOOGLE_CLIENT_ID_REMOTING_IDENTITY_API=%{chromoting_client_id} ../../depot_tools
 %endif
 popd
 
+# Nuke nacl/pnacl bits at the end of the build
+rm -rf out/Release/gen/sdk
+rm -rf native_client/toolchain
+rm -rf third_party/llvm-build/*
 
 %install
 rm -rf %{buildroot}
@@ -1589,6 +1593,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Thu Mar 30 2017 Tom Callaway <spot@fedoraproject.org> 57.0.2987.133-1
+- update to 57.0.2987.133
+
 * Sun Mar 26 2017 Tom Callaway <spot@fedoraproject.org> 57.0.2987.110-4
 - copy compat stdatomic.h in for RHEL. Re-enable mp3 enablement.
 - fix issue in gtk_ui.cc revealed by RHEL build
