@@ -93,10 +93,10 @@ BuildRequires:  libicu-devel >= 5.4
 %global default_client_secret miEreAep8nuvTdvLums6qyLK
 %global chromoting_client_id 449907151817-8vnlfih032ni8c4jjps9int9t86k546t.apps.googleusercontent.com 
 
-%global majorversion 57
+%global majorversion 58
 
 Name:		chromium%{chromium_channel}
-Version:	%{majorversion}.0.2987.133
+Version:	%{majorversion}.0.3029.81
 Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
@@ -148,25 +148,21 @@ Patch26:	chromium-54.0.2840.59-i686-ld-memory-tricks.patch
 # obj/content/renderer/renderer/child_frame_compositing_helper.o: In function `content::ChildFrameCompositingHelper::OnSetSurface(cc::SurfaceId const&, gfx::Size const&, float, cc::SurfaceSequence const&)':
 # /builddir/build/BUILD/chromium-54.0.2840.90/out/Release/../../content/renderer/child_frame_compositing_helper.cc:214: undefined reference to `cc_blink::WebLayerImpl::setOpaque(bool)'
 Patch27:	chromium-54.0.2840.90-setopaque.patch
-# Fix compiler issue with gcc 4.9
-# https://chromium.googlesource.com/external/webrtc/trunk/webrtc/+/69556b1c264da9e0f484eaab890ebd555966630c%5E%21/#F0
-Patch30:	chromium-56.0.2924.87-gcc-49.patch
 # Use -fpermissive to build WebKit
 Patch31:	chromium-56.0.2924.87-fpermissive.patch
-# Fix issue with unique_ptr move on return with older gcc
-Patch32:	chromium-56.0.2924.87-unique-ptr-fix.patch
 # Fix issue with compilation on gcc7
 # Thanks to Ben Noordhuis
 Patch33:	chromium-56.0.2924.87-gcc7.patch
 # Enable mp3 support
-Patch34:	chromium-57.0.2987.110-enable-mp3.patch
-# Fix issue in gtk_ui.cc
-# https://chromium.googlesource.com/chromium/src.git/+/b95cf280873664a44297368676ff589721ddb6f2%5E%21/#F5
-Patch35:	chromium-57.0.2987.110-gtk_ui-gcc-fix.patch
+Patch34:	chromium-58.0.3029.81-enable-mp3.patch
+# Fix gn build
+# https://chromium.googlesource.com/chromium/src.git/+/379e35f6f3eaa41a97f2659249509ca599749b27%5E%21/tools/gn/bootstrap/bootstrap.py
+Patch35:	chromium-58.0.3029.81-fix-gn.patch
+
 
 ### Chromium Tests Patches ###
 Patch100:	chromium-46.0.2490.86-use_system_opus.patch
-Patch101:	chromium-55.0.2883.75-use_system_harfbuzz.patch
+Patch101:	chromium-58.0.3029.81-use_system_harfbuzz.patch
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
 # http://build.chromium.org/buildbot/official/
@@ -195,7 +191,7 @@ Source8:	get_linux_tests_names.py
 # GNOME stuff
 Source9:	chromium-browser.xml
 Source10:	https://dl.google.com/dl/edgedl/chrome/policy/policy_templates.zip
-Source11:	chrome-remote-desktop.service
+Source11:	chrome-remote-desktop@.service
 Source12:	chromium-browser.appdata.xml
 Source13:	master_preferences
 # Only needed for platforms where gcc doesn't have stdatomic.h
@@ -232,6 +228,7 @@ BuildRequires:	libusb-devel
 BuildRequires:	libXdamage-devel
 BuildRequires:	libXScrnSaver-devel
 BuildRequires:	libXtst-devel
+BuildRequires:	nodejs
 BuildRequires:	nss-devel
 BuildRequires:	pciutils-devel
 BuildRequires:	pulseaudio-libs-devel
@@ -542,12 +539,10 @@ members of the Chromium and WebDriver teams.
 %patch25 -p1 -b .jpegfix
 %patch26 -p1 -b .ldmemory
 %patch27 -p1 -b .setopaque
-%patch30 -p1 -b .gcc49
 %patch31 -p1 -b .permissive
-%patch32 -p1 -b .unique-ptr-fix
 %patch33 -p1 -b .gcc7
 %patch34 -p1 -b .mp3
-%patch35 -p1 -b .gtkuifix
+%patch35 -p1 -b .fixgn
 
 ### Chromium Tests Patches ###
 %patch100 -p1 -b .use_system_opus
@@ -697,6 +692,9 @@ CHROMIUM_BROWSER_GN_DEFINES+=' use_gtk3=false'
 CHROMIUM_BROWSER_GN_DEFINES+=' treat_warnings_as_errors=false'
 export CHROMIUM_BROWSER_GN_DEFINES
 
+mkdir -p third_party/node/linux/node-linux-x64/bin
+ln -s %{_bindir}/node third_party/node/linux/node-linux-x64/bin/node
+
 # Remove most of the bundled libraries. Libraries specified below (taken from
 # Gentoo's Chromium ebuild) are the libraries that needs to be preserved.
 build/linux/unbundle/remove_bundled_libraries.py \
@@ -807,6 +805,8 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/mesa' \
 	'third_party/modp_b64' \
 	'third_party/mt19937ar' \
+	'third_party/node' \
+	'third_party/node/node_modules/vulcanize/third_party/UglifyJS2' \
 	'third_party/openmax_dl' \
 	'third_party/opus' \
 	'third_party/ots' \
@@ -1093,7 +1093,7 @@ cp -a remoting/host/installer/linux/is-remoting-session %{buildroot}%{crd_path}/
 
 mkdir -p %{buildroot}%{_unitdir}
 cp -a %{SOURCE11} %{buildroot}%{_unitdir}/
-sed -i 's|@@CRD_PATH@@|%{crd_path}|g' %{buildroot}%{_unitdir}/chrome-remote-desktop.service
+sed -i 's|@@CRD_PATH@@|%{crd_path}|g' %{buildroot}%{_unitdir}/chrome-remote-desktop@.service
 
 # Add directories for policy management
 mkdir -p %{buildroot}%{_sysconfdir}/chromium/policies/managed
@@ -1593,6 +1593,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Fri Apr 21 2017 Tom Callaway <spot@fedoraproject.org> 58.0.3029.81-1
+- update to 58.0.3029.81
+
 * Thu Mar 30 2017 Tom Callaway <spot@fedoraproject.org> 57.0.2987.133-1
 - update to 57.0.2987.133
 
