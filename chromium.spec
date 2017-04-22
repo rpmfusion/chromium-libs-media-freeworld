@@ -1578,7 +1578,7 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{_sysconfdir}/opt/chrome/
 %{crd_path}/remoting_locales/
 %{crd_path}/start-host
-%{_unitdir}/chrome-remote-desktop.service
+%{_unitdir}/chrome-remote-desktop@.service
 /var/lib/chrome-remote-desktop/
 %if 0%{?build_remoting_app}
 %if 0%{?nacl}
