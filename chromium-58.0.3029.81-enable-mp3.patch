@@ -1,6 +1,49 @@
-diff -up chromium-57.0.2987.110/third_party/ffmpeg/ffmpeg_generated.gni.mp3 chromium-57.0.2987.110/third_party/ffmpeg/ffmpeg_generated.gni
---- chromium-57.0.2987.110/third_party/ffmpeg/ffmpeg_generated.gni.mp3	2017-03-20 13:53:24.000000000 -0400
-+++ chromium-57.0.2987.110/third_party/ffmpeg/ffmpeg_generated.gni	2017-03-20 13:59:11.214419428 -0400
+diff -up chromium-58.0.3029.81/media/base/mime_util_internal.cc.mp3 chromium-58.0.3029.81/media/base/mime_util_internal.cc
+--- chromium-58.0.3029.81/media/base/mime_util_internal.cc.mp3	2017-04-21 14:46:15.817743487 -0400
++++ chromium-58.0.3029.81/media/base/mime_util_internal.cc	2017-04-21 14:52:58.544150880 -0400
+@@ -244,10 +244,10 @@ void MimeUtil::AddSupportedMediaFormats(
+   CodecSet webm_codecs(webm_audio_codecs);
+   webm_codecs.insert(webm_video_codecs.begin(), webm_video_codecs.end());
+ 
+-#if BUILDFLAG(USE_PROPRIETARY_CODECS)
+   CodecSet mp3_codecs;
+   mp3_codecs.insert(MP3);
+ 
++#if BUILDFLAG(USE_PROPRIETARY_CODECS)
+   CodecSet aac;
+   aac.insert(MPEG2_AAC);
+   aac.insert(MPEG4_AAC);
+@@ -291,10 +291,10 @@ void MimeUtil::AddSupportedMediaFormats(
+   AddContainerWithCodecs("application/ogg", ogg_codecs, false);
+   AddContainerWithCodecs("audio/flac", implicit_codec, false);
+ 
+-#if BUILDFLAG(USE_PROPRIETARY_CODECS)
+   AddContainerWithCodecs("audio/mpeg", mp3_codecs, true);  // Allow "mp3".
+   AddContainerWithCodecs("audio/mp3", implicit_codec, true);
+   AddContainerWithCodecs("audio/x-mp3", implicit_codec, true);
++#if BUILDFLAG(USE_PROPRIETARY_CODECS)
+   AddContainerWithCodecs("audio/aac", implicit_codec, true);  // AAC / ADTS.
+   AddContainerWithCodecs("audio/mp4", mp4_audio_codecs, true);
+   DCHECK(!mp4_video_codecs.empty());
+@@ -715,7 +715,6 @@ bool MimeUtil::IsCodecProprietary(Codec
+     case INVALID_CODEC:
+     case AC3:
+     case EAC3:
+-    case MP3:
+     case MPEG2_AAC:
+     case MPEG4_AAC:
+     case H264:
+@@ -723,6 +722,7 @@ bool MimeUtil::IsCodecProprietary(Codec
+     case DOLBY_VISION:
+       return true;
+ 
++    case MP3:
+     case PCM:
+     case VORBIS:
+     case OPUS:
+diff -up chromium-58.0.3029.81/third_party/ffmpeg/ffmpeg_generated.gni.mp3 chromium-58.0.3029.81/third_party/ffmpeg/ffmpeg_generated.gni
+--- chromium-58.0.3029.81/third_party/ffmpeg/ffmpeg_generated.gni.mp3	2017-04-21 11:49:42.000000000 -0400
++++ chromium-58.0.3029.81/third_party/ffmpeg/ffmpeg_generated.gni	2017-04-21 14:46:15.816743506 -0400
 @@ -176,19 +176,12 @@ if ((is_linux && current_cpu == "arm" &&
    ]
  }
@@ -88,9 +131,9 @@ diff -up chromium-57.0.2987.110/third_party/ffmpeg/ffmpeg_generated.gni.mp3 chro
  if ((is_linux && current_cpu == "arm" && arm_use_neon) || (is_linux && current_cpu == "arm")) {
    ffmpeg_c_sources += [
      "libavcodec/arm/h264pred_init_arm.c",
-diff -up chromium-57.0.2987.110/third_party/ffmpeg/libavcodec/sbrdsp.c.mp3 chromium-57.0.2987.110/third_party/ffmpeg/libavcodec/sbrdsp.c
---- chromium-57.0.2987.110/third_party/ffmpeg/libavcodec/sbrdsp.c.mp3	2017-03-20 14:15:22.068309439 -0400
-+++ chromium-57.0.2987.110/third_party/ffmpeg/libavcodec/sbrdsp.c	2017-03-20 14:15:47.826802603 -0400
+diff -up chromium-58.0.3029.81/third_party/ffmpeg/libavcodec/sbrdsp.c.mp3 chromium-58.0.3029.81/third_party/ffmpeg/libavcodec/sbrdsp.c
+--- chromium-58.0.3029.81/third_party/ffmpeg/libavcodec/sbrdsp.c.mp3	2017-04-21 11:49:43.000000000 -0400
++++ chromium-58.0.3029.81/third_party/ffmpeg/libavcodec/sbrdsp.c	2017-04-21 14:46:15.817743487 -0400
 @@ -23,6 +23,7 @@
  #define USE_FIXED 0
  
@@ -99,30 +142,3 @@ diff -up chromium-57.0.2987.110/third_party/ffmpeg/libavcodec/sbrdsp.c.mp3 chrom
  #include "config.h"
  #include "libavutil/attributes.h"
  #include "libavutil/intfloat.h"
-diff -up chromium-57.0.2987.110/media/base/mime_util_internal.cc.mp3 chromium-57.0.2987.110/media/base/mime_util_internal.cc
---- chromium-57.0.2987.110/media/base/mime_util_internal.cc.mp3	2017-03-26 11:11:41.480377812 -0400
-+++ chromium-57.0.2987.110/media/base/mime_util_internal.cc	2017-03-26 11:13:19.289810708 -0400
-@@ -291,10 +291,10 @@ void MimeUtil::AddSupportedMediaFormats(
-   CodecSet webm_codecs(webm_audio_codecs);
-   webm_codecs.insert(webm_video_codecs.begin(), webm_video_codecs.end());
- 
--#if defined(USE_PROPRIETARY_CODECS)
-   CodecSet mp3_codecs;
-   mp3_codecs.insert(MP3);
- 
-+#if defined(USE_PROPRIETARY_CODECS)
-   CodecSet aac;
-   aac.insert(MPEG2_AAC);
-   aac.insert(MPEG4_AAC);
-@@ -335,10 +335,10 @@ void MimeUtil::AddSupportedMediaFormats(
-   AddContainerWithCodecs("application/ogg", ogg_codecs, false);
-   AddContainerWithCodecs("audio/flac", implicit_codec, false);
- 
--#if defined(USE_PROPRIETARY_CODECS)
-   AddContainerWithCodecs("audio/mpeg", mp3_codecs, true);  // Allow "mp3".
-   AddContainerWithCodecs("audio/mp3", implicit_codec, true);
-   AddContainerWithCodecs("audio/x-mp3", implicit_codec, true);
-+#if defined(USE_PROPRIETARY_CODECS)
-   AddContainerWithCodecs("audio/aac", implicit_codec, true);  // AAC / ADTS.
-   AddContainerWithCodecs("audio/mp4", mp4_audio_codecs, true);
-   DCHECK(!mp4_video_codecs.empty());

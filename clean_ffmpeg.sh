@@ -182,7 +182,8 @@ header_files="	libavcodec/x86/inline_asm.h \
 		libavutil/version.h \
 		libswresample/swresample.h \
 		libswresample/version.h \
-		compat/va_copy.h "
+		compat/va_copy.h \
+		compat/atomics/gcc/stdatomic.h "
 
 manual_files="	libavcodec/x86/hpeldsp_rnd_template.c \
 		libavcodec/x86/rnd_template.c \

@@ -20,7 +20,7 @@
 # Requires is trickier. 
 
 %global __provides_exclude_from %{chromium_path}/.*\\.so|%{chromium_path}/lib/.*\\.so
-%global privlibs libaccessibility|libaura_extra|libaura|libbase_i18n|libbase|libbindings|libblink_common|libblink_core|libblink_modules|libblink_platform|libblink_web|libbluetooth|libboringssl|libbrowser_ui_views|libcaptive_portal|libcapture|libcc_animation|libcc_blink|libcc_ipc|libcc_proto|libcc|libcc_surfaces|libchromium_sqlite3|libclearkeycdm|libcloud_policy_proto_generated_compile|libcommon|libcompositor|libcontent|libcpp|libcrcrypto|libdbus|libdevice_base|libdevice_battery|libdevice_event_log|libdevice_gamepad|libdevices|libdevice_vibration|libdiscardable_memory_client|libdiscardable_memory_common|libdiscardable_memory_service|libdisplay_compositor|libdisplay|libdisplay_types|libdisplay_util|libdomain_reliability|libEGL|libevents_base|libevents_devices_x11|libevents_ipc|libevents_ozone_layout|libevents|libevents_x|libffmpeg|libfont_service_library|libgcm|libgeneric_sensor|libgeolocation|libgeometry|libgesture_detection|libgfx_ipc_color|libgfx_ipc_geometry|libgfx_ipc_skia|libgfx_ipc|libgfx|libgfx_x11|libgin|libgles2_c_lib|libgles2_implementation|libgles2_utils|libGLESv2|libgl_in_process_context|libgl_init|libgl_wrapper|libgpu|libgtk2ui|libicui18n|libicuuc|libipc|libjs|libkeyboard|libkeyboard_with_content|libkeycodes_x11|libkeyed_service_content|libkeyed_service_core|libmedia_blink|libmedia_gpu|libmedia|libmessage_center|libmidi|libmojo_common_lib|libmojo_ime_lib|libmojo_public_system_cpp|libmojo_public_system|libmojo_system_impl|libnative_theme|libnet|libnet_with_v8|libonc|libplatform|libpolicy_component|libpolicy_proto|libpower_monitor|libpower_save_blocker|libppapi_host|libppapi_proxy|libppapi_shared|libprefs|libprinting|libprotobuf_lite|libproxy_config|librange|libsandbox_services|libseccomp_bpf|libsessions|libshared_memory_support|libshell_dialogs|libskia|libsnapshot|libsql|libstartup_tracing|libstorage_browser|libstorage_common|libstub_window|libsuid_sandbox_client|libsurface|libtest_ime_driver_library|libtime_zone_monitor|libtracing_library|libtracing|libui_base_ime|libui_base|libui_base_x|libui_data_pack|libui_library|libui_touch_selection|libui_views_mus_lib|liburl_ipc|liburl_matcher|liburl|libuser_manager|libuser_prefs|libv8_libbase|libv8_libplatform|libv8|libviews|libwebdata_common|libweb_dialogs|libwebview|libwidevinecdmadapter|libwidevinecdm|libwm|libwtf|libx11_events_platform|libx11_window
+%global privlibs libaccessibility|libaura_extra|libaura|libbase_i18n|libbase|libbindings|libblink_common|libblink_core|libblink_modules|libblink_platform|libblink_web|libbluetooth|libboringssl|libbrowser_ui_views|libcaptive_portal|libcapture|libcapture_base|libcapture_lib|libcc_animation|libcc_blink|libcc_ipc|libcc_paint|libcc_proto|libcc|libcc_surfaces|libchromium_sqlite3|libclearkeycdm|libcloud_policy_proto_generated_compile|libcommon|libcompositor|libcontent|libcpp|libcrcrypto|libdbus|libdevice_base|libdevice_battery|libdevice_event_log|libdevice_gamepad|libdevices|libdevice_vibration|libdevice_vr|libdiscardable_memory_client|libdiscardable_memory_common|libdiscardable_memory_service|libdisplay_compositor|libdisplay|libdisplay_types|libdisplay_util|libdomain_reliability|libEGL|libevents_base|libevents_devices_x11|libevents_ipc|libevents_ozone_layout|libevents|libevents_x|libfingerprint|libffmpeg|libfont_service_library|libgcm|libgeneric_sensor|libgeolocation|libgeometry|libgesture_detection|libgfx_ipc_color|libgfx_ipc_geometry|libgfx_ipc_skia|libgfx_ipc|libgfx|libgfx_x11|libgin|libgles2_c_lib|libgles2_implementation|libgles2_utils|libGLESv2|libgl_in_process_context|libgl_init|libgl_wrapper|libgpu|libgtk2ui|libicui18n|libicuuc|libipc|libjs|libkeyboard|libkeyboard_with_content|libkeycodes_x11|libkeyed_service_content|libkeyed_service_core|libmedia_blink|libmedia_gpu|libmedia|libmessage_center|libmidi|libmojo_common_lib|libmojo_ime_lib|libmojo_public_system_cpp|libmojo_public_system|libmojo_system_impl|libnative_theme|libnet|libnet_with_v8|libonc|libplatform|libpolicy_component|libpolicy_proto|libpower_monitor|libpower_save_blocker|libppapi_host|libppapi_proxy|libppapi_shared|libprefs|libprinting|libprotobuf_lite|libproxy_config|librange|libsandbox_services|libseccomp_bpf|libsessions|libshared_memory_support|libshell_dialogs|libskia|libsnapshot|libsql|libstartup_tracing|libstorage_browser|libstorage_common|libstub_window|libsuid_sandbox_client|libsurface|libtest_ime_driver_library|libtime_zone_monitor|libtracing_library|libtracing|libui_base_ime|libui_base|libui_base_x|libui_data_pack|libui_library|libui_touch_selection|libui_views_mus_lib|liburl_ipc|liburl_matcher|liburl|libuser_manager|libuser_prefs|libv8_libbase|libv8_libplatform|libv8|libviews|libwebdata_common|libweb_dialogs|libwebview|libwidevinecdmadapter|libwidevinecdm|libwm|libwtf|libx11_events_platform|libx11_window
 %global __requires_exclude ^(%{privlibs})\\.so
 
 # Try to not use the Xvfb as it is slow..
@@ -93,10 +93,10 @@ BuildRequires:  libicu-devel >= 5.4
 %global default_client_secret miEreAep8nuvTdvLums6qyLK
 %global chromoting_client_id 449907151817-8vnlfih032ni8c4jjps9int9t86k546t.apps.googleusercontent.com 
 
-%global majorversion 57
+%global majorversion 58
 
 Name:		chromium%{chromium_channel}
-Version:	%{majorversion}.0.2987.133
+Version:	%{majorversion}.0.3029.110
 Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
@@ -148,25 +148,26 @@ Patch26:	chromium-54.0.2840.59-i686-ld-memory-tricks.patch
 # obj/content/renderer/renderer/child_frame_compositing_helper.o: In function `content::ChildFrameCompositingHelper::OnSetSurface(cc::SurfaceId const&, gfx::Size const&, float, cc::SurfaceSequence const&)':
 # /builddir/build/BUILD/chromium-54.0.2840.90/out/Release/../../content/renderer/child_frame_compositing_helper.cc:214: undefined reference to `cc_blink::WebLayerImpl::setOpaque(bool)'
 Patch27:	chromium-54.0.2840.90-setopaque.patch
-# Fix compiler issue with gcc 4.9
-# https://chromium.googlesource.com/external/webrtc/trunk/webrtc/+/69556b1c264da9e0f484eaab890ebd555966630c%5E%21/#F0
-Patch30:	chromium-56.0.2924.87-gcc-49.patch
 # Use -fpermissive to build WebKit
 Patch31:	chromium-56.0.2924.87-fpermissive.patch
-# Fix issue with unique_ptr move on return with older gcc
-Patch32:	chromium-56.0.2924.87-unique-ptr-fix.patch
 # Fix issue with compilation on gcc7
 # Thanks to Ben Noordhuis
 Patch33:	chromium-56.0.2924.87-gcc7.patch
 # Enable mp3 support
-Patch34:	chromium-57.0.2987.110-enable-mp3.patch
-# Fix issue in gtk_ui.cc
-# https://chromium.googlesource.com/chromium/src.git/+/b95cf280873664a44297368676ff589721ddb6f2%5E%21/#F5
-Patch35:	chromium-57.0.2987.110-gtk_ui-gcc-fix.patch
+Patch34:	chromium-58.0.3029.81-enable-mp3.patch
+# Fix gn build
+# https://chromium.googlesource.com/chromium/src.git/+/379e35f6f3eaa41a97f2659249509ca599749b27%5E%21/tools/gn/bootstrap/bootstrap.py
+Patch35:	chromium-58.0.3029.81-fix-gn.patch
+# Revert https://chromium.googlesource.com/chromium/src/+/b794998819088f76b4cf44c8db6940240c563cf4%5E%21/#F0
+# https://bugs.chromium.org/p/chromium/issues/detail?id=712737
+# https://bugzilla.redhat.com/show_bug.cgi?id=1446851
+Patch36:	chromium-58.0.3029.96-revert-b794998819088f76b4cf44c8db6940240c563cf4.patch
+# Correctly compile the stdatomic.h in ffmpeg with gcc 4.8
+Patch37:	chromium-58.0.3029.81-ffmpeg-stdatomic.patch
 
 ### Chromium Tests Patches ###
 Patch100:	chromium-46.0.2490.86-use_system_opus.patch
-Patch101:	chromium-55.0.2883.75-use_system_harfbuzz.patch
+Patch101:	chromium-58.0.3029.81-use_system_harfbuzz.patch
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
 # http://build.chromium.org/buildbot/official/
@@ -195,14 +196,9 @@ Source8:	get_linux_tests_names.py
 # GNOME stuff
 Source9:	chromium-browser.xml
 Source10:	https://dl.google.com/dl/edgedl/chrome/policy/policy_templates.zip
-Source11:	chrome-remote-desktop.service
+Source11:	chrome-remote-desktop@.service
 Source12:	chromium-browser.appdata.xml
 Source13:	master_preferences
-# Only needed for platforms where gcc doesn't have stdatomic.h
-# RHEL 7 or older
-# Taken from https://raw.githubusercontent.com/FFmpeg/FFmpeg/master/compat/atomics/gcc/stdatomic.h
-# on 2017-03-26
-Source14:	stdatomic.h
 # We can assume gcc and binutils.
 BuildRequires:	gcc-c++
 
@@ -232,6 +228,7 @@ BuildRequires:	libusb-devel
 BuildRequires:	libXdamage-devel
 BuildRequires:	libXScrnSaver-devel
 BuildRequires:	libXtst-devel
+BuildRequires:	nodejs
 BuildRequires:	nss-devel
 BuildRequires:	pciutils-devel
 BuildRequires:	pulseaudio-libs-devel
@@ -542,22 +539,16 @@ members of the Chromium and WebDriver teams.
 %patch25 -p1 -b .jpegfix
 %patch26 -p1 -b .ldmemory
 %patch27 -p1 -b .setopaque
-%patch30 -p1 -b .gcc49
 %patch31 -p1 -b .permissive
-%patch32 -p1 -b .unique-ptr-fix
 %patch33 -p1 -b .gcc7
 %patch34 -p1 -b .mp3
-%patch35 -p1 -b .gtkuifix
+%patch35 -p1 -b .fixgn
+%patch36 -p1 -b .revert
+%patch37 -p1 -b .ffmpeg-stdatomic
 
 ### Chromium Tests Patches ###
 %patch100 -p1 -b .use_system_opus
 %patch101 -p1 -b .use_system_harfbuzz
-
-%if 0%{?fedora} >= 24
-# Do nothing. We're modern enough to not need it.
-%else
-cp -a %{SOURCE14} third_party/ffmpeg/
-%endif
 
 %if 0%{?asan}
 export CC="clang"
@@ -697,6 +688,9 @@ CHROMIUM_BROWSER_GN_DEFINES+=' use_gtk3=false'
 CHROMIUM_BROWSER_GN_DEFINES+=' treat_warnings_as_errors=false'
 export CHROMIUM_BROWSER_GN_DEFINES
 
+mkdir -p third_party/node/linux/node-linux-x64/bin
+ln -s %{_bindir}/node third_party/node/linux/node-linux-x64/bin/node
+
 # Remove most of the bundled libraries. Libraries specified below (taken from
 # Gentoo's Chromium ebuild) are the libraries that needs to be preserved.
 build/linux/unbundle/remove_bundled_libraries.py \
@@ -807,6 +801,8 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/mesa' \
 	'third_party/modp_b64' \
 	'third_party/mt19937ar' \
+	'third_party/node' \
+	'third_party/node/node_modules/vulcanize/third_party/UglifyJS2' \
 	'third_party/openmax_dl' \
 	'third_party/opus' \
 	'third_party/ots' \
@@ -1093,7 +1089,7 @@ cp -a remoting/host/installer/linux/is-remoting-session %{buildroot}%{crd_path}/
 
 mkdir -p %{buildroot}%{_unitdir}
 cp -a %{SOURCE11} %{buildroot}%{_unitdir}/
-sed -i 's|@@CRD_PATH@@|%{crd_path}|g' %{buildroot}%{_unitdir}/chrome-remote-desktop.service
+sed -i 's|@@CRD_PATH@@|%{crd_path}|g' %{buildroot}%{_unitdir}/chrome-remote-desktop@.service
 
 # Add directories for policy management
 mkdir -p %{buildroot}%{_sysconfdir}/chromium/policies/managed
@@ -1453,13 +1449,13 @@ gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-desktop
 
 %post -n chrome-remote-desktop
-%systemd_post chrome-remote-desktop.service
+%systemd_post chrome-remote-desktop@.service
 
 %preun -n chrome-remote-desktop
-%systemd_preun chrome-remote-desktop.service
+%systemd_preun chrome-remote-desktop@.service
 
 %postun -n chrome-remote-desktop
-%systemd_postun_with_restart chrome-remote-desktop.service
+%systemd_postun_with_restart chrome-remote-desktop@.service
 
 %files
 %doc AUTHORS
@@ -1578,7 +1574,7 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{_sysconfdir}/opt/chrome/
 %{crd_path}/remoting_locales/
 %{crd_path}/start-host
-%{_unitdir}/chrome-remote-desktop.service
+%{_unitdir}/chrome-remote-desktop@.service
 /var/lib/chrome-remote-desktop/
 %if 0%{?build_remoting_app}
 %if 0%{?nacl}
@@ -1593,6 +1589,15 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Mon May 15 2017 Tom Callaway <spot@fedoraproject.org> 58.0.3029.110-1
+- update to 58.0.3029.110
+
+* Mon May  8 2017 Tom Callaway <spot@fedoraproject.org> 58.0.3029.96-1
+- update to 58.0.3029.96
+
+* Fri Apr 21 2017 Tom Callaway <spot@fedoraproject.org> 58.0.3029.81-1
+- update to 58.0.3029.81
+
 * Thu Mar 30 2017 Tom Callaway <spot@fedoraproject.org> 57.0.2987.133-1
 - update to 57.0.2987.133
 
