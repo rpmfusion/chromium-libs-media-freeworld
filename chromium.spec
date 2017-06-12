@@ -91,7 +91,7 @@ BuildRequires:  libicu-devel >= 5.4
 
 # Needs at least harfbuzz 1.4.2 now.
 # 2017-06-12
-%if 0%{fedora} < 26
+%if 0%{?fedora} < 26
 %global bundleharfbuzz 1
 %else
 %global bundleharfbuzz 0
