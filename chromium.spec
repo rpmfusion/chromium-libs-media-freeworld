@@ -1576,7 +1576,7 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 # %%{chromium_path}/locales/fake-bidi.pak
 %{chromium_path}/resources/
 %{_mandir}/man1/%{chromium_browser_channel}.*
-%{_datadir}/icons/hicolor/256x256/apps/%{chromium_browser_channel}.png
+%{_datadir}/icons/hicolor/*/apps/%{chromium_browser_channel}.png
 %{_datadir}/applications/*.desktop
 %{_datadir}/appdata/*.appdata.xml
 %{_datadir}/gnome-control-center/default-apps/chromium-browser.xml
