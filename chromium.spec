@@ -110,7 +110,7 @@ BuildRequires:  libicu-devel >= 5.4
 
 Name:		chromium%{chromium_channel}
 Version:	%{majorversion}.0.3071.86
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -270,6 +270,7 @@ BuildRequires:	nacl-arm-gcc, nacl-arm-binutils, nacl-arm-newlib
 # a major version.
 BuildRequires:	chromium-native_client >= 52.0.2743.82
 BuildRequires:	clang
+BuildRequires:	llvm
 %ifarch x86_64
 # Really, this is what we want:
 # BuildRequires:  glibc-devel(x86-32) libgcc(x86-32)
@@ -1626,6 +1627,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Mon Jun 12 2017 Tom Callaway <spot@fedoraproject.org> 59.0.3071.86-2
+- pnacl/nacl now needs llvm to build the bootstrap lib
+
 * Mon Jun 12 2017 Tom Callaway <spot@fedoraproject.org> 59.0.3071.86-1
 - update to 59.0.3071.86
 - include smaller logo files
