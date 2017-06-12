@@ -20,7 +20,7 @@
 # Requires is trickier. 
 
 %global __provides_exclude_from %{chromium_path}/.*\\.so|%{chromium_path}/lib/.*\\.so
-%global privlibs libaccessibility|libaura_extra|libaura|libbase_i18n|libbase|libbindings|libblink_common|libblink_core|libblink_modules|libblink_platform|libblink_web|libbluetooth|libboringssl|libbrowser_ui_views|libcaptive_portal|libcapture|libcapture_base|libcapture_lib|libcc_animation|libcc_blink|libcc_ipc|libcc_paint|libcc_proto|libcc|libcc_surfaces|libchromium_sqlite3|libclearkeycdm|libcloud_policy_proto_generated_compile|libcommon|libcompositor|libcontent|libcpp|libcrcrypto|libdbus|libdevice_base|libdevice_battery|libdevice_event_log|libdevice_gamepad|libdevices|libdevice_vibration|libdevice_vr|libdiscardable_memory_client|libdiscardable_memory_common|libdiscardable_memory_service|libdisplay_compositor|libdisplay|libdisplay_types|libdisplay_util|libdomain_reliability|libEGL|libevents_base|libevents_devices_x11|libevents_ipc|libevents_ozone_layout|libevents|libevents_x|libfingerprint|libffmpeg|libfont_service_library|libgcm|libgeneric_sensor|libgeolocation|libgeometry|libgesture_detection|libgfx_ipc_color|libgfx_ipc_geometry|libgfx_ipc_skia|libgfx_ipc|libgfx|libgfx_x11|libgin|libgles2_c_lib|libgles2_implementation|libgles2_utils|libGLESv2|libgl_in_process_context|libgl_init|libgl_wrapper|libgpu|libgtk2ui|libicui18n|libicuuc|libipc|libjs|libkeyboard|libkeyboard_with_content|libkeycodes_x11|libkeyed_service_content|libkeyed_service_core|libmedia_blink|libmedia_gpu|libmedia|libmessage_center|libmidi|libmojo_common_lib|libmojo_ime_lib|libmojo_public_system_cpp|libmojo_public_system|libmojo_system_impl|libnative_theme|libnet|libnet_with_v8|libonc|libplatform|libpolicy_component|libpolicy_proto|libpower_monitor|libpower_save_blocker|libppapi_host|libppapi_proxy|libppapi_shared|libprefs|libprinting|libprotobuf_lite|libproxy_config|librange|libsandbox_services|libseccomp_bpf|libsensors|libsessions|libshared_memory_support|libshell_dialogs|libskia|libsnapshot|libsql|libstartup_tracing|libstorage_browser|libstorage_common|libstub_window|libsuid_sandbox_client|libsurface|libtest_ime_driver_library|libtime_zone_monitor|libtracing_library|libtracing|libui_base_ime|libui_base|libui_base_x|libui_data_pack|libui_library|libui_touch_selection|libui_views_mus_lib|liburl_ipc|liburl_matcher|liburl|libuser_manager|libuser_prefs|libv8_libbase|libv8_libplatform|libv8|libviews|libwebdata_common|libweb_dialogs|libwebview|libwidevinecdmadapter|libwidevinecdm|libwm|libwtf|libx11_events_platform|libx11_window
+%global privlibs libEGL|libGLESv2|libaccessibility|libanimation|libaura|libaura_extra|libbase|libbase_i18n|libbindings|libblink_core|libblink_modules|libblink_platform|libblink_web|libbluetooth|libboringssl|libbrowser_ui_views|libcaptive_portal|libcapture_base|libcapture_lib|libcc|libcc_animation|libcc_base|libcc_blink|libcc_debug|libcc_ipc|libcc_paint|libcc_surfaces|libchromium_sqlite3|libclearkeycdm|libcloud_policy_proto_generated_compile|libcodec|libcolor_space|libcommon|libcompositor|libcontent|libcpp|libcrcrypto|libdbus|libdevice_base|libdevice_battery|libdevice_event_log|libdevice_gamepad|libdevice_vibration|libdevice_vr|libdevices|libdiscardable_memory_client|libdiscardable_memory_common|libdiscardable_memory_service|libdisplay|libdisplay_compositor|libdisplay_types|libdisplay_util|libdomain_reliability|libembedder|libevents|libevents_base|libevents_devices_x11|libevents_ozone_layout|libevents_x|libffmpeg|libfingerprint|libgcm|libgeneric_ser|libgeolocation|libgeometry|libgeometry_skia|libgesture_detection|libgfx|libgfx_ipc|libgfx_ipc_color|libgfx_ipc_geometry|libgfx_ipc_skia|libgfx_x11|libgin|libgin_features|libgl_in_process_context|libgl_init|libgl_wrapper|libgles2_c_lib|libgles2_implementation|libgles2_utils|libgpu|libgtk2ui|libicui18n|libicuuc|libipc|libjs|libkeyboard|libkeyboard_with_content|libkeycodes_x11|libkeyed_service_content|libkeyed_service_core|libmanager|libmedia|libmedia_blink|libmedia_gpu|libmedia_mojo_services|libmessage_center|libmidi|libmojo_common_lib|libmojo_ime_lib|libmojo_public_system|libmojo_public_system_cpp|libmojo_system_impl|libnative_theme|libnet|libnet_with_v8|libonc|libosmesa|libplatform|libplatform_wtf|libpolicy_component|libpolicy_proto|libpower_save_blocker|libppapi_host|libppapi_proxy|libppapi_shared|libprefs|libprinting|libprotobuf_globals|libproxy_config|librange|libsandbox_services|libseccomp_bpf|libsers|libsessions|libshared_memory_support|libshell_dialogs|libskia|libsnapshot|libsql|libstartup_tracing|libstorage_browser|libstorage_common|libstub_window|libsuid_sandbox_client|libsurface|libtracing|libui_base|libui_base_ime|libui_base_x|libui_data_pack|libui_touch_selection|libui_views_mus_lib|liburl|liburl_ipc|liburl_matcher|libuser_manager|libuser_prefs|libv8|libv8_libbase|libv8_libplatform|libviews|libweb_dialogs|libwebdata_common|libwebview|libwidevinecdm|libwidevinecdmadapter|libwm|libwtf|libx11_events_platform|libx11_window
 %global __requires_exclude ^(%{privlibs})\\.so
 
 # Try to not use the Xvfb as it is slow..
@@ -71,6 +71,11 @@ BuildRequires:  libicu-devel >= 5.4
 
 %global bundlere2 1
 
+# The libxml_utils code depends on the specific bundled libxml checkout
+# which is not compatible with the current code in the Fedora package as of
+# 2017-06-08.
+%global bundlelibxml 1
+
 # Chromium breaks on wayland, hidpi, and colors with gtk3 enabled.
 %global gtk3 0
 
@@ -84,6 +89,14 @@ BuildRequires:  libicu-devel >= 5.4
 %global bundlelibusbx 0
 %endif
 
+# Needs at least harfbuzz 1.4.2 now.
+# 2017-06-12
+%if 0%{fedora} < 26
+%global bundleharfbuzz 1
+%else
+%global bundleharfbuzz 0
+%endif
+
 ### Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
 ### Note: These are for Fedora use ONLY.
 ### For your own distribution, please get your own set of keys.
@@ -93,11 +106,11 @@ BuildRequires:  libicu-devel >= 5.4
 %global default_client_secret miEreAep8nuvTdvLums6qyLK
 %global chromoting_client_id 449907151817-8vnlfih032ni8c4jjps9int9t86k546t.apps.googleusercontent.com 
 
-%global majorversion 58
+%global majorversion 59
 
 Name:		chromium%{chromium_channel}
-Version:	%{majorversion}.0.3029.110
-Release:	2%{?dist}
+Version:	%{majorversion}.0.3071.86
+Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -121,8 +134,6 @@ Patch9:		chromium-48.0.2564.116-libusb_interrupt_event_handler.patch
 # Ignore deprecations in cups 2.2
 # https://bugs.chromium.org/p/chromium/issues/detail?id=622493
 Patch12:	chromium-55.0.2883.75-cups22.patch
-# Add ICU Text Codec aliases (from openSUSE via Russian Fedora)
-Patch14:	chromium-55.0.2883.75-more-codec-aliases.patch
 # Use PIE in the Linux sandbox (from openSUSE via Russian Fedora)
 Patch15:	chromium-55.0.2883.75-sandbox-pie.patch
 # Enable ARM CPU detection for webrtc (from archlinux via Russian Fedora)
@@ -140,30 +151,34 @@ Patch21:	chromium-53.0.2785.92-last-commit-position.patch
 # Fix issue where timespec is not defined when sys/stat.h is included.
 Patch22:	chromium-53.0.2785.92-boringssl-time-fix.patch
 # I wouldn't have to do this if there was a standard way to append extra compiler flags
-Patch24:	chromium-54.0.2840.59-nullfix.patch
+Patch24:	chromium-59.0.3071.86-nullfix.patch
 # Add explicit includedir for jpeglib.h
 Patch25:	chromium-54.0.2840.59-jpeg-include-dir.patch
 # On i686, pass --no-keep-memory --reduce-memory-overheads to ld.
-Patch26:	chromium-54.0.2840.59-i686-ld-memory-tricks.patch
+Patch26:	chromium-59.0.3071.86-i686-ld-memory-tricks.patch
 # obj/content/renderer/renderer/child_frame_compositing_helper.o: In function `content::ChildFrameCompositingHelper::OnSetSurface(cc::SurfaceId const&, gfx::Size const&, float, cc::SurfaceSequence const&)':
 # /builddir/build/BUILD/chromium-54.0.2840.90/out/Release/../../content/renderer/child_frame_compositing_helper.cc:214: undefined reference to `cc_blink::WebLayerImpl::setOpaque(bool)'
-Patch27:	chromium-54.0.2840.90-setopaque.patch
+Patch27:	chromium-59.0.3071.86-setopaque.patch
 # Use -fpermissive to build WebKit
 Patch31:	chromium-56.0.2924.87-fpermissive.patch
 # Fix issue with compilation on gcc7
 # Thanks to Ben Noordhuis
-Patch33:	chromium-56.0.2924.87-gcc7.patch
+Patch33:	chromium-59.0.3071.86-gcc7.patch
 # Enable mp3 support
 Patch34:	chromium-58.0.3029.81-enable-mp3.patch
-# Fix gn build
-# https://chromium.googlesource.com/chromium/src.git/+/379e35f6f3eaa41a97f2659249509ca599749b27%5E%21/tools/gn/bootstrap/bootstrap.py
-Patch35:	chromium-58.0.3029.81-fix-gn.patch
 # Revert https://chromium.googlesource.com/chromium/src/+/b794998819088f76b4cf44c8db6940240c563cf4%5E%21/#F0
 # https://bugs.chromium.org/p/chromium/issues/detail?id=712737
 # https://bugzilla.redhat.com/show_bug.cgi?id=1446851
 Patch36:	chromium-58.0.3029.96-revert-b794998819088f76b4cf44c8db6940240c563cf4.patch
 # Correctly compile the stdatomic.h in ffmpeg with gcc 4.8
-Patch37:	chromium-58.0.3029.81-ffmpeg-stdatomic.patch
+Patch37:	chromium-59.0.3071.86-ffmpeg-stdatomic.patch
+# RHEL is too old to have this header in kernel-headers
+# and some Fedora versions do not contain what Chromium expects to find
+# so just use the hardcoded values instead
+Patch38:	chromium-59.0.3071.86-dma-buf-header-hack.patch
+# Nacl can't die soon enough
+Patch39:	chromium-59.0.3071.86-system-clang.patch
+
 
 ### Chromium Tests Patches ###
 Patch100:	chromium-46.0.2490.86-use_system_opus.patch
@@ -197,7 +212,6 @@ Source8:	get_linux_tests_names.py
 Source9:	chromium-browser.xml
 Source10:	https://dl.google.com/dl/edgedl/chrome/policy/policy_templates.zip
 Source11:	chrome-remote-desktop@.service
-Source12:	chromium-browser.appdata.xml
 Source13:	master_preferences
 # We can assume gcc and binutils.
 BuildRequires:	gcc-c++
@@ -371,46 +385,50 @@ Provides: bundled(angle) = 2422
 Provides: bundled(bintrees) = 1.0.1
 # This is a fork of openssl.
 Provides: bundled(boringssl)
-Provides: bundled(brotli)
+Provides: bundled(brotli) = 222564a95d9ab58865a096b8d9f7324ea5f2e03e
 Provides: bundled(bspatch)
 Provides: bundled(cacheinvalidation) = 20150720
-Provides: bundled(cardboard) = 0.5.4
 Provides: bundled(colorama) = 799604a104
 Provides: bundled(crashpad)
 Provides: bundled(dmg_fp)
-Provides: bundled(expat) = 2.1.0
+Provides: bundled(expat) = 2.2.0
 Provides: bundled(fdmlibm) = 5.3
 # Don't get too excited. MPEG and other legally problematic stuff is stripped out.
-Provides: bundled(ffmpeg) = 2.6
+Provides: bundled(ffmpeg) = 3.2git
 Provides: bundled(fips181) = 2.2.3
 Provides: bundled(fontconfig) = 2.11.0
 Provides: bundled(gperftools) = svn144
 Provides: bundled(gtk3) = 3.1.4
 %if 0%{?bundleharfbuzz}
-Provides: bundled(harfbuzz) = 1.2.7
+Provides: bundled(harfbuzz) = 1.4.2
 %endif
-Provides: bundled(hunspell) = 1.3.2
+Provides: bundled(hunspell) = 1.6.0
 Provides: bundled(iccjpeg)
 %if 0%{?bundleicu}
-Provides: bundled(icu) = 54.1
+Provides: bundled(icu) = 58.1
 %endif
 Provides: bundled(kitchensink) = 1
-Provides: bundled(leveldb) = r80
+Provides: bundled(leveldb) = 1.20
 Provides: bundled(libaddressinput) = 0
+Provides: bundled(libdrm) = 2.4.70
 Provides: bundled(libevent) = 1.4.15
 Provides: bundled(libjingle) = 9564
 Provides: bundled(libjpeg-turbo) = 1.4.90
-Provides: bundled(libphonenumber) = svn584
+Provides: bundled(libphonenumber) = a4da30df63a097d67e3c429ead6790ad91d36cf4
 Provides: bundled(libpng) = 1.6.22
-Provides: bundled(libsrtp) = 1.5.2
+Provides: bundled(libsrtp) = 2cbd85085037dc7bf2eda48d4cf62e2829056e2d
 %if %{bundlelibusbx}
 Provides: bundled(libusbx) = 1.0.17
 %endif
-Provides: bundled(libvpx) = 1.4.0
-Provides: bundled(libwebp) = 0.4.3
+Provides: bundled(libvpx) = 1.6.0
+Provides: bundled(libwebp) = 0.6.0
+%if %{bundlelibxml}
+# Well, it's actually newer than 2.9.4 and has code in it that has been reverted upstream... but eh.
+Provides: bundled(libxml) = 2.9.4
+%endif
 Provides: bundled(libXNVCtrl) = 302.17
-Provides: bundled(libyuv) = 1444
-Provides: bundled(lzma) = 9.20
+Provides: bundled(libyuv) = 1651
+Provides: bundled(lzma) = 15.14
 Provides: bundled(libudis86) = 1.7.1
 Provides: bundled(mesa) = 9.0.3
 Provides: bundled(NSBezierPath) = 1.0
@@ -419,28 +437,28 @@ Provides: bundled(mt19937ar) = 2002.1.26
 %if %{bundleopus}
 Provides: bundled(opus) = 1.1.3
 %endif
-Provides: bundled(ots) = 767d6040439e6ebcdb867271fcb686bd3f8ac739
-Provides: bundled(protobuf) = r476
+Provides: bundled(ots) = 8d70cffebbfa58f67a5c3ed0e9bc84dccdbc5bc0
+Provides: bundled(protobuf) = 3.0.0.beta.3
 Provides: bundled(qcms) = 4
 %if 0%{?bundlere2}
 Provides: bundled(re2)
 %endif
-Provides: bundled(sfntly) = svn111
+Provides: bundled(sfntly) = 04740d2600193b14aa3ef24cd9fbb3d5996b9f77
 Provides: bundled(skia)
 Provides: bundled(SMHasher) = 0
-Provides: bundled(snappy) = r80
+Provides: bundled(snappy) = 1.1.4-head
 Provides: bundled(speech-dispatcher) = 0.7.1
-Provides: bundled(sqlite) = 3.8.7.4
+Provides: bundled(sqlite) = 3.17patched
 Provides: bundled(superfasthash) = 0
 Provides: bundled(talloc) = 2.0.1
 Provides: bundled(usrsctp) = 0
-Provides: bundled(v8) = 4.5.103.35
+Provides: bundled(v8) = 5.9.211.31
 Provides: bundled(webrtc) = 90usrsctp
 Provides: bundled(woff2) = 445f541996fe8376f3976d35692fd2b9a6eedf2d
 Provides: bundled(xdg-mime)
 Provides: bundled(xdg-user-dirs)
 Provides: bundled(x86inc) = 0
-Provides: bundled(zlib) = 1.2.5
+Provides: bundled(zlib) = 1.2.11
 
 # For selinux scriptlet
 Requires(post): /usr/sbin/semanage
@@ -527,7 +545,6 @@ members of the Chromium and WebDriver teams.
 %patch7 -p1 -b .ignore-fd-count
 %patch9 -p1 -b .modern-libusbx
 %patch12 -p1 -b .cups22
-%patch14 -p1 -b .morealiases
 %patch15 -p1 -b .sandboxpie
 %patch16 -p1 -b .armwebrtc
 %patch18 -p1 -b .etc
@@ -542,9 +559,10 @@ members of the Chromium and WebDriver teams.
 %patch31 -p1 -b .permissive
 %patch33 -p1 -b .gcc7
 %patch34 -p1 -b .mp3
-%patch35 -p1 -b .fixgn
 %patch36 -p1 -b .revert
 %patch37 -p1 -b .ffmpeg-stdatomic
+%patch38 -p1 -b .headerhack
+%patch39 -p1 -b .system-clang
 
 ### Chromium Tests Patches ###
 %patch100 -p1 -b .use_system_opus
@@ -704,6 +722,7 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/harfbuzz-ng' \
 	'third_party/icu' \
 	'base/third_party/libevent' \
+	'third_party/libdrm' \
 	'third_party/libjpeg_turbo' \
 	'third_party/libpng' \
 	'third_party/libsrtp' \
@@ -718,6 +737,11 @@ build/linux/unbundle/remove_bundled_libraries.py \
 %endif
 	'third_party/snappy' \
 	'third_party/speech-dispatcher' \
+	'third_party/swiftshader' \
+	'third_party/swiftshader/third_party/subzero' \
+	'third_party/swiftshader/third_party/LLVM' \
+	'third_party/swiftshader/third_party/llvm-subzero' \
+	'third_party/swiftshader/third_party/pnacl-subzero' \
 	'third_party/usb_ids' \
 	'third_party/xdg-utils' \
 	'third_party/yasm' \
@@ -770,6 +794,7 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/fips181' \
         'third_party/flatbuffers' \
 	'third_party/flot' \
+	'third_party/freetype' \
 	'third_party/google_input_tools' \
 	'third_party/google_input_tools/third_party/closure_library' \
 	'third_party/google_input_tools/third_party/closure_library/third_party/closure' \
@@ -810,13 +835,12 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/pdfium/third_party/agg23' \
 	'third_party/pdfium/third_party/base' \
 	'third_party/pdfium/third_party/bigint' \
+	'third_party/pdfium/third_party/build' \
 	'third_party/pdfium/third_party/freetype' \
 	'third_party/pdfium/third_party/lcms2-2.6' \
-	'third_party/pdfium/third_party/libjpeg' \
 	'third_party/pdfium/third_party/libopenjpeg20' \
         'third_party/pdfium/third_party/libpng16' \
         'third_party/pdfium/third_party/libtiff' \
-	'third_party/pdfium/third_party/zlib_v128' \
 	'third_party/polymer' \
 	'third_party/protobuf' \
 	'third_party/protobuf/third_party/six' \
@@ -869,7 +893,10 @@ build/linux/unbundle/replace_gn_files.py --system-libraries \
 %else
 	libusb \
 %endif
+%if %{bundlelibxml}
+%else
 	libxml \
+%endif
 	libxslt \
 %if %{bundleopus}
 %else
@@ -1102,6 +1129,16 @@ cp -a out/Release/gen/chrome/app/policy/linux/examples/chrome.json .
 
 mkdir -p %{buildroot}%{_datadir}/icons/hicolor/256x256/apps
 cp -a chrome/app/theme/chromium/product_logo_256.png %{buildroot}%{_datadir}/icons/hicolor/256x256/apps/%{chromium_browser_channel}.png
+mkdir -p %{buildroot}%{_datadir}/icons/hicolor/128x128/apps
+cp -a chrome/app/theme/chromium/product_logo_128.png %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/%{chromium_browser_channel}.png
+mkdir -p %{buildroot}%{_datadir}/icons/hicolor/64x64/apps
+cp -a chrome/app/theme/chromium/product_logo_64.png %{buildroot}%{_datadir}/icons/hicolor/64x64/apps/%{chromium_browser_channel}.png
+mkdir -p %{buildroot}%{_datadir}/icons/hicolor/48x48/apps
+cp -a chrome/app/theme/chromium/product_logo_48.png %{buildroot}%{_datadir}/icons/hicolor/48x48/apps/%{chromium_browser_channel}.png
+mkdir -p %{buildroot}%{_datadir}/icons/hicolor/24x24/apps
+cp -a chrome/app/theme/chromium/product_logo_24.png %{buildroot}%{_datadir}/icons/hicolor/24x24/apps/%{chromium_browser_channel}.png
+mkdir -p %{buildroot}%{_datadir}/icons/hicolor/22x22/apps
+cp -a chrome/app/theme/chromium/product_logo_22.png %{buildroot}%{_datadir}/icons/hicolor/22x22/apps/%{chromium_browser_channel}.png
 
 # Install the master_preferences file
 mkdir -p %{buildroot}%{_sysconfdir}/%{name}
@@ -1110,7 +1147,7 @@ install -m 0644 %{SOURCE13} %{buildroot}%{_sysconfdir}/%{name}/
 mkdir -p %{buildroot}%{_datadir}/applications/
 desktop-file-install --dir %{buildroot}%{_datadir}/applications %{SOURCE4}
 
-install -D -m0644 %{SOURCE12} ${RPM_BUILD_ROOT}%{_datadir}/appdata/%{chromium_browser_channel}.appdata.xml
+install -D -m0644 chrome/installer/linux/common/chromium-browser/chromium-browser.appdata.xml ${RPM_BUILD_ROOT}%{_datadir}/appdata/%{chromium_browser_channel}.appdata.xml
 appstream-util validate-relax --nonet ${RPM_BUILD_ROOT}%{_datadir}/appdata/%{chromium_browser_channel}.appdata.xml
 
 mkdir -p %{buildroot}%{_datadir}/gnome-control-center/default-apps/
@@ -1589,6 +1626,10 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Mon Jun 12 2017 Tom Callaway <spot@fedoraproject.org> 59.0.3071.86-1
+- update to 59.0.3071.86
+- include smaller logo files
+
 * Tue May 16 2017 Tom Callaway <spot@fedoraproject.org> 58.0.3029.110-2
 - strip provides/requires on libsensors
 
