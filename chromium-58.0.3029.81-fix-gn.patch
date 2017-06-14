@@ -1,0 +1,11 @@
+diff -up chromium-58.0.3029.81/tools/gn/bootstrap/bootstrap.py.fixgn chromium-58.0.3029.81/tools/gn/bootstrap/bootstrap.py
+--- chromium-58.0.3029.81/tools/gn/bootstrap/bootstrap.py.fixgn	2017-04-21 15:39:59.704874747 -0400
++++ chromium-58.0.3029.81/tools/gn/bootstrap/bootstrap.py	2017-04-21 15:43:06.778809475 -0400
+@@ -384,6 +384,7 @@ def write_gn_ninja(path, root_gen_dir, o
+       'base/base_paths.cc',
+       'base/base_switches.cc',
+       'base/build_time.cc',
++      'base/callback_helpers.cc',
+       'base/callback_internal.cc',
+       'base/command_line.cc',
+       'base/debug/activity_tracker.cc',
