@@ -23,7 +23,7 @@
 # Requires is trickier.
 
 %global __provides_exclude_from %{chromium_path}/.*\\.so|%{chromium_path}/lib/.*\\.so
-%global privlibs libaccessibility|libaura_extra|libaura|libbase_i18n|libbase|libbindings|libblink_common|libblink_core|libblink_modules|libblink_platform|libblink_web|libbluetooth|libboringssl|libbrowser_ui_views|libcaptive_portal|libcapture|libcapture_base|libcapture_lib|libcc_animation|libcc_blink|libcc_ipc|libcc_paint|libcc_proto|libcc|libcc_surfaces|libchromium_sqlite3|libclearkeycdm|libcloud_policy_proto_generated_compile|libcommon|libcompositor|libcontent|libcpp|libcrcrypto|libdbus|libdevice_base|libdevice_battery|libdevice_event_log|libdevice_gamepad|libdevices|libdevice_vibration|libdevice_vr|libdiscardable_memory_client|libdiscardable_memory_common|libdiscardable_memory_service|libdisplay_compositor|libdisplay|libdisplay_types|libdisplay_util|libdomain_reliability|libEGL|libevents_base|libevents_devices_x11|libevents_ipc|libevents_ozone_layout|libevents|libevents_x|libfingerprint|libffmpeg|libfont_service_library|libgcm|libgeneric_sensor|libgeolocation|libgeometry|libgesture_detection|libgfx_ipc_color|libgfx_ipc_geometry|libgfx_ipc_skia|libgfx_ipc|libgfx|libgfx_x11|libgin|libgles2_c_lib|libgles2_implementation|libgles2_utils|libGLESv2|libgl_in_process_context|libgl_init|libgl_wrapper|libgpu|libgtk2ui|libicui18n|libicuuc|libipc|libjs|libkeyboard|libkeyboard_with_content|libkeycodes_x11|libkeyed_service_content|libkeyed_service_core|libmedia_blink|libmedia_gpu|libmedia|libmessage_center|libmidi|libmojo_common_lib|libmojo_ime_lib|libmojo_public_system_cpp|libmojo_public_system|libmojo_system_impl|libnative_theme|libnet|libnet_with_v8|libonc|libplatform|libpolicy_component|libpolicy_proto|libpower_monitor|libpower_save_blocker|libppapi_host|libppapi_proxy|libppapi_shared|libprefs|libprinting|libprotobuf_lite|libproxy_config|librange|libsandbox_services|libseccomp_bpf|libsensors|libsessions|libshared_memory_support|libshell_dialogs|libskia|libsnapshot|libsql|libstartup_tracing|libstorage_browser|libstorage_common|libstub_window|libsuid_sandbox_client|libsurface|libtest_ime_driver_library|libtime_zone_monitor|libtracing_library|libtracing|libui_base_ime|libui_base|libui_base_x|libui_data_pack|libui_library|libui_touch_selection|libui_views_mus_lib|liburl_ipc|liburl_matcher|liburl|libuser_manager|libuser_prefs|libv8_libbase|libv8_libplatform|libv8|libviews|libwebdata_common|libweb_dialogs|libwebview|libwidevinecdmadapter|libwidevinecdm|libwm|libwtf|libx11_events_platform|libx11_window
+%global privlibs libEGL|libGLESv2|libaccessibility|libanimation|libaura|libaura_extra|libbase|libbase_i18n|libbindings|libblink_core|libblink_modules|libblink_platform|libblink_web|libbluetooth|libboringssl|libbrowser_ui_views|libcaptive_portal|libcapture_base|libcapture_lib|libcc|libcc_animation|libcc_base|libcc_blink|libcc_debug|libcc_ipc|libcc_paint|libcc_surfaces|libchromium_sqlite3|libclearkeycdm|libcloud_policy_proto_generated_compile|libcodec|libcolor_space|libcommon|libcompositor|libcontent|libcpp|libcrcrypto|libdbus|libdevice_base|libdevice_battery|libdevice_event_log|libdevice_gamepad|libdevice_vibration|libdevice_vr|libdevices|libdiscardable_memory_client|libdiscardable_memory_common|libdiscardable_memory_service|libdisplay|libdisplay_compositor|libdisplay_types|libdisplay_util|libdomain_reliability|libembedder|libevents|libevents_base|libevents_devices_x11|libevents_ozone_layout|libevents_x|libffmpeg|libfingerprint|libgcm|libgeneric_sensor|libgeolocation|libgeometry|libgeometry_skia|libgesture_detection|libgfx|libgfx_ipc|libgfx_ipc_color|libgfx_ipc_geometry|libgfx_ipc_skia|libgfx_x11|libgin|libgin_features|libgl_in_process_context|libgl_init|libgl_wrapper|libgles2_c_lib|libgles2_implementation|libgles2_utils|libgpu|libgtk2ui|libicui18n|libicuuc|libipc|libjs|libkeyboard|libkeyboard_with_content|libkeycodes_x11|libkeyed_service_content|libkeyed_service_core|libmanager|libmedia|libmedia_blink|libmedia_gpu|libmedia_mojo_services|libmessage_center|libmidi|libmojo_common_lib|libmojo_ime_lib|libmojo_public_system|libmojo_public_system_cpp|libmojo_system_impl|libnative_theme|libnet|libnet_with_v8|libonc|libosmesa|libplatform|libplatform_wtf|libpolicy_component|libpolicy_proto|libpower_save_blocker|libppapi_host|libppapi_proxy|libppapi_shared|libprefs|libprinting|libprotobuf_globals|libproxy_config|librange|libsandbox_services|libseccomp_bpf|libsensors|libsessions|libshared_memory_support|libshell_dialogs|libskia|libsnapshot|libsql|libstartup_tracing|libstorage_browser|libstorage_common|libstub_window|libsuid_sandbox_client|libsurface|libtracing|libui_base|libui_base_ime|libui_base_x|libui_data_pack|libui_touch_selection|libui_views_mus_lib|liburl|liburl_ipc|liburl_matcher|libuser_manager|libuser_prefs|libv8|libv8_libbase|libv8_libplatform|libviews|libweb_dialogs|libwebdata_common|libwebview|libwidevinecdm|libwidevinecdmadapter|libwm|libwtf|libx11_events_platform|libx11_window
 %global __requires_exclude ^(%{privlibs})\\.so
 
 # Try to not use the Xvfb as it is slow..
@@ -73,6 +73,14 @@ BuildRequires:	libicu-devel >= 5.4
 %global bundlelibusbx 0
 %endif
 
+# Needs at least harfbuzz 1.4.2 now.
+# 2017-06-12
+%if 0%{?fedora} < 26
+%global bundleharfbuzz 1
+%else
+%global bundleharfbuzz 0
+%endif
+
 ### Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
 ### Note: These are for Fedora use ONLY.
 ### For your own distribution, please get your own set of keys.
@@ -82,11 +90,11 @@ BuildRequires:	libicu-devel >= 5.4
 %global default_client_secret miEreAep8nuvTdvLums6qyLK
 %global chromoting_client_id 449907151817-8vnlfih032ni8c4jjps9int9t86k546t.apps.googleusercontent.com
 
-%global majorversion 58
+%global majorversion 59
 
 Name:		%{cname}-libs-media-freeworld
-Version:	%{majorversion}.0.3029.110
-Release:	2%{?dist}
+Version:	%{majorversion}.0.3071.86
+Release:	3%{?dist}
 Summary:        Chromium media libraries built with all possible codecs
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -110,8 +118,6 @@ Patch9:		chromium-48.0.2564.116-libusb_interrupt_event_handler.patch
 # Ignore deprecations in cups 2.2
 # https://bugs.chromium.org/p/chromium/issues/detail?id=622493
 Patch12:	chromium-55.0.2883.75-cups22.patch
-# Add ICU Text Codec aliases (from openSUSE via Russian Fedora)
-Patch14:	chromium-55.0.2883.75-more-codec-aliases.patch
 # Use PIE in the Linux sandbox (from openSUSE via Russian Fedora)
 Patch15:	chromium-55.0.2883.75-sandbox-pie.patch
 # Enable ARM CPU detection for webrtc (from archlinux via Russian Fedora)
@@ -129,28 +135,31 @@ Patch21:	chromium-53.0.2785.92-last-commit-position.patch
 # Fix issue where timespec is not defined when sys/stat.h is included.
 Patch22:	chromium-53.0.2785.92-boringssl-time-fix.patch
 # I wouldn't have to do this if there was a standard way to append extra compiler flags
-Patch24:	chromium-54.0.2840.59-nullfix.patch
+Patch24:	chromium-59.0.3071.86-nullfix.patch
 # Add explicit includedir for jpeglib.h
 Patch25:	chromium-54.0.2840.59-jpeg-include-dir.patch
 # On i686, pass --no-keep-memory --reduce-memory-overheads to ld.
-Patch26:	chromium-54.0.2840.59-i686-ld-memory-tricks.patch
+Patch26:	chromium-59.0.3071.86-i686-ld-memory-tricks.patch
 # obj/content/renderer/renderer/child_frame_compositing_helper.o: In function `content::ChildFrameCompositingHelper::OnSetSurface(cc::SurfaceId const&, gfx::Size const&, float, cc::SurfaceSequence const&)':
 # /builddir/build/BUILD/chromium-54.0.2840.90/out/Release/../../content/renderer/child_frame_compositing_helper.cc:214: undefined reference to `cc_blink::WebLayerImpl::setOpaque(bool)'
-Patch27:	chromium-54.0.2840.90-setopaque.patch
+Patch27:	chromium-59.0.3071.86-setopaque.patch
 # Use -fpermissive to build WebKit
 Patch31:        chromium-56.0.2924.87-fpermissive.patch
 # Fix issue with compilation on gcc7
 # Thanks to Ben Noordhuis
-Patch33:        chromium-56.0.2924.87-gcc7.patch
-# Fix gn build
-# https://chromium.googlesource.com/chromium/src.git/+/379e35f6f3eaa41a97f2659249509ca599749b27%5E%21/tools/gn/bootstrap/bootstrap.py
-Patch35:        chromium-58.0.3029.81-fix-gn.patch
+Patch33:        chromium-59.0.3071.86-gcc7.patch
 # Revert https://chromium.googlesource.com/chromium/src/+/b794998819088f76b4cf44c8db6940240c563cf4%5E%21/#F0
 # https://bugs.chromium.org/p/chromium/issues/detail?id=712737
 # https://bugzilla.redhat.com/show_bug.cgi?id=1446851
 Patch36:        chromium-58.0.3029.96-revert-b794998819088f76b4cf44c8db6940240c563cf4.patch
 # Correctly compile the stdatomic.h in ffmpeg with gcc 4.8
-Patch37:        chromium-58.0.3029.81-ffmpeg-stdatomic.patch
+Patch37:        chromium-59.0.3071.86-ffmpeg-stdatomic.patch
+# RHEL is too old to have this header in kernel-headers
+# and some Fedora versions do not contain what Chromium expects to find
+# so just use the hardcoded values instead
+Patch38:        chromium-59.0.3071.86-dma-buf-header-hack.patch
+# Nacl can't die soon enough
+Patch39:        chromium-59.0.3071.86-system-clang.patch
 
 ### Chromium Tests Patches ###
 Patch100:	chromium-46.0.2490.86-use_system_opus.patch
@@ -318,7 +327,6 @@ can include.
 %patch7 -p1 -b .ignore-fd-count
 %patch9 -p1 -b .modern-libusbx
 %patch12 -p1 -b .cups22
-%patch14 -p1 -b .morealiases
 %patch15 -p1 -b .sandboxpie
 %patch16 -p1 -b .armwebrtc
 %patch18 -p1 -b .etc
@@ -332,9 +340,10 @@ can include.
 %patch27 -p1 -b .setopaque
 %patch31 -p1 -b .permissive
 %patch33 -p1 -b .gcc7
-%patch35 -p1 -b .fixgn
 %patch36 -p1 -b .revert
 %patch37 -p1 -b .ffmpeg-stdatomic
+%patch38 -p1 -b .headerhack
+%patch39 -p1 -b .system-clang
 
 ### Chromium Tests Patches ###
 %patch100 -p1 -b .use_system_opus
@@ -694,6 +703,9 @@ popd
 %{chromium_path}/libmedia.so*
 
 %changelog
+* Tue Jun 13 2017 No One <noone AT nowhere DOT com> 59.0.3071.86-3
+- update to 59.0.3071.86
+
 * Fri Mar  3 2017 No One <noone AT nowhere DOT com> 58.0.3029.110-2
 - update to 58.0.3029.110
 

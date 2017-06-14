@@ -83,10 +83,11 @@ header_files="	libavcodec/x86/inline_asm.h \
 		libavcodec/h264chroma.h \
 		libavcodec/hpeldsp.h \
 		libavcodec/idctdsp.h \
-		libavcodec/imdct15.h \
 		libavcodec/internal.h \
 		libavcodec/kbdwin.h \
 		libavcodec/mathops.h \
+		libavcodec/mdct15.c \
+		libavcodec/mdct15.h \
 		libavcodec/me_cmp.h \
 		libavcodec/motion_est.h \
 		libavcodec/mpeg12data.h \
