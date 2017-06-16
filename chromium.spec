@@ -109,8 +109,8 @@ BuildRequires:  libicu-devel >= 5.4
 %global majorversion 59
 
 Name:		chromium%{chromium_channel}
-Version:	%{majorversion}.0.3071.86
-Release:	4%{?dist}
+Version:	%{majorversion}.0.3071.104
+Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -1627,6 +1627,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Fri Jun 16 2017 Tom Callaway <spot@fedoraproject.org> 59.0.3071.104-1
+- update to .104
+
 * Fri Jun 16 2017 Tom Callaway <spot@fedoraproject.org> 59.0.3071.86-4
 - actually fix mp3 playback support
 
