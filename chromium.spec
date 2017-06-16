@@ -110,7 +110,7 @@ BuildRequires:  libicu-devel >= 5.4
 
 Name:		chromium%{chromium_channel}
 Version:	%{majorversion}.0.3071.86
-Release:	3%{?dist}
+Release:	4%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -165,7 +165,7 @@ Patch31:	chromium-56.0.2924.87-fpermissive.patch
 # Thanks to Ben Noordhuis
 Patch33:	chromium-59.0.3071.86-gcc7.patch
 # Enable mp3 support
-Patch34:	chromium-58.0.3029.81-enable-mp3.patch
+Patch34:	chromium-59.0.3071.86-enable-mp3.patch
 # Revert https://chromium.googlesource.com/chromium/src/+/b794998819088f76b4cf44c8db6940240c563cf4%5E%21/#F0
 # https://bugs.chromium.org/p/chromium/issues/detail?id=712737
 # https://bugzilla.redhat.com/show_bug.cgi?id=1446851
@@ -1627,6 +1627,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Fri Jun 16 2017 Tom Callaway <spot@fedoraproject.org> 59.0.3071.86-4
+- actually fix mp3 playback support
+
 * Tue Jun 13 2017 Tom Callaway <spot@fedoraproject.org> 59.0.3071.86-3
 - fix filtering
 
