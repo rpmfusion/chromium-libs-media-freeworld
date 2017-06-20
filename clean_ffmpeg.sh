@@ -235,7 +235,6 @@ mp3_files="	libavcodec/aac_ac3_parser.c \
 		libavcodec/dct32_fixed.c \
 		libavcodec/dct32_float.c \
 		libavcodec/dct32_template.c \
-		libavcodec/imdct15.c \
 		libavcodec/kbdwin.c \
 		libavcodec/mpegaudio.c \
 		libavcodec/mpegaudio_parser.c \

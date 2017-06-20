@@ -93,8 +93,8 @@ BuildRequires:	libicu-devel >= 5.4
 %global majorversion 59
 
 Name:		%{cname}-libs-media-freeworld
-Version:	%{majorversion}.0.3071.86
-Release:	3%{?dist}
+Version:	%{majorversion}.0.3071.104
+Release:	1%{?dist}
 Summary:        Chromium media libraries built with all possible codecs
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -703,6 +703,9 @@ popd
 %{chromium_path}/libmedia.so*
 
 %changelog
+* Tue Jun 20 2017 Miro Hrončok <mhroncok@redhat.com> - 59.0.3071.104-1
+- update to 59.0.3071.104
+
 * Tue Jun 13 2017 No One <noone AT nowhere DOT com> 59.0.3071.86-3
 - update to 59.0.3071.86
 
