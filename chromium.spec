@@ -110,7 +110,7 @@ BuildRequires:  libicu-devel >= 5.4
 
 Name:		chromium%{chromium_channel}
 Version:	%{majorversion}.0.3071.109
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -1502,6 +1502,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %doc AUTHORS
 %license LICENSE
 %config %{_sysconfdir}/%{name}/
+%dir %{_sysconfdir}/%{name}/native-messaging-hosts
+# This is chrome-remote-desktop stuff
+%exclude %{_sysconfdir}/%{name}/native-messaging-hosts/*
 %{_bindir}/%{chromium_browser_channel}
 %dir %{chromium_path}
 %{chromium_path}/*.bin
@@ -1611,7 +1614,7 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{crd_path}/native-messaging-host
 %{crd_path}/remote-assistance-host
 %{_sysconfdir}/pam.d/chrome-remote-desktop
-%{_sysconfdir}/chromium/native-messaging-hosts/
+%{_sysconfdir}/chromium/native-messaging-hosts/*
 %{_sysconfdir}/opt/chrome/
 %{crd_path}/remoting_locales/
 %{crd_path}/start-host
@@ -1630,6 +1633,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Thu Jun 22 2017 Tom Callaway <spot@fedoraproject.org> 59.0.3071.109-2
+- fix duplication between chrome-remote-desktop and chromium
+
 * Thu Jun 22 2017 Tom Callaway <spot@fedoraproject.org> 59.0.3071.109-1
 - update to .109
 - fix native-messaging-hosts dir to be a true dir instead of a symlink
