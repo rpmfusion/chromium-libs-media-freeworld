@@ -109,7 +109,7 @@ BuildRequires:  libicu-devel >= 5.4
 %global majorversion 59
 
 Name:		chromium%{chromium_channel}
-Version:	%{majorversion}.0.3071.104
+Version:	%{majorversion}.0.3071.109
 Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
@@ -1093,8 +1093,11 @@ cp -a remoting/* %{buildroot}%{_sysconfdir}/chromium/native-messaging-hosts/
 for i in %{buildroot}%{_sysconfdir}/chromium/native-messaging-hosts/*.json; do
 	sed -i 's|/opt/google/chrome-remote-desktop|%{crd_path}|g' $i
 done
-pushd %{buildroot}%{_sysconfdir}/opt/chrome/
-ln -s ../../chromium/native-messaging-hosts native-messaging-hosts
+mkdir -p %{buildroot}%{_sysconfdir}/opt/chrome/native-messaging-hosts
+pushd %{buildroot}%{_sysconfdir}/opt/chrome/native-messaging-hosts
+for i in ../../chromium/native-messaging-hosts/*; do
+	ln -s $i .
+done
 popd
 
 mkdir -p %{buildroot}/var/lib/chrome-remote-desktop
@@ -1627,6 +1630,10 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Thu Jun 22 2017 Tom Callaway <spot@fedoraproject.org> 59.0.3071.109-1
+- update to .109
+- fix native-messaging-hosts dir to be a true dir instead of a symlink
+
 * Fri Jun 16 2017 Tom Callaway <spot@fedoraproject.org> 59.0.3071.104-1
 - update to .104
 
