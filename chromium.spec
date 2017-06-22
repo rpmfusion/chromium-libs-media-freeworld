@@ -1095,7 +1095,7 @@ for i in %{buildroot}%{_sysconfdir}/chromium/native-messaging-hosts/*.json; do
 done
 mkdir -p %{buildroot}%{_sysconfdir}/opt/chrome/native-messaging-hosts
 pushd %{buildroot}%{_sysconfdir}/opt/chrome/native-messaging-hosts
-for i in ../../chromium/native-messaging-hosts/*; do
+for i in ../../../chromium/native-messaging-hosts/*; do
 	ln -s $i .
 done
 popd
