@@ -110,7 +110,7 @@ BuildRequires:  libicu-devel >= 5.4
 
 Name:		chromium%{chromium_channel}
 Version:	%{majorversion}.0.3071.109
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -1486,6 +1486,15 @@ update-desktop-database &> /dev/null || :
 %posttrans
 gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
+%pretrans -n chrome-remote-desktop -p <lua> 
+-- Define the path to the symlink being replaced below.
+path = "/opt/etc/chrome/native-messaging-hosts"
+st = posix.stat(path)
+if st and st.type == "link" then
+  os.remove(path)
+end
+
+
 %pre -n chrome-remote-desktop
 getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-desktop
 
@@ -1633,6 +1642,10 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Fri Jun 23 2017 Tom Callaway <spot@fedoraproject.org> 59.0.3071.109-3
+- use pretrans scriptlet to remove symlink on /etc/opt/chrome/native-messaging-hosts
+  (it is now a directory)
+
 * Thu Jun 22 2017 Tom Callaway <spot@fedoraproject.org> 59.0.3071.109-2
 - fix duplication between chrome-remote-desktop and chromium
 
