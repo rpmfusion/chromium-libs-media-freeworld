@@ -1488,8 +1488,7 @@ update-desktop-database &> /dev/null || :
 gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %pretrans -n chrome-remote-desktop -p <lua> 
--- Define the path to the symlink being replaced below.
-path = "/opt/etc/chrome/native-messaging-hosts"
+path = "/etc/opt/chrome/native-messaging-hosts"
 st = posix.stat(path)
 if st and st.type == "link" then
   os.remove(path)
@@ -1643,6 +1642,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/chromedriver
 
 %changelog
+* Mon Jun 26 2017 Tom Callaway <spot@fedoraproject.org> 59.0.3071.109-5
+- fix path in pretrans scriptlet
+
 * Fri Jun 23 2017 Tom Callaway <spot@fedoraproject.org> 59.0.3071.109-4
 - copy files into /etc/opt/chrome/native-messaging-hosts instead of making symlinks
   this results in duplicate copies of the same files, but eh. making rpm happy.
