@@ -220,6 +220,10 @@ Source9:	chromium-browser.xml
 Source10:	https://dl.google.com/dl/edgedl/chrome/policy/policy_templates.zip
 Source11:	chrome-remote-desktop@.service
 Source13:	master_preferences
+# Upstream did not include third_party/freetype source code in the tarball for 59.0.3071.115
+# So we copy it from the previous build. :/
+Source14:	chromium-59.0.3071.109-freetype.tar.bz2
+
 # We can assume gcc and binutils.
 BuildRequires:	gcc-c++
 
@@ -545,9 +549,9 @@ members of the Chromium and WebDriver teams.
 %setup -q -T -c -n %{name}-policies -a 10
 %setup -q -T -c -n depot_tools -a 2
 %if 0%{tests}
-%setup -q -n chromium-%{version} -b 1
+%setup -q -n chromium-%{version} -b 1 -a 14
 %else
-%setup -q -n chromium-%{version}
+%setup -q -n chromium-%{version} -a 14
 %endif
 
 ### Chromium Fedora Patches ###
