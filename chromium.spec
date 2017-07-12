@@ -1,5 +1,10 @@
 # NEVER EVER EVER turn this on in official builds
 %global freeworld 0
+%if %{freeworld}
+%global lsuffix freeworld
+%else
+%global lsuffix fedora
+%endif
 
 # Leave this alone, please.
 %global target out/Release
@@ -109,8 +114,8 @@ BuildRequires:  libicu-devel >= 5.4
 %global majorversion 59
 
 Name:		chromium%{chromium_channel}
-Version:	%{majorversion}.0.3071.109
-Release:	5%{?dist}
+Version:	%{majorversion}.0.3071.115
+Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -472,6 +477,8 @@ Chromium is an open-source web browser, powered by WebKit (Blink).
 %package libs
 Summary: Shared libraries used by chromium (and chrome-remote-desktop)
 Requires: chromium-libs-media%{_isa} >= %{majorversion}
+Requires(post): %{_sbindir}/update-alternatives
+Requires(preun): %{_sbindir}/update-alternatives
 
 %description libs
 Shared libraries used by chromium (and chrome-remote-desktop).
@@ -481,6 +488,8 @@ Shared libraries used by chromium (and chrome-remote-desktop).
 Summary: Chromium media libraries built with all possible codecs
 Provides: chromium-libs-media = %{version}-%{release}
 Provides: chromium-libs-media%{_isa} = %{version}-%{release}
+Requires(post): %{_sbindir}/update-alternatives
+Requires(preun): %{_sbindir}/update-alternatives
 
 %description libs-media-freeworld
 Chromium media libraries built with all possible codecs. Chromium is an
@@ -491,6 +500,8 @@ can include.
 %package libs-media
 Summary: Shared libraries used by the chromium media subsystem
 Requires: chromium-libs%{_isa} = %{version}
+Requires(post): %{_sbindir}/update-alternatives
+Requires(preun): %{_sbindir}/update-alternatives
 
 %description libs-media
 Shared libraries used by the chromium media subsystem.
@@ -1003,6 +1014,9 @@ export CHROMIUM_BROWSER_UNIT_TESTS=
 
 %global target out/Release
 
+%if 0%{freeworld}
+../depot_tools/ninja -C %{target} -vvv media $CHROMIUM_BROWSER_UNIT_TESTS
+%else
 ../depot_tools/ninja -C %{target} -vvv chrome chrome_sandbox chromedriver widevinecdmadapter clearkeycdm policy_templates $CHROMIUM_BROWSER_UNIT_TESTS
 
 # remote client
@@ -1017,6 +1031,8 @@ GOOGLE_CLIENT_ID_REMOTING_IDENTITY_API=%{chromoting_client_id} ../../depot_tools
 %endif
 popd
 
+%endif
+
 # Nuke nacl/pnacl bits at the end of the build
 rm -rf out/Release/gen/sdk
 rm -rf native_client/toolchain
@@ -1024,6 +1040,15 @@ rm -rf third_party/llvm-build/*
 
 %install
 rm -rf %{buildroot}
+
+%if 0%{freeworld}
+mkdir -p %{buildroot}%{chromium_path}
+
+pushd %{target}
+cp -a libffmpeg.so* %{buildroot}%{chromium_path}
+cp -a libmedia.so* %{buildroot}%{chromium_path}
+popd
+%else
 mkdir -p %{buildroot}%{_bindir}
 mkdir -p %{buildroot}%{chromium_path}
 cp -a %{SOURCE3} %{buildroot}%{chromium_path}/%{chromium_browser_channel}.sh
@@ -1060,6 +1085,11 @@ cp -a natives_blob.bin %{buildroot}%{chromium_path}
 cp -a snapshot_blob.bin %{buildroot}%{chromium_path}
 %if 0%{?shared}
 cp -a lib*.so* %{buildroot}%{chromium_path}
+cp -p %{buildroot}%{chromium_path}/libwidevinecdm.so{,.fedora}
+cp -p %{buildroot}%{chromium_path}/libffmpeg.so{,.%{lsuffix}}
+cp -p %{buildroot}%{chromium_path}/libffmpeg.so.TOC{,.%{lsuffix}}
+cp -p %{buildroot}%{chromium_path}/libmedia.so{,.%{lsuffix}}
+cp -p %{buildroot}%{chromium_path}/libmedia.so.TOC{,.%{lsuffix}}
 %endif
 
 # chromedriver
@@ -1159,6 +1189,9 @@ mkdir -p %{buildroot}%{_datadir}/gnome-control-center/default-apps/
 cp -a %{SOURCE9} %{buildroot}%{_datadir}/gnome-control-center/default-apps/
 
 mkdir -p %{buildroot}%{chromium_path}/PepperFlash
+
+# freeworld conditional
+%endif
 
 %check
 %if 0%{tests}
@@ -1494,6 +1527,52 @@ if st and st.type == "link" then
   os.remove(path)
 end
 
+%post libs
+%{_sbindir}/update-alternatives --install \
+  %{_libdir}/chromium-browser/libwidevinecdm.so libwidevinecdm.so \
+  %{_libdir}/chromium-browser/libwidevinecdm.so.fedora 10
+
+%preun libs
+if [ $1 = 0 ]; then
+  %{_sbindir}/alternatives --remove libwidevinecdm.so \
+    %{_libdir}/chromium-browser/libwidevinecdm.so.fedora
+fi
+
+%if %{freeworld}
+%post libs-media-freeworld
+%{_sbindir}/update-alternatives --install \
+  %{_libdir}/chromium-browser/libffmpeg.so libffmpeg.so \
+  %{_libdir}/chromium-browser/libffmpeg.so.freeworld 5
+  --slave %{_libdir}/chromium-browser/libffmpeg.so.TOC libffmpeg.so.TOC \
+          %{_libdir}/chromium-browser/libffmpeg.so.TOC.freeworld
+  --slave %{_libdir}/chromium-browser/libmedia.so libmedia.so \
+          %{_libdir}/chromium-browser/libmedia.so.freeworld
+  --slave %{_libdir}/chromium-browser/libmedia.so.TOC libmedia.so.TOC \
+          %{_libdir}/chromium-browser/libmedia.so.TOC.freeworld
+
+%preun libs-media-freeworld
+if [ $1 = 0 ]; then
+  %{_sbindir}/alternatives --remove libffmpeg.so \
+    %{_libdir}/chromium-browser/libffmpeg.so.freeworld
+fi
+%else
+%post libs-media
+%{_sbindir}/update-alternatives --install \
+  %{_libdir}/chromium-browser/libffmpeg.so libffmpeg.so \
+  %{_libdir}/chromium-browser/libffmpeg.so.fedora 10
+  --slave %{_libdir}/chromium-browser/libffmpeg.so.TOC libffmpeg.so.TOC \
+          %{_libdir}/chromium-browser/libffmpeg.so.TOC.fedora
+  --slave %{_libdir}/chromium-browser/libmedia.so libmedia.so \
+          %{_libdir}/chromium-browser/libmedia.so.fedora
+  --slave %{_libdir}/chromium-browser/libmedia.so.TOC libmedia.so.TOC \
+          %{_libdir}/chromium-browser/libmedia.so.TOC.fedora
+
+%preun libs-media
+if [ $1 = 0 ]; then
+  %{_sbindir}/alternatives --remove libffmpeg.so \
+    %{_libdir}/chromium-browser/libffmpeg.so.fedora
+fi
+%endif
 
 %pre -n chrome-remote-desktop
 getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-desktop
@@ -1506,6 +1585,10 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 %postun -n chrome-remote-desktop
 %systemd_postun_with_restart chrome-remote-desktop@.service
+
+%if 0%{freeworld}
+# We only build libs-media-freeworld.
+%else
 
 %files
 %doc AUTHORS
@@ -1602,15 +1685,8 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %files libs
 %exclude %{chromium_path}/libffmpeg.so*
 %exclude %{chromium_path}/libmedia.so*
+%exclude %{chromium_path}/libwidevinecdm.so
 %{chromium_path}/lib*.so*
-
-%if %{freeworld}
-%files libs-media-freeworld
-%else
-%files libs-media
-%endif
-%{chromium_path}/libffmpeg.so*
-%{chromium_path}/libmedia.so*
 %endif
 
 %files -n chrome-remote-desktop
@@ -1641,7 +1717,30 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{_bindir}/chromedriver
 %{chromium_path}/chromedriver
 
+%endif
+
+%if 0%{?shared}
+%if %{freeworld}
+%files libs-media-freeworld
+%else
+%files libs-media
+%endif
+%{chromium_path}/libffmpeg.so.%{lsuffix}*
+%{chromium_path}/libffmpeg.so.TOC.%{lsuffix}*
+%{chromium_path}/libmedia.so.%{lsuffix}*
+%{chromium_path}/libmedia.so.TOC.%{lsuffix}*
+%endif
+
+
 %changelog
+* Wed Jul 12 2017 Tom Callaway <spot@fedoraproject.org> 59.0.3071.115-1
+- 59.0.3071.115
+- conditionalize spec so it can be easily used to make -libs-media-freeworld
+
+* Wed Jun 28 2017 Dominik Mierzejewski <dominik@greysector.net> 59.0.3071.109-6
+- use alternatives for widevine stub and media libs to allow third-party
+  packages to replace them without conflicts
+
 * Mon Jun 26 2017 Tom Callaway <spot@fedoraproject.org> 59.0.3071.109-5
 - fix path in pretrans scriptlet
 
