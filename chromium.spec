@@ -183,7 +183,9 @@ Patch37:	chromium-59.0.3071.86-ffmpeg-stdatomic.patch
 Patch38:	chromium-59.0.3071.86-dma-buf-header-hack.patch
 # Nacl can't die soon enough
 Patch39:	chromium-59.0.3071.86-system-clang.patch
-
+# Change struct ucontext to ucontext_t in breakpad
+# https://patchwork.openembedded.org/patch/141358/
+Patch40:	chromium-59.0.3071.115-ucontext-fix.patch
 
 ### Chromium Tests Patches ###
 Patch100:	chromium-46.0.2490.86-use_system_opus.patch
@@ -575,6 +577,7 @@ members of the Chromium and WebDriver teams.
 %patch37 -p1 -b .ffmpeg-stdatomic
 %patch38 -p1 -b .headerhack
 %patch39 -p1 -b .system-clang
+%patch40 -p1 -b .ucontextfix
 
 ### Chromium Tests Patches ###
 %patch100 -p1 -b .use_system_opus
