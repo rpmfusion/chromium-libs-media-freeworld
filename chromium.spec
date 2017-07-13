@@ -115,7 +115,7 @@ BuildRequires:  libicu-devel >= 5.4
 
 Name:		chromium%{chromium_channel}
 Version:	%{majorversion}.0.3071.115
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -1549,11 +1549,11 @@ fi
 %post libs-media-freeworld
 %{_sbindir}/update-alternatives --install \
   %{_libdir}/chromium-browser/libffmpeg.so libffmpeg.so \
-  %{_libdir}/chromium-browser/libffmpeg.so.freeworld 5
+  %{_libdir}/chromium-browser/libffmpeg.so.freeworld 5 \
   --slave %{_libdir}/chromium-browser/libffmpeg.so.TOC libffmpeg.so.TOC \
           %{_libdir}/chromium-browser/libffmpeg.so.TOC.freeworld
   --slave %{_libdir}/chromium-browser/libmedia.so libmedia.so \
-          %{_libdir}/chromium-browser/libmedia.so.freeworld
+          %{_libdir}/chromium-browser/libmedia.so.freeworld \
   --slave %{_libdir}/chromium-browser/libmedia.so.TOC libmedia.so.TOC \
           %{_libdir}/chromium-browser/libmedia.so.TOC.freeworld
 
@@ -1566,11 +1566,11 @@ fi
 %post libs-media
 %{_sbindir}/update-alternatives --install \
   %{_libdir}/chromium-browser/libffmpeg.so libffmpeg.so \
-  %{_libdir}/chromium-browser/libffmpeg.so.fedora 10
+  %{_libdir}/chromium-browser/libffmpeg.so.fedora 10 \
   --slave %{_libdir}/chromium-browser/libffmpeg.so.TOC libffmpeg.so.TOC \
-          %{_libdir}/chromium-browser/libffmpeg.so.TOC.fedora
+          %{_libdir}/chromium-browser/libffmpeg.so.TOC.fedora \
   --slave %{_libdir}/chromium-browser/libmedia.so libmedia.so \
-          %{_libdir}/chromium-browser/libmedia.so.fedora
+          %{_libdir}/chromium-browser/libmedia.so.fedora \
   --slave %{_libdir}/chromium-browser/libmedia.so.TOC libmedia.so.TOC \
           %{_libdir}/chromium-browser/libmedia.so.TOC.fedora
 
@@ -1740,6 +1740,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Thu Jul 13 2017 Tom Callaway <spot@fedoraproject.org> 59.0.3071.115-2
+- fix scriptlets
+
 * Wed Jul 12 2017 Tom Callaway <spot@fedoraproject.org> 59.0.3071.115-1
 - 59.0.3071.115
 - conditionalize spec so it can be easily used to make -libs-media-freeworld
