@@ -1551,7 +1551,7 @@ fi
   %{_libdir}/chromium-browser/libffmpeg.so libffmpeg.so \
   %{_libdir}/chromium-browser/libffmpeg.so.freeworld 5 \
   --slave %{_libdir}/chromium-browser/libffmpeg.so.TOC libffmpeg.so.TOC \
-          %{_libdir}/chromium-browser/libffmpeg.so.TOC.freeworld
+          %{_libdir}/chromium-browser/libffmpeg.so.TOC.freeworld \
   --slave %{_libdir}/chromium-browser/libmedia.so libmedia.so \
           %{_libdir}/chromium-browser/libmedia.so.freeworld \
   --slave %{_libdir}/chromium-browser/libmedia.so.TOC libmedia.so.TOC \
