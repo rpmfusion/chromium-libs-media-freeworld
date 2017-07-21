@@ -115,7 +115,7 @@ BuildRequires:  libicu-devel >= 5.4
 
 Name:		chromium%{chromium_channel}
 Version:	%{majorversion}.0.3071.115
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -1534,7 +1534,7 @@ if st and st.type == "link" then
   os.remove(path)
 end
 
-%post libs
+%posttrans libs
 %{_sbindir}/update-alternatives --install \
   %{_libdir}/chromium-browser/libwidevinecdm.so libwidevinecdm.so \
   %{_libdir}/chromium-browser/libwidevinecdm.so.fedora 10
@@ -1546,7 +1546,7 @@ if [ $1 = 0 ]; then
 fi
 
 %if %{freeworld}
-%post libs-media-freeworld
+%posttrans libs-media-freeworld
 %{_sbindir}/update-alternatives --install \
   %{_libdir}/chromium-browser/libffmpeg.so libffmpeg.so \
   %{_libdir}/chromium-browser/libffmpeg.so.freeworld 5 \
@@ -1563,7 +1563,7 @@ if [ $1 = 0 ]; then
     %{_libdir}/chromium-browser/libffmpeg.so.freeworld
 fi
 %else
-%post libs-media
+%posttrans libs-media
 %{_sbindir}/update-alternatives --install \
   %{_libdir}/chromium-browser/libffmpeg.so libffmpeg.so \
   %{_libdir}/chromium-browser/libffmpeg.so.fedora 10 \
@@ -1740,6 +1740,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Fri Jul 21 2017 Tom Callaway <spot@fedoraproject.org> 59.0.3071.115-3
+- use posttrans to ensure that old libs are gone before trying to make alternative symlinks
+
 * Thu Jul 13 2017 Tom Callaway <spot@fedoraproject.org> 59.0.3071.115-2
 - fix scriptlets
 
