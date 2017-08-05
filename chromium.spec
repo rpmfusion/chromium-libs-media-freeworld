@@ -8,6 +8,7 @@
 
 # Leave this alone, please.
 %global target out/Release
+%global headlesstarget out/Headless
 
 # Debuginfo packages aren't very useful here. If you need to debug
 # you should do a proper debug build (not implemented in this spec yet)
@@ -25,7 +26,7 @@
 # Requires is trickier. 
 
 %global __provides_exclude_from %{chromium_path}/.*\\.so|%{chromium_path}/lib/.*\\.so
-%global privlibs libEGL|libGLESv2|libaccessibility|libanimation|libaura|libaura_extra|libbase|libbase_i18n|libbindings|libblink_core|libblink_modules|libblink_platform|libblink_web|libbluetooth|libboringssl|libbrowser_ui_views|libcaptive_portal|libcapture_base|libcapture_lib|libcc|libcc_animation|libcc_base|libcc_blink|libcc_debug|libcc_ipc|libcc_paint|libcc_surfaces|libchromium_sqlite3|libclearkeycdm|libcloud_policy_proto_generated_compile|libcodec|libcolor_space|libcommon|libcompositor|libcontent|libcpp|libcrcrypto|libdbus|libdevice_base|libdevice_battery|libdevice_event_log|libdevice_gamepad|libdevice_vibration|libdevice_vr|libdevices|libdiscardable_memory_client|libdiscardable_memory_common|libdiscardable_memory_service|libdisplay|libdisplay_compositor|libdisplay_types|libdisplay_util|libdomain_reliability|libembedder|libevents|libevents_base|libevents_devices_x11|libevents_ozone_layout|libevents_x|libffmpeg|libfingerprint|libgcm|libgeneric_sensor|libgeolocation|libgeometry|libgeometry_skia|libgesture_detection|libgfx|libgfx_ipc|libgfx_ipc_color|libgfx_ipc_geometry|libgfx_ipc_skia|libgfx_x11|libgin|libgin_features|libgl_in_process_context|libgl_init|libgl_wrapper|libgles2_c_lib|libgles2_implementation|libgles2_utils|libgpu|libgtk2ui|libicui18n|libicuuc|libipc|libjs|libkeyboard|libkeyboard_with_content|libkeycodes_x11|libkeyed_service_content|libkeyed_service_core|libmanager|libmedia|libmedia_blink|libmedia_gpu|libmedia_mojo_services|libmessage_center|libmidi|libmojo_common_lib|libmojo_ime_lib|libmojo_public_system|libmojo_public_system_cpp|libmojo_system_impl|libnative_theme|libnet|libnet_with_v8|libonc|libosmesa|libplatform|libplatform_wtf|libpolicy_component|libpolicy_proto|libpower_save_blocker|libppapi_host|libppapi_proxy|libppapi_shared|libprefs|libprinting|libprotobuf_globals|libproxy_config|librange|libsandbox_services|libseccomp_bpf|libsensors|libsessions|libshared_memory_support|libshell_dialogs|libskia|libsnapshot|libsql|libstartup_tracing|libstorage_browser|libstorage_common|libstub_window|libsuid_sandbox_client|libsurface|libtracing|libui_base|libui_base_ime|libui_base_x|libui_data_pack|libui_touch_selection|libui_views_mus_lib|liburl|liburl_ipc|liburl_matcher|libuser_manager|libuser_prefs|libv8|libv8_libbase|libv8_libplatform|libviews|libweb_dialogs|libwebdata_common|libwebview|libwidevinecdm|libwidevinecdmadapter|libwm|libwtf|libx11_events_platform|libx11_window
+%global privlibs libaccessibility|libanimation|libaura_extra|libaura|libbase_i18n|libbase|libbindings|libblink_android_mojo_bindings_shared|libblink_core|libblink_modules|libblink_mojo_bindings_shared|libblink_offscreen_canvas_mojo_bindings_shared|libblink_platform|libblink_web|libbluetooth|libboringssl|libbrowser_ui_views|libcaptive_portal|libcapture_base|libcapture_lib|libcc_animation|libcc_base|libcc_blink|libcc_debug|libcc_ipc|libcc_paint|libcc|libcc_surfaces|libcdm_manager|libchromium_sqlite3|libclearkeycdm|libcloud_policy_proto_generated_compile|libcodec|libcolor_space|libcommon|libcompositor|libcontent_common_mojo_bindings_shared|libcontent|libcpp|libcrcrypto|libdbus|libdevice_base|libdevice_event_log|libdevice_gamepad|libdevices|libdevice_vr_mojo_bindings_blink|libdevice_vr_mojo_bindings_shared|libdevice_vr_mojo_bindings|libdiscardable_memory_client|libdiscardable_memory_common|libdiscardable_memory_service|libdisplay_compositor|libdisplay|libdisplay_types|libdisplay_util|libdomain_reliability|libEGL|libembedder|libevents_base|libevents_devices_x11|libevents_ozone_layout|libevents|libevents_x|libffmpeg|libfingerprint|libframe_sinks|libgcm|libgeneric_sensor_public_interfaces_shared|libgeneric_sensor|libgeolocation|libgeometry_skia|libgeometry|libgesture_detection|libgfx_ipc_color|libgfx_ipc_geometry|libgfx_ipc_skia|libgfx_ipc|libgfx|libgfx_x11|libgin_features|libgin|libgles2_c_lib|libgles2_implementation|libgles2_utils|libGLESv2|libgl_init|libgl_in_process_context|libgl_wrapper|libgpu|libgtk2ui|libheadless|libicui18n|libicuuc|libipc_mojom_shared|libipc_mojom|libipc|libjs|libkeyboard|libkeyboard_with_content|libkeycodes_x11|libkeyed_service_content|libkeyed_service_core|libmanager|libmedia_blink|libmedia_gpu|libmedia_mojo_services|libmedia|libmessage_center|libmidi|libmirclient.9|libmojo_common_lib|libmojo_ime_lib|libmojo_public_system_cpp|libmojo_public_system|libmojo_system_impl|libnative_theme|libnet|libnet_with_v8|libonc|libosmesa|libplatform|libpolicy_component|libpolicy_proto|libpower_save_blocker|libppapi_host|libppapi_proxy|libppapi_shared|libprefs|libprinting|libprotobuf_lite|libproxy_config|libpublic|librange|libresource_coordinator_cpp|libresource_coordinator_public_interfaces_internal_shared|libsandbox_services|libseccomp_bpf|libsensors|libservice_manager_cpp|libservice_manager_cpp_types|libservice_manager_mojom_blink|libservice_manager_mojom_constants_blink|libservice_manager_mojom_constants_shared|libservice_manager_mojom_constants|libservice_manager_mojom_shared|libservice_manager_mojom|libsessions|libshared_memory_support|libshell_dialogs|libskia|libsnapshot|libsql|libstartup_tracing|libstorage_browser|libstorage_common|libstub_window|libsuid_sandbox_client|libsurface|libtracing|libui_base_ime|libui_base|libui_base_x|libui_data_pack|libui_touch_selection|libui_views_mus_lib|liburl_ipc|liburl_matcher|liburl|libuser_manager|libuser_prefs|libv8_libbase|libv8_libplatform|libv8|libviews|libVkLayer_core_validation|libVkLayer_object_tracker|libVkLayer_parameter_validation|libVkLayer_swapchain|libVkLayer_threading|libVkLayer_unique_objects|libwebdata_common|libweb_dialogs|libwebview|libwidevinecdmadapter|libwidevinecdm|libwm|libwtf|libx11_events_platform|libx11_window
 %global __requires_exclude ^(%{privlibs})\\.so
 
 # Try to not use the Xvfb as it is slow..
@@ -40,14 +41,8 @@
 # https://www.chromium.org/developers/testing/addresssanitizer
 %global asan 0
 
-# Only flip this on if stuff is really broken re: nacl.
-# chromium-native_client doesn't build on Fedora 23 because
-# clang is too old and buggy.
-%if 0%{?fedora} <= 23
+# nacl/pnacl are soon to be dead. We're just killing them off early.
 %global killnacl 1
-%else
-%global killnacl 0
-%endif
 
 %if 0%{?killnacl}
  %global nacl 0
@@ -111,11 +106,15 @@ BuildRequires:  libicu-devel >= 5.4
 %global default_client_secret miEreAep8nuvTdvLums6qyLK
 %global chromoting_client_id 449907151817-8vnlfih032ni8c4jjps9int9t86k546t.apps.googleusercontent.com 
 
-%global majorversion 59
+%global majorversion 60
 
+%if %{freeworld}
+Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
+%else
 Name:		chromium%{chromium_channel}
-Version:	%{majorversion}.0.3071.115
-Release:	3%{?dist}
+%endif
+Version:	%{majorversion}.0.3112.90
+Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -149,10 +148,10 @@ Patch18:	chromium-52.0.2743.82-master-prefs-path.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=1361157
 Patch19:	chromium-52.0.2743.116-unset-madv_free.patch
 # Use gn system files
-Patch20:	chromium-54.0.2840.59-gn-system.patch
+Patch20:	chromium-60.0.3112.78-gn-system.patch
 # Fix last commit position issue
 # https://groups.google.com/a/chromium.org/forum/#!topic/gn-dev/7nlJv486bD4
-Patch21:	chromium-53.0.2785.92-last-commit-position.patch
+Patch21:	chromium-60.0.3112.78-last-commit-position.patch
 # Fix issue where timespec is not defined when sys/stat.h is included.
 Patch22:	chromium-53.0.2785.92-boringssl-time-fix.patch
 # I wouldn't have to do this if there was a standard way to append extra compiler flags
@@ -168,24 +167,35 @@ Patch27:	chromium-59.0.3071.86-setopaque.patch
 Patch31:	chromium-56.0.2924.87-fpermissive.patch
 # Fix issue with compilation on gcc7
 # Thanks to Ben Noordhuis
-Patch33:	chromium-59.0.3071.86-gcc7.patch
+Patch33:	chromium-60.0.3112.78-gcc7.patch
 # Enable mp3 support
-Patch34:	chromium-59.0.3071.86-enable-mp3.patch
+Patch34:	chromium-60.0.3112.78-enable-mp3.patch
 # Revert https://chromium.googlesource.com/chromium/src/+/b794998819088f76b4cf44c8db6940240c563cf4%5E%21/#F0
 # https://bugs.chromium.org/p/chromium/issues/detail?id=712737
 # https://bugzilla.redhat.com/show_bug.cgi?id=1446851
 Patch36:	chromium-58.0.3029.96-revert-b794998819088f76b4cf44c8db6940240c563cf4.patch
 # Correctly compile the stdatomic.h in ffmpeg with gcc 4.8
 Patch37:	chromium-59.0.3071.86-ffmpeg-stdatomic.patch
-# RHEL is too old to have this header in kernel-headers
-# and some Fedora versions do not contain what Chromium expects to find
-# so just use the hardcoded values instead
-Patch38:	chromium-59.0.3071.86-dma-buf-header-hack.patch
 # Nacl can't die soon enough
 Patch39:	chromium-59.0.3071.86-system-clang.patch
 # Change struct ucontext to ucontext_t in breakpad
 # https://patchwork.openembedded.org/patch/141358/
 Patch40:	chromium-59.0.3071.115-ucontext-fix.patch
+# Fix gn bootstrap. Not convinced anyone at Google ever tries to build Chromium from source.
+Patch41:	chromium-60.0.3112.78-fix-gn-bootstrap.patch
+# Do not prefix libpng functions
+Patch42:	chromium-60.0.3112.78-no-libpng-prefix.patch
+# Do not mangle libjpeg
+Patch43:	chromium-60.0.3112.78-jpeg-nomangle.patch
+# Fix gtk2 build by applying these changes
+# https://chromium.googlesource.com/chromium/src.git/+/804fd4ab5e41584d61c400ac19ce21e0468b53d4
+# https://chromium.googlesource.com/chromium/src.git/+/4313334bead373b139eee72f47d43fbe6162a8f4
+# https://chromium.googlesource.com/chromium/src.git/+/ca407201886875966db91d55c403fe0be3f0f4ca
+# This probably will not be needed with 61+
+Patch44:	chromium-60.0.3112.78-gtk2fix.patch
+# Do not mangle zlib
+Patch45:	chromium-60.0.3112.78-no-zlib-mangle.patch
+
 
 ### Chromium Tests Patches ###
 Patch100:	chromium-46.0.2490.86-use_system_opus.patch
@@ -220,9 +230,6 @@ Source9:	chromium-browser.xml
 Source10:	https://dl.google.com/dl/edgedl/chrome/policy/policy_templates.zip
 Source11:	chrome-remote-desktop@.service
 Source13:	master_preferences
-# Upstream did not include third_party/freetype source code in the tarball for 59.0.3071.115
-# So we copy it from the previous build. :/
-Source14:	chromium-59.0.3071.109-freetype.tar.bz2
 
 # We can assume gcc and binutils.
 BuildRequires:	gcc-c++
@@ -241,7 +248,7 @@ BuildRequires:	glib2-devel
 BuildRequires:	gnome-keyring-devel
 BuildRequires:	gtk2-devel
 # Yes. This too.
-BuildRequires:	gtk3-devel
+# BuildRequires:	gtk3-devel
 BuildRequires:	glibc-devel
 BuildRequires:	gperf
 BuildRequires:	libatomic
@@ -253,7 +260,6 @@ BuildRequires:	libusb-devel
 BuildRequires:	libXdamage-devel
 BuildRequires:	libXScrnSaver-devel
 BuildRequires:	libXtst-devel
-BuildRequires:  mesa-libGL-devel
 BuildRequires:	nodejs
 BuildRequires:	nss-devel
 BuildRequires:	pciutils-devel
@@ -296,6 +302,7 @@ BuildRequires:	bzip2-devel
 BuildRequires:	dbus-glib-devel
 BuildRequires:	elfutils-libelf-devel
 BuildRequires:	flac-devel
+BuildRequires:	freetype-devel
 BuildRequires:	hwdata
 BuildRequires:	kernel-headers
 BuildRequires:	libevent-devel
@@ -308,7 +315,7 @@ BuildRequires:	libffi-devel
 BuildRequires:	libicu-devel = 54.1
 %endif
 BuildRequires:	libjpeg-devel
-# BuildRequires:	libpng-devel
+BuildRequires:	libpng-devel
 %if 0
 # see https://code.google.com/p/chromium/issues/detail?id=501318
 BuildRequires:	libsrtp-devel >= 1.4.4
@@ -323,7 +330,7 @@ BuildRequires:	libusbx-devel >= 1.0.21-0.1.git448584a
 # We don't use libvpx anymore because Chromium loves to
 # use bleeding edge revisions here that break other things
 # ... so we just use the bundled libvpx.
-# Same is true for libwebp.
+BuildRequires:	libwebp-devel
 BuildRequires:	libxslt-devel
 # Same here, it seems.
 # BuildRequires:	libyuv-devel
@@ -351,6 +358,7 @@ BuildRequires:	re2-devel >= 20160401
 %endif
 BuildRequires:	speech-dispatcher-devel
 BuildRequires:	yasm
+BuildRequires:	zlib-devel
 BuildRequires:	pkgconfig(gnome-keyring-1)
 # remote desktop needs this
 BuildRequires:	pam-devel
@@ -426,15 +434,15 @@ Provides: bundled(libaddressinput) = 0
 Provides: bundled(libdrm) = 2.4.70
 Provides: bundled(libevent) = 1.4.15
 Provides: bundled(libjingle) = 9564
-Provides: bundled(libjpeg-turbo) = 1.4.90
+# Provides: bundled(libjpeg-turbo) = 1.4.90
 Provides: bundled(libphonenumber) = a4da30df63a097d67e3c429ead6790ad91d36cf4
-Provides: bundled(libpng) = 1.6.22
+# Provides: bundled(libpng) = 1.6.22
 Provides: bundled(libsrtp) = 2cbd85085037dc7bf2eda48d4cf62e2829056e2d
 %if %{bundlelibusbx}
 Provides: bundled(libusbx) = 1.0.17
 %endif
 Provides: bundled(libvpx) = 1.6.0
-Provides: bundled(libwebp) = 0.6.0
+# Provides: bundled(libwebp) = 0.6.0
 %if %{bundlelibxml}
 # Well, it's actually newer than 2.9.4 and has code in it that has been reverted upstream... but eh.
 Provides: bundled(libxml) = 2.9.4
@@ -470,8 +478,7 @@ Provides: bundled(webrtc) = 90usrsctp
 Provides: bundled(woff2) = 445f541996fe8376f3976d35692fd2b9a6eedf2d
 Provides: bundled(xdg-mime)
 Provides: bundled(xdg-user-dirs)
-Provides: bundled(x86inc) = 0
-Provides: bundled(zlib) = 1.2.11
+# Provides: bundled(zlib) = 1.2.11
 
 # For selinux scriptlet
 Requires(post): /usr/sbin/semanage
@@ -480,9 +487,16 @@ Requires(post): /usr/sbin/restorecon
 %description
 Chromium is an open-source web browser, powered by WebKit (Blink).
 
+%package common
+Summary: Files needed for both the headless_shell and full Chromium
+
+%description common
+%{summary}.
+
 %if 0%{?shared}
 %package libs
 Summary: Shared libraries used by chromium (and chrome-remote-desktop)
+Requires: chromium-common%{_isa} = %{version}-%{release}
 Requires: chromium-libs-media%{_isa} >= %{majorversion}
 Requires(post): %{_sbindir}/update-alternatives
 Requires(preun): %{_sbindir}/update-alternatives
@@ -491,14 +505,14 @@ Requires(preun): %{_sbindir}/update-alternatives
 Shared libraries used by chromium (and chrome-remote-desktop).
 
 %if %{freeworld}
-%package libs-media-freeworld
+%package -n chromium-libs-media-freeworld
 Summary: Chromium media libraries built with all possible codecs
 Provides: chromium-libs-media = %{version}-%{release}
 Provides: chromium-libs-media%{_isa} = %{version}-%{release}
 Requires(post): %{_sbindir}/update-alternatives
 Requires(preun): %{_sbindir}/update-alternatives
 
-%description libs-media-freeworld
+%description -n chromium-libs-media-freeworld
 Chromium media libraries built with all possible codecs. Chromium is an
 open-source web browser, powered by WebKit (Blink). This package replaces
 the default chromium-libs-media package, which is limited in what it
@@ -521,6 +535,7 @@ Requires(post): systemd
 Requires(preun): systemd
 Requires(postun): systemd
 Requires: xorg-x11-server-Xvfb
+Requires: python2-psutil
 %if 0%{?shared}
 Requires: chromium-libs%{_isa} = %{version}-%{release}
 %endif
@@ -546,13 +561,22 @@ JavaScript execution, and more. ChromeDriver is a standalone server which
 implements WebDriver's wire protocol for Chromium. It is being developed by
 members of the Chromium and WebDriver teams.
 
+%package headless
+Summary:	A minimal headless shell built from Chromium
+Requires:       chromium-common%{_isa} = %{version}-%{release}
+
+%description headless
+A minimal headless client built from Chromium. headless_shell is built
+without support for alsa, cups, dbus, gconf, gio, kerberos, pulseaudio, or 
+udev.
+
 %prep
 %setup -q -T -c -n %{name}-policies -a 10
 %setup -q -T -c -n depot_tools -a 2
 %if 0%{tests}
-%setup -q -n chromium-%{version} -b 1 -a 14
+%setup -q -n chromium-%{version} -b 1
 %else
-%setup -q -n chromium-%{version} -a 14
+%setup -q -n chromium-%{version}
 %endif
 
 ### Chromium Fedora Patches ###
@@ -577,12 +601,20 @@ members of the Chromium and WebDriver teams.
 %patch27 -p1 -b .setopaque
 %patch31 -p1 -b .permissive
 %patch33 -p1 -b .gcc7
+%if %{freeworld}
+# Do not apply mp3 change
+%else
 %patch34 -p1 -b .mp3
+%endif
 %patch36 -p1 -b .revert
 %patch37 -p1 -b .ffmpeg-stdatomic
-%patch38 -p1 -b .headerhack
 %patch39 -p1 -b .system-clang
 %patch40 -p1 -b .ucontextfix
+%patch41 -p1 -b .fixgnbootstrap
+%patch42 -p1 -b .noprefix
+%patch43 -p1 -b .nomangle
+%patch44 -p1 -b .gtk2fix
+%patch45 -p1 -b .nozmangle
 
 ### Chromium Tests Patches ###
 %patch100 -p1 -b .use_system_opus
@@ -693,20 +725,26 @@ ln -s /usr/bin/clang clang
 popd
 %endif
 
-CHROMIUM_BROWSER_GN_DEFINES=""
-CHROMIUM_BROWSER_GN_DEFINES+=' is_debug=false'
+# Core defines are flags that are true for both the browser and headless.
+CHROMIUM_CORE_GN_DEFINES=""
+CHROMIUM_CORE_GN_DEFINES+=' is_debug=false'
 %ifarch x86_64
-CHROMIUM_BROWSER_GN_DEFINES+=' system_libdir="lib64"'
+CHROMIUM_CORE_GN_DEFINES+=' system_libdir="lib64"'
 %endif
-CHROMIUM_BROWSER_GN_DEFINES+=' google_api_key="%{api_key}" google_default_client_id="%{default_client_id}" google_default_client_secret="%{default_client_secret}"'
-CHROMIUM_BROWSER_GN_DEFINES+=' is_clang=false use_sysroot=false use_gio=true use_pulseaudio=true icu_use_data_file=true'
+CHROMIUM_CORE_GN_DEFINES+=' google_api_key="%{api_key}" google_default_client_id="%{default_client_id}" google_default_client_secret="%{default_client_secret}"'
+CHROMIUM_CORE_GN_DEFINES+=' is_clang=false use_sysroot=false use_gold=false fieldtrial_testing_like_official_build=true'
+%if %{freeworld}
+CHROMIUM_CORE_GN_DEFINES+=' ffmpeg_branding="ChromeOS" proprietary_codecs=true'
+%else
+CHROMIUM_CORE_GN_DEFINES+=' ffmpeg_branding="Chromium" proprietary_codecs=false'
+%endif
+CHROMIUM_CORE_GN_DEFINES+=' treat_warnings_as_errors=false'
+export CHROMIUM_CORE_GN_DEFINES
+
+CHROMIUM_BROWSER_GN_DEFINES=""
+CHROMIUM_BROWSER_GN_DEFINES+=' use_gio=true use_pulseaudio=true icu_use_data_file=true'
 %if 0%{?nonacl}
 CHROMIUM_BROWSER_GN_DEFINES+=' enable_nacl=false'
-%endif
-%if %{freeworld}
-CHROMIUM_BROWSER_GN_DEFINES+=' ffmpeg_branding="ChromeOS" proprietary_codecs=true'
-%else
-CHROMIUM_BROWSER_GN_DEFINES+=' ffmpeg_branding="Chromium" proprietary_codecs=false'
 %endif
 %if 0%{?shared}
 CHROMIUM_BROWSER_GN_DEFINES+=' is_component_ffmpeg=true is_component_build=true'
@@ -716,15 +754,20 @@ CHROMIUM_BROWSER_GN_DEFINES+=' is_component_ffmpeg=false is_component_build=fals
 CHROMIUM_BROWSER_GN_DEFINES+=' remove_webcore_debug_symbols=true enable_hangout_services_extension=true'
 CHROMIUM_BROWSER_GN_DEFINES+=' enable_hotwording=false use_aura=true'
 CHROMIUM_BROWSER_GN_DEFINES+=' enable_webrtc=true enable_widevine=true'
-CHROMIUM_BROWSER_GN_DEFINES+=' use_gold=false fieldtrial_testing_like_official_build=true'
 %if 0%{gtk3}
 CHROMIUM_BROWSER_GN_DEFINES+=' use_gtk3=true'
 %else
 CHROMIUM_BROWSER_GN_DEFINES+=' use_gtk3=false'
 %endif
-# CHROMIUM_BROWSER_GN_DEFINES+=' use_system_libjpeg=true'
-CHROMIUM_BROWSER_GN_DEFINES+=' treat_warnings_as_errors=false'
 export CHROMIUM_BROWSER_GN_DEFINES
+
+CHROMIUM_HEADLESS_GN_DEFINES=""
+CHROMIUM_HEADLESS_GN_DEFINES+=' use_ozone=true ozone_auto_platforms=false ozone_platform="headless" ozone_platform_headless=true'
+CHROMIUM_HEADLESS_GN_DEFINES+=' headless_use_embedded_resources=true icu_use_data_file=false v8_use_external_startup_data=false'
+CHROMIUM_HEADLESS_GN_DEFINES+=' enable_nacl=false enable_print_preview=false enable_remoting=false use_alsa=false use_ash=false'
+CHROMIUM_HEADLESS_GN_DEFINES+=' use_cups=false use_dbus=false use_gconf=false use_gio=false use_kerberos=false use_libpci=false'
+CHROMIUM_HEADLESS_GN_DEFINES+=' use_pulseaudio=false use_udev=false'
+export CHROMIUM_HEADLESS_GN_DEFINES
 
 mkdir -p third_party/node/linux/node-linux-x64/bin
 ln -s %{_bindir}/node third_party/node/linux/node-linux-x64/bin/node
@@ -739,6 +782,8 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/ffmpeg' \
 	'third_party/adobe' \
 	'third_party/flac' \
+	'third_party/googletest' \
+	'third_party/glslang-angle' \
 	'third_party/harfbuzz-ng' \
 	'third_party/icu' \
 	'base/third_party/libevent' \
@@ -761,7 +806,6 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/swiftshader/third_party/subzero' \
 	'third_party/swiftshader/third_party/LLVM' \
 	'third_party/swiftshader/third_party/llvm-subzero' \
-	'third_party/swiftshader/third_party/pnacl-subzero' \
 	'third_party/usb_ids' \
 	'third_party/xdg-utils' \
 	'third_party/yasm' \
@@ -800,6 +844,7 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/catapult/tracing/third_party/gl-matrix' \
 	'third_party/catapult/tracing/third_party/jszip' \
 	'third_party/catapult/tracing/third_party/mannwhitneyu' \
+	'third_party/catapult/tracing/third_party/oboe' \
         'third_party/catapult/third_party/polymer' \
 	'third_party/catapult/third_party/py_vulcanize' \
 	'third_party/catapult/third_party/py_vulcanize/third_party/rcssmin' \
@@ -870,16 +915,19 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/sfntly' \
 	'third_party/sinonjs' \
 	'third_party/skia' \
+	'third_party/skia/third_party/vulkan' \
 	'third_party/smhasher' \
+	'third_party/spirv-headers' \
+	'third_party/spirv-tools-angle' \
 	'third_party/sqlite' \
 	'third_party/tcmalloc' \
 	'third_party/usrsctp' \
+	'third_party/vulkan-validation-layers' \
 	'third_party/web-animations-js' \
 	'third_party/webdriver' \
 	'third_party/webrtc' \
 	'third_party/widevine' \
         'third_party/woff2' \
-	'third_party/x86inc' \
 	'third_party/zlib/google' \
 	'url/third_party/mozilla' \
 	'v8/third_party/inspector_protocol' \
@@ -898,6 +946,7 @@ export PATH=$PATH:%{_builddir}/depot_tools
 
 build/linux/unbundle/replace_gn_files.py --system-libraries \
 	flac \
+	freetype \
 %if 0%{?bundleharfbuzz}
 %else
 	harfbuzz-ng \
@@ -906,13 +955,14 @@ build/linux/unbundle/replace_gn_files.py --system-libraries \
 %else
 	icu \
 %endif
-%if 0
-	libevent \
-%endif
+	libdrm \
+	libjpeg \
+	libpng \
 %if %{bundlelibusbx}
 %else
 	libusb \
 %endif
+	libwebp \
 %if %{bundlelibxml}
 %else
 	libxml \
@@ -926,16 +976,25 @@ build/linux/unbundle/replace_gn_files.py --system-libraries \
 %else
 	re2 \
 %endif
-	yasm
+	yasm \
+	zlib
 
-tools/gn/bootstrap/bootstrap.py -v --gn-gen-args "$CHROMIUM_BROWSER_GN_DEFINES"
-%{target}/gn gen --args="$CHROMIUM_BROWSER_GN_DEFINES" %{target}
+tools/gn/bootstrap/bootstrap.py -v --gn-gen-args "$CHROMIUM_CORE_GN_DEFINES $CHROMIUM_BROWSER_GN_DEFINES"
+%{target}/gn gen --args="$CHROMIUM_CORE_GN_DEFINES $CHROMIUM_BROWSER_GN_DEFINES" %{target}
+
+%if %{freeworld}
+# do not need to do headless gen
+%else
+%{target}/gn gen --args="$CHROMIUM_CORE_GN_DEFINES $CHROMIUM_HEADLESS_GN_DEFINES" %{headlesstarget}
+%endif
 
 %if %{bundlelibusbx}
 # no hackity hack hack
 %else
 # hackity hack hack
 rm -rf third_party/libusb/src/libusb/libusb.h
+# we _shouldn't need to do this, but it looks like we do.
+cp -a %{_includedir}/libusb-1.0/libusb.h third_party/libusb/src/libusb/libusb.h
 %endif
 
 # make up a version for widevine
@@ -1019,12 +1078,13 @@ export CHROMIUM_BROWSER_UNIT_TESTS="\
 export CHROMIUM_BROWSER_UNIT_TESTS=
 %endif
 
-
-%global target out/Release
-
+# Now do the full browser
 %if 0%{freeworld}
 ../depot_tools/ninja -C %{target} -vvv media $CHROMIUM_BROWSER_UNIT_TESTS
 %else
+# Do headless first.  
+../depot_tools/ninja -C %{headlesstarget} -vvv headless_shell
+
 ../depot_tools/ninja -C %{target} -vvv chrome chrome_sandbox chromedriver widevinecdmadapter clearkeycdm policy_templates $CHROMIUM_BROWSER_UNIT_TESTS
 
 # remote client
@@ -1055,6 +1115,10 @@ mkdir -p %{buildroot}%{chromium_path}
 pushd %{target}
 cp -a libffmpeg.so* %{buildroot}%{chromium_path}
 cp -a libmedia.so* %{buildroot}%{chromium_path}
+mv %{buildroot}%{chromium_path}/libffmpeg.so{,.%{lsuffix}}
+mv %{buildroot}%{chromium_path}/libffmpeg.so.TOC{,.%{lsuffix}}
+mv %{buildroot}%{chromium_path}/libmedia.so{,.%{lsuffix}}
+mv %{buildroot}%{chromium_path}/libmedia.so.TOC{,.%{lsuffix}}
 popd
 %else
 mkdir -p %{buildroot}%{_bindir}
@@ -1152,6 +1216,10 @@ popd
 cp -a remoting_client_plugin_newlib.* %{buildroot}%{chromium_path}
 %endif
 %endif
+popd
+
+pushd %{headlesstarget}
+cp -a headless_lib.pak headless_shell %{buildroot}%{chromium_path}
 popd
 
 cp -a remoting/host/linux/linux_me2me_host.py %{buildroot}%{crd_path}/chrome-remote-desktop
@@ -1547,10 +1615,10 @@ if [ $1 = 0 ]; then
 fi
 
 %if %{freeworld}
-%posttrans libs-media-freeworld
+%posttrans -n chromium-libs-media-freeworld
 %{_sbindir}/update-alternatives --install \
   %{_libdir}/chromium-browser/libffmpeg.so libffmpeg.so \
-  %{_libdir}/chromium-browser/libffmpeg.so.freeworld 5 \
+  %{_libdir}/chromium-browser/libffmpeg.so.freeworld 20 \
   --slave %{_libdir}/chromium-browser/libffmpeg.so.TOC libffmpeg.so.TOC \
           %{_libdir}/chromium-browser/libffmpeg.so.TOC.freeworld \
   --slave %{_libdir}/chromium-browser/libmedia.so libmedia.so \
@@ -1558,7 +1626,7 @@ fi
   --slave %{_libdir}/chromium-browser/libmedia.so.TOC libmedia.so.TOC \
           %{_libdir}/chromium-browser/libmedia.so.TOC.freeworld
 
-%preun libs-media-freeworld
+%preun -n chromium-libs-media-freeworld
 if [ $1 = 0 ]; then
   %{_sbindir}/alternatives --remove libffmpeg.so \
     %{_libdir}/chromium-browser/libffmpeg.so.freeworld
@@ -1600,6 +1668,7 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 %files
 %doc AUTHORS
+%doc chrome_policy_list.html *.json
 %license LICENSE
 %config %{_sysconfdir}/%{name}/
 %dir %{_sysconfdir}/%{name}/native-messaging-hosts
@@ -1608,7 +1677,10 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{_bindir}/%{chromium_browser_channel}
 %dir %{chromium_path}
 %{chromium_path}/*.bin
-%{chromium_path}/*.pak
+%{chromium_path}/chrome_*.pak
+%{chromium_path}/keyboard_resources.pak
+%{chromium_path}/resources.pak
+%{chromium_path}/views_mus_resources.pak
 %{chromium_path}/icudtl.dat
 %{chromium_path}/%{chromium_browser_channel}
 %{chromium_path}/%{chromium_browser_channel}.sh
@@ -1623,8 +1695,19 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 # %%{chromium_path}/remoting_locales/
 # %%{chromium_path}/pseudo_locales/
 # %%{chromium_path}/plugins/
-%{chromium_path}/pyproto/
 %attr(4755, root, root) %{chromium_path}/chrome-sandbox
+%{_mandir}/man1/%{chromium_browser_channel}.*
+%{_datadir}/icons/hicolor/*/apps/%{chromium_browser_channel}.png
+%{_datadir}/applications/*.desktop
+%{_datadir}/appdata/*.appdata.xml
+%{_datadir}/gnome-control-center/default-apps/chromium-browser.xml
+
+%files common
+%{chromium_path}/headless_lib.pak
+%{chromium_path}/libosmesa.so
+%{chromium_path}/mus_app_resources_*.pak
+%{chromium_path}/pyproto/
+%{chromium_path}/resources/
 %dir %{chromium_path}/locales/
 %lang(am) %{chromium_path}/locales/am.pak
 %lang(ar) %{chromium_path}/locales/ar.pak
@@ -1679,18 +1762,13 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %lang(vi) %{chromium_path}/locales/vi.pak
 %lang(zh_CN) %{chromium_path}/locales/zh-CN.pak
 %lang(zh_TW) %{chromium_path}/locales/zh-TW.pak
-# %%{chromium_path}/locales/fake-bidi.pak
-%{chromium_path}/resources/
-%{_mandir}/man1/%{chromium_browser_channel}.*
-%{_datadir}/icons/hicolor/*/apps/%{chromium_browser_channel}.png
-%{_datadir}/applications/*.desktop
-%{_datadir}/appdata/*.appdata.xml
-%{_datadir}/gnome-control-center/default-apps/chromium-browser.xml
 
-%doc chrome_policy_list.html *.json
+%files headless
+%{chromium_path}/headless_shell
 
 %if 0%{?shared}
 %files libs
+%exclude %{chromium_path}/libosmesa.so
 %exclude %{chromium_path}/libffmpeg.so*
 %exclude %{chromium_path}/libmedia.so*
 %exclude %{chromium_path}/libwidevinecdm.so
@@ -1729,7 +1807,7 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 %if 0%{?shared}
 %if %{freeworld}
-%files libs-media-freeworld
+%files -n chromium-libs-media-freeworld
 %else
 %files libs-media
 %endif
@@ -1741,6 +1819,16 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Fri Aug  4 2017 Tom Callaway <spot@fedoraproject.org> 60.0.3112.90-1
+- update to 60.0.3112.90
+
+* Mon Jul 31 2017 Tom Callaway <spot@fedoraproject.org> 60.0.3112.78-1
+- update to 60.0.3112.78
+
+* Fri Jul 21 2017 Tom Callaway <spot@fedoraproject.org> 59.0.3071.115-4
+- put common files in -common subpackage
+- build headless_shell for -headless subpackage
+
 * Fri Jul 21 2017 Tom Callaway <spot@fedoraproject.org> 59.0.3071.115-3
 - use posttrans to ensure that old libs are gone before trying to make alternative symlinks
 
