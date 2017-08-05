@@ -112,6 +112,7 @@ BuildRequires:  libicu-devel >= 5.4
 Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 %else
 Name:		chromium%{chromium_channel}
+%endif
 Version:	%{majorversion}.0.3112.90
 Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
