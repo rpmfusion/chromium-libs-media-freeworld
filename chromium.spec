@@ -83,10 +83,12 @@ BuildRequires:  libicu-devel >= 5.4
 %global bundleopus 1
 %global bundlelibusbx 1
 %global bundleharfbuzz 1
+%global bundlelibwebp 1
 %else
 %global bundleharfbuzz 0
 %global bundleopus 1
 %global bundlelibusbx 0
+%global bundlelibwebp 0
 %endif
 
 # Needs at least harfbuzz 1.4.2 now.
@@ -260,6 +262,7 @@ BuildRequires:	libusb-devel
 BuildRequires:	libXdamage-devel
 BuildRequires:	libXScrnSaver-devel
 BuildRequires:	libXtst-devel
+BuildRequires:	minizip-devel
 BuildRequires:	nodejs
 BuildRequires:	nss-devel
 BuildRequires:	pciutils-devel
@@ -330,7 +333,11 @@ BuildRequires:	libusbx-devel >= 1.0.21-0.1.git448584a
 # We don't use libvpx anymore because Chromium loves to
 # use bleeding edge revisions here that break other things
 # ... so we just use the bundled libvpx.
+%if %{bundlelibwebp}
+# Do nothing
+%else
 BuildRequires:	libwebp-devel
+%endif
 BuildRequires:	libxslt-devel
 # Same here, it seems.
 # BuildRequires:	libyuv-devel
@@ -442,7 +449,9 @@ Provides: bundled(libsrtp) = 2cbd85085037dc7bf2eda48d4cf62e2829056e2d
 Provides: bundled(libusbx) = 1.0.17
 %endif
 Provides: bundled(libvpx) = 1.6.0
-# Provides: bundled(libwebp) = 0.6.0
+%if %{bundlelibwebp}
+Provides: bundled(libwebp) = 0.6.0
+%endif
 %if %{bundlelibxml}
 # Well, it's actually newer than 2.9.4 and has code in it that has been reverted upstream... but eh.
 Provides: bundled(libxml) = 2.9.4
@@ -962,7 +971,10 @@ build/linux/unbundle/replace_gn_files.py --system-libraries \
 %else
 	libusb \
 %endif
+%if %{bundlelibwebp}
+%else
 	libwebp \
+%endif
 %if %{bundlelibxml}
 %else
 	libxml \
