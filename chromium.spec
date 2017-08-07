@@ -341,6 +341,7 @@ BuildRequires:	libwebp-devel
 BuildRequires:	libxslt-devel
 # Same here, it seems.
 # BuildRequires:	libyuv-devel
+BuildRequires:	mesa-libGL-devel
 %if %{bundleopus}
 # Do nothing
 %else
