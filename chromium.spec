@@ -198,8 +198,7 @@ Patch44:	chromium-60.0.3112.78-gtk2fix.patch
 # Do not mangle zlib
 Patch45:	chromium-60.0.3112.78-no-zlib-mangle.patch
 # Apply this change to work around EPEL7 compiler issues
-# https://chromium.googlesource.com/chromium/src/+/639c840bf93e2934fe6b3f564f90060313d5791a
-Patch46:	chromium-60.0.3112.90-no-per-child.patch
+Patch46:	chromium-60.0.3112.90-init-list-hack.patch
 
 
 ### Chromium Tests Patches ###
@@ -629,7 +628,7 @@ udev.
 %patch44 -p1 -b .gtk2fix
 %patch45 -p1 -b .nozmangle
 %if 0%{?rhel} == 7
-%patch46 -p1 -b .noperchild
+%patch46 -p1 -b .oldgcc
 %endif
 
 ### Chromium Tests Patches ###
