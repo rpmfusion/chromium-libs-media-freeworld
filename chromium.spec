@@ -116,7 +116,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 Name:		chromium%{chromium_channel}
 %endif
 Version:	%{majorversion}.0.3112.90
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -197,6 +197,9 @@ Patch43:	chromium-60.0.3112.78-jpeg-nomangle.patch
 Patch44:	chromium-60.0.3112.78-gtk2fix.patch
 # Do not mangle zlib
 Patch45:	chromium-60.0.3112.78-no-zlib-mangle.patch
+# Apply this change to work around EPEL7 compiler issues
+# https://chromium.googlesource.com/chromium/src/+/639c840bf93e2934fe6b3f564f90060313d5791a
+Patch46:	chromium-60.0.3112.90-no-per-child.patch
 
 
 ### Chromium Tests Patches ###
@@ -625,6 +628,9 @@ udev.
 %patch43 -p1 -b .nomangle
 %patch44 -p1 -b .gtk2fix
 %patch45 -p1 -b .nozmangle
+%if 0%{?rhel} == 7
+%patch46 -p1 -b .noperchild
+%endif
 
 ### Chromium Tests Patches ###
 %patch100 -p1 -b .use_system_opus
@@ -1832,6 +1838,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Wed Aug  9 2017 Tom Callaway <spot@fedoraproject.org> 60.0.3112.90-2
+- apply post 60 code commit to get code building on epel7
+
 * Fri Aug  4 2017 Tom Callaway <spot@fedoraproject.org> 60.0.3112.90-1
 - update to 60.0.3112.90
 
