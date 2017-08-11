@@ -20,8 +20,8 @@ diff -up chromium-60.0.3112.90/third_party/WebKit/Source/core/layout/ng/ng_block
 -    curr_bfc_offset_ +=
 -        {border_and_padding_.inline_start + curr_child_margins_.inline_start,
 -         curr_margin_strut_.Sum()};
-+    LayoutUnit sum_inline_starts2 = {border_and_padding_.inline_start + curr_child_margins_.inline_start, curr_margin_strut_.Sum()};
-+    curr_bfc_offset_ += sum_inline_starts2;
++    LayoutUnit sum_inline_starts2 = {border_and_padding_.inline_start + curr_child_margins_.inline_start};
++    curr_bfc_offset_ += {sum_inline_starts2, curr_margin_strut_.Sum()};
      MaybeUpdateFragmentBfcOffset(ConstraintSpace(), curr_bfc_offset_,
                                   &container_builder_);
      PositionPendingFloats(curr_bfc_offset_.block_offset, &container_builder_,
