@@ -5,7 +5,7 @@ diff -up chromium-60.0.3112.90/third_party/angle/src/vulkan_support/BUILD.gn.c99
      cflags += [ "-Wno-ignored-attributes" ]
    }
    if (is_linux) {
-+    cflags = [ "-std=c99" ]
++    cflags += [ "-std=c99" ]
      defines += [
        "SYSCONFDIR=\"/etc\"",
        "FALLBACK_CONFIG_DIRS=\"/etc/xdg\"",
