@@ -115,8 +115,8 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 %else
 Name:		chromium%{chromium_channel}
 %endif
-Version:	%{majorversion}.0.3112.90
-Release:	3%{?dist}
+Version:	%{majorversion}.0.3112.101
+Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -200,7 +200,8 @@ Patch45:	chromium-60.0.3112.78-no-zlib-mangle.patch
 # Apply these changes to work around EPEL7 compiler issues
 Patch46:	chromium-60.0.3112.90-init-list-hack.patch
 Patch47:	chromium-60.0.3112.90-vulkan-force-c99.patch
-
+# https://chromium.googlesource.com/chromium/src/+/9c77470ff34bac937ceb765a27cee1703f0f2426
+Patch48:	chromium-60.0.3112.101-camfix.patch
 
 ### Chromium Tests Patches ###
 Patch100:	chromium-46.0.2490.86-use_system_opus.patch
@@ -632,6 +633,7 @@ udev.
 %patch46 -p1 -b .oldgcc
 %patch47 -p1 -b .c99
 %endif
+%patch48 -p1 -b .camfix
 
 ### Chromium Tests Patches ###
 %patch100 -p1 -b .use_system_opus
@@ -1839,6 +1841,11 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Wed Aug 16 2017 Tom Callaway <spot@fedoraproject.org> 60.0.3112.101-1
+- update to 60.0.3112.101
+- apply upstream fix for cameras which report zero resolution formats
+  (bz1465357)
+
 * Mon Aug 14 2017 Tom Callaway <spot@fedoraproject.org> 60.0.3112.90-3
 - apply more workarounds to coax code to build with epel7 gcc
 
