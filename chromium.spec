@@ -116,7 +116,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 Name:		chromium%{chromium_channel}
 %endif
 Version:	%{majorversion}.0.3112.101
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -549,7 +549,11 @@ Requires(post): systemd
 Requires(preun): systemd
 Requires(postun): systemd
 Requires: xorg-x11-server-Xvfb
+%if 0%{?rhel} == 7
+Requires: python-psutil
+%else
 Requires: python2-psutil
+%endif
 %if 0%{?shared}
 Requires: chromium-libs%{_isa} = %{version}-%{release}
 %endif
@@ -1841,6 +1845,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Thu Aug 17 2017 Tom Callaway <spot@fedoraproject.org> 60.0.3112.101-2
+- fix dep issue with chrome-remote-desktop on el7
+
 * Wed Aug 16 2017 Tom Callaway <spot@fedoraproject.org> 60.0.3112.101-1
 - update to 60.0.3112.101
 - apply upstream fix for cameras which report zero resolution formats
