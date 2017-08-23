@@ -377,6 +377,8 @@ BuildRequires:	pkgconfig(gnome-keyring-1)
 # remote desktop needs this
 BuildRequires:	pam-devel
 BuildRequires:	systemd
+# using the built from source version on aarch64
+BuildRequires:	ninja-build
 
 # We pick up an automatic requires on the library, but we need the version check
 # because the nss shared library is unversioned.
