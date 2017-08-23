@@ -1,0 +1,12 @@
+diff -up chromium-60.0.3112.101/third_party/ffmpeg/ffmpeg_generated.gni.aarch64 chromium-60.0.3112.101/third_party/ffmpeg/ffmpeg_generated.gni
+--- chromium-60.0.3112.101/third_party/ffmpeg/ffmpeg_generated.gni.aarch64	2017-08-23 14:46:37.305832399 -0400
++++ chromium-60.0.3112.101/third_party/ffmpeg/ffmpeg_generated.gni	2017-08-23 14:47:06.217148864 -0400
+@@ -539,7 +539,7 @@ if (is_linux && current_cpu == "arm64")
+   ]
+ }
+ 
+-if ((is_android && current_cpu == "arm64" && ffmpeg_branding == "Chrome") || (is_linux && current_cpu == "arm64" && ffmpeg_branding == "Chrome") || (is_linux && current_cpu == "arm64" && ffmpeg_branding == "ChromeOS")) {
++if ((is_android && current_cpu == "arm64" && ffmpeg_branding == "Chrome") || (is_linux && current_cpu == "arm64" && ffmpeg_branding == "Chrome") || (is_linux && current_cpu == "arm64" && ffmpeg_branding == "ChromeOS") || (is_linux && current_cpu == "arm64" && ffmpeg_branding == "Chromium")) {
+   ffmpeg_c_sources += [
+     "libavcodec/aarch64/mpegaudiodsp_init.c",
+   ]
