@@ -220,6 +220,7 @@ manual_files="	libavcodec/x86/hpeldsp_rnd_template.c \
 		libavutil/x86/x86util.asm "
 
 mp3_files="	libavcodec/aarch64/mpegaudiodsp_init.c \
+		libavcodec/aarch64/mpegaudiodsp_neon.S \
 		libavcodec/aac_ac3_parser.c \
 		libavcodec/aac_parser.c \
 		libavcodec/aacadtsdec.c \
