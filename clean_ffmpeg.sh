@@ -211,6 +211,9 @@ manual_files="	libavcodec/x86/hpeldsp_rnd_template.c \
 		libavformat/options.c \
 		libavformat/pcm.c \
 		libavformat/utils.c \
+		libavutil/aarch64/asm.S \
+		libavutil/aarch64/bswap.h \
+		libavutil/aarch64/timer.h \
 		libavutil/cpu.c \
 		libavutil/fixed_dsp.c \
 		libavutil/float_dsp.c \
