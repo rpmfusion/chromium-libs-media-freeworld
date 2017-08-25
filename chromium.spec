@@ -204,6 +204,9 @@ Patch47:	chromium-60.0.3112.90-vulkan-force-c99.patch
 Patch48:	chromium-60.0.3112.101-camfix.patch
 # Fix mp3 for aarch64
 Patch49:	chromium-60.0.3112.101-fix-ffmpeg-aarch64.patch
+# Fix libavutil include pathing to find arch specific timer.h
+# For some reason, this only fails on aarch64. No idea why.
+Patch50:	chromium-60.0.3112.113-libavutil-timer-include-path-fix.patch
 
 ### Chromium Tests Patches ###
 Patch100:	chromium-46.0.2490.86-use_system_opus.patch
@@ -643,6 +646,8 @@ udev.
 %patch47 -p1 -b .c99
 %endif
 %patch48 -p1 -b .camfix
+%patch50 -p1 -b .pathfix
+
 
 ### Chromium Tests Patches ###
 %patch100 -p1 -b .use_system_opus
