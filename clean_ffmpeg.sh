@@ -186,7 +186,12 @@ header_files="	libavcodec/x86/inline_asm.h \
 		compat/va_copy.h \
 		compat/atomics/gcc/stdatomic.h "
 
-manual_files="	libavcodec/x86/hpeldsp_rnd_template.c \
+manual_files="	libavcodec/aarch64/fft_neon.S \
+		libavcodec/aarch64/h264pred_neon.S \
+		libavcodec/aarch64/hpeldsp_neon.S \
+		libavcodec/aarch64/mdct_neon.S \
+		libavcodec/aarch64/vorbisdsp_neon.S \
+		libavcodec/x86/hpeldsp_rnd_template.c \
 		libavcodec/x86/rnd_template.c \
 		libavcodec/x86/videodsp.asm \
 		libavcodec/x86/videodsp_init.c \
@@ -213,6 +218,7 @@ manual_files="	libavcodec/x86/hpeldsp_rnd_template.c \
 		libavformat/utils.c \
 		libavutil/aarch64/asm.S \
 		libavutil/aarch64/bswap.h \
+		libavutil/aarch64/float_dsp_neon.S \
 		libavutil/aarch64/timer.h \
 		libavutil/cpu.c \
 		libavutil/fixed_dsp.c \
