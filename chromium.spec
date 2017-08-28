@@ -116,7 +116,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 Name:		chromium%{chromium_channel}
 %endif
 Version:	%{majorversion}.0.3112.113
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -418,7 +418,11 @@ Provides:	chromium-libs = %{version}-%{release}
 Obsoletes:	chromium-libs <= %{version}-%{release}
 %endif
 
+%if 0%{?rhel}
+ExclusiveArch:  x86_64 i686
+%else
 ExclusiveArch:	x86_64 i686 aarch64
+%endif
 
 # Bundled bits (I'm sure I've missed some)
 Provides: bundled(angle) = 2422
@@ -1867,7 +1871,10 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
-* Thu Aug 23 2017 Tom Callaway <spot@fedoraproject.org> 60.0.3112.113-1
+* Mon Aug 28 2017 Tom Callaway <spot@fedoraproject.org> 60.0.3112.113-2
+- disable aarch64 on rhel7, missing libatomic.so for some reason
+
+* Wed Aug 23 2017 Tom Callaway <spot@fedoraproject.org> 60.0.3112.113-1
 - fix ffmpeg clean script to not delete aarch64 file
 - update to 60.0.3112.113
 
