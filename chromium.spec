@@ -534,6 +534,7 @@ Shared libraries used by chromium (and chrome-remote-desktop).
 Summary: Chromium media libraries built with all possible codecs
 Provides: chromium-libs-media = %{version}-%{release}
 Provides: chromium-libs-media%{_isa} = %{version}-%{release}
+Requires: chromium-libs%{_isa} = %{version}-%{release}
 Requires(post): %{_sbindir}/update-alternatives
 Requires(preun): %{_sbindir}/update-alternatives
 
