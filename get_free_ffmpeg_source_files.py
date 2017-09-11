@@ -60,7 +60,7 @@ def parse_ffmpeg_gyni_file(gyni_path, arch_not_arm):
         if inserted:
           break
         limitations = ['ffmpeg_branding == "Chrome"', 'ffmpeg_branding == "ChromeOS"']
-        if ('is_linux' in condition) and not any(limitation in condition for limitation in limitations):
+        if ('use_linux_config' in condition) and not any(limitation in condition for limitation in limitations):
           if (arch_not_arm):
             if ('x64' in condition) or ('x86' in condition):
               parse_sources (block[1], output_sources, arch_not_arm)
@@ -68,6 +68,10 @@ def parse_ffmpeg_gyni_file(gyni_path, arch_not_arm):
           else:
             parse_sources (block[1], output_sources, arch_not_arm)
             inserted = True
+
+  if len(output_sources) == 0:
+    sys.stderr.write("Something went wrong, no sources parsed!\n")
+    sys.exit(1)
 
   print ' '.join(output_sources)
 

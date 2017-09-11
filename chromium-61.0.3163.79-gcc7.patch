@@ -1,0 +1,12 @@
+diff -up chromium-61.0.3163.79/third_party/WebKit/Source/platform/graphics/gpu/SharedGpuContext.h.gcc7 chromium-61.0.3163.79/third_party/WebKit/Source/platform/graphics/gpu/SharedGpuContext.h
+--- chromium-61.0.3163.79/third_party/WebKit/Source/platform/graphics/gpu/SharedGpuContext.h.gcc7	2017-09-05 15:05:41.000000000 -0400
++++ chromium-61.0.3163.79/third_party/WebKit/Source/platform/graphics/gpu/SharedGpuContext.h	2017-09-06 14:01:52.461097821 -0400
+@@ -8,6 +8,7 @@
+ #include "platform/PlatformExport.h"
+ #include "platform/wtf/ThreadSpecific.h"
+ 
++#include <functional>
+ #include <memory>
+ 
+ namespace gpu {
+diff -up chromium-61.0.3163.79/v8/src/objects/hash-table.h.gcc7 chromium-61.0.3163.79/v8/src/objects/hash-table.h

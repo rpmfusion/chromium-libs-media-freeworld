@@ -24,25 +24,27 @@
 function copy_files() {
 	for file in $1
 	do
-		dir_name=`echo $file | sed 's%/[^/]*$%/%'`
+		dir_name=$(echo "$file" | sed 's%/[^/]*$%/%')
 		if [[ $dir_name == */* ]]; then
 			tmp_dir_name="tmp_"$dir_name
-			mkdir -p ../tmp_ffmpeg/$tmp_dir_name
+			mkdir -p "../tmp_ffmpeg/$tmp_dir_name"
 		else
 			tmp_dir_name=$file
 		fi
 
 		if [ "$2" -eq 1 ]; then
-			cp $file ../tmp_ffmpeg/$tmp_dir_name
+			cp "$file" "../tmp_ffmpeg/$tmp_dir_name"
 		else
-			cp $file ../tmp_ffmpeg/$tmp_dir_name > /dev/null 2>&1
+			cp "$file" "../tmp_ffmpeg/$tmp_dir_name" > /dev/null 2>&1
 		fi
 	done
 }
 
-where=`pwd`
+where=$(pwd)
 
-generated_files=`./get_free_ffmpeg_source_files.py $1 $2`
+if ! generated_files=$(./get_free_ffmpeg_source_files.py "$1" "$2"); then
+	exit 1
+fi
 # As the build system files does not contain the header files, cheat here
 # and generate the header files names from source files. These that does not
 # exist will be later skipped while copying.
@@ -82,6 +84,7 @@ header_files="	libavcodec/x86/inline_asm.h \
 		libavcodec/h263dsp.h \
 		libavcodec/h264chroma.h \
 		libavcodec/hpeldsp.h \
+		libavcodec/hwaccel.h \
 		libavcodec/idctdsp.h \
 		libavcodec/internal.h \
 		libavcodec/kbdwin.h \
@@ -166,6 +169,8 @@ header_files="	libavcodec/x86/inline_asm.h \
 		libavutil/ffmath.h \
 		libavutil/fixed_dsp.h \
 		libavutil/float_dsp.h \
+		libavutil/imgutils.h \
+		libavutil/imgutils_internal.h \
 		libavutil/internal.h \
 		libavutil/intfloat.h \
 		libavutil/intreadwrite.h \
@@ -223,6 +228,7 @@ manual_files="	libavcodec/aarch64/fft_neon.S \
 		libavutil/cpu.c \
 		libavutil/fixed_dsp.c \
 		libavutil/float_dsp.c \
+		libavutil/imgutils.c \
 		libavutil/x86/cpu.c \
 		libavutil/x86/float_dsp_init.c \
 		libavutil/x86/x86inc.asm \
@@ -294,7 +300,7 @@ other_files="	BUILD.gn \
 		RELEASE \
 		xcode_hack.c "
 
-cd $1/third_party/ffmpeg
+cd "$1/third_party/ffmpeg" || exit 1
 
 copy_files "$generated_files" 0
 copy_files "$generated_files_headers" 0
@@ -306,14 +312,15 @@ copy_files "$mp3_files" 1
 mkdir -p ../tmp_ffmpeg/tmp_chromium/config
 cp -r chromium/config ../tmp_ffmpeg/tmp_chromium
 
-cd ../tmp_ffmpeg
-for tmp_directory in $(find . -type d -name 'tmp_*')
-	do
-		new_name=`echo $tmp_directory | sed 's/tmp_//'`
-		mv $tmp_directory $new_name
-	done
+cd ../tmp_ffmpeg || exit 1
 
-cd $where
+while IFS= read -r -d '' tmp_directory
+do
+	new_name=${tmp_directory//tmp_/}
+	mv "$tmp_directory" "$new_name"
+done <  <(find . -type d -name 'tmp_*' -print0)
 
-rm -rf $1/third_party/ffmpeg
-mv $1/third_party/tmp_ffmpeg $1/third_party/ffmpeg
+cd "$where" || exit 1
+
+rm -rf "$1/third_party/ffmpeg"
+mv "$1/third_party/tmp_ffmpeg" "$1/third_party/ffmpeg"
