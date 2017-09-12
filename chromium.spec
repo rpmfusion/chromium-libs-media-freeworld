@@ -214,6 +214,8 @@ Patch55:	chromium-61.0.3163.79-gtk2fix.patch
 # Fix atk compile
 # https://chromium-review.googlesource.com/c/chromium/src/+/580927
 Patch56:	chromium-61.0.3163.79-fix-atk-compile.patch
+# Only needed when glibc 2.26.90 or later is used
+Patch57:	chromium-61.0.3163.79-aarch64-glibc-2.26.90.patch
 
 ### Chromium Tests Patches ###
 Patch100:	chromium-46.0.2490.86-use_system_opus.patch
@@ -663,6 +665,9 @@ udev.
 %patch54 -p1 -b .gcc5fix
 %patch55 -p1 -b .gtk2fix
 %patch56 -p1 -b .atkfix
+%if 0%{?fedora} >= 28
+%patch57 -p1 -b .aarch64glibc
+%endif
 
 ### Chromium Tests Patches ###
 %patch100 -p1 -b .use_system_opus
