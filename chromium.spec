@@ -190,7 +190,6 @@ Patch43:	chromium-60.0.3112.78-jpeg-nomangle.patch
 # Do not mangle zlib
 Patch45:	chromium-60.0.3112.78-no-zlib-mangle.patch
 # Apply these changes to work around EPEL7 compiler issues
-Patch46:	chromium-60.0.3112.90-init-list-hack.patch
 Patch47:	chromium-60.0.3112.90-vulkan-force-c99.patch
 # https://chromium.googlesource.com/chromium/src/+/9c77470ff34bac937ceb765a27cee1703f0f2426
 Patch48:	chromium-60.0.3112.101-camfix.patch
@@ -654,7 +653,6 @@ udev.
 %patch43 -p1 -b .nomangle
 %patch45 -p1 -b .nozmangle
 %if 0%{?rhel} == 7
-%patch46 -p1 -b .oldgcc
 %patch47 -p1 -b .c99
 %endif
 %patch48 -p1 -b .camfix
