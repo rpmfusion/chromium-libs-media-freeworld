@@ -219,6 +219,8 @@ Patch57:	chromium-61.0.3163.79-aarch64-glibc-2.26.90.patch
 # More gcc fixes for epel
 Patch58:	chromium-61.0.3163.79-dde535-gcc-fix.patch
 Patch59:	chromium-61.0.3163.79-gcc-nc.patch
+# This is really ugly.
+Patch60:	chromium-61.0.3163.79-uglyhack.patch
 
 ### Chromium Tests Patches ###
 Patch100:	chromium-46.0.2490.86-use_system_opus.patch
@@ -661,6 +663,7 @@ udev.
 %patch47 -p1 -b .c99
 %patch58 -p1 -b .dde5e35
 %patch59 -p1 -b .gcc-nc
+%patch60 -p1 -b .uglyhack
 %endif
 %patch48 -p1 -b .camfix
 %patch50 -p1 -b .pathfix
