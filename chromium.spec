@@ -218,6 +218,7 @@ Patch56:	chromium-61.0.3163.79-fix-atk-compile.patch
 Patch57:	chromium-61.0.3163.79-aarch64-glibc-2.26.90.patch
 # More gcc fixes for epel
 Patch58:	chromium-61.0.3163.79-dde535-gcc-fix.patch
+Patch59:	chromium-61.0.3163.79-gcc-nc.patch
 
 ### Chromium Tests Patches ###
 Patch100:	chromium-46.0.2490.86-use_system_opus.patch
@@ -659,6 +660,7 @@ udev.
 %patch46 -p1 -b .kmaxskip
 %patch47 -p1 -b .c99
 %patch58 -p1 -b .dde5e35
+%patch59 -p1 -b .gcc-nc
 %endif
 %patch48 -p1 -b .camfix
 %patch50 -p1 -b .pathfix
