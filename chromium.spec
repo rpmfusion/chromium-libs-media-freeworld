@@ -84,11 +84,13 @@ BuildRequires:  libicu-devel >= 5.4
 %global bundlelibusbx 1
 %global bundleharfbuzz 1
 %global bundlelibwebp 1
+%global bundlelibpng 1
 %else
 %global bundleharfbuzz 0
 %global bundleopus 1
 %global bundlelibusbx 0
 %global bundlelibwebp 0
+%global bundlelibpng 0
 %endif
 
 # Needs at least harfbuzz 1.4.2 now.
@@ -115,7 +117,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 %else
 Name:		chromium%{chromium_channel}
 %endif
-Version:	%{majorversion}.0.3163.79
+Version:	%{majorversion}.0.3163.100
 Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
@@ -221,6 +223,8 @@ Patch58:	chromium-61.0.3163.79-dde535-gcc-fix.patch
 Patch59:	chromium-61.0.3163.79-gcc-nc.patch
 # Epel compiler really does not like assigning nullptr to a StructPtr
 Patch60:	chromium-61.0.3163.79-epel7-no-nullptr-assignment-on-StructPtr.patch
+# Another gcc 4.8 goods..
+Patch61:	chromium-61.0.3163.79-rvalue-fix.patch
 
 ### Chromium Tests Patches ###
 Patch100:	chromium-46.0.2490.86-use_system_opus.patch
@@ -341,7 +345,12 @@ BuildRequires:	libffi-devel
 BuildRequires:	libicu-devel = 54.1
 %endif
 BuildRequires:	libjpeg-devel
+%if 0%{?bundlelibpng}
+# If this is true, we're using the bundled libpng
+# which we need to do because the RHEL 7 libpng doesn't work right anymore
+%else
 BuildRequires:	libpng-devel
+%endif
 %if 0
 # see https://code.google.com/p/chromium/issues/detail?id=501318
 BuildRequires:	libsrtp-devel >= 1.4.4
@@ -473,7 +482,9 @@ Provides: bundled(libevent) = 1.4.15
 Provides: bundled(libjingle) = 9564
 # Provides: bundled(libjpeg-turbo) = 1.4.90
 Provides: bundled(libphonenumber) = a4da30df63a097d67e3c429ead6790ad91d36cf4
-# Provides: bundled(libpng) = 1.6.22
+%if 0%{?bundlelibpng}
+Provides: bundled(libpng) = 1.6.22
+%endif
 Provides: bundled(libsrtp) = 2cbd85085037dc7bf2eda48d4cf62e2829056e2d
 %if %{bundlelibusbx}
 Provides: bundled(libusbx) = 1.0.17
@@ -664,6 +675,7 @@ udev.
 %patch58 -p1 -b .dde5e35
 %patch59 -p1 -b .gcc-nc
 %patch60 -p1 -b .nonullptr
+%patch61 -p1 -b .another-rvalue-fix
 %endif
 %patch48 -p1 -b .camfix
 %patch50 -p1 -b .pathfix
@@ -1025,7 +1037,10 @@ build/linux/unbundle/replace_gn_files.py --system-libraries \
 %endif
 	libdrm \
 	libjpeg \
+%if %{bundlelibpng}
+%else
 	libpng \
+%endif
 %if %{bundlelibusbx}
 %else
 	libusb \
@@ -1898,6 +1913,11 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Fri Sep 22 2017 Tom Callaway <spot@fedoraproject.org> 61.0.3163.100-1
+- update to 61.0.3163.100
+- lots of epel7 specific fixes
+- use bundled libpng on epel7
+
 * Wed Sep  6 2017 Tom Callaway <spot@fedoraproject.org> 61.0.3163.79-1
 - update to 61.0.3163.79
 
