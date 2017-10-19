@@ -165,6 +165,10 @@ def download_version(version):
     download_file_and_compare_hashes ('chromium-%s-testdata.tar.xz' % version)
 
 def nacl_versions(version):
+
+  if sys.version_info[0] == 2 and sys.version_info[1] == 6:
+    return
+
   myvars = {}
   chrome_dir = './chromium-%s' % version
   with open(chrome_dir + "/native_client/tools/REVISIONS") as myfile:
@@ -205,10 +209,16 @@ def download_chrome_latest_rpm(arch):
       remove_file_if_exists (chrome_rpm)
       sys.exit(1)
 
-def remove_and_download_latest_policy_templates():
+def remove_and_download_latest_policy_templates(version_string):
 
   policy_file = 'policy_templates.zip'
-  path = 'https://dl.google.com/dl/edgedl/chrome/policy/%s' % policy_file
+  if version_string != 'stable':
+    if version_string == 'unstable':
+      policy_file = "dev_" + policy_file
+    else:
+      policy_file = version_string + "_" + policy_file
+
+  path = 'https://dl.google.com/chrome/policy/%s' % policy_file
   remove_file_if_exists(policy_file)
 
   # Let's make sure we haven't already downloaded it.
@@ -312,7 +322,7 @@ if __name__ == '__main__':
   download_version(chromium_version)
 
   # Always download the newest policy templates
-  remove_and_download_latest_policy_templates()
+  remove_and_download_latest_policy_templates(version_string)
 
   # Lets make sure we haven't unpacked it already
   latest_dir = "%s/chromium-%s" % (chromium_root_dir, chromium_version)
