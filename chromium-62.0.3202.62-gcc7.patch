@@ -1,0 +1,11 @@
+diff -up chromium-62.0.3202.62/third_party/WebKit/Source/platform/graphics/gpu/SharedGpuContext.h.gcc7 chromium-62.0.3202.62/third_party/WebKit/Source/platform/graphics/gpu/SharedGpuContext.h
+--- chromium-62.0.3202.62/third_party/WebKit/Source/platform/graphics/gpu/SharedGpuContext.h.gcc7	2017-10-18 09:20:04.072765163 -0400
++++ chromium-62.0.3202.62/third_party/WebKit/Source/platform/graphics/gpu/SharedGpuContext.h	2017-10-18 09:21:40.156905187 -0400
+@@ -9,6 +9,7 @@
+ #include "platform/graphics/WebGraphicsContext3DProviderWrapper.h"
+ #include "platform/wtf/ThreadSpecific.h"
+ 
++#include <functional>
+ #include <memory>
+ 
+ namespace blink {
