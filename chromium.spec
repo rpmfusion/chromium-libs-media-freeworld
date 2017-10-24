@@ -26,7 +26,7 @@
 # Requires is trickier. 
 
 %global __provides_exclude_from %{chromium_path}/.*\\.so|%{chromium_path}/lib/.*\\.so
-%global privlibs libaccessibility|libanimation|libaura_extra|libaura|libbase_i18n|libbase|libbindings|libblink_android_mojo_bindings_shared|libblink_controller|libblink_core|libblink_modules|libblink_mojo_bindings_shared|libblink_offscreen_canvas_mojo_bindings_shared|libblink_platform|libblink_web|libbluetooth|libboringssl|libbrowser_ui_views|libcaptive_portal|libcapture_base|libcapture_lib|libcc_animation|libcc_base|libcc_blink|libcc_debug|libcc_ipc|libcc_paint|libcc|libcc_surfaces|libcdm_manager|libchromium_sqlite3|libclearkeycdm|libcloud_policy_proto_generated_compile|libcodec|libcolor_space|libcommon|libcompositor|libcontent_common_mojo_bindings_shared|libcontent_public_common_mojo_bindings_shared|libcontent|libcrcrypto|libdbus|libdevice_base|libdevice_event_log|libdevice_gamepad|libdevices|libdevice_vr_mojo_bindings_blink|libdevice_vr_mojo_bindings_shared|libdevice_vr_mojo_bindings|libdiscardable_memory_client|libdiscardable_memory_common|libdiscardable_memory_service|libdisplay|libdisplay_types|libdisplay_util|libdomain_reliability|libEGL|libembedder|libevents_base|libevents_devices_x11|libevents_ozone_layout|libevents|libevents_x|libffmpeg|libfingerprint|libgcm|libgeolocation|libgeometry_skia|libgeometry|libgesture_detection|libgfx_ipc_color|libgfx_ipc_geometry|libgfx_ipc_skia|libgfx_ipc|libgfx|libgfx_switches|libgfx_x11|libgin|libgles2_c_lib|libgles2_implementation|libgles2_utils|libGLESv2|libgl_init|libgl_in_process_context|libgl_wrapper|libgpu|libgtk2ui|libheadless|libhost|libicui18n|libicuuc|libinterfaces_shared|libipc_mojom_shared|libipc_mojom|libipc|libjs|libkeyboard|libkeyboard_with_content|libkeycodes_x11|libkeyed_service_content|libkeyed_service_core|libmanager|libmedia_blink|libmedia_gpu|libmedia_mojo_services|libmedia|libmessage_center|libmetrics_cpp|libmidi|libmojo_common_lib|libmojo_ime_lib|libmojo_public_system_cpp|libmojo_public_system|libmojo_system_impl|libnative_theme|libnet|libnet_with_v8|libonc|libplatform|libpolicy_component|libpolicy_proto|libppapi_host|libppapi_proxy|libppapi_shared|libprefs|libprinting|libprotobuf_lite|libproxy_config|librange|libresource_coordinator_cpp|libresource_coordinator_public_interfaces_internal_shared|libsandbox_services|libseccomp_bpf|libsensors|libservice_manager_cpp|libservice_manager_cpp_types|libservice_manager_mojom_blink|libservice_manager_mojom_constants_blink|libservice_manager_mojom_constants_shared|libservice_manager_mojom_constants|libservice_manager_mojom_shared|libservice_manager_mojom|libservice|libsessions|libshared_memory_support|libshell_dialogs|libskia|libsnapshot|libsql|libstartup_tracing|libstorage_browser|libstorage_common|libstub_window|libsuid_sandbox_client|libsurface|libtracing|libui_base_ime|libui_base|libui_base_x|libui_data_pack|libui_devtools|libui_touch_selection|libui_views_mus_lib|liburl_ipc|liburl_matcher|liburl|libuser_manager|libuser_prefs|libv8_libbase|libv8_libplatform|libv8|libviews|libviz_common|libVkLayer_core_validation|libVkLayer_object_tracker|libVkLayer_parameter_validation|libVkLayer_swapchain|libVkLayer_threading|libVkLayer_unique_objects|libwebdata_common|libweb_dialogs|libwebview|libwidevinecdmadapter|libwidevinecdm|libwm_public|libwm|libwtf|libx11_events_platform|libx11_window
+%global privlibs libEGL|libGLESv2|libVkLayer_core_validation|libVkLayer_object_tracker|libVkLayer_parameter_validation|libVkLayer_swapchain|libVkLayer_threading|libVkLayer_unique_objects|libaccessibility|libanimation|libaura|libaura_extra|libbase|libbase_i18n|libbindings|libblink_android_mojo_bindings_shared|libblink_common|libblink_controller|libblink_core|libblink_modules|libblink_mojo_bindings_shared|libblink_offscreen_canvas_mojo_bindings_shared|libblink_platform|libbluetooth|libboringssl|libbrowser_ui_views|libcaptive_portal|libcapture_base|libcapture_lib|libcc|libcc_animation|libcc_base|libcc_blink|libcc_debug|libcc_ipc|libcc_paint|libcdm_manager|libchromium_sqlite3|libclearkeycdm|libcloud_policy_proto_generated_compile|libcodec|libcolor_space|libcommon|libcompositor|libcontent|libcontent_common_mojo_bindings_shared|libcontent_public_common_mojo_bindings_shared|libcrcrypto|libdbus|libdevice_base|libdevice_event_log|libdevice_gamepad|libdevice_vr_mojo_bindings|libdevice_vr_mojo_bindings_blink|libdevice_vr_mojo_bindings_shared|libdevices|libdiscardable_memory_client|libdiscardable_memory_common|libdiscardable_memory_service|libdisplay|libdisplay_types|libdisplay_util|libdomain_reliability|libembedder|libevents|libevents_base|libevents_devices_x11|libevents_ozone_layout|libevents_x|libfingerprint|libffmpeg|libgcm|libgeolocation|libgeometry|libgeometry_skia|libgesture_detection|libgfx|libgfx_ipc|libgfx_ipc_color|libgfx_ipc_geometry|libgfx_ipc_skia|libgfx_switches|libgfx_x11|libgin|libgl_in_process_context|libgl_init|libgl_wrapper|libgles2_c_lib|libgles2_implementation|libgles2_utils|libgpu|libgtk3ui|libheadless|libhost|libicui18n|libicuuc|libinterfaces_shared|libipc|libipc_mojom|libipc_mojom_shared|libjs|libkeyboard|libkeyboard_with_content|libkeycodes_x11|libkeyed_service_content|libkeyed_service_core|libmanager|libmedia|libmedia_blink|libmedia_gpu|libmedia_mojo_services|libmessage_center|libmetrics_cpp|libmidi|libmirclient.9|libmojo_common_lib|libmojo_ime_lib|libmojo_public_system|libmojo_public_system_cpp|libmojo_system_impl|libnative_theme|libnet|libnet_with_v8|libonc|libplatform|libpolicy_component|libpolicy_proto|libppapi_host|libppapi_proxy|libppapi_shared|libprefs|libprinting|libprotobuf_lite|libproxy_config|librange|libresource_coordinator_cpp|libresource_coordinator_public_interfaces_internal_shared|libsandbox_services|libseccomp_bpf|libsensors|libservice|libservice_manager_cpp|libservice_manager_cpp_types|libservice_manager_mojom|libservice_manager_mojom_blink|libservice_manager_mojom_constants|libservice_manager_mojom_constants_blink|libservice_manager_mojom_constants_shared|libservice_manager_mojom_shared|libsessions|libshared_memory_support|libshell_dialogs|libskia|libsnapshot|libsql|libstartup_tracing|libstorage_browser|libstorage_common|libstub_window|libsuid_sandbox_client|libsurface|libtracing|libui_base|libui_base_ime|libui_base_x|libui_data_pack|libui_devtools|libui_touch_selection|libui_views_mus_lib|liburl|liburl_ipc|liburl_matcher|libuser_manager|libuser_prefs|libv8|libv8_libbase|libv8_libplatform|libviews|libviz_common|libviz_resource_format|libweb_dialogs|libwebdata_common|libwebview|libwidevinecdm.fedora|libwidevinecdmadapter|libwm|libwm_public|libwtf|libx11_events_platform|libx11_window
 %global __requires_exclude ^(%{privlibs})\\.so
 
 # Try to not use the Xvfb as it is slow..
@@ -76,8 +76,9 @@ BuildRequires:  libicu-devel >= 5.4
 # 2017-06-08.
 %global bundlelibxml 1
 
-# Chromium breaks on wayland, hidpi, and colors with gtk3 enabled.
-%global gtk3 0
+# Chromium used to break on wayland, hidpi, and colors with gtk3 enabled.
+# Hopefully it does not anymore.
+%global gtk3 1
 
 %if 0%{?rhel} == 7
 %global bundleopus 1
@@ -110,14 +111,14 @@ BuildRequires:  libicu-devel >= 5.4
 %global default_client_secret miEreAep8nuvTdvLums6qyLK
 %global chromoting_client_id 449907151817-8vnlfih032ni8c4jjps9int9t86k546t.apps.googleusercontent.com 
 
-%global majorversion 61
+%global majorversion 62
 
 %if %{freeworld}
 Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 %else
 Name:		chromium%{chromium_channel}
 %endif
-Version:	%{majorversion}.0.3163.100
+Version:	%{majorversion}.0.3202.62
 Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
@@ -171,9 +172,9 @@ Patch27:	chromium-61.0.3163.79-setopaque.patch
 Patch31:	chromium-56.0.2924.87-fpermissive.patch
 # Fix issue with compilation on gcc7
 # Thanks to Ben Noordhuis
-Patch33: 	chromium-61.0.3163.79-gcc7.patch
+Patch33: 	chromium-62.0.3202.62-gcc7.patch
 # Enable mp3 support
-Patch34:	chromium-61.0.3163.79-enable-mp3.patch
+Patch34:	chromium-62.0.3202.62-enable-mp3.patch
 # Revert https://chromium.googlesource.com/chromium/src/+/b794998819088f76b4cf44c8db6940240c563cf4%5E%21/#F0
 # https://bugs.chromium.org/p/chromium/issues/detail?id=712737
 # https://bugzilla.redhat.com/show_bug.cgi?id=1446851
@@ -192,39 +193,29 @@ Patch43:	chromium-60.0.3112.78-jpeg-nomangle.patch
 # Do not mangle zlib
 Patch45:	chromium-60.0.3112.78-no-zlib-mangle.patch
 # Apply these changes to work around EPEL7 compiler issues
-Patch46:	chromium-61.0.3163.79-kmaxskip-constexpr.patch
+Patch46:	chromium-62.0.3202.62-kmaxskip-constexpr.patch
 Patch47:	chromium-60.0.3112.90-vulkan-force-c99.patch
-# https://chromium.googlesource.com/chromium/src/+/9c77470ff34bac937ceb765a27cee1703f0f2426
-Patch48:	chromium-60.0.3112.101-camfix.patch
 # Fix mp3 for aarch64
 Patch49:	chromium-61.0.3163.79-fix-ffmpeg-aarch64.patch
 # Fix libavutil include pathing to find arch specific timer.h
 # For some reason, this only fails on aarch64. No idea why.
 Patch50:	chromium-60.0.3112.113-libavutil-timer-include-path-fix.patch
-# Fix gn again
-# https://chromium.googlesource.com/chromium/src.git/+/84d9cc2d5491706d638ac887f4e065a75f7cb87d%5E%21/#F0
-Patch51:	chromium-61.0.3163.79-fix-gn-again.patch
-# more gcc fixes
-# https://chromium.googlesource.com/chromium/src.git/+/cbe6845263215e0f3981c2a4c7937dadb14bef0d%5E%21/#F0
-Patch52:	chromium-61.0.3163.79-MOAR-GCC-FIXES.patch
 # from gentoo
 Patch53:	chromium-61.0.3163.79-gcc-no-opt-safe-math.patch
-Patch54:	chromium-61.0.3163.79-gcc5-r1.patch
-# Fix gtk2 build (patch from later release)
-# Should be able to drop this in 62+
-Patch55:	chromium-61.0.3163.79-gtk2fix.patch
-# Fix atk compile
-# https://chromium-review.googlesource.com/c/chromium/src/+/580927
-Patch56:	chromium-61.0.3163.79-fix-atk-compile.patch
 # Only needed when glibc 2.26.90 or later is used
 Patch57:	chromium-61.0.3163.79-aarch64-glibc-2.26.90.patch
 # More gcc fixes for epel
-Patch58:	chromium-61.0.3163.79-dde535-gcc-fix.patch
-Patch59:	chromium-61.0.3163.79-gcc-nc.patch
+Patch58:	chromium-62.0.3202.62-dde535-gcc-fix.patch
+Patch59:	chromium-62.0.3202.62-gcc-nc.patch
 # Epel compiler really does not like assigning nullptr to a StructPtr
-Patch60:	chromium-61.0.3163.79-epel7-no-nullptr-assignment-on-StructPtr.patch
+Patch60:	chromium-62.0.3202.62-epel7-no-nullptr-assignment-on-StructPtr.patch
 # Another gcc 4.8 goods..
-Patch61:	chromium-61.0.3163.79-rvalue-fix.patch
+Patch61:	chromium-62.0.3202.62-rvalue-fix.patch
+# From gentoo
+Patch62:	chromium-gcc5-r3.patch
+Patch63:	chromium-gn-bootstrap-r17.patch
+# Fix _cplusplus conditional
+Patch64:	chromium-62.0.3202.62-correct-cplusplus-check.patch
 
 ### Chromium Tests Patches ###
 Patch100:	chromium-46.0.2490.86-use_system_opus.patch
@@ -677,17 +668,14 @@ udev.
 %patch60 -p1 -b .nonullptr
 %patch61 -p1 -b .another-rvalue-fix
 %endif
-%patch48 -p1 -b .camfix
 %patch50 -p1 -b .pathfix
-%patch51 -p1 -b .fixit
-%patch52 -p1 -b .fixgccagain
 %patch53 -p1 -b .nogccoptmath
-%patch54 -p1 -b .gcc5fix
-%patch55 -p1 -b .gtk2fix
-%patch56 -p1 -b .atkfix
 %if 0%{?fedora} >= 28
 %patch57 -p1 -b .aarch64glibc
 %endif
+%patch62 -p1 -b .gcc5-r3
+%patch63 -p1 -b .gn-boostrap-r17
+%patch64 -p1 -b .fix-cplusplus-conditional
 
 ### Chromium Tests Patches ###
 %patch100 -p1 -b .use_system_opus
@@ -809,13 +797,12 @@ CHROMIUM_CORE_GN_DEFINES+=' system_libdir="lib64"'
 %endif
 CHROMIUM_CORE_GN_DEFINES+=' google_api_key="%{api_key}" google_default_client_id="%{default_client_id}" google_default_client_secret="%{default_client_secret}"'
 CHROMIUM_CORE_GN_DEFINES+=' is_clang=false use_sysroot=false use_gold=false fieldtrial_testing_like_official_build=true'
-CHROMIUM_CORE_GN_DEFINES+=' enable_pepper_cdms=1'
 %if %{freeworld}
 CHROMIUM_CORE_GN_DEFINES+=' ffmpeg_branding="ChromeOS" proprietary_codecs=true'
 %else
 CHROMIUM_CORE_GN_DEFINES+=' ffmpeg_branding="Chromium" proprietary_codecs=false'
 %endif
-CHROMIUM_CORE_GN_DEFINES+=' treat_warnings_as_errors=false use_custom_libcxx=false'
+CHROMIUM_CORE_GN_DEFINES+=' treat_warnings_as_errors=false linux_use_bundled_binutils=false use_custom_libcxx=false'
 %ifarch aarch64
 CHROMIUM_CORE_GN_DEFINES+=' target_cpu="arm64"'
 %endif
@@ -859,40 +846,10 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'buildtools/third_party/libc++' \
 	'buildtools/third_party/libc++abi' \
 %endif
-	'third_party/ffmpeg' \
-	'third_party/adobe' \
-	'third_party/flac' \
-	'third_party/googletest' \
-	'third_party/glslang-angle' \
-	'third_party/harfbuzz-ng' \
-	'third_party/icu' \
-	'base/third_party/libevent' \
-	'third_party/libdrm' \
-	'third_party/libjpeg_turbo' \
-	'third_party/libpng' \
-	'third_party/libsrtp' \
-	'third_party/libwebp' \
-	'third_party/libxml' \
-	'third_party/libxslt' \
-%if %{freeworld}
-	'third_party/openh264' \
-%endif
-%if 0%{?bundlere2}
-	'third_party/re2' \
-%endif
-	'third_party/snappy' \
-	'third_party/speech-dispatcher' \
-	'third_party/swiftshader' \
-	'third_party/swiftshader/third_party/subzero' \
-	'third_party/swiftshader/third_party/LLVM' \
-	'third_party/swiftshader/third_party/llvm-subzero' \
-	'third_party/usb_ids' \
-	'third_party/xdg-utils' \
-	'third_party/yasm' \
-	'third_party/zlib' \
 	'base/third_party/dmg_fp' \
 	'base/third_party/dynamic_annotations' \
 	'base/third_party/icu' \
+	'base/third_party/libevent' \
 	'base/third_party/nspr' \
 	'base/third_party/superfasthash' \
 	'base/third_party/symbolize' \
@@ -902,12 +859,10 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'breakpad/src/third_party/curl' \
 	'chrome/third_party/mozilla_security_manager' \
 	'courgette/third_party' \
-	'native_client_sdk/src/libraries/third_party/newlib-extras' \
-	'native_client/src/third_party/dlmalloc' \
-	'native_client/src/third_party/valgrind' \
 	'net/third_party/mozilla_security_manager' \
 	'net/third_party/nss' \
 	'third_party/WebKit' \
+	'third_party/adobe' \
 	'third_party/analytics' \
 	'third_party/angle' \
 	'third_party/angle/src/common/third_party/murmurhash' \
@@ -920,31 +875,38 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/brotli' \
 	'third_party/cacheinvalidation' \
 	'third_party/catapult' \
+        'third_party/catapult/third_party/polymer' \
+        'third_party/catapult/third_party/py_vulcanize' \
+        'third_party/catapult/third_party/py_vulcanize/third_party/rcssmin' \
+        'third_party/catapult/third_party/py_vulcanize/third_party/rjsmin' \
 	'third_party/catapult/tracing/third_party/d3' \
 	'third_party/catapult/tracing/third_party/gl-matrix' \
 	'third_party/catapult/tracing/third_party/jszip' \
 	'third_party/catapult/tracing/third_party/mannwhitneyu' \
 	'third_party/catapult/tracing/third_party/oboe' \
-        'third_party/catapult/third_party/polymer' \
-	'third_party/catapult/third_party/py_vulcanize' \
-	'third_party/catapult/third_party/py_vulcanize/third_party/rcssmin' \
-	'third_party/catapult/third_party/py_vulcanize/third_party/rjsmin' \
         'third_party/ced' \
 	'third_party/cld_2' \
 	'third_party/cld_3' \
+	'third_party/crc32c' \
 	'third_party/cros_system_api' \
 	'third_party/devscripts' \
 	'third_party/dom_distiller_js' \
 	'third_party/expat' \
+	'third_party/ffmpeg' \
 	'third_party/fips181' \
+	'third_party/flac' \
         'third_party/flatbuffers' \
 	'third_party/flot' \
 	'third_party/freetype' \
+	'third_party/glslang-angle' \
 	'third_party/google_input_tools' \
 	'third_party/google_input_tools/third_party/closure_library' \
 	'third_party/google_input_tools/third_party/closure_library/third_party/closure' \
+	'third_party/googletest' \
+	'third_party/harfbuzz-ng' \
 	'third_party/hunspell' \
 	'third_party/iccjpeg' \
+	'third_party/icu' \
 	'third_party/inspector_protocol' \
 	'third_party/jinja2' \
 	'third_party/jstemplate' \
@@ -952,27 +914,39 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/leveldatabase' \
 	'third_party/libXNVCtrl' \
 	'third_party/libaddressinput' \
+	'third_party/libdrm' \
 	'third_party/libjingle' \
+	'third_party/libjpeg_turbo' \
 	'third_party/libphonenumber' \
+	'third_party/libpng' \
 	'third_party/libsecret' \
         'third_party/libsrtp' \
 	'third_party/libudev' \
 	'third_party/libusb' \
 	'third_party/libvpx' \
 	'third_party/libvpx/source/libvpx/third_party/x86inc' \
+	'third_party/libxml' \
 	'third_party/libxml/chromium' \
+	'third_party/libxslt' \
 	'third_party/libwebm' \
+	'third_party/libwebp' \
 	'third_party/libyuv' \
 %if 0%{?nacl}
 	'third_party/llvm-build' \
 %endif
 	'third_party/lss' \
 	'third_party/lzma_sdk' \
+%if 0
+	'third_party/markupsafe' \
+%endif
 	'third_party/mesa' \
 	'third_party/modp_b64' \
 	'third_party/mt19937ar' \
 	'third_party/node' \
-	'third_party/node/node_modules/vulcanize/third_party/UglifyJS2' \
+	'third_party/node/node_modules/polymer-bundler/lib/third_party/UglifyJS2' \
+%if %{freeworld}
+	'third_party/openh264' \
+%endif
 	'third_party/openmax_dl' \
 	'third_party/opus' \
 	'third_party/ots' \
@@ -982,36 +956,51 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/pdfium/third_party/bigint' \
 	'third_party/pdfium/third_party/build' \
 	'third_party/pdfium/third_party/freetype' \
-	'third_party/pdfium/third_party/lcms2-2.6' \
+	'third_party/pdfium/third_party/lcms' \
 	'third_party/pdfium/third_party/libopenjpeg20' \
         'third_party/pdfium/third_party/libpng16' \
         'third_party/pdfium/third_party/libtiff' \
+        'third_party/ply' \
 	'third_party/polymer' \
 	'third_party/protobuf' \
 	'third_party/protobuf/third_party/six' \
-	'third_party/ply' \
 	'third_party/qcms' \
 	'third_party/qunit' \
+%if 0%{?bundlere2}
+	'third_party/re2' \
+%endif
 	'third_party/sfntly' \
 	'third_party/sinonjs' \
 	'third_party/skia' \
+	'third_party/skia/third_party/gif' \
 	'third_party/skia/third_party/vulkan' \
 	'third_party/smhasher' \
+	'third_party/snappy' \
+	'third_party/speech-dispatcher' \
 	'third_party/spirv-headers' \
 	'third_party/spirv-tools-angle' \
 	'third_party/sqlite' \
+	'third_party/swiftshader' \
+	'third_party/swiftshader/third_party/subzero' \
+	'third_party/swiftshader/third_party/LLVM' \
+	'third_party/swiftshader/third_party/llvm-subzero' \
 	'third_party/tcmalloc' \
+        'third_party/usb_ids' \
 	'third_party/usrsctp' \
+	'third_party/vulkan' \
 	'third_party/vulkan-validation-layers' \
 	'third_party/web-animations-js' \
 	'third_party/webdriver' \
 	'third_party/webrtc' \
 	'third_party/widevine' \
         'third_party/woff2' \
+        'third_party/xdg-utils' \
+        'third_party/yasm' \
+        'third_party/zlib' \
 	'third_party/zlib/google' \
 	'url/third_party/mozilla' \
-	'v8/third_party/inspector_protocol' \
 	'v8/src/third_party/valgrind' \
+	'v8/third_party/inspector_protocol' \
 	--do-remove
 
 # Look, I don't know. This package is spit and chewing gum. Sorry.
@@ -1913,6 +1902,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Wed Oct 18 2017 Tom Callaway <spot@fedoraproject.org> 62.0.3202.62-1
+- update to 62.0.3202.62
+
 * Fri Sep 22 2017 Tom Callaway <spot@fedoraproject.org> 61.0.3163.100-1
 - update to 61.0.3163.100
 - lots of epel7 specific fixes
