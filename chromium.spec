@@ -119,7 +119,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 Name:		chromium%{chromium_channel}
 %endif
 Version:	%{majorversion}.0.3202.62
-Release:	1%{?dist}
+Release:	1%{?dist}.1
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -216,6 +216,8 @@ Patch62:	chromium-gcc5-r3.patch
 Patch63:	chromium-gn-bootstrap-r17.patch
 # Fix _cplusplus conditional
 Patch64:	chromium-62.0.3202.62-correct-cplusplus-check.patch
+# epel7 does not know about c++14
+Patch65:	chromium-62.0.3202.62-epel7-noc++14.patch
 
 ### Chromium Tests Patches ###
 Patch100:	chromium-46.0.2490.86-use_system_opus.patch
@@ -667,6 +669,7 @@ udev.
 %patch59 -p1 -b .gcc-nc
 %patch60 -p1 -b .nonullptr
 %patch61 -p1 -b .another-rvalue-fix
+%patch65 -p1 -b .epel7-noc++14
 %endif
 %patch50 -p1 -b .pathfix
 %patch53 -p1 -b .nogccoptmath
@@ -805,6 +808,9 @@ CHROMIUM_CORE_GN_DEFINES+=' ffmpeg_branding="Chromium" proprietary_codecs=false'
 CHROMIUM_CORE_GN_DEFINES+=' treat_warnings_as_errors=false linux_use_bundled_binutils=false use_custom_libcxx=false'
 %ifarch aarch64
 CHROMIUM_CORE_GN_DEFINES+=' target_cpu="arm64"'
+%endif
+%if 0%{?rhel} == 7
+CHROMIUM_CORE_GN_DEFINES+=' use_cxx11=true'
 %endif
 export CHROMIUM_CORE_GN_DEFINES
 
@@ -1902,6 +1908,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Tue Oct 24 2017 Tom Callaway <spot@fedoraproject.org> 62.0.3202.62-1.1
+- do not attempt std=c++14 on epel7
+
 * Wed Oct 18 2017 Tom Callaway <spot@fedoraproject.org> 62.0.3202.62-1
 - update to 62.0.3202.62
 
