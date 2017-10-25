@@ -209,33 +209,6 @@ def download_chrome_latest_rpm(arch):
       remove_file_if_exists (chrome_rpm)
       sys.exit(1)
 
-def remove_and_download_latest_policy_templates(version_string):
-
-  policy_file = 'policy_templates.zip'
-  if version_string != 'stable':
-    if version_string == 'unstable':
-      policy_file = "dev_" + policy_file
-    else:
-      policy_file = version_string + "_" + policy_file
-
-  path = 'https://dl.google.com/chrome/policy/%s' % policy_file
-  remove_file_if_exists(policy_file)
-
-  # Let's make sure we haven't already downloaded it.
-  if os.path.isfile("./%s" % policy_file):
-    print "%s already exists!" % policy_file
-  else:
-    print "Downloading %s" % path
-    # Perhaps look at using python-progressbar at some point?
-    info=urllib.urlretrieve(path, policy_file, reporthook=dlProgress)[1]
-    urllib.urlcleanup()
-    print ""
-    if (info["Content-Type"] != "application/octet-stream"):
-      print 'Policy templates are not on servers.' % version_string
-      remove_file_if_exists (policy_file)
-      sys.exit(1)
-
-
 # This is where the magic happens
 if __name__ == '__main__':
 
@@ -320,9 +293,6 @@ if __name__ == '__main__':
   latest = 'chromium-%s.tar.xz' % chromium_version
 
   download_version(chromium_version)
-
-  # Always download the newest policy templates
-  remove_and_download_latest_policy_templates(version_string)
 
   # Lets make sure we haven't unpacked it already
   latest_dir = "%s/chromium-%s" % (chromium_root_dir, chromium_version)
