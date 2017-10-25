@@ -249,7 +249,6 @@ Source7:	get_free_ffmpeg_source_files.py
 Source8:	get_linux_tests_names.py
 # GNOME stuff
 Source9:	chromium-browser.xml
-Source10:	https://dl.google.com/dl/edgedl/chrome/policy/policy_templates.zip
 Source11:	chrome-remote-desktop@.service
 Source13:	master_preferences
 
@@ -619,7 +618,6 @@ without support for alsa, cups, dbus, gconf, gio, kerberos, pulseaudio, or
 udev.
 
 %prep
-%setup -q -T -c -n %{name}-policies -a 10
 %setup -q -T -c -n depot_tools -a 2
 %if 0%{tests}
 %setup -q -n chromium-%{version} -b 1
@@ -1323,10 +1321,8 @@ sed -i 's|@@CRD_PATH@@|%{crd_path}|g' %{buildroot}%{_unitdir}/chrome-remote-desk
 # Add directories for policy management
 mkdir -p %{buildroot}%{_sysconfdir}/chromium/policies/managed
 mkdir -p %{buildroot}%{_sysconfdir}/chromium/policies/recommended
-cp -a ../%{name}-policies/common/html/en-US/*.html .
 
-# linux json files no longer in .zip file
-#cp -a ../%{name}-policies/linux/examples/*.json .
+cp -a out/Release/gen/chrome/app/policy/common/html/en-US/*.html .
 cp -a out/Release/gen/chrome/app/policy/linux/examples/chrome.json .
 
 mkdir -p %{buildroot}%{_datadir}/icons/hicolor/256x256/apps
