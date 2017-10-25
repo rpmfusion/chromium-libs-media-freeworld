@@ -218,7 +218,7 @@ Patch63:	chromium-gn-bootstrap-r17.patch
 Patch64:	chromium-62.0.3202.62-correct-cplusplus-check.patch
 # epel7 does not know about c++14
 Patch65:	chromium-62.0.3202.62-epel7-noc++14.patch
-Patch66:	chromium-62.0.3202.62-epel7-c++11-decay-type.patch
+Patch66:	chromium-62.0.3202.62-epel7-c++11-decay-enable_if-type.patch
 
 ### Chromium Tests Patches ###
 Patch100:	chromium-46.0.2490.86-use_system_opus.patch
