@@ -118,7 +118,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 %else
 Name:		chromium%{chromium_channel}
 %endif
-Version:	%{majorversion}.0.3202.75
+Version:	%{majorversion}.0.3202.89
 Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
@@ -1909,6 +1909,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Wed Nov  8 2017 Tom Callaway <spot@fedoraproject.org> 62.0.3202.89-1
+- update to 62.0.3202.89
+
 * Fri Oct 27 2017 Tom Callaway <spot@fedoraproject.org> 62.0.3202.75-1
 - update to 62.0.3202.75
 - use devtoolset-7-toolchain to build on epel7
