@@ -21,7 +21,6 @@
 %global chromium_browser_channel chromium-browser%{chromium_channel}
 %global chromium_path %{_libdir}/chromium-browser%{chromium_channel}
 %global crd_path %{_libdir}/chrome-remote-desktop
-%global tests 0
 
 # We don't want any libs in these directories to generate Provides
 # Requires is trickier. 
@@ -30,8 +29,6 @@
 %global privlibs libEGL|libGLESv2|libVkLayer_core_validation|libVkLayer_object_tracker|libVkLayer_parameter_validation|libVkLayer_swapchain|libVkLayer_threading|libVkLayer_unique_objects|libaccessibility|libanimation|libaura|libaura_extra|libbase|libbase_i18n|libbindings|libblink_android_mojo_bindings_shared|libblink_common|libblink_controller|libblink_core|libblink_modules|libblink_mojo_bindings_shared|libblink_offscreen_canvas_mojo_bindings_shared|libblink_platform|libbluetooth|libboringssl|libbrowser_ui_views|libcaptive_portal|libcapture_base|libcapture_lib|libcc|libcc_animation|libcc_base|libcc_blink|libcc_debug|libcc_ipc|libcc_paint|libcdm_manager|libchromium_sqlite3|libclearkeycdm|libcloud_policy_proto_generated_compile|libcodec|libcolor_space|libcommon|libcompositor|libcontent|libcontent_common_mojo_bindings_shared|libcontent_public_common_mojo_bindings_shared|libcrcrypto|libdbus|libdevice_base|libdevice_event_log|libdevice_gamepad|libdevice_vr_mojo_bindings|libdevice_vr_mojo_bindings_blink|libdevice_vr_mojo_bindings_shared|libdevices|libdiscardable_memory_client|libdiscardable_memory_common|libdiscardable_memory_service|libdisplay|libdisplay_types|libdisplay_util|libdomain_reliability|libembedder|libevents|libevents_base|libevents_devices_x11|libevents_ozone_layout|libevents_x|libfingerprint|libffmpeg|libgcm|libgeolocation|libgeometry|libgeometry_skia|libgesture_detection|libgfx|libgfx_ipc|libgfx_ipc_color|libgfx_ipc_geometry|libgfx_ipc_skia|libgfx_switches|libgfx_x11|libgin|libgl_in_process_context|libgl_init|libgl_wrapper|libgles2_c_lib|libgles2_implementation|libgles2_utils|libgpu|libgtk3ui|libheadless|libhost|libicui18n|libicuuc|libinterfaces_shared|libipc|libipc_mojom|libipc_mojom_shared|libjs|libkeyboard|libkeyboard_with_content|libkeycodes_x11|libkeyed_service_content|libkeyed_service_core|libmanager|libmedia|libmedia_blink|libmedia_gpu|libmedia_mojo_services|libmessage_center|libmetrics_cpp|libmidi|libmirclient.9|libmojo_common_lib|libmojo_ime_lib|libmojo_public_system|libmojo_public_system_cpp|libmojo_system_impl|libnative_theme|libnet|libnet_with_v8|libonc|libplatform|libpolicy_component|libpolicy_proto|libppapi_host|libppapi_proxy|libppapi_shared|libprefs|libprinting|libprotobuf_lite|libproxy_config|librange|libresource_coordinator_cpp|libresource_coordinator_public_interfaces_internal_shared|libsandbox_services|libseccomp_bpf|libsensors|libservice|libservice_manager_cpp|libservice_manager_cpp_types|libservice_manager_mojom|libservice_manager_mojom_blink|libservice_manager_mojom_constants|libservice_manager_mojom_constants_blink|libservice_manager_mojom_constants_shared|libservice_manager_mojom_shared|libsessions|libshared_memory_support|libshell_dialogs|libskia|libsnapshot|libsql|libstartup_tracing|libstorage_browser|libstorage_common|libstub_window|libsuid_sandbox_client|libsurface|libtracing|libui_base|libui_base_ime|libui_base_x|libui_data_pack|libui_devtools|libui_touch_selection|libui_views_mus_lib|liburl|liburl_ipc|liburl_matcher|libuser_manager|libuser_prefs|libv8|libv8_libbase|libv8_libplatform|libviews|libviz_common|libviz_resource_format|libweb_dialogs|libwebdata_common|libwebview|libwidevinecdm|libwidevinecdmadapter|libwm|libwm_public|libwtf|libx11_events_platform|libx11_window
 %global __requires_exclude ^(%{privlibs})\\.so
 
-# Try to not use the Xvfb as it is slow..
-%global tests_force_display 0
 # If we build with shared on, then chrome-remote-desktop depends on chromium libs.
 # If we build with shared off, then users cannot swap out libffmpeg (and i686 gets a lot harder to build)
 %global shared 1
@@ -218,10 +215,6 @@ Patch63:	chromium-gn-bootstrap-r17.patch
 # Fix _cplusplus conditional
 Patch64:	chromium-62.0.3202.62-correct-cplusplus-check.patch
 
-### Chromium Tests Patches ###
-Patch100:	chromium-46.0.2490.86-use_system_opus.patch
-Patch101:	chromium-58.0.3029.81-use_system_harfbuzz.patch
-
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
 # http://build.chromium.org/buildbot/official/
 # For Chromium Fedora use chromium-latest.py --stable --ffmpegclean --ffmpegarm
@@ -231,9 +224,6 @@ Patch101:	chromium-58.0.3029.81-use_system_harfbuzz.patch
 Source0:	https://commondatastorage.googleapis.com/chromium-browser-official/chromium-%{version}.tar.xz
 %else
 Source0:	chromium-%{version}-clean.tar.xz
-%endif
-%if 0%{tests}
-Source1:	https://commondatastorage.googleapis.com/chromium-browser-official/chromium-%{version}-testdata.tar.xz
 %endif
 # https://chromium.googlesource.com/chromium/tools/depot_tools.git/+archive/7e7a454f9afdddacf63e10be48f0eab603be654e.tar.gz
 Source2:	depot_tools.git-master.tar.gz
@@ -285,14 +275,6 @@ BuildRequires:	nodejs
 BuildRequires:	nss-devel
 BuildRequires:	pciutils-devel
 BuildRequires:	pulseaudio-libs-devel
-%if 0%{?tests}
-BuildRequires:	pam-devel
-# Tests needs X
-BuildRequires:	Xvfb
-BuildRequires:	liberation-sans-fonts
-# For sandbox initialization
-BuildRequires:	sudo
-%endif
 
 # for /usr/bin/appstream-util
 BuildRequires: libappstream-glib
@@ -622,11 +604,7 @@ udev.
 
 %prep
 %setup -q -T -c -n depot_tools -a 2
-%if 0%{tests}
-%setup -q -n chromium-%{version} -b 1
-%else
 %setup -q -n chromium-%{version}
-%endif
 
 ### Chromium Fedora Patches ###
 %patch0 -p1 -b .gcc5
@@ -679,10 +657,6 @@ udev.
 %patch62 -p1 -b .gcc5-r3
 %patch63 -p1 -b .gn-boostrap-r17
 %patch64 -p1 -b .fix-cplusplus-conditional
-
-### Chromium Tests Patches ###
-%patch100 -p1 -b .use_system_opus
-%patch101 -p1 -b .use_system_harfbuzz
 
 %if 0%{?asan}
 export CC="clang"
@@ -1104,83 +1078,14 @@ sed -i.orig -e 's/getenv("CHROME_VERSION_EXTRA")/"Fedora Project"/' $FILE
 . /opt/rh/devtoolset-7/enable
 %endif
 
-%if %{?tests}
-# Tests targets taken from testing/buildbot/chromium.linux.json and obtained with
-# get_linux_tests_name.py PATH_TO_UNPACKED_CHROMIUM_SOURCES --spec
-# You can also check if you have to update the tests in SPEC file by running
-# get_linux_tests_name.py PATH_TO_UNPACKED_CHROMIUM_SOURCES --check PATH_TO_SPEC_FILE
-export CHROMIUM_BROWSER_UNIT_TESTS="\
-	accessibility_unittests \
-	app_list_unittests \
-	app_shell_unittests \
-	aura_unittests \
-	base_unittests \
-	browser_tests \
-	cacheinvalidation_unittests \
-	cast_unittests \
-	cc_unittests \
-	chromedriver_unittests \
-	components_browsertests \
-	components_unittests \
-	compositor_unittests \
-	content_browsertests \
-	content_unittests \
-	crypto_unittests \
-	dbus_unittests \
-	device_unittests \
-	display_unittests \
-	events_unittests \
-	extensions_browsertests \
-	extensions_unittests \
-	gcm_unit_tests \
-	gfx_unittests \
-	gl_unittests \
-	gn_unittests \
-	google_apis_unittests \
-	gpu_unittests \
-	interactive_ui_tests \
-	ipc_mojo_unittests \
-	ipc_tests \
-	jingle_unittests \
-	media_unittests \
-	midi_unittests \
-	mojo_common_unittests \
-	mojo_public_bindings_unittests \
-	mojo_public_environment_unittests \
-	mojo_public_system_unittests \
-	mojo_public_utility_unittests \
-	mojo_system_unittests \
-%if 0%{?nacl}
-	nacl_loader_unittests \
-%endif
-	net_unittests \
-	ppapi_unittests \
-	printing_unittests \
-	remoting_unittests \
-	sandbox_linux_unittests \
-	skia_unittests \
-	sql_unittests \
-	sync_integration_tests \
-	sync_unit_tests \
-	ui_base_unittests \
-	ui_touch_selection_unittests \
-	unit_tests \
-	url_unittests \
-	views_unittests \
-	wm_unittests \
-	"
-%else
-export CHROMIUM_BROWSER_UNIT_TESTS=
-%endif
-
 # Now do the full browser
 %if 0%{freeworld}
-../depot_tools/ninja -C %{target} -vvv media $CHROMIUM_BROWSER_UNIT_TESTS
+../depot_tools/ninja -C %{target} -vvv media
 %else
 # Do headless first.  
 ../depot_tools/ninja -C %{headlesstarget} -vvv headless_shell
 
-../depot_tools/ninja -C %{target} -vvv chrome chrome_sandbox chromedriver widevinecdmadapter clearkeycdm policy_templates $CHROMIUM_BROWSER_UNIT_TESTS
+../depot_tools/ninja -C %{target} -vvv chrome chrome_sandbox chromedriver widevinecdmadapter clearkeycdm policy_templates
 
 # remote client
 pushd remoting
@@ -1362,310 +1267,6 @@ cp -a %{SOURCE9} %{buildroot}%{_datadir}/gnome-control-center/default-apps/
 mkdir -p %{buildroot}%{chromium_path}/PepperFlash
 
 # freeworld conditional
-%endif
-
-%check
-%if 0%{tests}
-%if 0%{?tests_force_display}
-	export DISPLAY=:0
-%else
-	Xvfb :9 -screen 0 1024x768x24 &
-
-	export XVFB_PID=$!
-	export DISPLAY=:9
-%endif
-	export LC_ALL="en_US.utf8"
-
-	sleep 5
-
-	# Run tests and disable the failed ones
-	pushd %{target}
-	(
-	cp -f chrome_sandbox chrome-sandbox
-	echo "Test sandbox needs to be owned by root and have the suid set"
-	if [ "$(id -u)" != "0" ]; then
-		sudo chown root:root chrome-sandbox && sudo chmod 4755 chrome-sandbox
-	else
-		chown root:root chrome-sandbox && chmod 4755 chrome-sandbox
-	fi
-
-	# Example of failed or timed-out test annotation
-	# ./browser_tests \
-	#	--gtest_filter=-"\
-	#		`#failed`\
-	#		SandboxStatusUITest.testBPFSandboxEnabled:`#failed - not using BPF sandbox`\
-	#		:\
-	#		`#timed-out`\
-	#		CalculatorBrowserTest.Model:\
-	#		WebRtcBrowserTest.RunsAudioVideoWebRTCCallInTwoTabs\
-	#	" \
-
-	./accessibility_unittests && \
-	./app_list_unittests && \
-	./app_shell_unittests && \
-	./aura_unittests && \
-	./base_unittests \
-		--gtest_filter=-"\
-			`#failed`\
-			ICUStringConversionsTest.ConvertToUtf8AndNormalize\
-		" \
-	&& \
-	./browser_tests \
-		--gtest_filter=-"\
-			`#failed`\
-			DevToolsSanityTest.TestNetworkRawHeadersText:\
-			DevToolsSanityTest.TestNetworkSize:\
-			DevToolsSanityTest.TestNetworkSyncSize:\
-			ExtensionWebstoreGetWebGLStatusTest.Allowed:\
-			InlineLoginUISafeIframeBrowserTest.Basic:\
-			InlineLoginUISafeIframeBrowserTest.ConfirmationRequiredForNonsecureSignin:\
-			InlineLoginUISafeIframeBrowserTest.NoWebUIInIframe:\
-			InlineLoginUISafeIframeBrowserTest.TopFrameNavigationDisallowed:\
-			OutOfProcessPPAPITest.Graphics3D:\
-			PolicyTest.Disable3DAPIs:\
-			WebRtcWebcamBrowserTests/WebRtcWebcamBrowserTest.TestAcquiringAndReacquiringWebcam/0:\
-			:\
-			`#timed-out`\
-			CalculatorBrowserTest.Model:\
-			ImageFetcherImplBrowserTest.MultipleFetch:\
-			ProfileManagerBrowserTest.DeletePasswords:\
-			TabCaptureApiPixelTest.EndToEndThroughWebRTC:\
-			WebRtcBrowserTest.RunsAudioVideoWebRTCCallInTwoTabs:\
-			WebRtcSimulcastBrowserTest.TestVgaReturnsTwoSimulcastStreams\
-		" \
-	&& \
-	./cacheinvalidation_unittests && \
-	./cast_unittests && \
-	./cc_unittests && \
-	./chromedriver_unittests && \
-	./components_unittests \
-		--gtest_filter=-"\
-			`#failed`\
-			AutocompleteMatchTest.Duplicates:\
-			BookmarkIndexTest.GetBookmarksMatchingWithURLs:\
-			BookmarkIndexTest.MatchPositionsURLs:\
-			InMemoryURLIndexTypesTest.StaticFunctions:\
-			ScoredHistoryMatchTest.GetTopicalityScore:\
-			ScoredHistoryMatchTest.Inlining:\
-			ScoredHistoryMatchTest.ScoringTLD:\
-			UrlFormatterTest.FormatUrlWithOffsets:\
-			UrlFormatterTest.IDNToUnicodeFast:\
-			UrlFormatterTest.IDNToUnicodeSlow\
-		" \
-	&& \
-	./components_browsertests \
-		--gtest_filter=-"\
-			`#failed`\
-			AutofillRiskFingerprintTest.GetFingerprint\
-		" \
-	&& \
-	./compositor_unittests && \
-	./content_browsertests \
-		--gtest_filter=-"\
-			`#failed`\
-			BrowserGpuChannelHostFactoryTest.:\
-			BrowserGpuChannelHostFactoryTest.AlreadyEstablished:\
-			BrowserGpuChannelHostFactoryTest.Basic:\
-			ImageTransportFactoryBrowserTest.TestLostContext:\
-			ImageTransportFactoryTearDownBrowserTest.LoseOnTearDown:\
-			RenderViewImplTest.GetCompositionCharacterBoundsTest:\
-			SignalTest.BasicSignalQueryTest:\
-			SignalTest.BasicSignalSyncPointTest:\
-			SignalTest.InvalidSignalQueryUnboundTest:\
-			SignalTest.InvalidSignalSyncPointTest:\
-			SignalTest.SignalQueryUnboundTest:\
-			WebRtcBrowserTest.*:\
-			:\
-			`#timed-out`\
-			WebRtcAecDumpBrowserTest.CallWithAecDump:\
-			WebRtcAecDumpBrowserTest.CallWithAecDumpEnabledThenDisabled\
-		" \
-	&& \
-	./content_unittests && \
-	./crypto_unittests && \
-	./dbus_unittests \
-		--gtest_filter=-"\
-			`#crashed`\
-			EndToEndAsyncTest.InvalidObjectPath:\
-			EndToEndAsyncTest.InvalidServiceName:\
-			EndToEndSyncTest.InvalidObjectPath:\
-			EndToEndSyncTest.InvalidServiceName:\
-			MessageTest.SetInvalidHeaders\
-		" \
-	&& \
-	./device_unittests && \
-	./display_unittests && \
-	./events_unittests && \
-	./extensions_browsertests && \
-	./extensions_unittests && \
-	./gcm_unit_tests && \
-	./gfx_unittests \
-		--gtest_filter=-"\
-			`#failed - missing Microsoft TrueType fonts`\
-			FontListTest.Fonts_GetHeight_GetBaseline:\
-			FontRenderParamsTest.Default:\
-			FontRenderParamsTest.MissingFamily:\
-			FontRenderParamsTest.Size:\
-			FontRenderParamsTest.Style:\
-			FontRenderParamsTest.SubstituteFamily:\
-			FontRenderParamsTest.UseBitmaps:\
-			FontTest.GetActualFontNameForTesting:\
-			FontTest.LoadArial:\
-			FontTest.LoadArialBold:\
-			PlatformFontLinuxTest.DefaultFont:\
-			RenderTextTest.HarfBuzz_FontListFallback:\
-			RenderTextTest.SetFontList:\
-			RenderTextTest.StringSizeRespectsFontListMetrics\
-			:\
-			`#crashed`\
-			FontRenderParamsTest.Default:\
-			FontRenderParamsTest.ForceFullHintingWhenAntialiasingIsDisabled:\
-			FontRenderParamsTest.MissingFamily:\
-			FontRenderParamsTest.NoFontconfigMatch:\
-			FontRenderParamsTest.OnlySetConfiguredValues:\
-			FontRenderParamsTest.Scalable:\
-			FontRenderParamsTest.Size:\
-			FontRenderParamsTest.Style:\
-			FontRenderParamsTest.SubstituteFamily:\
-			FontRenderParamsTest.UseBitmaps:\
-			PlatformFontLinuxTest.DefaultFont\
-		" \
-	&& \
-	./gl_unittests && \
-	./gn_unittests \
-		--gtest_filter=-"\
-			`#failed`\
-			Format.004:\
-			Format.007:\
-			Format.012:\
-			Format.013:\
-			Format.014:\
-			Format.015:\
-			Format.017:\
-			Format.019:\
-			Format.020:\
-			Format.021:\
-			Format.023:\
-			Format.031:\
-			Format.033:\
-			Format.038:\
-			Format.043:\
-			Format.046:\
-			Format.048:\
-			Format.056:\
-			Format.057:\
-			Format.062:\
-			ParseTree.SortRangeExtraction:\
-			Parser.CommentsAtEndOfBlock:\
-			Parser.CommentsConnectedInList:\
-			Parser.CommentsEndOfBlockSingleLine:\
-			Parser.CommentsLineAttached:\
-			Parser.CommentsSuffix:\
-			Parser.CommentsSuffixDifferentLine:\
-			Parser.CommentsSuffixMultiple\
-		" \
-	&& \
-	./google_apis_unittests && \
-	./gpu_unittests && \
-	./interactive_ui_tests \
-		--gtest_filter=-"\
-			`#failed`\
-			AshNativeCursorManagerTest.CursorChangeOnEnterNotify:\
-			BookmarkBarViewTest5.DND:\
-			OmniboxViewViewsTest.DeactivateTouchEditingOnExecuteCommand:\
-			OmniboxViewViewsTest.SelectAllOnTap:\
-			StartupBrowserCreatorTest.LastUsedProfileActivated:\
-			X11TopmostWindowFinderTest.Basic:\
-			X11TopmostWindowFinderTest.Menu:\
-			:\
-			`#timed-out`\
-			BookmarkBarViewTest9.ScrollButtonScrolls:\
-			DockedPanelBrowserTest.CloseSqueezedPanels:\
-			DockedPanelBrowserTest.MinimizeSqueezedActive:\
-			GlobalCommandsApiTest.GlobalCommand\
-		" \
-	&& \
-	./ipc_mojo_unittests && \
-	./ipc_tests && \
-	./jingle_unittests && \
-	./midi_unittests && \
-	./media_unittests && \
-	./mojo_common_unittests && \
-	./mojo_public_bindings_unittests && \
-	./mojo_public_environment_unittests && \
-	./mojo_public_system_unittests && \
-	./mojo_public_utility_unittests && \
-	./mojo_system_unittests && \
-%if 0%{?nacl}
-	./nacl_loader_unittests && \
-%endif
-	./net_unittests \
-		--gtest_filter=-"\
-			`#failed`\
-			CertVerifyProcTest.TestKnownRoot\
-		" \
-	&& \
-	./ppapi_unittests && \
-	./printing_unittests && \
-	./remoting_unittests && \
-	./sandbox_linux_unittests && \
-	./skia_unittests && \
-	./sql_unittests && \
-	./ui_base_unittests && \
-	./ui_touch_selection_unittests && \
-	./sync_unit_tests && \
-	./unit_tests \
-		--gtest_filter=-"\
-			`#failed - some need https://chromium.googlesource.com/chromium/deps/hunspell_dictionaries/+/master`\
-			BookmarkProviderTest.StripHttpAndAdjustOffsets:\
-			HQPOrderingTest.TEAMatch:\
-			HistoryQuickProviderTest.ContentsClass:\
-			LimitedInMemoryURLIndexTest.Initialization:\
-			MultilingualSpellCheckTest.MultilingualSpellCheckParagraph:\
-			MultilingualSpellCheckTest.MultilingualSpellCheckSuggestions:\
-			MultilingualSpellCheckTest.MultilingualSpellCheckWord:\
-			MultilingualSpellCheckTest.MultilingualSpellCheckWordEnglishSpanish:\
-			SpellCheckTest.CreateTextCheckingResultsKeepsMarkers:\
-			SpellCheckTest.DictionaryFiles:\
-			SpellCheckTest.EnglishWords:\
-			SpellCheckTest.GetAutoCorrectionWord_EN_US:\
-			SpellCheckTest.LogicalSuggestions:\
-			SpellCheckTest.MisspelledWords:\
-			SpellCheckTest.NoSuggest:\
-			SpellCheckTest.SpellCheckParagraphLongSentenceMultipleMisspellings:\
-			SpellCheckTest.SpellCheckParagraphMultipleMisspellings:\
-			SpellCheckTest.SpellCheckParagraphSingleMisspellings:\
-			SpellCheckTest.SpellCheckStrings_EN_US:\
-			SpellCheckTest.SpellCheckSuggestions_EN_US:\
-			SpellCheckTest.SpellingEngine_CheckSpelling:\
-			SpellcheckWordIteratorTest.FindSkippableWordsKhmer:\
-			:\
-			`#crashed`\
-			ListChangesTaskTest.UnderTrackedFolder:\
-			ListChangesTaskTest.UnrelatedChange:\
-			SpellCheckTest.RequestSpellCheckWithMisspellings:\
-			SpellCheckTest.RequestSpellCheckWithMultipleRequests:\
-			SpellCheckTest.RequestSpellCheckWithSingleMisspelling\
-		" \
-	&& \
-	./url_unittests && \
-	./views_unittests \
-		--gtest_filter=-"\
-			`#failed`\
-			DesktopWindowTreeHostX11HighDPITest.LocatedEventDispatchWithCapture:\
-			LabelTest.FontPropertySymbol:\
-			WidgetTest.WindowMouseModalityTest\
-		" \
-	&& \
-	./wm_unittests \
-	)
-	popd
-
-	if [ -n "$XVFB_PID" ]; then
-		kill $XVFB_PID
-		unset XVFB_PID
-		unset DISPLAY
-	fi
 %endif
 
 %post
