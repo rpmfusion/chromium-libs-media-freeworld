@@ -241,6 +241,7 @@ manual_files="	libavcodec/aarch64/fft_neon.S \
 mp3_files="	libavcodec/aarch64/aacpsdsp_init_aarch64.c \
 		libavcodec/aarch64/mpegaudiodsp_init.c \
 		libavcodec/aarch64/mpegaudiodsp_neon.S \
+		libavcodec/aarch64/sbrdsp_init_aarch64.c \
 		libavcodec/aac_ac3_parser.c \
 		libavcodec/aac_parser.c \
 		libavcodec/aacadtsdec.c \
