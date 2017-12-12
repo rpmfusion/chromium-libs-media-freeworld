@@ -196,7 +196,7 @@ Patch50:	chromium-60.0.3112.113-libavutil-timer-include-path-fix.patch
 # from gentoo
 Patch53:	chromium-61.0.3163.79-gcc-no-opt-safe-math.patch
 # Only needed when glibc 2.26.90 or later is used
-Patch57:	chromium-61.0.3163.79-aarch64-glibc-2.26.90.patch
+Patch57:	chromium-63.0.3289.84-aarch64-glibc-2.26.90.patch
 # More gcc fixes for epel
 Patch58:	chromium-62.0.3202.62-dde535-gcc-fix.patch
 Patch59:	chromium-62.0.3202.62-gcc-nc.patch
