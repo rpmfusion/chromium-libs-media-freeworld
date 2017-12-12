@@ -239,6 +239,7 @@ manual_files="	libavcodec/aarch64/fft_neon.S \
 		libavutil/x86/x86util.asm "
 
 mp3_files="	libavcodec/aarch64/aacpsdsp_init_aarch64.c \
+		libavcodec/aarch64/autorename_libavcodec_aarch64_aacpsdsp_neon.S \
 		libavcodec/aarch64/mpegaudiodsp_init.c \
 		libavcodec/aarch64/mpegaudiodsp_neon.S \
 		libavcodec/aarch64/sbrdsp_init_aarch64.c \
