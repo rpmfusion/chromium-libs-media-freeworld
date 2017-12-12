@@ -197,10 +197,13 @@ manual_files="	libavcodec/aarch64/fft_neon.S \
 		libavcodec/aarch64/mdct_neon.S \
 		libavcodec/aarch64/vorbisdsp_neon.S \
 		libavcodec/x86/hpeldsp_rnd_template.c \
+		libavcodec/x86/mdct15.asm \
+		libavcodec/x86/mdct15_init.c \
 		libavcodec/x86/rnd_template.c \
 		libavcodec/x86/videodsp.asm \
 		libavcodec/x86/videodsp_init.c \
 		libavcodec/x86/vorbisdsp_init.c \
+		libavcodec/autorename_libavcodec_mdct15.c \
 		libavcodec/bit_depth_template.c \
 		libavcodec/fft_template.c \
 		libavcodec/flacdec.c \
@@ -210,6 +213,7 @@ manual_files="	libavcodec/aarch64/fft_neon.S \
 		libavcodec/h264pred_template.c \
 		libavcodec/hpel_template.c \
 		libavcodec/hpeldsp.c \
+		libavcodec/mdct15.c \
 		libavcodec/mdct_template.c \
 		libavcodec/pel_template.c \
 		libavcodec/utils.c \
