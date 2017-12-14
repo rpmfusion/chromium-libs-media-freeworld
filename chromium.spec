@@ -254,9 +254,6 @@ BuildRequires:	fontconfig-devel
 BuildRequires:	GConf2-devel
 BuildRequires:	glib2-devel
 BuildRequires:	gnome-keyring-devel
-BuildRequires:	gtk2-devel
-# Yes. This too.
-# BuildRequires:	gtk3-devel
 BuildRequires:	glibc-devel
 BuildRequires:	gperf
 BuildRequires:	libatomic
@@ -353,6 +350,8 @@ BuildRequires:	opus-devel
 BuildRequires:	perl(Switch)
 %if 0%{gtk3}
 BuildRequires:	pkgconfig(gtk+-3.0)
+%else
+BuildRequires:	pkgconfig(gtk+-2.0)
 %endif
 BuildRequires:	pulseaudio-libs-devel
 BuildRequires:	python-beautifulsoup4
@@ -386,7 +385,11 @@ Requires:	nss%{_isa} >= 3.26
 Requires:	nss-mdns%{_isa}
 
 # GTK modules it expects to find for some reason.
+%if 0%{gtk3}
+Requires:	libcanberra-gtk3%{_isa}
+%else
 Requires:	libcanberra-gtk2%{_isa}
+%endif
 
 %if 0%{?fedora}
 # This enables support for u2f tokens
@@ -438,7 +441,6 @@ Provides: bundled(ffmpeg) = 3.2git
 Provides: bundled(fips181) = 2.2.3
 Provides: bundled(fontconfig) = 2.11.0
 Provides: bundled(gperftools) = svn144
-Provides: bundled(gtk3) = 3.1.4
 %if 0%{?bundleharfbuzz}
 Provides: bundled(harfbuzz) = 1.4.2
 %endif
