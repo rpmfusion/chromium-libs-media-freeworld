@@ -116,7 +116,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 %else
 Name:		chromium%{chromium_channel}
 %endif
-Version:	%{majorversion}.0.3239.84
+Version:	%{majorversion}.0.3239.108
 Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
@@ -1510,6 +1510,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Fri Dec 15 2017 Tomas Popela <tpopela@redhat.com> 63.0.3239.108-1
+- Update to 63.0.3239.108
+
 * Thu Dec  7 2017 Tom Callaway <spot@fedoraproject.org> 63.0.3239.84-1
 - update to 63.0.3239.84
 
