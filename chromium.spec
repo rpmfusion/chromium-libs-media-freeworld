@@ -116,7 +116,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 %else
 Name:		chromium%{chromium_channel}
 %endif
-Version:	%{majorversion}.0.3239.84
+Version:	%{majorversion}.0.3239.108
 Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
@@ -196,7 +196,7 @@ Patch50:	chromium-60.0.3112.113-libavutil-timer-include-path-fix.patch
 # from gentoo
 Patch53:	chromium-61.0.3163.79-gcc-no-opt-safe-math.patch
 # Only needed when glibc 2.26.90 or later is used
-Patch57:	chromium-61.0.3163.79-aarch64-glibc-2.26.90.patch
+Patch57:	chromium-63.0.3289.84-aarch64-glibc-2.26.90.patch
 # More gcc fixes for epel
 Patch58:	chromium-62.0.3202.62-dde535-gcc-fix.patch
 Patch59:	chromium-62.0.3202.62-gcc-nc.patch
@@ -254,9 +254,6 @@ BuildRequires:	fontconfig-devel
 BuildRequires:	GConf2-devel
 BuildRequires:	glib2-devel
 BuildRequires:	gnome-keyring-devel
-BuildRequires:	gtk2-devel
-# Yes. This too.
-# BuildRequires:	gtk3-devel
 BuildRequires:	glibc-devel
 BuildRequires:	gperf
 BuildRequires:	libatomic
@@ -353,6 +350,8 @@ BuildRequires:	opus-devel
 BuildRequires:	perl(Switch)
 %if 0%{gtk3}
 BuildRequires:	pkgconfig(gtk+-3.0)
+%else
+BuildRequires:	pkgconfig(gtk+-2.0)
 %endif
 BuildRequires:	pulseaudio-libs-devel
 BuildRequires:	python-beautifulsoup4
@@ -386,7 +385,11 @@ Requires:	nss%{_isa} >= 3.26
 Requires:	nss-mdns%{_isa}
 
 # GTK modules it expects to find for some reason.
+%if 0%{gtk3}
+Requires:	libcanberra-gtk3%{_isa}
+%else
 Requires:	libcanberra-gtk2%{_isa}
+%endif
 
 %if 0%{?fedora}
 # This enables support for u2f tokens
@@ -438,7 +441,6 @@ Provides: bundled(ffmpeg) = 3.2git
 Provides: bundled(fips181) = 2.2.3
 Provides: bundled(fontconfig) = 2.11.0
 Provides: bundled(gperftools) = svn144
-Provides: bundled(gtk3) = 3.1.4
 %if 0%{?bundleharfbuzz}
 Provides: bundled(harfbuzz) = 1.4.2
 %endif
@@ -1508,6 +1510,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Fri Dec 15 2017 Tomas Popela <tpopela@redhat.com> 63.0.3239.108-1
+- Update to 63.0.3239.108
+
 * Thu Dec  7 2017 Tom Callaway <spot@fedoraproject.org> 63.0.3239.84-1
 - update to 63.0.3239.84
 
