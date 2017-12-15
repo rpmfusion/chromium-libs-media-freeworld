@@ -354,6 +354,7 @@ BuildRequires:	pkgconfig(gtk+-3.0)
 BuildRequires:	pkgconfig(gtk+-2.0)
 %endif
 BuildRequires:	pulseaudio-libs-devel
+BuildRequires:	python2
 BuildRequires:	python-beautifulsoup4
 BuildRequires:	python-BeautifulSoup
 BuildRequires:	python-html5lib
