@@ -117,7 +117,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 Name:		chromium%{chromium_channel}
 %endif
 Version:	%{majorversion}.0.3282.119
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -1192,6 +1192,7 @@ cp -a remote_assistance_host %{buildroot}%{crd_path}/remote-assistance-host
 cp -a remoting_locales %{buildroot}%{crd_path}/
 cp -a remoting_me2me_host %{buildroot}%{crd_path}/chrome-remote-desktop-host
 cp -a remoting_start_host %{buildroot}%{crd_path}/start-host
+cp -a remoting_user_session %{buildroot}%{crd_path}/user-session
 
 # chromium
 mkdir -p %{buildroot}%{_sysconfdir}/chromium/native-messaging-hosts
@@ -1487,6 +1488,7 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{_sysconfdir}/opt/chrome/
 %{crd_path}/remoting_locales/
 %{crd_path}/start-host
+%{crd_path}/user-session
 %{_unitdir}/chrome-remote-desktop@.service
 /var/lib/chrome-remote-desktop/
 %if 0%{?build_remoting_app}
@@ -1517,6 +1519,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Thu Feb  1 2018 Tom Callaway <spot@fedoraproject.org> 64.0.3282.119-2
+- include user-session binary in chrome-remote-desktop subpackage
+
 * Thu Jan 25 2018 Tom Callaway <spot@fedoraproject.org> 64.0.3282.119-1
 - update to 64.0.3282.119
 
