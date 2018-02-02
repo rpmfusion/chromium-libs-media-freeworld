@@ -116,8 +116,8 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 %else
 Name:		chromium%{chromium_channel}
 %endif
-Version:	%{majorversion}.0.3282.119
-Release:	2%{?dist}
+Version:	%{majorversion}.0.3282.140
+Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -1519,6 +1519,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Fri Feb  2 2018 Tom Callaway <spot@fedoraproject.org> 64.0.3282.140-1
+- update to 64.0.3282.140
+
 * Thu Feb  1 2018 Tom Callaway <spot@fedoraproject.org> 64.0.3282.119-2
 - include user-session binary in chrome-remote-desktop subpackage
 
