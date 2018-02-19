@@ -116,7 +116,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 %else
 Name:		chromium%{chromium_channel}
 %endif
-Version:	%{majorversion}.0.3282.140
+Version:	%{majorversion}.0.3282.167
 Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
@@ -215,7 +215,8 @@ Patch65:	chromium-64.0.3282.119-gcc-round-fix.patch
 Patch66:	chromium-64.0.3282.119-gcc-constexpr-fix.patch
 # Include proper headers to invoke memcpy()
 Patch67:	chromium-64.0.3282.119-memcpy-fix.patch
-
+# Work around gcc8 bug in gn
+Patch68:	chromium-64.0.3282.167-gcc8-fabi11.patch
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
 # http://build.chromium.org/buildbot/official/
@@ -651,15 +652,16 @@ udev.
 %endif
 %patch50 -p1 -b .pathfix
 %patch53 -p1 -b .nogccoptmath
-%if 0%{?fedora} >= 28
-%patch57 -p1 -b .aarch64glibc
-%endif
+# %%if 0%%{?fedora} >= 28
+# %%patch57 -p1 -b .aarch64glibc
+# %%endif
 %patch62 -p1 -b .gcc5-r3
 %patch63 -p1 -b .nolibc++
 %patch64 -p1 -b .fixunbundle
 %patch65 -p1 -b .gcc-round-fix
 %patch66 -p1 -b .gcc-const-expr
 %patch67 -p1 -b .memcpyfix
+%patch68 -p1 -b .fabi11
 
 %if 0%{?asan}
 export CC="clang"
@@ -1519,6 +1521,11 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Fri Feb 16 2018 Tom Callaway <spot@fedoraproject.org> 64.0.3282.167-1
+- update to 64.0.3282.167
+- include workaround for gcc8 bug in gn
+- disable unnecessary aarch64 glibc symbol change
+
 * Fri Feb  2 2018 Tom Callaway <spot@fedoraproject.org> 64.0.3282.140-1
 - update to 64.0.3282.140
 
