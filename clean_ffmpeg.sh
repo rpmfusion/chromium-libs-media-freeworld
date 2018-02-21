@@ -62,9 +62,11 @@ header_files="	libavcodec/x86/inline_asm.h \
 		libavcodec/aacps.h \
 		libavcodec/aacpsdsp.h \
 		libavcodec/aacsbrdata.h \
+		libavcodec/aac_ac3_parser.h \
 		libavcodec/aac_defines.h \
 		libavcodec/ac3.h \
 		libavcodec/ac3tab.h \
+		libavcodec/adts_header.h \
 		libavcodec/avcodec.h \
 		libavcodec/blockdsp.h \
 		libavcodec/bytestream.h \
@@ -93,7 +95,9 @@ header_files="	libavcodec/x86/inline_asm.h \
 		libavcodec/mdct15.h \
 		libavcodec/me_cmp.h \
 		libavcodec/motion_est.h \
+		libavcodec/mpeg12.h \
 		libavcodec/mpeg12data.h \
+		libavcodec/mpeg12vlc.h \
 		libavcodec/mpegaudio.h \
 		libavcodec/mpegaudiodecheader.h \
 		libavcodec/mpegaudiodectab.h \
@@ -238,11 +242,16 @@ manual_files="	libavcodec/aarch64/fft_neon.S \
 		libavutil/x86/x86inc.asm \
 		libavutil/x86/x86util.asm "
 
-mp3_files="	libavcodec/aarch64/mpegaudiodsp_init.c \
+mp3_files="	libavcodec/aarch64/aacpsdsp_init_aarch64.c \
+		libavcodec/aarch64/aacpsdsp_neon.S \
+		libavcodec/aarch64/autorename_libavcodec_aarch64_aacpsdsp_neon.S \
+		libavcodec/aarch64/autorename_libavcodec_aarch64_sbrdsp_neon.S \
+		libavcodec/aarch64/mpegaudiodsp_init.c \
 		libavcodec/aarch64/mpegaudiodsp_neon.S \
+		libavcodec/aarch64/sbrdsp_init_aarch64.c \
+		libavcodec/aarch64/sbrdsp_neon.S \
 		libavcodec/aac_ac3_parser.c \
 		libavcodec/aac_parser.c \
-		libavcodec/aacadtsdec.c \
 		libavcodec/aacps_float.c \
 		libavcodec/aacpsdsp_float.c \
 		libavcodec/aacsbr.c \
@@ -301,8 +310,7 @@ other_files="	BUILD.gn \
 		OWNERS \
 		README.chromium \
 		README.md \
-		RELEASE \
-		xcode_hack.c "
+		RELEASE "
 
 cd "$1/third_party/ffmpeg" || exit 1
 
