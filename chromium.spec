@@ -116,7 +116,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 %else
 Name:		chromium%{chromium_channel}
 %endif
-Version:	%{majorversion}.0.3282.167
+Version:	%{majorversion}.0.3282.186
 Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
@@ -1521,6 +1521,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Mon Mar  5 2018 Tom Callaway <spot@fedoraproject.org> 64.0.3282.186-1
+- update to 64.0.3282.186
+
 * Fri Feb 16 2018 Tom Callaway <spot@fedoraproject.org> 64.0.3282.167-1
 - update to 64.0.3282.167
 - include workaround for gcc8 bug in gn
