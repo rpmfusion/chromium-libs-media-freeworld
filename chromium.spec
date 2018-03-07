@@ -92,8 +92,8 @@ BuildRequires:  libicu-devel >= 5.4
 %global bundlelibpng 0
 %endif
 
-# Needs at least harfbuzz 1.5.0 now.
-# 2017-06-12
+# Needs at least harfbuzz 1.7.3 now.
+# 2018-03-07
 %if 0%{?fedora} < 28
 %global bundleharfbuzz 1
 %else
@@ -109,14 +109,14 @@ BuildRequires:  libicu-devel >= 5.4
 %global default_client_secret miEreAep8nuvTdvLums6qyLK
 %global chromoting_client_id 449907151817-8vnlfih032ni8c4jjps9int9t86k546t.apps.googleusercontent.com 
 
-%global majorversion 64
+%global majorversion 65
 
 %if %{freeworld}
 Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 %else
 Name:		chromium%{chromium_channel}
 %endif
-Version:	%{majorversion}.0.3282.186
+Version:	%{majorversion}.0.3325.146
 Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
@@ -168,9 +168,7 @@ Patch27:	chromium-63.0.3289.84-setopaque.patch
 Patch31:	chromium-56.0.2924.87-fpermissive.patch
 # Fix issue with compilation on gcc7
 # Thanks to Ben Noordhuis
-Patch33: 	chromium-64.0.3282.119-gcc7.patch
-# Enable mp3 support
-Patch34:	chromium-64.0.3282.119-enable-mp3.patch
+Patch33: 	chromium-65.0.3325.146-gcc7.patch
 # Revert https://chromium.googlesource.com/chromium/src/+/b794998819088f76b4cf44c8db6940240c563cf4%5E%21/#F0
 # https://bugs.chromium.org/p/chromium/issues/detail?id=712737
 # https://bugzilla.redhat.com/show_bug.cgi?id=1446851
@@ -195,28 +193,19 @@ Patch50:	chromium-60.0.3112.113-libavutil-timer-include-path-fix.patch
 Patch53:	chromium-61.0.3163.79-gcc-no-opt-safe-math.patch
 # Only needed when glibc 2.26.90 or later is used
 Patch57:	chromium-63.0.3289.84-aarch64-glibc-2.26.90.patch
-# More gcc fixes for epel
-Patch58:	chromium-62.0.3202.62-dde535-gcc-fix.patch
-Patch59:	chromium-62.0.3202.62-gcc-nc.patch
-# Epel compiler really does not like assigning nullptr to a StructPtr
-Patch60:	chromium-62.0.3202.62-epel7-no-nullptr-assignment-on-StructPtr.patch
-# Another gcc 4.8 goods..
-Patch61:	chromium-62.0.3202.62-rvalue-fix.patch
 # From gentoo
-Patch62:	chromium-64.0.3282.119-gcc5-r3.patch
+Patch62:	chromium-65.0.3325.146-gcc5-r3.patch
 # Do not try to use libc++ in the remoting stack
 Patch63:	chromium-63.0.3289.84-nolibc++.patch
-# Fix freetype and harfbuzz-ng unbundle
-Patch64:	chromium-63.0.3289.84-fix-ft-hb-unbundle.patch
 # To use round with gcc, you need to #include <cmath>
-Patch65:	chromium-64.0.3282.119-gcc-round-fix.patch
-# Fix constexpr gcc issues
-# https://chromium.googlesource.com/angle/angle/+/030017a4855c7b6e7f2ff8d9566c146f31eb301b
-Patch66:	chromium-64.0.3282.119-gcc-constexpr-fix.patch
+Patch65:	chromium-65.0.3325.146-gcc-round-fix.patch
 # Include proper headers to invoke memcpy()
-Patch67:	chromium-64.0.3282.119-memcpy-fix.patch
+Patch67:	chromium-65.0.3325.146-memcpy-fix.patch
 # Work around gcc8 bug in gn
 Patch68:	chromium-64.0.3282.167-gcc8-fabi11.patch
+# From Gentoo
+Patch69:	chromium-math.h-r0.patch
+Patch70:	chromium-stdint.patch
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
 # http://build.chromium.org/buildbot/official/
@@ -631,11 +620,6 @@ udev.
 %patch27 -p1 -b .setopaque
 %patch31 -p1 -b .permissive
 %patch33 -p1 -b .gcc7
-%if %{freeworld}
-# Do not apply mp3 change
-%else
-%patch34 -p1 -b .mp3
-%endif
 %patch36 -p1 -b .revert
 %patch37 -p1 -b .ffmpeg-stdatomic
 %patch39 -p1 -b .system-clang
@@ -645,10 +629,6 @@ udev.
 %if 0%{?rhel} == 7
 %patch46 -p1 -b .kmaxskip
 %patch47 -p1 -b .c99
-%patch58 -p1 -b .dde5e35
-%patch59 -p1 -b .gcc-nc
-%patch60 -p1 -b .nonullptr
-%patch61 -p1 -b .another-rvalue-fix
 %endif
 %patch50 -p1 -b .pathfix
 %patch53 -p1 -b .nogccoptmath
@@ -657,11 +637,11 @@ udev.
 # %%endif
 %patch62 -p1 -b .gcc5-r3
 %patch63 -p1 -b .nolibc++
-%patch64 -p1 -b .fixunbundle
 %patch65 -p1 -b .gcc-round-fix
-%patch66 -p1 -b .gcc-const-expr
 %patch67 -p1 -b .memcpyfix
 %patch68 -p1 -b .fabi11
+%patch69 -p1 -b .gentoo-math
+%patch70 -p1 -b .gentoo-stdint
 
 %if 0%{?asan}
 export CC="clang"
@@ -778,7 +758,7 @@ CHROMIUM_CORE_GN_DEFINES+=' is_debug=false'
 CHROMIUM_CORE_GN_DEFINES+=' system_libdir="lib64"'
 %endif
 CHROMIUM_CORE_GN_DEFINES+=' google_api_key="%{api_key}" google_default_client_id="%{default_client_id}" google_default_client_secret="%{default_client_secret}"'
-CHROMIUM_CORE_GN_DEFINES+=' is_clang=false use_sysroot=false use_gold=false fieldtrial_testing_like_official_build=true'
+CHROMIUM_CORE_GN_DEFINES+=' is_clang=false use_sysroot=false use_gold=false fieldtrial_testing_like_official_build=true use_lld=false'
 %if %{freeworld}
 CHROMIUM_CORE_GN_DEFINES+=' ffmpeg_branding="ChromeOS" proprietary_codecs=true'
 %else
@@ -896,6 +876,7 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/leveldatabase' \
 	'third_party/libXNVCtrl' \
 	'third_party/libaddressinput' \
+	'third_party/libaom' \
 	'third_party/libdrm' \
 	'third_party/libjingle' \
 	'third_party/libjpeg_turbo' \
@@ -952,6 +933,7 @@ build/linux/unbundle/remove_bundled_libraries.py \
 %if 0%{?bundlere2}
 	'third_party/re2' \
 %endif
+	'third_party/s2cellid' \
 	'third_party/sfntly' \
 	'third_party/sinonjs' \
 	'third_party/skia' \
@@ -982,6 +964,7 @@ build/linux/unbundle/remove_bundled_libraries.py \
         'third_party/zlib' \
 	'third_party/zlib/google' \
 	'url/third_party/mozilla' \
+	'v8/src/third_party/utf8-decoder' \
 	'v8/src/third_party/valgrind' \
 	'v8/third_party/inspector_protocol' \
 	--do-remove
@@ -1521,6 +1504,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Wed Mar  7 2018 Tom Callaway <spot@fedoraproject.org> 65.0.3325.146-1
+- update to 65.0.3325.146
+
 * Mon Mar  5 2018 Tom Callaway <spot@fedoraproject.org> 64.0.3282.186-1
 - update to 64.0.3282.186
 

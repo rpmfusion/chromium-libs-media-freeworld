@@ -158,8 +158,6 @@ header_files="	libavcodec/x86/inline_asm.h \
 		libavutil/x86/intreadwrite.h \
 		libavutil/x86/intmath.h
 		libavutil/x86/timer.h \
-		libavutil/atomic.h \
-		libavutil/atomic_gcc.h \
 		libavutil/attributes.h \
 		libavutil/audio_fifo.h \
 		libavutil/avassert.h \
