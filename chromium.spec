@@ -238,6 +238,8 @@ Patch82:	chromium-65.0.3325.146-GCC-explicitely-std-move-to-base-Optional-instea
 Patch83:	chromium-65.0.3325.146-GCC-IDB-methods-String-renamed-to-GetString.patch
 # https://github.com/lgsvl/meta-lgsvl-browser/blob/ac93e7622be66946c76504be6a1db8d644ae1e43/recipes-browser/chromium/files/0001-GCC-fully-declare-ConfigurationPolicyProvider.patch
 Patch84:	chromium-65.0.3325.146-GCC-fully-declare-ConfigurationPolicyProvider.patch
+# ../../mojo/public/cpp/bindings/associated_interface_ptr_info.h:48:43: error: cannot convert 'const mojo::ScopedInterfaceEndpointHandle' to 'bool' in return
+Patch85:	chromium-65.0.3325.162-boolfix.patch
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
 # http://build.chromium.org/buildbot/official/
@@ -697,6 +699,7 @@ udev.
 %patch82 -p1 -b .explicit-std-move
 %patch83 -p1 -b .GetString
 %patch84 -p1 -b .fully-declare
+%patch85 -p1 -b .boolfix
 
 %if 0%{?asan}
 export CC="clang"
