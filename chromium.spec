@@ -84,12 +84,14 @@ BuildRequires:  libicu-devel >= 5.4
 %global bundleharfbuzz 1
 %global bundlelibwebp 1
 %global bundlelibpng 1
+%global bundlelibjpeg 1
 %else
 %global bundleharfbuzz 0
 %global bundleopus 1
 %global bundlelibusbx 0
 %global bundlelibwebp 0
 %global bundlelibpng 0
+%global bundlelibjpeg 0
 %endif
 
 # Needs at least harfbuzz 1.7.3 now.
@@ -338,7 +340,12 @@ BuildRequires:	libffi-devel
 # Not newer than 54 (at least not right now)
 BuildRequires:	libicu-devel = 54.1
 %endif
+%if 0%{?bundlelibjpeg}
+# If this is true, we're using the bundled libjpeg
+# which we need to do because the RHEL 7 libjpeg doesn't work for chromium anymore
+%else
 BuildRequires:	libjpeg-devel
+%endif
 %if 0%{?bundlelibpng}
 # If this is true, we're using the bundled libpng
 # which we need to do because the RHEL 7 libpng doesn't work right anymore
@@ -482,7 +489,9 @@ Provides: bundled(libaddressinput) = 0
 Provides: bundled(libdrm) = 2.4.70
 Provides: bundled(libevent) = 1.4.15
 Provides: bundled(libjingle) = 9564
-# Provides: bundled(libjpeg-turbo) = 1.4.90
+%if 0%{?bundlelibjpeg}
+Provides: bundled(libjpeg-turbo) = 1.4.90
+%endif
 Provides: bundled(libphonenumber) = a4da30df63a097d67e3c429ead6790ad91d36cf4
 %if 0%{?bundlelibpng}
 Provides: bundled(libpng) = 1.6.22
@@ -1038,7 +1047,10 @@ build/linux/unbundle/replace_gn_files.py --system-libraries \
 	icu \
 %endif
 	libdrm \
+%if %{bundlelibjpeg}
+%else
 	libjpeg \
+%endif
 %if %{bundlelibpng}
 %else
 	libpng \
