@@ -240,6 +240,8 @@ Patch83:	chromium-65.0.3325.146-GCC-IDB-methods-String-renamed-to-GetString.patc
 Patch84:	chromium-65.0.3325.146-GCC-fully-declare-ConfigurationPolicyProvider.patch
 # ../../mojo/public/cpp/bindings/associated_interface_ptr_info.h:48:43: error: cannot convert 'const mojo::ScopedInterfaceEndpointHandle' to 'bool' in return
 Patch85:	chromium-65.0.3325.162-boolfix.patch
+# From Debian
+Patch86:	chromium-65.0.3325.162-skia-aarch64-buildfix.patch
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
 # http://build.chromium.org/buildbot/official/
@@ -700,6 +702,7 @@ udev.
 %patch83 -p1 -b .GetString
 %patch84 -p1 -b .fully-declare
 %patch85 -p1 -b .boolfix
+%patch86 -p1 -b .aarch64fix
 
 %if 0%{?asan}
 export CC="clang"
