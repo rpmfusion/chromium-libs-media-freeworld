@@ -87,6 +87,7 @@ header_files="	libavcodec/x86/inline_asm.h \
 		libavcodec/h264chroma.h \
 		libavcodec/hpeldsp.h \
 		libavcodec/hwaccel.h \
+		libavcodec/hwaccels.h \
 		libavcodec/idctdsp.h \
 		libavcodec/internal.h \
 		libavcodec/kbdwin.h \
@@ -109,6 +110,8 @@ header_files="	libavcodec/x86/inline_asm.h \
 		libavcodec/mpegvideodsp.h \
 		libavcodec/mpegvideoencdsp.h \
 		libavcodec/options_table.h \
+		libavcodec/opus_celt.h \
+		libavcodec/opus_pvq.h \
 		libavcodec/opus_rc.h \
 		libavcodec/pcm_tablegen.h \
 		libavcodec/pixblockdsp.h \
@@ -158,8 +161,6 @@ header_files="	libavcodec/x86/inline_asm.h \
 		libavutil/x86/intreadwrite.h \
 		libavutil/x86/intmath.h
 		libavutil/x86/timer.h \
-		libavutil/atomic.h \
-		libavutil/atomic_gcc.h \
 		libavutil/attributes.h \
 		libavutil/audio_fifo.h \
 		libavutil/avassert.h \
