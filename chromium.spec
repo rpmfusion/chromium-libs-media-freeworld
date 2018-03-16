@@ -84,12 +84,14 @@ BuildRequires:  libicu-devel >= 5.4
 %global bundleharfbuzz 1
 %global bundlelibwebp 1
 %global bundlelibpng 1
+%global bundlelibjpeg 1
 %else
 %global bundleharfbuzz 0
 %global bundleopus 1
 %global bundlelibusbx 0
 %global bundlelibwebp 0
 %global bundlelibpng 0
+%global bundlelibjpeg 0
 %endif
 
 # Needs at least harfbuzz 1.7.3 now.
@@ -236,6 +238,10 @@ Patch82:	chromium-65.0.3325.146-GCC-explicitely-std-move-to-base-Optional-instea
 Patch83:	chromium-65.0.3325.146-GCC-IDB-methods-String-renamed-to-GetString.patch
 # https://github.com/lgsvl/meta-lgsvl-browser/blob/ac93e7622be66946c76504be6a1db8d644ae1e43/recipes-browser/chromium/files/0001-GCC-fully-declare-ConfigurationPolicyProvider.patch
 Patch84:	chromium-65.0.3325.146-GCC-fully-declare-ConfigurationPolicyProvider.patch
+# ../../mojo/public/cpp/bindings/associated_interface_ptr_info.h:48:43: error: cannot convert 'const mojo::ScopedInterfaceEndpointHandle' to 'bool' in return
+Patch85:	chromium-65.0.3325.162-boolfix.patch
+# From Debian
+Patch86:	chromium-65.0.3325.162-skia-aarch64-buildfix.patch
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
 # http://build.chromium.org/buildbot/official/
@@ -277,7 +283,9 @@ BuildRequires:	flex
 BuildRequires:	fontconfig-devel
 BuildRequires:	GConf2-devel
 BuildRequires:	glib2-devel
+%if 0%{?fedora} <= 27
 BuildRequires:	gnome-keyring-devel
+%endif
 BuildRequires:	glibc-devel
 BuildRequires:	gperf
 BuildRequires:	libatomic
@@ -336,7 +344,12 @@ BuildRequires:	libffi-devel
 # Not newer than 54 (at least not right now)
 BuildRequires:	libicu-devel = 54.1
 %endif
+%if 0%{?bundlelibjpeg}
+# If this is true, we're using the bundled libjpeg
+# which we need to do because the RHEL 7 libjpeg doesn't work for chromium anymore
+%else
 BuildRequires:	libjpeg-devel
+%endif
 %if 0%{?bundlelibpng}
 # If this is true, we're using the bundled libpng
 # which we need to do because the RHEL 7 libpng doesn't work right anymore
@@ -480,7 +493,9 @@ Provides: bundled(libaddressinput) = 0
 Provides: bundled(libdrm) = 2.4.70
 Provides: bundled(libevent) = 1.4.15
 Provides: bundled(libjingle) = 9564
-# Provides: bundled(libjpeg-turbo) = 1.4.90
+%if 0%{?bundlelibjpeg}
+Provides: bundled(libjpeg-turbo) = 1.4.90
+%endif
 Provides: bundled(libphonenumber) = a4da30df63a097d67e3c429ead6790ad91d36cf4
 %if 0%{?bundlelibpng}
 Provides: bundled(libpng) = 1.6.22
@@ -686,6 +701,8 @@ udev.
 %patch82 -p1 -b .explicit-std-move
 %patch83 -p1 -b .GetString
 %patch84 -p1 -b .fully-declare
+%patch85 -p1 -b .boolfix
+%patch86 -p1 -b .aarch64fix
 
 %if 0%{?asan}
 export CC="clang"
@@ -1036,7 +1053,10 @@ build/linux/unbundle/replace_gn_files.py --system-libraries \
 	icu \
 %endif
 	libdrm \
+%if %{bundlelibjpeg}
+%else
 	libjpeg \
+%endif
 %if %{bundlelibpng}
 %else
 	libpng \
@@ -1549,6 +1569,10 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Fri Mar 16 2018 Tom Callaway <spot@fedoraproject.org> 65.0.3325.162-2
+- disable StartupNotify in chromium-browser.desktop (not in google-chrome desktop file)
+  (bz1545241)
+
 * Wed Mar 14 2018 Tom Callaway <spot@fedoraproject.org> 65.0.3325.162-1
 - update to 65.0.3325.162
 
