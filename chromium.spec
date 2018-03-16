@@ -1569,6 +1569,10 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Fri Mar 16 2018 Tom Callaway <spot@fedoraproject.org> 65.0.3325.162-2
+- disable StartupNotify in chromium-browser.desktop (not in google-chrome desktop file)
+  (bz1545241)
+
 * Wed Mar 14 2018 Tom Callaway <spot@fedoraproject.org> 65.0.3325.162-1
 - update to 65.0.3325.162
 
