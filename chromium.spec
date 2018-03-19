@@ -86,6 +86,7 @@ BuildRequires:  libicu-devel >= 5.4
 %global bundlelibpng 1
 %global bundlelibjpeg 1
 %global bundlefreetype 1
+%global bundlelibdrm 1
 %else
 %global bundleharfbuzz 0
 %global bundleopus 1
@@ -94,6 +95,7 @@ BuildRequires:  libicu-devel >= 5.4
 %global bundlelibpng 0
 %global bundlelibjpeg 0
 %global bundlefreetype 0
+%global bundlelibdrm 0
 %endif
 
 # Needs at least harfbuzz 1.7.3 now.
@@ -121,7 +123,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 Name:		chromium%{chromium_channel}
 %endif
 Version:	%{majorversion}.0.3325.162
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -292,7 +294,11 @@ BuildRequires:	glibc-devel
 BuildRequires:	gperf
 BuildRequires:	libatomic
 BuildRequires:	libcap-devel
+%if 0%{?bundlelibdrm}
+#nothing
+%else
 BuildRequires:	libdrm-devel
+%endif
 BuildRequires:	libgcrypt-devel
 BuildRequires:	libudev-devel
 BuildRequires:	libusb-devel
@@ -499,7 +505,9 @@ Provides: bundled(icu) = 58.1
 Provides: bundled(kitchensink) = 1
 Provides: bundled(leveldb) = 1.20
 Provides: bundled(libaddressinput) = 0
-Provides: bundled(libdrm) = 2.4.70
+%if 0%{?bundlelibdrm}
+Provides: bundled(libdrm) = 2.4.85
+%endif
 Provides: bundled(libevent) = 1.4.15
 Provides: bundled(libjingle) = 9564
 %if 0%{?bundlelibjpeg}
@@ -1064,7 +1072,10 @@ build/linux/unbundle/replace_gn_files.py --system-libraries \
 %else
 	icu \
 %endif
+%if %{bundlelibdrm}
+%else
 	libdrm \
+%endif
 %if %{bundlelibjpeg}
 %else
 	libjpeg \
@@ -1581,6 +1592,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Mon Mar 19 2018 Tom Callaway <spot@fedoraproject.org> 65.0.3325.162-3
+- use bundled libdrm on epel7
+
 * Fri Mar 16 2018 Tom Callaway <spot@fedoraproject.org> 65.0.3325.162-2
 - disable StartupNotify in chromium-browser.desktop (not in google-chrome desktop file)
   (bz1545241)
