@@ -85,6 +85,7 @@ BuildRequires:  libicu-devel >= 5.4
 %global bundlelibwebp 1
 %global bundlelibpng 1
 %global bundlelibjpeg 1
+%global bundlefreetype 1
 %else
 %global bundleharfbuzz 0
 %global bundleopus 1
@@ -92,6 +93,7 @@ BuildRequires:  libicu-devel >= 5.4
 %global bundlelibwebp 0
 %global bundlelibpng 0
 %global bundlelibjpeg 0
+%global bundlefreetype 0
 %endif
 
 # Needs at least harfbuzz 1.7.3 now.
@@ -119,7 +121,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 Name:		chromium%{chromium_channel}
 %endif
 Version:	%{majorversion}.0.3325.162
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -332,7 +334,11 @@ BuildRequires:	bzip2-devel
 BuildRequires:	dbus-glib-devel
 BuildRequires:	elfutils-libelf-devel
 BuildRequires:	flac-devel
+%if 0%{?bundlefreetype}
+# nothing
+%else
 BuildRequires:	freetype-devel
+%endif
 BuildRequires:	hwdata
 BuildRequires:	kernel-headers
 BuildRequires:	libevent-devel
@@ -478,6 +484,9 @@ Provides: bundled(fdmlibm) = 5.3
 Provides: bundled(ffmpeg) = 3.2git
 Provides: bundled(fips181) = 2.2.3
 Provides: bundled(fontconfig) = 2.11.0
+%if 0%{?bundlefreetype}
+Provides: bundled(freetype) = 2.9.3
+%endif
 Provides: bundled(gperftools) = svn144
 %if 0%{?bundleharfbuzz}
 Provides: bundled(harfbuzz) = 1.4.2
@@ -1043,7 +1052,10 @@ export PATH=$PATH:%{_builddir}/depot_tools
 
 build/linux/unbundle/replace_gn_files.py --system-libraries \
 	flac \
+%if 0%{?bundlefreetype}
+%else
 	freetype \
+%endif
 %if 0%{?bundleharfbuzz}
 %else
 	harfbuzz-ng \
@@ -1572,6 +1584,7 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 * Fri Mar 16 2018 Tom Callaway <spot@fedoraproject.org> 65.0.3325.162-2
 - disable StartupNotify in chromium-browser.desktop (not in google-chrome desktop file)
   (bz1545241)
+- use bundled freetype on epel7
 
 * Wed Mar 14 2018 Tom Callaway <spot@fedoraproject.org> 65.0.3325.162-1
 - update to 65.0.3325.162
