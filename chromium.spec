@@ -246,6 +246,8 @@ Patch84:	chromium-65.0.3325.146-GCC-fully-declare-ConfigurationPolicyProvider.pa
 Patch85:	chromium-65.0.3325.162-boolfix.patch
 # From Debian
 Patch86:	chromium-65.0.3325.162-skia-aarch64-buildfix.patch
+# Use lstdc++ on EPEL7 only
+Patch87:	chromium-65.0.3325.162-epel7-stdc++.patch
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
 # http://build.chromium.org/buildbot/official/
@@ -720,6 +722,9 @@ udev.
 %patch84 -p1 -b .fully-declare
 %patch85 -p1 -b .boolfix
 %patch86 -p1 -b .aarch64fix
+%if 0%{?rhel} == 7
+%patch87 -p1 -b .epel7
+%endif
 
 %if 0%{?asan}
 export CC="clang"
@@ -731,11 +736,7 @@ export CXX="g++"
 export AR="ar"
 export RANLIB="ranlib"
 
-%if 0%{?rhel} == 7
-# eh. rhel 7 might need this
-%else
 rm -rf buildtools/third_party/libc++/BUILD.gn
-%endif
 
 %if 0%{?nacl}
 # prep the nacl tree
@@ -846,11 +847,7 @@ CHROMIUM_CORE_GN_DEFINES+=' ffmpeg_branding="ChromeOS" proprietary_codecs=true'
 CHROMIUM_CORE_GN_DEFINES+=' ffmpeg_branding="Chromium" proprietary_codecs=false'
 %endif
 CHROMIUM_CORE_GN_DEFINES+=' treat_warnings_as_errors=false linux_use_bundled_binutils=false'
-%if 0%{?rhel} == 7
-CHROMIUM_CORE_GN_DEFINES+=' use_custom_libcxx=true'
-%else
 CHROMIUM_CORE_GN_DEFINES+=' use_custom_libcxx=false'
-%endif
 %ifarch aarch64
 CHROMIUM_CORE_GN_DEFINES+=' target_cpu="arm64"'
 %endif
