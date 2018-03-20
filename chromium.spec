@@ -842,7 +842,12 @@ CHROMIUM_CORE_GN_DEFINES+=' ffmpeg_branding="ChromeOS" proprietary_codecs=true'
 %else
 CHROMIUM_CORE_GN_DEFINES+=' ffmpeg_branding="Chromium" proprietary_codecs=false'
 %endif
-CHROMIUM_CORE_GN_DEFINES+=' treat_warnings_as_errors=false linux_use_bundled_binutils=false use_custom_libcxx=false'
+CHROMIUM_CORE_GN_DEFINES+=' treat_warnings_as_errors=false linux_use_bundled_binutils=false'
+%if 0%{?rhel} == 7
+CHROMIUM_CORE_GN_DEFINES+=' use_custom_libcxx=true'
+%else
+CHROMIUM_CORE_GN_DEFINES+=' use_custom_libcxx=false'
+%endif
 %ifarch aarch64
 CHROMIUM_CORE_GN_DEFINES+=' target_cpu="arm64"'
 %endif
