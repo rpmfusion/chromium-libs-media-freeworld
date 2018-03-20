@@ -731,8 +731,11 @@ export CXX="g++"
 export AR="ar"
 export RANLIB="ranlib"
 
-# NUKE FROM ORBIT
+%if 0%{?rhel} == 7
+# eh. rhel 7 might need this
+%else
 rm -rf buildtools/third_party/libc++/BUILD.gn
+%endif
 
 %if 0%{?nacl}
 # prep the nacl tree
