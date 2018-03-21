@@ -122,8 +122,8 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 %else
 Name:		chromium%{chromium_channel}
 %endif
-Version:	%{majorversion}.0.3325.162
-Release:	3%{?dist}
+Version:	%{majorversion}.0.3325.181
+Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -1597,6 +1597,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Wed Mar 21 2018 Tom Callaway <spot@fedoraproject.org> 65.0.3325.181-1
+- update to 65.0.3325.181
+
 * Mon Mar 19 2018 Tom Callaway <spot@fedoraproject.org> 65.0.3325.162-3
 - use bundled libdrm on epel7
 
