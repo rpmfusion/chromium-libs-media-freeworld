@@ -86,6 +86,7 @@ BuildRequires:  libicu-devel >= 5.4
 %global bundlelibpng 1
 %global bundlelibjpeg 1
 %global bundlefreetype 1
+%global bundlelibdrm 1
 %else
 %global bundleharfbuzz 0
 %global bundleopus 1
@@ -94,6 +95,7 @@ BuildRequires:  libicu-devel >= 5.4
 %global bundlelibpng 0
 %global bundlelibjpeg 0
 %global bundlefreetype 0
+%global bundlelibdrm 0
 %endif
 
 # Needs at least harfbuzz 1.7.3 now.
@@ -120,8 +122,8 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 %else
 Name:		chromium%{chromium_channel}
 %endif
-Version:	%{majorversion}.0.3325.162
-Release:	2%{?dist}
+Version:	%{majorversion}.0.3325.181
+Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -244,6 +246,8 @@ Patch84:	chromium-65.0.3325.146-GCC-fully-declare-ConfigurationPolicyProvider.pa
 Patch85:	chromium-65.0.3325.162-boolfix.patch
 # From Debian
 Patch86:	chromium-65.0.3325.162-skia-aarch64-buildfix.patch
+# Use lstdc++ on EPEL7 only
+Patch87:	chromium-65.0.3325.162-epel7-stdc++.patch
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
 # http://build.chromium.org/buildbot/official/
@@ -292,7 +296,11 @@ BuildRequires:	glibc-devel
 BuildRequires:	gperf
 BuildRequires:	libatomic
 BuildRequires:	libcap-devel
+%if 0%{?bundlelibdrm}
+#nothing
+%else
 BuildRequires:	libdrm-devel
+%endif
 BuildRequires:	libgcrypt-devel
 BuildRequires:	libudev-devel
 BuildRequires:	libusb-devel
@@ -499,7 +507,9 @@ Provides: bundled(icu) = 58.1
 Provides: bundled(kitchensink) = 1
 Provides: bundled(leveldb) = 1.20
 Provides: bundled(libaddressinput) = 0
-Provides: bundled(libdrm) = 2.4.70
+%if 0%{?bundlelibdrm}
+Provides: bundled(libdrm) = 2.4.85
+%endif
 Provides: bundled(libevent) = 1.4.15
 Provides: bundled(libjingle) = 9564
 %if 0%{?bundlelibjpeg}
@@ -712,6 +722,9 @@ udev.
 %patch84 -p1 -b .fully-declare
 %patch85 -p1 -b .boolfix
 %patch86 -p1 -b .aarch64fix
+%if 0%{?rhel} == 7
+%patch87 -p1 -b .epel7
+%endif
 
 %if 0%{?asan}
 export CC="clang"
@@ -723,7 +736,6 @@ export CXX="g++"
 export AR="ar"
 export RANLIB="ranlib"
 
-# NUKE FROM ORBIT
 rm -rf buildtools/third_party/libc++/BUILD.gn
 
 %if 0%{?nacl}
@@ -834,7 +846,8 @@ CHROMIUM_CORE_GN_DEFINES+=' ffmpeg_branding="ChromeOS" proprietary_codecs=true'
 %else
 CHROMIUM_CORE_GN_DEFINES+=' ffmpeg_branding="Chromium" proprietary_codecs=false'
 %endif
-CHROMIUM_CORE_GN_DEFINES+=' treat_warnings_as_errors=false linux_use_bundled_binutils=false use_custom_libcxx=false'
+CHROMIUM_CORE_GN_DEFINES+=' treat_warnings_as_errors=false linux_use_bundled_binutils=false'
+CHROMIUM_CORE_GN_DEFINES+=' use_custom_libcxx=false'
 %ifarch aarch64
 CHROMIUM_CORE_GN_DEFINES+=' target_cpu="arm64"'
 %endif
@@ -1064,7 +1077,10 @@ build/linux/unbundle/replace_gn_files.py --system-libraries \
 %else
 	icu \
 %endif
+%if %{bundlelibdrm}
+%else
 	libdrm \
+%endif
 %if %{bundlelibjpeg}
 %else
 	libjpeg \
@@ -1581,6 +1597,12 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Wed Mar 21 2018 Tom Callaway <spot@fedoraproject.org> 65.0.3325.181-1
+- update to 65.0.3325.181
+
+* Mon Mar 19 2018 Tom Callaway <spot@fedoraproject.org> 65.0.3325.162-3
+- use bundled libdrm on epel7
+
 * Fri Mar 16 2018 Tom Callaway <spot@fedoraproject.org> 65.0.3325.162-2
 - disable StartupNotify in chromium-browser.desktop (not in google-chrome desktop file)
   (bz1545241)
