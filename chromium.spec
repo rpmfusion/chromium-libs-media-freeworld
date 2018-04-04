@@ -134,7 +134,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 Name:		chromium%{chromium_channel}
 %endif
 Version:	%{majorversion}.0.3325.181
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -584,6 +584,9 @@ Chromium is an open-source web browser, powered by WebKit (Blink).
 
 %package common
 Summary: Files needed for both the headless_shell and full Chromium
+# Chromium needs an explicit Requires: minizip
+# We put it here to cover headless too.
+Requires: minizip%{_isa}
 
 %description common
 %{summary}.
@@ -1614,6 +1617,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Wed Apr  4 2018 Tom Callaway <spot@fedoraproject.org> 65.0.3325.181-2
+- add explicit dependency on minizip (bz 1534282)
+
 * Wed Mar 28 2018 Tom Callaway <spot@fedoraproject.org>
 - check that there is no system 'google' module, shadowing bundled ones
 - conditionalize api keys (on by default)
