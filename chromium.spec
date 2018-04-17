@@ -91,6 +91,7 @@ BuildRequires:  libicu-devel >= 5.4
 %global bundlelibjpeg 1
 %global bundlefreetype 1
 %global bundlelibdrm 1
+%global bundlefontconfig 1
 %else
 %global bundleharfbuzz 0
 %global bundleopus 1
@@ -100,6 +101,7 @@ BuildRequires:  libicu-devel >= 5.4
 %global bundlelibjpeg 0
 %global bundlefreetype 0
 %global bundlelibdrm 0
+%global bundlefontconfig 0
 %endif
 
 # Needs at least harfbuzz 1.7.3 now.
@@ -134,7 +136,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 Name:		chromium%{chromium_channel}
 %endif
 Version:	%{majorversion}.0.3325.181
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -502,7 +504,9 @@ Provides: bundled(fdmlibm) = 5.3
 # Don't get too excited. MPEG and other legally problematic stuff is stripped out.
 Provides: bundled(ffmpeg) = 3.2git
 Provides: bundled(fips181) = 2.2.3
-Provides: bundled(fontconfig) = 2.11.0
+%if 0%{?bundlefontconfig}
+Provides: bundled(fontconfig) = 2.12.6
+%endif
 %if 0%{?bundlefreetype}
 Provides: bundled(freetype) = 2.9.3
 %endif
@@ -1079,6 +1083,10 @@ export PATH=$PATH:%{_builddir}/depot_tools
 
 build/linux/unbundle/replace_gn_files.py --system-libraries \
 	flac \
+%if 0%{?bundlefontconfig}
+%else
+	fontconfig \
+%endif
 %if 0%{?bundlefreetype}
 %else
 	freetype \
@@ -1617,6 +1625,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Tue Apr 17 2018 Tom Callaway <spot@fedoraproject.org> 65.0.3325.181-3
+- use system fontconfig (except on epel7)
+
 * Wed Apr  4 2018 Tom Callaway <spot@fedoraproject.org> 65.0.3325.181-2
 - add explicit dependency on minizip (bz 1534282)
 
