@@ -1,0 +1,53 @@
+diff -up chromium-66.0.3359.117/third_party/WebKit/Source/platform/wtf/DEPS.944404 chromium-66.0.3359.117/third_party/WebKit/Source/platform/wtf/DEPS
+--- chromium-66.0.3359.117/third_party/WebKit/Source/platform/wtf/DEPS.944404	2018-04-23 14:18:43.702116916 -0400
++++ chromium-66.0.3359.117/third_party/WebKit/Source/platform/wtf/DEPS	2018-04-23 14:19:05.854680223 -0400
+@@ -16,6 +16,7 @@ include_rules = [
+     "+base/process/process_metrics.h",
+     "+base/rand_util.h",
+     "+base/strings",
++    "+base/template_util.h",
+     "+base/threading/thread_checker.h",
+     "+base/time/time.h",
+     "+base/tuple.h",
+diff -up chromium-66.0.3359.117/third_party/WebKit/Source/platform/wtf/Optional.h.944404 chromium-66.0.3359.117/third_party/WebKit/Source/platform/wtf/Optional.h
+--- chromium-66.0.3359.117/third_party/WebKit/Source/platform/wtf/Optional.h.944404	2018-04-23 14:20:05.718499685 -0400
++++ chromium-66.0.3359.117/third_party/WebKit/Source/platform/wtf/Optional.h	2018-04-23 14:20:18.165253615 -0400
+@@ -6,6 +6,7 @@
+ #define Optional_h
+ 
+ #include "base/optional.h"
++#include "platform/wtf/TemplateUtil.h"
+ 
+ namespace WTF {
+ 
+diff -up chromium-66.0.3359.117/third_party/WebKit/Source/platform/wtf/TemplateUtil.h.944404 chromium-66.0.3359.117/third_party/WebKit/Source/platform/wtf/TemplateUtil.h
+--- chromium-66.0.3359.117/third_party/WebKit/Source/platform/wtf/TemplateUtil.h.944404	2018-04-23 14:20:31.660987877 -0400
++++ chromium-66.0.3359.117/third_party/WebKit/Source/platform/wtf/TemplateUtil.h	2018-04-23 14:21:40.276637297 -0400
+@@ -0,0 +1,27 @@
++// Copyright 2018 The Chromium Authors. All rights reserved.
++// Use of this source code is governed by a BSD-style license that can be
++// found in the LICENSE file.
++
++#ifndef TemplateUtil_h
++#define TemplateUtil_h
++
++#include "base/template_util.h"
++#include "platform/wtf/Vector.h"
++
++namespace base {
++
++#if defined(__GNUC__) && !defined(__clang__) && __GNUC__ <= 7
++// Workaround for g++7 and earlier family.
++// Due to https://gcc.gnu.org/bugzilla/show_bug.cgi?id=80654, without this
++// Optional<WTF::Vector<T>> where T is non-copyable causes a compile error.
++// As we know it is not trivially copy constructible, explicitly declare so.
++//
++// It completes the declaration in base/template_util.h that was provided
++// for std::vector
++template <typename T>
++struct is_trivially_copy_constructible<WTF::Vector<T>> : std::false_type {};
++#endif
++
++}  // namespace base
++
++#endif  // TemplateUtil_h
