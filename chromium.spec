@@ -242,6 +242,9 @@ Patch94:	chromium-66.0.3359.117-GCC-fully-declare-ConfigurationPolicyProvider.pa
 Patch95:	chromium-65.0.3325.146-GCC-IDB-methods-String-renamed-to-GetString.patch
 # https://github.com/archlinuxarm/PKGBUILDs/blob/master/extra/chromium/0006-GCC-do-not-use-initializer-list-for-NoDestructor-of-.patch
 Patch96:	chromium-66.0.3359.117-GCC-do-not-use-initializer-list-for-NoDestructor-of-.patch
+# https://chromium.googlesource.com/chromium/src/+/b84682f31dc99b9c90f5a04947075815697c68d9%5E%21/#F0
+Patch97:	chromium-66.0.3359.139-arm-init-fix.patch
+
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
 # http://build.chromium.org/buildbot/official/
@@ -723,6 +726,7 @@ udev.
 %patch94 -p1 -b .gcc-cpolicyprovider
 %patch95 -p1 -b .gcc-getstring
 %patch96 -p1 -b .flatsetfix
+%patch97 -p1 -b .arm-init-fix
 
 # Change shebang in all relevant files in this directory and all subdirectories
 # See `man find` for how the `-exec command {} +` syntax works
