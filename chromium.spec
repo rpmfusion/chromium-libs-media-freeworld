@@ -1484,6 +1484,7 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/icudtl.dat
 %{chromium_path}/%{chromium_browser_channel}
 %{chromium_path}/%{chromium_browser_channel}.sh
+%{chromium_path}/swiftshader/
 %if 0%{?nacl}
 %{chromium_path}/nacl_helper*
 %{chromium_path}/*.nexe
