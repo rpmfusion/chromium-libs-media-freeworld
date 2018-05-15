@@ -244,6 +244,10 @@ Patch95:	chromium-65.0.3325.146-GCC-IDB-methods-String-renamed-to-GetString.patc
 Patch96:	chromium-66.0.3359.117-GCC-do-not-use-initializer-list-for-NoDestructor-of-.patch
 # https://chromium.googlesource.com/chromium/src/+/b84682f31dc99b9c90f5a04947075815697c68d9%5E%21/#F0
 Patch97:	chromium-66.0.3359.139-arm-init-fix.patch
+# GCC8 has changed the alignof operator to return the minimal alignment required by the target ABI
+# instead of the preferred alignment. This means int64_t is now 4 on i686 (instead of 8).
+# Use __alignof__ to get the value we expect (and chromium checks for).
+Patch98:	chromium-66.0.3359.170-gcc8-alignof.patch
 
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
@@ -727,6 +731,7 @@ udev.
 %patch95 -p1 -b .gcc-getstring
 %patch96 -p1 -b .flatsetfix
 %patch97 -p1 -b .arm-init-fix
+%patch98 -p1 -b .gcc8-alignof
 
 # Change shebang in all relevant files in this directory and all subdirectories
 # See `man find` for how the `-exec command {} +` syntax works
@@ -1625,6 +1630,7 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %changelog
 * Tue May 15 2018 Tom Callaway <spot@fedoraproject.org> 66.0.3359.170-2
 - only x86_64 i686 have swiftshader
+- fix gcc8 alignof issue on i686
 
 * Mon May 14 2018 Tom Callaway <spot@fedoraproject.org> 66.0.3359.170-1
 - update to 66.0.3359.170
