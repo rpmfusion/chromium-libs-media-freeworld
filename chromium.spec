@@ -136,7 +136,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 Name:		chromium%{chromium_channel}
 %endif
 Version:	%{majorversion}.0.3359.181
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -1267,6 +1267,8 @@ sed -i "s|@@MENUNAME@@|%{chromium_menu_name}|g" %{buildroot}%{_mandir}/man1/%{ch
 # https://code.google.com/p/chromium/issues/detail?id=421063
 cp -a natives_blob.bin %{buildroot}%{chromium_path}
 cp -a snapshot_blob.bin %{buildroot}%{chromium_path}
+cp -a v8_context_snapshot.bin %{buildroot}%{chromium_path}
+cp -a xdg-mime xdg-settings %{buildroot}%{chromium_path}
 %if 0%{?shared}
 cp -a lib*.so* %{buildroot}%{chromium_path}
 cp -p %{buildroot}%{chromium_path}/libwidevinecdm.so{,.fedora}
@@ -1506,6 +1508,8 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 # %%{chromium_path}/pseudo_locales/
 # %%{chromium_path}/plugins/
 %attr(4755, root, root) %{chromium_path}/chrome-sandbox
+%{chromium_path}/xdg-mime
+%{chromium_path}/xdg-settings
 %{_mandir}/man1/%{chromium_browser_channel}.*
 %{_datadir}/icons/hicolor/*/apps/%{chromium_browser_channel}.png
 %{_datadir}/applications/*.desktop
@@ -1628,6 +1632,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Wed May 23 2018 Tom Callaway <spot@fedoraproject.org> 66.0.3359.181-2
+- fix missing files
+
 * Mon May 21 2018 Tom Callaway <spot@fedoraproject.org> 66.0.3359.181-1
 - update to 66.0.3359.181
 
