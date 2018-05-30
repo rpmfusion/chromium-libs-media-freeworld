@@ -132,21 +132,21 @@ BuildRequires:  libicu-devel >= 5.4
 %global chromoting_client_id %nil
 %endif
 
-%global majorversion 66
+%global majorversion 67
 
 %if %{freeworld}
 Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 %else
 Name:		chromium%{chromium_channel}
 %endif
-Version:	%{majorversion}.0.3359.181
-Release:	3%{?dist}
+Version:	%{majorversion}.0.3396.62
+Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
 
 ### Chromium Fedora Patches ###
-Patch0:		chromium-64.0.3282.119-gcc5.patch
+Patch0:		chromium-67.0.3396.62-gcc5.patch
 Patch1:		chromium-45.0.2454.101-linux-path-max.patch
 Patch2:		chromium-55.0.2883.75-addrfix.patch
 Patch4:		chromium-46.0.2490.71-notest.patch
@@ -172,7 +172,7 @@ Patch18:	chromium-52.0.2743.82-master-prefs-path.patch
 # https://bugzilla.redhat.com/show_bug.cgi?id=1361157
 Patch19:	chromium-52.0.2743.116-unset-madv_free.patch
 # Use gn system files
-Patch20:	chromium-60.0.3112.78-gn-system.patch
+Patch20:	chromium-67.0.3396.62-gn-system.patch
 # Fix last commit position issue
 # https://groups.google.com/a/chromium.org/forum/#!topic/gn-dev/7nlJv486bD4
 Patch21:	chromium-60.0.3112.78-last-commit-position.patch
@@ -188,10 +188,10 @@ Patch26:	chromium-59.0.3071.86-i686-ld-memory-tricks.patch
 # /builddir/build/BUILD/chromium-54.0.2840.90/out/Release/../../content/renderer/child_frame_compositing_helper.cc:214: undefined reference to `cc_blink::WebLayerImpl::setOpaque(bool)'
 Patch27:	chromium-63.0.3289.84-setopaque.patch
 # Use -fpermissive to build WebKit
-Patch31:	chromium-56.0.2924.87-fpermissive.patch
+# Patch31:	chromium-56.0.2924.87-fpermissive.patch
 # Fix issue with compilation on gcc7
 # Thanks to Ben Noordhuis
-Patch33: 	chromium-65.0.3325.146-gcc7.patch
+# Patch33: 	chromium-65.0.3325.146-gcc7.patch
 # Revert https://chromium.googlesource.com/chromium/src/+/b794998819088f76b4cf44c8db6940240c563cf4%5E%21/#F0
 # https://bugs.chromium.org/p/chromium/issues/detail?id=712737
 # https://bugzilla.redhat.com/show_bug.cgi?id=1446851
@@ -219,35 +219,35 @@ Patch57:	chromium-63.0.3289.84-aarch64-glibc-2.26.90.patch
 # From gentoo
 Patch62:	chromium-66.0.3359.117-gcc5-r3.patch
 # Do not try to use libc++ in the remoting stack
-Patch63:	chromium-63.0.3289.84-nolibc++.patch
+# Patch63:	chromium-63.0.3289.84-nolibc++.patch
 # To use round with gcc, you need to #include <cmath>
 Patch65:	chromium-65.0.3325.146-gcc-round-fix.patch
 # Include proper headers to invoke memcpy()
 Patch67:	chromium-65.0.3325.146-memcpy-fix.patch
 # ../../mojo/public/cpp/bindings/associated_interface_ptr_info.h:48:43: error: cannot convert 'const mojo::ScopedInterfaceEndpointHandle' to 'bool' in return
-Patch85:	chromium-65.0.3325.162-boolfix.patch
+Patch85:	chromium-67.0.3396.62-boolfix.patch
 # From Debian
-Patch86:	chromium-65.0.3325.162-skia-aarch64-buildfix.patch
+Patch86:	chromium-67.0.3396.62-skia-aarch64-buildfix.patch
 # Use lstdc++ on EPEL7 only
 Patch87:	chromium-65.0.3325.162-epel7-stdc++.patch
 # Missing files in tarball
 Patch88:	chromium-66.0.3359.117-missing-files.patch
 # https://chromium.googlesource.com/chromium/src/+/ba4141e451f4e0b1b19410b1b503bd32e150df06%5E%21/#F0
-Patch89:	chromium-66.0.3359.117-gcc-optional-move-fixes.patch
+# Patch89:	chromium-66.0.3359.117-gcc-optional-move-fixes.patch
 # https://chromium.googlesource.com/chromium/src/+/4f2b52281ce1649ea8347489443965ad33262ecc%5E%21
-Patch90:	chromium-66.0.3359.117-gcc-copy-constructor-fix.patch
+# Patch90:	chromium-66.0.3359.117-gcc-copy-constructor-fix.patch
 # https://bugs.chromium.org/p/chromium/issues/detail?id=816952
-Patch91:	chromium-66.0.3359.117-gcc-vector-copy-constructor-fix.patch
+# Patch91:	chromium-66.0.3359.117-gcc-vector-copy-constructor-fix.patch
 # Do not use unrar code, it is non-free
 Patch92:	chromium-66.0.3359.117-nounrar.patch
 # Upstream GCC fixes
 Patch93:	chromium-66.0.3359.117-GCC-build-fix-base-Optional-T-requires-the-full-decl.patch
 Patch94:	chromium-66.0.3359.117-GCC-fully-declare-ConfigurationPolicyProvider.patch
-Patch95:	chromium-65.0.3325.146-GCC-IDB-methods-String-renamed-to-GetString.patch
+# Patch95:	chromium-65.0.3325.146-GCC-IDB-methods-String-renamed-to-GetString.patch
 # https://github.com/archlinuxarm/PKGBUILDs/blob/master/extra/chromium/0006-GCC-do-not-use-initializer-list-for-NoDestructor-of-.patch
-Patch96:	chromium-66.0.3359.117-GCC-do-not-use-initializer-list-for-NoDestructor-of-.patch
+# Patch96:	chromium-66.0.3359.117-GCC-do-not-use-initializer-list-for-NoDestructor-of-.patch
 # https://chromium.googlesource.com/chromium/src/+/b84682f31dc99b9c90f5a04947075815697c68d9%5E%21/#F0
-Patch97:	chromium-66.0.3359.139-arm-init-fix.patch
+# Patch97:	chromium-66.0.3359.139-arm-init-fix.patch
 # GCC8 has changed the alignof operator to return the minimal alignment required by the target ABI
 # instead of the preferred alignment. This means int64_t is now 4 on i686 (instead of 8).
 # Use __alignof__ to get the value we expect (and chromium checks for).
@@ -699,8 +699,8 @@ udev.
 %patch25 -p1 -b .jpegfix
 %patch26 -p1 -b .ldmemory
 %patch27 -p1 -b .setopaque
-%patch31 -p1 -b .permissive
-%patch33 -p1 -b .gcc7
+# %%patch31 -p1 -b .permissive
+# %%patch33 -p1 -b .gcc7
 %patch36 -p1 -b .revert
 %patch37 -p1 -b .ffmpeg-stdatomic
 %patch39 -p1 -b .system-clang
@@ -717,7 +717,7 @@ udev.
 # %%patch57 -p1 -b .aarch64glibc
 # %%endif
 %patch62 -p1 -b .gcc5-r3
-%patch63 -p1 -b .nolibc++
+# %%patch63 -p1 -b .nolibc++
 %patch65 -p1 -b .gcc-round-fix
 %patch67 -p1 -b .memcpyfix
 %patch85 -p1 -b .boolfix
@@ -726,15 +726,15 @@ udev.
 %patch87 -p1 -b .epel7
 %endif
 %patch88 -p1 -b .missing
-%patch89 -p1 -b .gccomove
-%patch90 -p1 -b .copycon
-%patch91 -p1 -b .944404
+# %%patch89 -p1 -b .gccomove
+# %%patch90 -p1 -b .copycon
+# %%patch91 -p1 -b .944404
 %patch92 -p1 -b .nounrar
-%patch93 -p1 -b .gcc-full-decl
+# %%patch93 -p1 -b .gcc-full-decl
 %patch94 -p1 -b .gcc-cpolicyprovider
-%patch95 -p1 -b .gcc-getstring
-%patch96 -p1 -b .flatsetfix
-%patch97 -p1 -b .arm-init-fix
+# %%patch95 -p1 -b .gcc-getstring
+# %%patch96 -p1 -b .flatsetfix
+# %%patch97 -p1 -b .arm-init-fix
 %patch98 -p1 -b .gcc8-alignof
 
 # Change shebang in all relevant files in this directory and all subdirectories
@@ -1636,6 +1636,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Wed May 30 2018 Tom Callaway <spot@fedoraproject.org> 67.0.3396.62-1
+- 67 releases of chromium on the wall...
+
 * Tue May 29 2018 Tom Callaway <spot@fedoraproject.org> 66.0.3359.181-3
 - also filter out fontconfig on epel7
 
