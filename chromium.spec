@@ -252,6 +252,8 @@ Patch94:	chromium-66.0.3359.117-GCC-fully-declare-ConfigurationPolicyProvider.pa
 # instead of the preferred alignment. This means int64_t is now 4 on i686 (instead of 8).
 # Use __alignof__ to get the value we expect (and chromium checks for).
 Patch98:	chromium-66.0.3359.170-gcc8-alignof.patch
+# https://chromium.googlesource.com/crashpad/crashpad/+/26ef5c910fc7e2edb441f1d2b39944195342dee9
+Patch99:	chromium-67.0.3396.62-crashpad-aarch64-buildfix.patch
 
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
@@ -749,6 +751,7 @@ udev.
 # %%patch96 -p1 -b .flatsetfix
 # %%patch97 -p1 -b .arm-init-fix
 %patch98 -p1 -b .gcc8-alignof
+%patch99 -p1 -b .crashpad-aarch64-fix
 
 # Change shebang in all relevant files in this directory and all subdirectories
 # See `man find` for how the `-exec command {} +` syntax works
