@@ -140,7 +140,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 Name:		chromium%{chromium_channel}
 %endif
 Version:	%{majorversion}.0.3396.62
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -254,6 +254,9 @@ Patch94:	chromium-66.0.3359.117-GCC-fully-declare-ConfigurationPolicyProvider.pa
 Patch98:	chromium-66.0.3359.170-gcc8-alignof.patch
 # https://chromium.googlesource.com/crashpad/crashpad/+/26ef5c910fc7e2edb441f1d2b39944195342dee9
 Patch99:	chromium-67.0.3396.62-crashpad-aarch64-buildfix.patch
+# RHEL 7 has a bug in its python2.7 which does not propely handle exec with a tuple
+# https://bugs.python.org/issue21591
+Patch100:	chromium-67.0.3396.62-epel7-use-old-python-exec-syntax.patch
 
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
@@ -770,6 +773,10 @@ udev.
 # %%patch97 -p1 -b .arm-init-fix
 %patch98 -p1 -b .gcc8-alignof
 %patch99 -p1 -b .crashpad-aarch64-fix
+%if 0%{?rhel} == 7
+%patch100 -p1 -b .oldexec
+%endif
+
 
 # Change shebang in all relevant files in this directory and all subdirectories
 # See `man find` for how the `-exec command {} +` syntax works
@@ -1702,6 +1709,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Wed Jun  6 2018 Tom Callaway <spot@fedoraproject.org> 67.0.3396.62-2
+- work around bug in RHEL7 python exec
+
 * Wed May 30 2018 Tom Callaway <spot@fedoraproject.org> 67.0.3396.62-1
 - 67 releases of chromium on the wall...
 
