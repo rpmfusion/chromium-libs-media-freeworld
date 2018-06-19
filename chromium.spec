@@ -139,7 +139,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 %else
 Name:		chromium%{chromium_channel}
 %endif
-Version:	%{majorversion}.0.3396.79
+Version:	%{majorversion}.0.3396.87
 Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
@@ -1709,6 +1709,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Tue Jun 19 2018 Tom Callaway <spot@fedoraproject.org> 67.0.3396.87-1
+- update to 67.0.3396.87
+
 * Thu Jun  7 2018 Tom Callaway <spot@fedoraproject.org> 67.0.3396.79-1
 - update to 67.0.3396.79
 
