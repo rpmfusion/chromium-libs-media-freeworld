@@ -140,7 +140,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 Name:		chromium%{chromium_channel}
 %endif
 Version:	%{majorversion}.0.3396.87
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -257,6 +257,8 @@ Patch99:	chromium-67.0.3396.62-crashpad-aarch64-buildfix.patch
 # RHEL 7 has a bug in its python2.7 which does not propely handle exec with a tuple
 # https://bugs.python.org/issue21591
 Patch100:	chromium-67.0.3396.62-epel7-use-old-python-exec-syntax.patch
+# Add "Fedora" to the user agent string
+Patch101:	chromium-67.0.3396.87-fedora-user-agent.patch
 
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
@@ -776,6 +778,7 @@ udev.
 %if 0%{?rhel} == 7
 %patch100 -p1 -b .oldexec
 %endif
+%patch101 -p1 -b .fedora-user-agent
 
 
 # Change shebang in all relevant files in this directory and all subdirectories
@@ -1709,6 +1712,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Mon Jun 25 2018 Tom Callaway <spot@fedoraproject.org> 67.0.3396.87-2
+- add "Fedora" to the user agent string
+
 * Tue Jun 19 2018 Tom Callaway <spot@fedoraproject.org> 67.0.3396.87-1
 - update to 67.0.3396.87
 
