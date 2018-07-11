@@ -259,6 +259,8 @@ Patch99:	chromium-67.0.3396.62-crashpad-aarch64-buildfix.patch
 Patch100:	chromium-67.0.3396.62-epel7-use-old-python-exec-syntax.patch
 # Add "Fedora" to the user agent string
 Patch101:	chromium-67.0.3396.87-fedora-user-agent.patch
+# Try to fix version.py for Rawhide
+Patch102:	chromium-67.0.3396.99-py3fix.patch
 
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
@@ -779,6 +781,7 @@ udev.
 %patch100 -p1 -b .oldexec
 %endif
 %patch101 -p1 -b .fedora-user-agent
+%patch102 -p1 -b .py3fix
 
 
 # Change shebang in all relevant files in this directory and all subdirectories
