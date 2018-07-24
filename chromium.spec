@@ -261,6 +261,7 @@ Patch100:	chromium-67.0.3396.62-epel7-use-old-python-exec-syntax.patch
 Patch101:	chromium-67.0.3396.87-fedora-user-agent.patch
 # Try to fix version.py for Rawhide
 Patch102:	chromium-67.0.3396.99-py3fix.patch
+Patch103:	chromium-67.0.3396.99-py2-bootstrap.patch
 
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
@@ -677,11 +678,7 @@ Requires(post): systemd
 Requires(preun): systemd
 Requires(postun): systemd
 Requires: xorg-x11-server-Xvfb
-%if 0%{?rhel} == 7
-Requires: python-psutil
-%else
 Requires: python2-psutil
-%endif
 %if 0%{?shared}
 Requires: chromium-libs%{_isa} = %{version}-%{release}
 %endif
@@ -782,6 +779,7 @@ udev.
 %endif
 %patch101 -p1 -b .fedora-user-agent
 %patch102 -p1 -b .py3fix
+%patch103 -p1 -b .py2
 
 
 # Change shebang in all relevant files in this directory and all subdirectories
@@ -1249,7 +1247,7 @@ if python2 -c 'import google ; print google.__path__' 2> /dev/null ; then \
 fi
 
 tools/gn/bootstrap/bootstrap.py -v --gn-gen-args "$CHROMIUM_CORE_GN_DEFINES $CHROMIUM_BROWSER_GN_DEFINES"
-%{target}/gn gen --args="$CHROMIUM_CORE_GN_DEFINES $CHROMIUM_BROWSER_GN_DEFINES" %{target}
+%{target}/gn --script-executable=/usr/bin/python2 gen --args="$CHROMIUM_CORE_GN_DEFINES $CHROMIUM_BROWSER_GN_DEFINES" %{target}
 
 %if %{freeworld}
 # do not need to do headless gen
@@ -1395,6 +1393,7 @@ cp -a remoting_locales %{buildroot}%{crd_path}/
 cp -a remoting_me2me_host %{buildroot}%{crd_path}/chrome-remote-desktop-host
 cp -a remoting_start_host %{buildroot}%{crd_path}/start-host
 cp -a remoting_user_session %{buildroot}%{crd_path}/user-session
+chmod +s %{buildroot}%{crd_path}/user-session
 
 # chromium
 mkdir -p %{buildroot}%{_sysconfdir}/chromium/native-messaging-hosts
