@@ -1119,7 +1119,6 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/protobuf/third_party/six' \
 	'third_party/qcms' \
 	'third_party/qunit' \
-	'third_party/rcssmin' \
 %if 0%{?bundlere2}
 	'third_party/re2' \
 %endif
