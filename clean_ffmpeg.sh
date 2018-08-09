@@ -107,6 +107,7 @@ header_files="	libavcodec/x86/inline_asm.h \
 		libavcodec/mpegpicture.h \
 		libavcodec/mpegutils.h \
 		libavcodec/mpegvideo.h \
+		libavcodec/mpegvideodata.h \
 		libavcodec/mpegvideodsp.h \
 		libavcodec/mpegvideoencdsp.h \
 		libavcodec/options_table.h \
@@ -304,7 +305,6 @@ other_files="	BUILD.gn \
 		CREDITS.chromium \
 		ffmpeg_generated.gni \
 		ffmpeg_options.gni \
-		ffmpegsumo.ver \
 		INSTALL.md \
 		LICENSE.md \
 		MAINTAINERS \

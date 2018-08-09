@@ -256,6 +256,9 @@ if __name__ == '__main__':
   parser_add_argument(
       '--version',
       help='Download a specific version of Chromium')
+  parser_add_argument(
+      '--naclvers',
+      help='Display the commit versions of nacl toolchain components')
 
   # Parse the args
   if optparse:
@@ -307,7 +310,8 @@ if __name__ == '__main__':
       print "%s is possibly corrupted, exiting." % (latest)
       sys.exit(1)
 
-  nacl_versions(chromium_version)
+  if (args.naclvers):
+    nacl_versions(chromium_version)
 
   if (args.cleansources):
     junk_dirs = ['third_party/WebKit/Tools/Scripts/webkitpy/layout_tests',
