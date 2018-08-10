@@ -304,6 +304,7 @@ Source13:	master_preferences
 # Unpackaged fonts
 Source14:	https://fontlibrary.org/assets/downloads/gelasio/4d610887ff4d445cbc639aae7828d139/gelasio.zip
 Source15:	http://download.savannah.nongnu.org/releases/freebangfont/MuktiNarrow-0.94.tar.bz2
+Source16:	https://github.com/web-platform-tests/wpt/raw/master/fonts/Ahem.ttf
 
 # We can assume gcc and binutils.
 BuildRequires:	gcc-c++
@@ -918,6 +919,7 @@ unzip %{SOURCE14}
 tar xf %{SOURCE15}
 mv MuktiNarrow0.94/MuktiNarrow.ttf .
 rm -rf MuktiNarrow0.94
+cp %{SOURCE16} .
 %if 0%{?rhel} == 7
 cp %{SOURCE100} .
 cp %{SOURCE101} .
