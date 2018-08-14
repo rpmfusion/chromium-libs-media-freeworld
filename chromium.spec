@@ -275,6 +275,8 @@ Patch106:	chromium-68.0.3440.84-libjpeg.patch
 Patch107:	chromium-68.0.3440.84-libwebp-shim.patch
 # GCC: do not std::move unique ptr of forward declared UrlIndex
 Patch108:	chromium-68.0.3440.84-move-unique-ptr.patch
+# https://github.com/OSSystems/meta-browser/blob/master/recipes-browser/chromium/files/0001-vpx_sum_squares_2d_i16_neon-Make-s2-a-uint64x1_t.patch
+Patch109:	0001-vpx_sum_squares_2d_i16_neon-Make-s2-a-uint64x1_t.patch
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
 # http://build.chromium.org/buildbot/official/
@@ -801,6 +803,7 @@ udev.
 %patch106 -p1 -b .libjpeg
 %patch107 -p1 -b .webp
 %patch108 -p1 -b .move-unique-ptr
+%patch109 -p1 -b .aarch64-int64x1_t
 
 
 # Change shebang in all relevant files in this directory and all subdirectories
