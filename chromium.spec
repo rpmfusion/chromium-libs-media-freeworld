@@ -140,7 +140,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 Name:		chromium%{chromium_channel}
 %endif
 Version:	%{majorversion}.0.3440.106
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -277,6 +277,9 @@ Patch107:	chromium-68.0.3440.84-libwebp-shim.patch
 Patch108:	chromium-68.0.3440.84-move-unique-ptr.patch
 # https://github.com/OSSystems/meta-browser/blob/master/recipes-browser/chromium/files/0001-vpx_sum_squares_2d_i16_neon-Make-s2-a-uint64x1_t.patch
 Patch109:	0001-vpx_sum_squares_2d_i16_neon-Make-s2-a-uint64x1_t.patch
+# Fix default on redeclaration error
+# https://chromium.googlesource.com/chromium/src/+/122692ccee62223f266a988c575ae687e3f4c056%5E%21/#F0
+Patch110:	chromium-68.0.3440.106-fix-default-on-redeclaration.patch
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
 # http://build.chromium.org/buildbot/official/
@@ -804,6 +807,7 @@ udev.
 %patch107 -p1 -b .webp
 %patch108 -p1 -b .move-unique-ptr
 %patch109 -p1 -b .aarch64-int64x1_t
+%patch110 -p1 -b .fix-default-redeclaration
 
 
 # Change shebang in all relevant files in this directory and all subdirectories
@@ -1749,6 +1753,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Fri Aug 17 2018 Tom Callaway <spot@fedoraproject.org> - 68.0.3440.106-2
+- fix error with defaulting on redeclaration
+
 * Thu Aug  9 2018 Tom Callaway <spot@fedoraproject.org> - 68.0.3440.106-1
 - update to 68.0.3440.106
 
