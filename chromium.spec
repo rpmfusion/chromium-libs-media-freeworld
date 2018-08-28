@@ -140,7 +140,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 Name:		chromium%{chromium_channel}
 %endif
 Version:	%{majorversion}.0.3440.106
-Release:	3%{?dist}
+Release:	4%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -346,7 +346,7 @@ BuildRequires:	libusb-devel
 BuildRequires:	libXdamage-devel
 BuildRequires:	libXScrnSaver-devel
 BuildRequires:	libXtst-devel
-BuildRequires:	minizip-devel
+BuildRequires:	minizip-compat-devel
 BuildRequires:	nodejs
 BuildRequires:	nss-devel >= 3.26
 BuildRequires:	pciutils-devel
@@ -649,9 +649,9 @@ Chromium is an open-source web browser, powered by WebKit (Blink).
 
 %package common
 Summary: Files needed for both the headless_shell and full Chromium
-# Chromium needs an explicit Requires: minizip
+# Chromium needs an explicit Requires: minizip-compat
 # We put it here to cover headless too.
-Requires: minizip%{_isa}
+Requires: minizip-compat%{_isa}
 
 %description common
 %{summary}.
@@ -1753,6 +1753,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Tue Aug 28 2018 Patrik Novotný <panovotn@redhat.com> - 68.0.3440.106-4
+- change requires to minizip-compat(-devel), rhbz#1609830, rhbz#1615381
+
 * Sun Aug 19 2018 Tom Callaway <spot@fedoraproject.org> - 68.0.3440.106-3
 - fix library filters
 
