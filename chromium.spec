@@ -814,10 +814,9 @@ udev.
 %patch111 -p1 -b .wvhack
 %patch112 -p1 -b .sanebuild
 
-
 # Change shebang in all relevant files in this directory and all subdirectories
 # See `man find` for how the `-exec command {} +` syntax works
-find -type f -exec sed -i '1s=^#!/usr/bin/\(python\|env python\)[23]\?=#!%{__python2}=' {} +
+find -type f -exec sed -iE '1s=^#! */usr/bin/\(python\|env python\)[23]\?=#!%{__python2}=' {} +
 
 %if 0%{?asan}
 export CC="clang"
