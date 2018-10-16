@@ -145,7 +145,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 Name:		chromium%{chromium_channel}
 %endif
 Version:	%{majorversion}.0.3497.100
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -477,6 +477,9 @@ BuildRequires:	pkgconfig(gnome-keyring-1)
 BuildRequires:	pam-devel
 BuildRequires:	systemd
 # for third_party/test_fonts
+%if %{freeworld}
+# dont need fonts for this
+%else
 %if 0%{?rhel} == 7
 Source100:      https://github.com/google/fonts/blob/master/apache/arimo/Arimo-Bold.ttf
 Source101:	https://github.com/google/fonts/blob/master/apache/arimo/Arimo-BoldItalic.ttf
@@ -504,6 +507,7 @@ BuildRequires:	thai-scalable-garuda-fonts
 BuildRequires:	lohit-devanagari-fonts
 BuildRequires:	lohit-tamil-fonts
 BuildRequires:	google-noto-sans-khmer-fonts
+%endif
 # using the built from source version on aarch64
 BuildRequires:	ninja-build
 
@@ -926,6 +930,9 @@ popd
 %endif
 
 # Unpack fonts
+%if %{freeworld}
+# no font fun needed.
+%else
 pushd third_party/test_fonts
 mkdir test_fonts
 cd test_fonts
@@ -965,6 +972,7 @@ cp -a /usr/share/fonts/thai-scalable/Garuda.ttf .
 cp -a /usr/share/fonts/lohit-devanagari/Lohit-Devanagari.ttf /usr/share/fonts/lohit-tamil/Lohit-Tamil.ttf .
 cp -a /usr/share/fonts/google-noto/NotoSansKhmer-Regular.ttf .
 popd
+%endif
 
 # Core defines are flags that are true for both the browser and headless.
 CHROMIUM_CORE_GN_DEFINES=""
@@ -1764,6 +1772,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Tue Oct 16 2018 Tom Callaway <spot@fedoraproject.org> - 69.0.3497.100-2
+- do not play with fonts on freeworld builds
+
 * Thu Oct  4 2018 Tom Callaway <spot@fedoraproject.org> - 69.0.3497.100-1
 - update to 69.0.3497.100
 
