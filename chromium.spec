@@ -285,6 +285,8 @@ Patch116:	chromium-gcc8-r591015.patch
 Patch117:	chromium-70.0.3538.67-disable-fontconfig-cache-magic.patch
 # Fix build against harfbuzz2
 Patch118:	chromium-70.0.3538.77-harfbuzz2-fix.patch
+# Fix aarch64 build against latest linux kernel headers
+Patch119:	chromium-70.0.3538.77-aarch64-arch-want-new-stat.patch
 
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
@@ -830,6 +832,7 @@ udev.
 %if 0%{?fedora} >= 30
 %patch118 -p1 -b .harfbuzz2
 %endif
+%patch119 -p1 -b .aarch64-new-stat
 
 
 # Change shebang in all relevant files in this directory and all subdirectories
