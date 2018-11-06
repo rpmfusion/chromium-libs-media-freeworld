@@ -146,7 +146,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 Name:		chromium%{chromium_channel}
 %endif
 Version:	%{majorversion}.0.3538.77
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -283,6 +283,9 @@ Patch115:	chromium-gcc8-r589614.patch
 Patch116:	chromium-gcc8-r591015.patch
 # Disable fontconfig cache magic that breaks remoting
 Patch117:	chromium-70.0.3538.67-disable-fontconfig-cache-magic.patch
+# Fix build against harfbuzz2
+Patch118:	chromium-70.0.3538.77-harfbuzz2-fix.patch
+
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
 # http://build.chromium.org/buildbot/official/
@@ -824,6 +827,10 @@ udev.
 %patch115 -p1 -b .r589614
 %patch116 -p1 -b .r591015
 %patch117 -p1 -b .nofc
+%if 0%{?fedora} >= 30
+%patch118 -p1 -b .harfbuzz2
+%endif
+
 
 # Change shebang in all relevant files in this directory and all subdirectories
 # See `man find` for how the `-exec command {} +` syntax works
@@ -1790,6 +1797,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Tue Nov  6 2018 Tom Callaway <spot@fedoraproject.org> - 70.0.3538.77-3
+- fix build with harfbuzz2 in rawhide
+
 * Mon Nov  5 2018 Tom Callaway <spot@fedoraproject.org> - 70.0.3538.77-2
 - drop jumbo_file_merge_limit to 8 to (hopefully) avoid OOMs on aarch64
 
