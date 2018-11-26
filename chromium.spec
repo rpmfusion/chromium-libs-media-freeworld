@@ -291,6 +291,8 @@ Patch117:	chromium-70.0.3538.67-disable-fontconfig-cache-magic.patch
 Patch118:	chromium-70.0.3538.77-harfbuzz2-fix.patch
 # Fix aarch64 build against latest linux kernel headers
 Patch119:	chromium-70.0.3538.77-aarch64-arch-want-new-stat.patch
+# https://chromium.googlesource.com/chromium/src/tools/gn/+/6630c2e334d7bc179e95a3d543a8eca3201d6725
+Patch120:	chromium-70.0.3538.110-remove-sysroot-options.patch
 
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
@@ -837,6 +839,7 @@ udev.
 %patch118 -p1 -b .harfbuzz2
 %endif
 %patch119 -p1 -b .aarch64-new-stat
+%patch120 -p1 -b .sysrootfix
 
 
 # Change shebang in all relevant files in this directory and all subdirectories
