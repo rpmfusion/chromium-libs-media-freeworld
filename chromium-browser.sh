@@ -43,6 +43,7 @@ CHROMIUM_DISTRO_FLAGS=" --enable-plugins \
                         --enable-extensions \
                         --enable-user-scripts \
                         --enable-printing \
+                        --enable-gpu-rasterization \
                         --enable-sync \
                         --auto-ssl-client-auth @@EXTRA_FLAGS@@"
 

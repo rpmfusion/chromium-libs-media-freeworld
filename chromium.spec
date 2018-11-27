@@ -293,6 +293,9 @@ Patch118:	chromium-70.0.3538.77-harfbuzz2-fix.patch
 Patch119:	chromium-70.0.3538.77-aarch64-arch-want-new-stat.patch
 # https://chromium.googlesource.com/chromium/src/tools/gn/+/6630c2e334d7bc179e95a3d543a8eca3201d6725
 Patch120:	chromium-70.0.3538.110-remove-sysroot-options.patch
+# Enable VAAPI support on Linux
+# NOTE: This patch will never land upstream
+Patch121:	enable-vaapi.patch
 
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
@@ -840,6 +843,7 @@ udev.
 %endif
 %patch119 -p1 -b .aarch64-new-stat
 %patch120 -p1 -b .sysrootfix
+%patch121 -p1 -b .vaapi
 
 
 # Change shebang in all relevant files in this directory and all subdirectories
@@ -1032,6 +1036,7 @@ CHROMIUM_BROWSER_GN_DEFINES+=' is_component_ffmpeg=false is_component_build=fals
 CHROMIUM_BROWSER_GN_DEFINES+=' remove_webcore_debug_symbols=true enable_hangout_services_extension=true'
 CHROMIUM_BROWSER_GN_DEFINES+=' use_aura=true'
 CHROMIUM_BROWSER_GN_DEFINES+=' enable_widevine=true'
+CHROMIUM_BROWSER_GN_DEFINES+=' use_vaapi=true'
 # CHROMIUM_BROWSER_GN_DEFINES+=' enable_webrtc=true'
 export CHROMIUM_BROWSER_GN_DEFINES
 
@@ -1807,6 +1812,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Tue Nov 27 2018 Tom Callaway <spot@fedoraproject.org> - 70.0.3538.110-2
+- enable vaapi support (thanks to Akarshan Biswas for doing the hard work here)
+
 * Mon Nov 26 2018 Tom Callaway <spot@fedoraproject.org> - 70.0.3538.110-1
 - update to .110
 
