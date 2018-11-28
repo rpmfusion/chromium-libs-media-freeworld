@@ -1,7 +1,26 @@
-diff -up chromium-70.0.3538.110/chrome/browser/about_flags.cc.vaapi chromium-70.0.3538.110/chrome/browser/about_flags.cc
---- chromium-70.0.3538.110/chrome/browser/about_flags.cc.vaapi	2018-11-19 13:55:02.000000000 -0500
-+++ chromium-70.0.3538.110/chrome/browser/about_flags.cc	2018-11-27 16:32:03.917049560 -0500
-@@ -1776,7 +1776,7 @@ const FeatureEntry kFeatureEntries[] = {
+From 9eef10b939b9eee6e7bb58c4ca3a8e119df518c1 Mon Sep 17 00:00:00 2001
+From: Akarshan Biswas <akarshan.biswas@gmail.com>
+Date: Sun, 4 Nov 2018 20:26:54 +0530
+Subject: [PATCH] Enable vaapi on Linux
+
+---
+ chrome/browser/about_flags.cc                | 14 +++++++------
+ chrome/browser/flag_descriptions.cc          | 22 +++++++++++++-------
+ chrome/browser/flag_descriptions.h           | 16 +++++++++-----
+ components/viz/service/main/viz_main_impl.cc |  2 +-
+ content/gpu/BUILD.gn                         |  6 ++++++
+ content/gpu/gpu_main.cc                      |  4 ++--
+ gpu/config/software_rendering_list.json      | 11 ----------
+ media/base/media_switches.cc                 |  2 +-
+ media/filters/BUILD.gn                       |  3 ++-
+ media/gpu/BUILD.gn                           |  7 +++++++
+ 10 files changed, 52 insertions(+), 35 deletions(-)
+
+diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
+index d029d0648..39df8d6cf 100644
+--- a/chrome/browser/about_flags.cc
++++ b/chrome/browser/about_flags.cc
+@@ -1775,7 +1775,7 @@ const FeatureEntry kFeatureEntries[] = {
          "disable-accelerated-video-decode",
          flag_descriptions::kAcceleratedVideoDecodeName,
          flag_descriptions::kAcceleratedVideoDecodeDescription,
@@ -10,7 +29,7 @@ diff -up chromium-70.0.3538.110/chrome/browser/about_flags.cc.vaapi chromium-70.
          SINGLE_DISABLE_VALUE_TYPE(switches::kDisableAcceleratedVideoDecode),
      },
  #if defined(OS_WIN)
-@@ -2458,12 +2458,12 @@ const FeatureEntry kFeatureEntries[] = {
+@@ -2457,12 +2457,12 @@ const FeatureEntry kFeatureEntries[] = {
       FEATURE_VALUE_TYPE(features::kOpenVR)},
  #endif  // ENABLE_OPENVR
  #endif  // ENABLE_VR
@@ -26,7 +45,7 @@ diff -up chromium-70.0.3538.110/chrome/browser/about_flags.cc.vaapi chromium-70.
      {"v8-cache-options", flag_descriptions::kV8CacheOptionsName,
       flag_descriptions::kV8CacheOptionsDescription, kOsAll,
       MULTI_VALUE_TYPE(kV8CacheOptionsChoices)},
-@@ -4449,12 +4449,14 @@ const FeatureEntry kFeatureEntries[] = {
+@@ -4444,12 +4444,14 @@ const FeatureEntry kFeatureEntries[] = {
                                      "AutofillDropdownLayout")},
  #endif  // OS_ANDROID
  
@@ -43,10 +62,11 @@ diff -up chromium-70.0.3538.110/chrome/browser/about_flags.cc.vaapi chromium-70.
      {"enable-home-launcher-gestures",
       flag_descriptions::kEnableHomeLauncherGesturesName,
       flag_descriptions::kEnableHomeLauncherGesturesDescription, kOsCrOS,
-diff -up chromium-70.0.3538.110/chrome/browser/flag_descriptions.cc.vaapi chromium-70.0.3538.110/chrome/browser/flag_descriptions.cc
---- chromium-70.0.3538.110/chrome/browser/flag_descriptions.cc.vaapi	2018-11-19 13:55:03.000000000 -0500
-+++ chromium-70.0.3538.110/chrome/browser/flag_descriptions.cc	2018-11-27 16:32:03.917049560 -0500
-@@ -3053,9 +3053,9 @@ const char kTextSuggestionsTouchBarDescr
+diff --git a/chrome/browser/flag_descriptions.cc b/chrome/browser/flag_descriptions.cc
+index 0cb812619..df8ecb24e 100644
+--- a/chrome/browser/flag_descriptions.cc
++++ b/chrome/browser/flag_descriptions.cc
+@@ -3053,9 +3053,9 @@ const char kTextSuggestionsTouchBarDescription[] =
  
  #endif
  
@@ -58,7 +78,7 @@ diff -up chromium-70.0.3538.110/chrome/browser/flag_descriptions.cc.vaapi chromi
  
  const char kAcceleratedMjpegDecodeName[] =
      "Hardware-accelerated mjpeg decode for captured frame";
-@@ -3063,6 +3063,18 @@ const char kAcceleratedMjpegDecodeDescri
+@@ -3063,6 +3063,18 @@ const char kAcceleratedMjpegDecodeDescription[] =
      "Enable hardware-accelerated mjpeg decode for captured frame where "
      "available.";
  
@@ -77,7 +97,7 @@ diff -up chromium-70.0.3538.110/chrome/browser/flag_descriptions.cc.vaapi chromi
  const char kAllowTouchpadThreeFingerClickName[] = "Touchpad three-finger-click";
  const char kAllowTouchpadThreeFingerClickDescription[] =
      "Enables touchpad three-finger-click as middle button.";
-@@ -3570,12 +3582,6 @@ const char kUseMonitorColorSpaceDescript
+@@ -3564,12 +3576,6 @@ const char kUseMonitorColorSpaceDescription[] =
      "Enables Chrome to use the  color space information provided by the monitor"
      " instead of the default sRGB color space.";
  
@@ -90,10 +110,11 @@ diff -up chromium-70.0.3538.110/chrome/browser/flag_descriptions.cc.vaapi chromi
  const char kVideoPlayerChromecastSupportName[] =
      "Experimental Chromecast support for Video Player";
  const char kVideoPlayerChromecastSupportDescription[] =
-diff -up chromium-70.0.3538.110/chrome/browser/flag_descriptions.h.vaapi chromium-70.0.3538.110/chrome/browser/flag_descriptions.h
---- chromium-70.0.3538.110/chrome/browser/flag_descriptions.h.vaapi	2018-11-19 13:55:03.000000000 -0500
-+++ chromium-70.0.3538.110/chrome/browser/flag_descriptions.h	2018-11-27 16:32:03.918049538 -0500
-@@ -1846,13 +1846,22 @@ extern const char kPermissionPromptPersi
+diff --git a/chrome/browser/flag_descriptions.h b/chrome/browser/flag_descriptions.h
+index b3c5e5691..14d7e33e9 100644
+--- a/chrome/browser/flag_descriptions.h
++++ b/chrome/browser/flag_descriptions.h
+@@ -1846,13 +1846,22 @@ extern const char kPermissionPromptPersistenceToggleDescription[];
  
  #endif  // defined(OS_MACOSX)
  
@@ -118,7 +139,7 @@ diff -up chromium-70.0.3538.110/chrome/browser/flag_descriptions.h.vaapi chromiu
  extern const char kAllowTouchpadThreeFingerClickName[];
  extern const char kAllowTouchpadThreeFingerClickDescription[];
  
-@@ -2161,9 +2170,6 @@ extern const char kUseMashDescription[];
+@@ -2158,9 +2167,6 @@ extern const char kUseMashDescription[];
  extern const char kUseMonitorColorSpaceName[];
  extern const char kUseMonitorColorSpaceDescription[];
  
@@ -128,10 +149,11 @@ diff -up chromium-70.0.3538.110/chrome/browser/flag_descriptions.h.vaapi chromiu
  extern const char kVideoPlayerChromecastSupportName[];
  extern const char kVideoPlayerChromecastSupportDescription[];
  
-diff -up chromium-70.0.3538.110/components/viz/service/main/viz_main_impl.cc.vaapi chromium-70.0.3538.110/components/viz/service/main/viz_main_impl.cc
---- chromium-70.0.3538.110/components/viz/service/main/viz_main_impl.cc.vaapi	2018-11-19 13:55:07.000000000 -0500
-+++ chromium-70.0.3538.110/components/viz/service/main/viz_main_impl.cc	2018-11-27 16:32:03.918049538 -0500
-@@ -41,7 +41,7 @@ std::unique_ptr<base::Thread> CreateAndS
+diff --git a/components/viz/service/main/viz_main_impl.cc b/components/viz/service/main/viz_main_impl.cc
+index 2196abef4..b4e0a1ae1 100644
+--- a/components/viz/service/main/viz_main_impl.cc
++++ b/components/viz/service/main/viz_main_impl.cc
+@@ -41,7 +41,7 @@ std::unique_ptr<base::Thread> CreateAndStartIOThread() {
    // It should be possible to use |main_task_runner_| for doing IO tasks.
    base::Thread::Options thread_options(base::MessageLoop::TYPE_IO, 0);
    thread_options.priority = base::ThreadPriority::NORMAL;
@@ -140,9 +162,10 @@ diff -up chromium-70.0.3538.110/components/viz/service/main/viz_main_impl.cc.vaa
    // TODO(reveman): Remove this in favor of setting it explicitly for each
    // type of process.
    thread_options.priority = base::ThreadPriority::DISPLAY;
-diff -up chromium-70.0.3538.110/content/gpu/BUILD.gn.vaapi chromium-70.0.3538.110/content/gpu/BUILD.gn
---- chromium-70.0.3538.110/content/gpu/BUILD.gn.vaapi	2018-11-19 13:55:07.000000000 -0500
-+++ chromium-70.0.3538.110/content/gpu/BUILD.gn	2018-11-27 16:32:03.926049365 -0500
+diff --git a/content/gpu/BUILD.gn b/content/gpu/BUILD.gn
+index 8974e441d..d7eba85a9 100644
+--- a/content/gpu/BUILD.gn
++++ b/content/gpu/BUILD.gn
 @@ -6,6 +6,7 @@ import("//build/config/jumbo.gni")
  import("//build/config/ui.gni")
  import("//gpu/vulkan/features.gni")
@@ -151,7 +174,7 @@ diff -up chromium-70.0.3538.110/content/gpu/BUILD.gn.vaapi chromium-70.0.3538.11
  import("//ui/ozone/ozone.gni")
  
  # See //content/BUILD.gn for how this works.
-@@ -134,4 +135,9 @@ target(link_target_type, "gpu_sources")
+@@ -134,4 +135,9 @@ target(link_target_type, "gpu_sources") {
        (!is_chromecast || is_cast_desktop_build)) {
      configs += [ "//build/config/linux/dri" ]
    }
@@ -161,10 +184,11 @@ diff -up chromium-70.0.3538.110/content/gpu/BUILD.gn.vaapi chromium-70.0.3538.11
 +    public_configs = [ "//media/gpu:libva_config" ]
 +  }
  }
-diff -up chromium-70.0.3538.110/content/gpu/gpu_main.cc.vaapi chromium-70.0.3538.110/content/gpu/gpu_main.cc
---- chromium-70.0.3538.110/content/gpu/gpu_main.cc.vaapi	2018-11-19 13:55:07.000000000 -0500
-+++ chromium-70.0.3538.110/content/gpu/gpu_main.cc	2018-11-27 16:33:26.059266401 -0500
-@@ -283,7 +283,7 @@ int GpuMain(const MainFunctionParams& pa
+diff --git a/content/gpu/gpu_main.cc b/content/gpu/gpu_main.cc
+index f589d015d..03fd1b44a 100644
+--- a/content/gpu/gpu_main.cc
++++ b/content/gpu/gpu_main.cc
+@@ -283,7 +283,7 @@ int GpuMain(const MainFunctionParams& parameters) {
  
    base::PlatformThread::SetName("CrGpuMain");
  
@@ -173,7 +197,7 @@ diff -up chromium-70.0.3538.110/content/gpu/gpu_main.cc.vaapi chromium-70.0.3538
    // Set thread priority before sandbox initialization.
    base::PlatformThread::SetCurrentThreadPriority(base::ThreadPriority::DISPLAY);
  #endif
-@@ -316,7 +316,7 @@ int GpuMain(const MainFunctionParams& pa
+@@ -316,7 +316,7 @@ int GpuMain(const MainFunctionParams& parameters) {
    GetContentClient()->SetGpuInfo(gpu_init->gpu_info());
  
    base::ThreadPriority io_thread_priority = base::ThreadPriority::NORMAL;
@@ -182,13 +206,15 @@ diff -up chromium-70.0.3538.110/content/gpu/gpu_main.cc.vaapi chromium-70.0.3538
    io_thread_priority = base::ThreadPriority::DISPLAY;
  #endif
  
-diff -up chromium-70.0.3538.110/gpu/config/software_rendering_list.json.vaapi chromium-70.0.3538.110/gpu/config/software_rendering_list.json
---- chromium-70.0.3538.110/gpu/config/software_rendering_list.json.vaapi	2018-11-19 13:55:08.000000000 -0500
-+++ chromium-70.0.3538.110/gpu/config/software_rendering_list.json	2018-11-27 16:32:03.936049148 -0500
-@@ -374,17 +374,6 @@
+diff --git a/gpu/config/software_rendering_list.json b/gpu/config/software_rendering_list.json
+index 445953a64..0aac9ddb6 100644
+--- a/gpu/config/software_rendering_list.json
++++ b/gpu/config/software_rendering_list.json
+@@ -373,17 +373,6 @@
+         "all"
        ]
      },
-     {
+-    {
 -      "id": 48,
 -      "description": "Accelerated video decode is unavailable on Linux",
 -      "cr_bugs": [137247],
@@ -199,14 +225,14 @@ diff -up chromium-70.0.3538.110/gpu/config/software_rendering_list.json.vaapi ch
 -        "accelerated_video_decode"
 -      ]
 -    },
--    {
+     {
        "id": 50,
        "description": "Disable VMware software renderer on older Mesa",
-       "cr_bugs": [145531, 332596, 571899, 629434],
-diff -up chromium-70.0.3538.110/media/base/media_switches.cc.vaapi chromium-70.0.3538.110/media/base/media_switches.cc
---- chromium-70.0.3538.110/media/base/media_switches.cc.vaapi	2018-11-19 13:55:09.000000000 -0500
-+++ chromium-70.0.3538.110/media/base/media_switches.cc	2018-11-27 16:32:03.937049127 -0500
-@@ -468,7 +468,7 @@ bool IsVideoCaptureAcceleratedJpegDecodi
+diff --git a/media/base/media_switches.cc b/media/base/media_switches.cc
+index 684c1d5cf..e887e60bb 100644
+--- a/media/base/media_switches.cc
++++ b/media/base/media_switches.cc
+@@ -468,7 +468,7 @@ bool IsVideoCaptureAcceleratedJpegDecodingEnabled() {
            switches::kUseFakeJpegDecodeAccelerator)) {
      return true;
    }
@@ -215,9 +241,10 @@ diff -up chromium-70.0.3538.110/media/base/media_switches.cc.vaapi chromium-70.0
    return true;
  #endif
    return false;
-diff -up chromium-70.0.3538.110/media/filters/BUILD.gn.vaapi chromium-70.0.3538.110/media/filters/BUILD.gn
---- chromium-70.0.3538.110/media/filters/BUILD.gn.vaapi	2018-11-19 13:55:09.000000000 -0500
-+++ chromium-70.0.3538.110/media/filters/BUILD.gn	2018-11-27 16:34:43.272581693 -0500
+diff --git a/media/filters/BUILD.gn b/media/filters/BUILD.gn
+index ab6215152..b8d1ee896 100644
+--- a/media/filters/BUILD.gn
++++ b/media/filters/BUILD.gn
 @@ -5,6 +5,7 @@
  import("//build/config/jumbo.gni")
  import("//media/media_options.gni")
@@ -235,10 +262,11 @@ diff -up chromium-70.0.3538.110/media/filters/BUILD.gn.vaapi chromium-70.0.3538.
      sources += [
        "h264_bitstream_buffer.cc",
        "h264_bitstream_buffer.h",
-diff -up chromium-70.0.3538.110/media/gpu/BUILD.gn.vaapi chromium-70.0.3538.110/media/gpu/BUILD.gn
---- chromium-70.0.3538.110/media/gpu/BUILD.gn.vaapi	2018-11-19 13:55:09.000000000 -0500
-+++ chromium-70.0.3538.110/media/gpu/BUILD.gn	2018-11-27 16:32:03.937049127 -0500
-@@ -501,6 +501,12 @@ if (use_v4l2_codec || use_vaapi || is_ma
+diff --git a/media/gpu/BUILD.gn b/media/gpu/BUILD.gn
+index 9ef4730a4..0c3a06c24 100644
+--- a/media/gpu/BUILD.gn
++++ b/media/gpu/BUILD.gn
+@@ -501,6 +501,12 @@ if (use_v4l2_codec || use_vaapi || is_mac || is_win) {
    }
  }
  
@@ -259,3 +287,6 @@ diff -up chromium-70.0.3538.110/media/gpu/BUILD.gn.vaapi chromium-70.0.3538.110/
    }
  }
  
+-- 
+2.19.1
+

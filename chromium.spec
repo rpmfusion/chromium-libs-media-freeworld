@@ -441,6 +441,7 @@ BuildRequires:	libudev-devel
 Requires:	libusbx >= 1.0.21-0.1.git448584a
 BuildRequires:	libusbx-devel >= 1.0.21-0.1.git448584a
 %endif
+BuildRequires:	libva-devel
 # We don't use libvpx anymore because Chromium loves to
 # use bleeding edge revisions here that break other things
 # ... so we just use the bundled libvpx.
