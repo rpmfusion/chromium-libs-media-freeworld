@@ -296,6 +296,7 @@ Patch120:	chromium-70.0.3538.110-remove-sysroot-options.patch
 # Enable VAAPI support on Linux
 # NOTE: This patch will never land upstream
 Patch121:	enable-vaapi.patch
+Patch122:	chromium-70.0.3538.110-vaapi-i686-fpermissive.patch
 
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
@@ -845,6 +846,9 @@ udev.
 %patch119 -p1 -b .aarch64-new-stat
 %patch120 -p1 -b .sysrootfix
 %patch121 -p1 -b .vaapi
+%ifarch i686
+%patch122 -p1 -b .i686permissive
+%endif
 
 
 # Change shebang in all relevant files in this directory and all subdirectories
