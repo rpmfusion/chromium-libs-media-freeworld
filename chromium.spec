@@ -297,7 +297,12 @@ Patch120:	chromium-70.0.3538.110-remove-sysroot-options.patch
 # NOTE: This patch will never land upstream
 Patch121:	enable-vaapi.patch
 Patch122:	chromium-70.0.3538.110-vaapi-i686-fpermissive.patch
-
+# Since the newer versions of VA-API are ABI compatible, relax the version checks for VA-API, by using VA_CHECK_VERSION().
+# This will help in updating the libva to the latest releases,while still supporting the old versions, till the new version of
+# libva is merged and picked by the builds. Thus ensuring that hardware accleration is not broken while updating the libva.
+# Taken and rebased from https://chromium-review.googlesource.com/c/chromium/src/+/1352519
+# The patch might land somewhere in the future and will be removed.
+Patch123: relax-libva-version.patch
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
 # http://build.chromium.org/buildbot/official/
@@ -849,7 +854,7 @@ udev.
 %ifarch i686
 %patch122 -p1 -b .i686permissive
 %endif
-
+%patch123 -p1 -b .relaxva
 
 # Change shebang in all relevant files in this directory and all subdirectories
 # See `man find` for how the `-exec command {} +` syntax works
