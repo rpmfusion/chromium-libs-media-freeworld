@@ -1,0 +1,11 @@
+diff -up chromium-71.0.3578.98/third_party/widevine/cdm/BUILD.gn.wvhack chromium-71.0.3578.98/third_party/widevine/cdm/BUILD.gn
+diff -up chromium-71.0.3578.98/third_party/widevine/cdm/widevine_cdm_version.h.wvhack chromium-71.0.3578.98/third_party/widevine/cdm/widevine_cdm_version.h
+--- chromium-71.0.3578.98/third_party/widevine/cdm/widevine_cdm_version.h.wvhack	2018-12-14 11:58:37.918972853 -0500
++++ chromium-71.0.3578.98/third_party/widevine/cdm/widevine_cdm_version.h	2018-12-14 11:58:57.327554078 -0500
+@@ -11,5 +11,6 @@
+ // If the Widevine CDM is available define the following:
+ //  - WIDEVINE_CDM_VERSION_STRING (with the version of the CDM that's available
+ //    as a string, e.g., "1.0.123.456").
++#define WIDEVINE_CDM_VERSION_STRING "unknown"
+ 
+ #endif  // WIDEVINE_CDM_VERSION_H_
