@@ -150,7 +150,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 Name:		chromium%{chromium_channel}
 %endif
 Version:	%{majorversion}.0.3578.98
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -541,7 +541,7 @@ BuildRequires:	google-noto-sans-khmer-fonts
 BuildRequires:	ninja-build
 
 %if 0%{?rhel} == 7
-BuildRequires: devtoolset-7-toolchain, devtoolset-7-libatomic-devel
+BuildRequires: devtoolset-8-toolchain, devtoolset-8-libatomic-devel
 %endif
 
 # There is a hardcoded check for nss 3.26 in the chromium code (crypto/nss_util.cc)
@@ -1831,6 +1831,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Wed Dec 19 2018 Tom Callaway <spot@fedoraproject.org> - 71.0.3578.98-2
+- need to use devtoolset-8-*. I love hardcoded versions in package names.
+
 * Fri Dec 14 2018 Tom Callaway <spot@fedoraproject.org> - 71.0.3578.98-1
 - update to 71.0.3578.98
 
