@@ -1352,7 +1352,7 @@ sed -i '/aarch64)/ a \        exec "/usr/bin/ninja-build" "$@";;\' ../depot_tool
 sed -i 's|exec "${THIS_DIR}/ninja-linux${LONG_BIT}"|exec "/usr/bin/ninja-build"|g' ../depot_tools/ninja
 
 %if 0%{?rhel} == 7
-. /opt/rh/devtoolset-7/enable
+. /opt/rh/devtoolset-8/enable
 %endif
 
 # Check that there is no system 'google' module, shadowing bundled ones:
@@ -1387,7 +1387,7 @@ sed -i.orig -e 's/getenv("CHROME_VERSION_EXTRA")/"Fedora Project"/' $FILE
 
 %build
 %if 0%{?rhel} == 7
-. /opt/rh/devtoolset-7/enable
+. /opt/rh/devtoolset-8/enable
 %endif
 
 # Now do the full browser
