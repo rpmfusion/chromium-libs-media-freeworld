@@ -309,6 +309,8 @@ Patch123:	relax-libva-version.patch
 Patch124:	chromium-71.0.3578.98-vaapi-libva1-compatibility.patch
 # From gentoo
 Patch125:	https://gitweb.gentoo.org/repo/gentoo.git/plain/www-client/chromium/files/chromium-71-gcc-0.patch
+# For el7: error: function 'gpu::GPUInfo::GPUDevice& gpu::GPUInfo::GPUDevice::operator=(gpu::GPUInfo::GPUDevice&&)' defaulted on its redeclaration with an exception-specification that differs from the implicit exception-specification ''
+Patch126:	chromium-71.0.3578.98-el7-fix-noexcept.patch
 
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
@@ -864,6 +866,9 @@ udev.
 %patch123 -p1 -b .relaxva
 %patch124 -p1 -b .va1compat
 %patch125 -p1 -b .gcc-overloaded
+%if 0%{?rhel} == 7
+%patch126 -p1 -b .fix-noexcept
+%endif
 
 # Change shebang in all relevant files in this directory and all subdirectories
 # See `man find` for how the `-exec command {} +` syntax works

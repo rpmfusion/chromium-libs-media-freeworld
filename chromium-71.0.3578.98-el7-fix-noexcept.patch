@@ -1,0 +1,12 @@
+diff -up chromium-71.0.3578.98/gpu/config/gpu_info.cc.fix-noexcept chromium-71.0.3578.98/gpu/config/gpu_info.cc
+--- chromium-71.0.3578.98/gpu/config/gpu_info.cc.fix-noexcept	2018-12-20 09:50:03.320449807 -0500
++++ chromium-71.0.3578.98/gpu/config/gpu_info.cc	2018-12-20 09:50:25.768849091 -0500
+@@ -116,7 +116,7 @@ GPUInfo::GPUDevice& GPUInfo::GPUDevice::
+     const GPUInfo::GPUDevice& other) = default;
+ 
+ GPUInfo::GPUDevice& GPUInfo::GPUDevice::operator=(
+-    GPUInfo::GPUDevice&& other) noexcept = default;
++    GPUInfo::GPUDevice&& other) = default;
+ 
+ GPUInfo::GPUInfo()
+     : optimus(false),
