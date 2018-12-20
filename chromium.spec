@@ -97,6 +97,8 @@ BuildRequires:  libicu-devel >= 5.4
 %global gtk3 1
 
 %if 0%{?rhel} == 7
+%global dts_version 8
+
 %global bundleopus 1
 %global bundlelibusbx 1
 %global bundleharfbuzz 1
@@ -541,7 +543,7 @@ BuildRequires:	google-noto-sans-khmer-fonts
 BuildRequires:	ninja-build
 
 %if 0%{?rhel} == 7
-BuildRequires: devtoolset-8-toolchain, devtoolset-8-libatomic-devel
+BuildRequires: devtoolset-%{dts_version}-toolchain, devtoolset-%{dts_version}-libatomic-devel
 %endif
 
 # There is a hardcoded check for nss 3.26 in the chromium code (crypto/nss_util.cc)
@@ -1352,7 +1354,7 @@ sed -i '/aarch64)/ a \        exec "/usr/bin/ninja-build" "$@";;\' ../depot_tool
 sed -i 's|exec "${THIS_DIR}/ninja-linux${LONG_BIT}"|exec "/usr/bin/ninja-build"|g' ../depot_tools/ninja
 
 %if 0%{?rhel} == 7
-. /opt/rh/devtoolset-8/enable
+. /opt/rh/devtoolset-%{dts_version}/enable
 %endif
 
 # Check that there is no system 'google' module, shadowing bundled ones:
@@ -1387,7 +1389,7 @@ sed -i.orig -e 's/getenv("CHROME_VERSION_EXTRA")/"Fedora Project"/' $FILE
 
 %build
 %if 0%{?rhel} == 7
-. /opt/rh/devtoolset-8/enable
+. /opt/rh/devtoolset-%{dts_version}/enable
 %endif
 
 # Now do the full browser
