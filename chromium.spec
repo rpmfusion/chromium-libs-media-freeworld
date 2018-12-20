@@ -383,7 +383,10 @@ BuildRequires:	minizip-compat-devel
 %else
 BuildRequires:	minizip-devel
 %endif
+# RHEL 7's nodejs is too old
+%if 0%{?fedora}
 BuildRequires:	nodejs
+%endif
 BuildRequires:	nss-devel >= 3.26
 BuildRequires:	pciutils-devel
 BuildRequires:	pulseaudio-libs-devel
