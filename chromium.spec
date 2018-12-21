@@ -344,7 +344,10 @@ Source15:	http://download.savannah.nongnu.org/releases/freebangfont/MuktiNarrow-
 Source16:	https://github.com/web-platform-tests/wpt/raw/master/fonts/Ahem.ttf
 Source17:	GardinerModBug.ttf
 Source18:	GardinerModCat.ttf
-
+# RHEL needs newer nodejs
+%if 0%{?rhel}
+Source19:	node-v8.9.1-linux-x64.tar.gz
+%endif
 
 # We can assume gcc and binutils.
 BuildRequires:	gcc-c++
@@ -1075,8 +1078,15 @@ CHROMIUM_HEADLESS_GN_DEFINES+=' use_cups=false use_dbus=false use_gio=false use_
 CHROMIUM_HEADLESS_GN_DEFINES+=' use_pulseaudio=false use_udev=false'
 export CHROMIUM_HEADLESS_GN_DEFINES
 
+%if 0%{?rhel}
+pushd third_party/node/linux
+tar xf %{SOURCE19}
+mv node-v8.9.1-linux-x64 node-linux-x64
+popd
+%else
 mkdir -p third_party/node/linux/node-linux-x64/bin
 ln -s %{_bindir}/node third_party/node/linux/node-linux-x64/bin/node
+%endif
 
 # Remove most of the bundled libraries. Libraries specified below (taken from
 # Gentoo's Chromium ebuild) are the libraries that needs to be preserved.
