@@ -1,3 +1,15 @@
+diff -up chromium-71.0.3578.98/chrome/common/media_router/media_sink.cc.fix-noexcept chromium-71.0.3578.98/chrome/common/media_router/media_sink.cc
+--- chromium-71.0.3578.98/chrome/common/media_router/media_sink.cc.fix-noexcept	2019-01-02 14:44:40.449801789 -0500
++++ chromium-71.0.3578.98/chrome/common/media_router/media_sink.cc	2019-01-02 14:44:54.167481936 -0500
+@@ -24,7 +24,7 @@ MediaSink::MediaSink() = default;
+ MediaSink::~MediaSink() = default;
+ 
+ MediaSink& MediaSink::operator=(const MediaSink& other) = default;
+-MediaSink& MediaSink::operator=(MediaSink&& other) noexcept = default;
++MediaSink& MediaSink::operator=(MediaSink&& other) = default;
+ 
+ bool MediaSink::Equals(const MediaSink& other) const {
+   return sink_id_ == other.sink_id_;
 diff -up chromium-71.0.3578.98/components/policy/core/common/policy_map.cc.fix-noexcept chromium-71.0.3578.98/components/policy/core/common/policy_map.cc
 --- chromium-71.0.3578.98/components/policy/core/common/policy_map.cc.fix-noexcept	2019-01-02 12:06:10.867313533 -0500
 +++ chromium-71.0.3578.98/components/policy/core/common/policy_map.cc	2019-01-02 12:06:27.544980078 -0500
