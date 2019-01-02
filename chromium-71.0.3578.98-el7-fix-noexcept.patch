@@ -1,3 +1,15 @@
+diff -up chromium-71.0.3578.98/components/signin/core/browser/account_info.cc.fix-noexcept chromium-71.0.3578.98/components/signin/core/browser/account_info.cc
+--- chromium-71.0.3578.98/components/signin/core/browser/account_info.cc.fix-noexcept	2019-01-02 10:57:29.194710662 -0500
++++ chromium-71.0.3578.98/components/signin/core/browser/account_info.cc	2019-01-02 10:58:57.829965474 -0500
+@@ -32,7 +32,7 @@ AccountInfo::AccountInfo(AccountInfo&& o
+ 
+ AccountInfo& AccountInfo::operator=(const AccountInfo& other) = default;
+ 
+-AccountInfo& AccountInfo::operator=(AccountInfo&& other) noexcept = default;
++AccountInfo& AccountInfo::operator=(AccountInfo&& other) = default;
+ 
+ bool AccountInfo::IsEmpty() const {
+   return account_id.empty() && email.empty() && gaia.empty() &&
 diff -up chromium-71.0.3578.98/gpu/config/gpu_info.cc.fix-noexcept chromium-71.0.3578.98/gpu/config/gpu_info.cc
 --- chromium-71.0.3578.98/gpu/config/gpu_info.cc.fix-noexcept	2018-12-20 09:50:03.320449807 -0500
 +++ chromium-71.0.3578.98/gpu/config/gpu_info.cc	2018-12-20 09:50:25.768849091 -0500
