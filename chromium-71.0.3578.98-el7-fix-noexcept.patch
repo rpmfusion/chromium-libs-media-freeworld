@@ -1,3 +1,15 @@
+diff -up chromium-71.0.3578.98/components/policy/core/common/policy_map.cc.fix-noexcept chromium-71.0.3578.98/components/policy/core/common/policy_map.cc
+--- chromium-71.0.3578.98/components/policy/core/common/policy_map.cc.fix-noexcept	2019-01-02 12:06:10.867313533 -0500
++++ chromium-71.0.3578.98/components/policy/core/common/policy_map.cc	2019-01-02 12:06:27.544980078 -0500
+@@ -18,7 +18,7 @@ PolicyMap::Entry::Entry() = default;
+ PolicyMap::Entry::~Entry() = default;
+ 
+ PolicyMap::Entry::Entry(Entry&&) noexcept = default;
+-PolicyMap::Entry& PolicyMap::Entry::operator=(Entry&&) noexcept = default;
++PolicyMap::Entry& PolicyMap::Entry::operator=(Entry&&) = default;
+ 
+ PolicyMap::Entry PolicyMap::Entry::DeepCopy() const {
+   Entry copy;
 diff -up chromium-71.0.3578.98/components/signin/core/browser/account_info.cc.fix-noexcept chromium-71.0.3578.98/components/signin/core/browser/account_info.cc
 --- chromium-71.0.3578.98/components/signin/core/browser/account_info.cc.fix-noexcept	2019-01-02 10:57:29.194710662 -0500
 +++ chromium-71.0.3578.98/components/signin/core/browser/account_info.cc	2019-01-02 10:58:57.829965474 -0500
