@@ -150,7 +150,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 Name:		chromium%{chromium_channel}
 %endif
 Version:	%{majorversion}.0.3578.98
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -307,6 +307,8 @@ Patch123:	relax-libva-version.patch
 Patch124:	chromium-71.0.3578.98-vaapi-libva1-compatibility.patch
 # From gentoo
 Patch125:	https://gitweb.gentoo.org/repo/gentoo.git/plain/www-client/chromium/files/chromium-71-gcc-0.patch
+# drop rsp clobber, which breaks gcc9 (thanks to Jeff Law)
+Patch126:	chromium-71.0.3578.98-gcc9-drop-rsp-clobber.patch
 
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
@@ -862,6 +864,7 @@ udev.
 %patch123 -p1 -b .relaxva
 %patch124 -p1 -b .va1compat
 %patch125 -p1 -b .gcc-overloaded
+%patch126 -p1 -b .gcc9
 
 # Change shebang in all relevant files in this directory and all subdirectories
 # See `man find` for how the `-exec command {} +` syntax works
@@ -1831,6 +1834,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Tue Jan  8 2019 Tom Callaway <spot@fedoraproject.org> - 71.0.3578.98-2
+- drop rsp clobber, which breaks gcc9 (thanks to Jeff Law)
+
 * Fri Dec 14 2018 Tom Callaway <spot@fedoraproject.org> - 71.0.3578.98-1
 - update to 71.0.3578.98
 
