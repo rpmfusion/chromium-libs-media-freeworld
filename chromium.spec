@@ -2,6 +2,9 @@
 # https://fedoraproject.org/wiki/Changes/No_more_automagic_Python_bytecompilation_phase_2
 %global _python_bytecompile_extra 1
 
+# This is faster when it works, but it doesn't always.
+%global use_jumbo 0
+
 # NEVER EVER EVER turn this on in official builds
 %global freeworld 0
 %if %{freeworld}
@@ -142,15 +145,15 @@ BuildRequires:  libicu-devel >= 5.4
 %global chromoting_client_id %nil
 %endif
 
-%global majorversion 71
+%global majorversion 72
 
 %if %{freeworld}
 Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 %else
 Name:		chromium%{chromium_channel}
 %endif
-Version:	%{majorversion}.0.3578.98
-Release:	5%{?dist}
+Version:	%{majorversion}.0.3626.121
+Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -159,7 +162,7 @@ License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and Open
 Patch0:		chromium-67.0.3396.62-gcc5.patch
 Patch1:		chromium-45.0.2454.101-linux-path-max.patch
 Patch2:		chromium-55.0.2883.75-addrfix.patch
-Patch4:		chromium-68.0.3440.106-notest.patch
+Patch4:		chromium-72.0.3626.121-notest.patch
 # In file included from ../linux/directory.c:21:
 # In file included from ../../../../native_client/src/nonsfi/linux/abi_conversion.h:20:
 # ../../../../native_client/src/nonsfi/linux/linux_syscall_structs.h:44:13: error: GNU-style inline assembly is disabled
@@ -227,7 +230,7 @@ Patch53:	chromium-61.0.3163.79-gcc-no-opt-safe-math.patch
 # Only needed when glibc 2.26.90 or later is used
 Patch57:	chromium-63.0.3289.84-aarch64-glibc-2.26.90.patch
 # From gentoo
-Patch62:	chromium-66.0.3359.117-gcc5-r3.patch
+Patch62:	chromium-72.0.3626.121-gcc5-r3.patch
 # Do not try to use libc++ in the remoting stack
 # Patch63:	chromium-63.0.3289.84-nolibc++.patch
 # To use round with gcc, you need to #include <cmath>
@@ -249,7 +252,7 @@ Patch88:	chromium-66.0.3359.117-missing-files.patch
 # https://bugs.chromium.org/p/chromium/issues/detail?id=816952
 # Patch91:	chromium-66.0.3359.117-gcc-vector-copy-constructor-fix.patch
 # Do not use unrar code, it is non-free
-Patch92:	chromium-71.0.3578.98-norar.patch
+Patch92:	chromium-72.0.3626.121-norar.patch
 # Upstream GCC fixes
 Patch93:	chromium-66.0.3359.117-GCC-build-fix-base-Optional-T-requires-the-full-decl.patch
 Patch94:	chromium-66.0.3359.117-GCC-fully-declare-ConfigurationPolicyProvider.patch
@@ -266,7 +269,7 @@ Patch98:	chromium-69.0.3497.81-gcc8-alignof.patch
 # https://bugs.python.org/issue21591
 Patch100:	chromium-67.0.3396.62-epel7-use-old-python-exec-syntax.patch
 # Add "Fedora" to the user agent string
-Patch101:	chromium-68.0.3440.106-fedora-user-agent.patch
+Patch101:	chromium-72.0.3626.121-fedora-user-agent.patch
 # Try to fix version.py for Rawhide
 Patch102:	chromium-67.0.3396.99-py3fix.patch
 Patch103:	chromium-71.0.3578.98-py2-bootstrap.patch
@@ -291,8 +294,6 @@ Patch117:	chromium-70.0.3538.67-disable-fontconfig-cache-magic.patch
 Patch118:	chromium-70.0.3538.77-harfbuzz2-fix.patch
 # Fix aarch64 build against latest linux kernel headers
 Patch119:	chromium-70.0.3538.77-aarch64-arch-want-new-stat.patch
-# https://chromium.googlesource.com/chromium/src/tools/gn/+/6630c2e334d7bc179e95a3d543a8eca3201d6725
-Patch120:	chromium-71.0.3578.98-remove-sysroot-options.patch
 # Enable VAAPI support on Linux
 # NOTE: This patch will never land upstream
 Patch121:	enable-vaapi.patch
@@ -305,10 +306,10 @@ Patch122:	chromium-70.0.3538.110-vaapi-i686-fpermissive.patch
 Patch123:	relax-libva-version.patch
 # Fix compatibility with VA-API library (libva) version 1
 Patch124:	chromium-71.0.3578.98-vaapi-libva1-compatibility.patch
-# From gentoo
-Patch125:	https://gitweb.gentoo.org/repo/gentoo.git/plain/www-client/chromium/files/chromium-71-gcc-0.patch
 # drop rsp clobber, which breaks gcc9 (thanks to Jeff Law)
 Patch126:	chromium-71.0.3578.98-gcc9-drop-rsp-clobber.patch
+# Fix va check code
+Patch127:	chromium-72.0.3626.121-fix-va-check.patch
 
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
@@ -856,15 +857,14 @@ udev.
 %patch118 -p1 -b .harfbuzz2
 %endif
 %patch119 -p1 -b .aarch64-new-stat
-%patch120 -p1 -b .sysrootfix
 %patch121 -p1 -b .vaapi
 %ifarch i686
 %patch122 -p1 -b .i686permissive
 %endif
 %patch123 -p1 -b .relaxva
 %patch124 -p1 -b .va1compat
-%patch125 -p1 -b .gcc-overloaded
 %patch126 -p1 -b .gcc9
+%patch127 -p1 -b .fixvacheck
 
 # Change shebang in all relevant files in this directory and all subdirectories
 # See `man find` for how the `-exec command {} +` syntax works
@@ -1040,7 +1040,9 @@ CHROMIUM_CORE_GN_DEFINES+=' use_custom_libcxx=false'
 %ifarch aarch64
 CHROMIUM_CORE_GN_DEFINES+=' target_cpu="arm64"'
 %endif
+%if %{?use_jumbo}
 CHROMIUM_CORE_GN_DEFINES+=' use_jumbo_build=true jumbo_file_merge_limit=8'
+%endif
 export CHROMIUM_CORE_GN_DEFINES
 
 CHROMIUM_BROWSER_GN_DEFINES=""
@@ -1094,13 +1096,12 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'net/third_party/quic' \
 	'net/third_party/spdy' \
 	'net/third_party/uri_template' \
-	'third_party/WebKit' \
 	'third_party/abseil-cpp' \
 	'third_party/adobe' \
-	'third_party/analytics' \
 	'third_party/angle' \
 	'third_party/angle/src/common/third_party/base' \
 	'third_party/angle/src/common/third_party/smhasher' \
+	'third_party/angle/src/common/third_party/xxhash' \
 	'third_party/angle/src/third_party/compiler' \
 	'third_party/angle/src/third_party/libXNVCtrl' \
 	'third_party/angle/src/third_party/trace_event' \
@@ -1135,6 +1136,7 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/catapult/tracing/third_party/pako' \
         'third_party/ced' \
 	'third_party/cld_3' \
+	'third_party/closure_compiler' \
 	'third_party/crashpad' \
 	'third_party/crashpad/crashpad/third_party/zlib/' \
 	'third_party/crc32c' \
@@ -1149,7 +1151,6 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/flot' \
 	'third_party/fontconfig' \
 	'third_party/freetype' \
-	'third_party/glslang-angle' \
 	'third_party/google_input_tools' \
 	'third_party/google_input_tools/third_party/closure_library' \
 	'third_party/google_input_tools/third_party/closure_library/third_party/closure' \
@@ -1198,6 +1199,7 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/mesa' \
 	'third_party/metrics_proto' \
 	'third_party/modp_b64' \
+	'third_party/nasm' \
 	'third_party/node' \
 	'third_party/node/node_modules/polymer-bundler/lib/third_party/UglifyJS2' \
 %if %{freeworld}
@@ -1241,7 +1243,6 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/speech-dispatcher' \
 	'third_party/spirv-headers' \
 	'third_party/SPIRV-Tools' \
-	'third_party/spirv-tools-angle' \
 	'third_party/sqlite' \
 	'third_party/swiftshader' \
 	'third_party/swiftshader/third_party/subzero' \
@@ -1252,7 +1253,6 @@ build/linux/unbundle/remove_bundled_libraries.py \
         'third_party/usb_ids' \
 	'third_party/usrsctp' \
 	'third_party/vulkan' \
-	'third_party/vulkan-validation-layers' \
 	'third_party/web-animations-js' \
 	'third_party/webdriver' \
 	'third_party/webrtc' \
@@ -1821,6 +1821,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Sat Mar  9 2019 Tom Callaway <spot@fedoraproject.org> - 72.0.3626.121-1
+- update to 72.0.3626.121
+
 * Tue Feb 26 2019 Tom Callaway <spot@fedoraproject.org> - 71.0.3578.98-5
 - rebuild for libva api change
 
