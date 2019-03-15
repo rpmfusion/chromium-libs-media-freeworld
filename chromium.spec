@@ -318,6 +318,8 @@ Patch135:	chromium-73.0.3683.75-disable-fno-delete-null-pointer-checks.patch
 Patch136:	chromium-73.0.3683.75-pipewire-cstring-fix.patch
 # Conditionalize header-hygiene flags for clang
 Patch137:	chromium-73.0.3683.75-no-header-hygiene.patch
+# Add missing #include <limits> needed to build crashpad for aarch64
+Patch138:	chromium-73.0.3683.75-aarch64-crashpad-limits.patch
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
 # http://build.chromium.org/buildbot/official/
@@ -889,6 +891,7 @@ udev.
 %patch135 -p1 -b .disable-ndnpc
 %patch136 -p1 -b .cstring-fix
 %patch137 -p1 -b .nohh
+%patch138 -p1 -b .aarch64-limits
 
 # Change shebang in all relevant files in this directory and all subdirectories
 # See `man find` for how the `-exec command {} +` syntax works
