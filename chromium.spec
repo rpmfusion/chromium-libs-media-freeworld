@@ -316,6 +316,8 @@ Patch134:	chromium-73-gcc-6.patch
 Patch135:	chromium-73.0.3683.75-disable-fno-delete-null-pointer-checks.patch
 # Add #include <cstring> to get pipewire code to build
 Patch136:	chromium-73.0.3683.75-pipewire-cstring-fix.patch
+# Conditionalize header-hygiene flags for clang
+Patch137:	chromium-73.0.3683.75-no-header-hygiene.patch
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
 # http://build.chromium.org/buildbot/official/
@@ -886,6 +888,7 @@ udev.
 %patch134 -p1 -b .gentoogcc6
 %patch135 -p1 -b .disable-ndnpc
 %patch136 -p1 -b .cstring-fix
+%patch137 -p1 -b .nohh
 
 # Change shebang in all relevant files in this directory and all subdirectories
 # See `man find` for how the `-exec command {} +` syntax works
@@ -1270,6 +1273,7 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/swiftshader/third_party/subzero' \
 	'third_party/swiftshader/third_party/LLVM' \
 	'third_party/swiftshader/third_party/llvm-subzero' \
+	'third_party/swiftshader/third_party/llvm-7.0' \
 	'third_party/tcmalloc' \
 	'third_party/test_fonts' \
         'third_party/usb_ids' \
@@ -1490,7 +1494,7 @@ cp -a nacl_helper* *.nexe pnacl tls_edit %{buildroot}%{chromium_path}
 chmod -x %{buildroot}%{chromium_path}/nacl_helper_bootstrap* *.nexe
 %endif
 cp -a protoc pyproto %{buildroot}%{chromium_path}
-%ifarch x86_64 i686
+%ifarch x86_64 i686 aarch64
 cp -a swiftshader %{buildroot}%{chromium_path}
 %endif
 cp -a chrome %{buildroot}%{chromium_path}/%{chromium_browser_channel}
@@ -1711,7 +1715,7 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/%{chromium_browser_channel}
 %{chromium_path}/%{chromium_browser_channel}.sh
 %{chromium_path}/MEIPreload/
-%ifarch x86_64 i686
+%ifarch x86_64 i686 aarch64
 %{chromium_path}/swiftshader/
 %endif
 %if 0%{?nacl}
