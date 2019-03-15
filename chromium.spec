@@ -557,6 +557,8 @@ BuildRequires:	google-noto-sans-khmer-fonts
 %endif
 # using the built from source version on aarch64
 BuildRequires:	ninja-build
+# Yes, java is needed as well..
+BuildRequires:	java-1.8.0-openjdk-headless
 
 %if 0%{?rhel} == 7
 BuildRequires: devtoolset-7-toolchain, devtoolset-7-libatomic-devel
