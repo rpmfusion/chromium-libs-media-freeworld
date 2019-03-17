@@ -3,7 +3,11 @@
 %global _python_bytecompile_extra 1
 
 # This is faster when it works, but it doesn't always.
+%ifarch aarch64
+%global use_jumbo 0
+%else
 %global use_jumbo 1
+%endif
 
 # We usually want this.
 %global build_headless 1
