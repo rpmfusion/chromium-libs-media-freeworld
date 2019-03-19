@@ -160,7 +160,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 Name:		chromium%{chromium_channel}
 %endif
 Version:	%{majorversion}.0.3683.75
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -1500,7 +1500,10 @@ cp -a *.pak locales resources icudtl.dat %{buildroot}%{chromium_path}
 cp -a nacl_helper* *.nexe pnacl tls_edit %{buildroot}%{chromium_path}
 chmod -x %{buildroot}%{chromium_path}/nacl_helper_bootstrap* *.nexe
 %endif
+# Reasonably sure we don't need this anymore. Chrome doesn't include it.
+%if 0
 cp -a protoc pyproto %{buildroot}%{chromium_path}
+%endif
 %ifarch x86_64 i686 aarch64
 cp -a swiftshader %{buildroot}%{chromium_path}
 %endif
@@ -1732,7 +1735,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/tls_edit
 %endif
 %dir %{chromium_path}/PepperFlash/
+%if 0
 %{chromium_path}/protoc
+%endif
 # %%{chromium_path}/remoting_locales/
 # %%{chromium_path}/pseudo_locales/
 # %%{chromium_path}/plugins/
@@ -1750,7 +1755,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/headless_lib.pak
 %endif
 # %%{chromium_path}/mus_app_resources_*.pak
+%if 0
 %{chromium_path}/pyproto/
+%endif
 %{chromium_path}/resources/
 %dir %{chromium_path}/locales/
 %lang(am) %{chromium_path}/locales/am.pak*
@@ -1865,6 +1872,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Tue Mar 19 2019 Tom Callaway <spot@fedoraproject.org> - 73.0.3683.75-2
+- do not include pyproto/protoc files in package
+
 * Tue Mar 12 2019 Tom Callaway <spot@fedoraproject.org> - 73.0.3683.75-1
 - update to 73.0.3683.75
 
