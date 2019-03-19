@@ -2,6 +2,16 @@
 # https://fedoraproject.org/wiki/Changes/No_more_automagic_Python_bytecompilation_phase_2
 %global _python_bytecompile_extra 1
 
+# This is faster when it works, but it doesn't always.
+%ifarch aarch64
+%global use_jumbo 0
+%else
+%global use_jumbo 1
+%endif
+
+# We usually want this.
+%global build_headless 1
+
 # NEVER EVER EVER turn this on in official builds
 %global freeworld 0
 %if %{freeworld}
@@ -41,9 +51,9 @@
 
 %global __provides_exclude_from %{chromium_path}/.*\\.so|%{chromium_path}/lib/.*\\.so|%{chromium_path}/lib/.*\\.so.*
 %if 0%{?rhel} == 7
-%global privlibs libaccessibility|libandroid_mojo_bindings_shared|libanimation|libapdu|libaura_extra|libaura|libbase_i18n|libbase|libbindings_base|libbindings|libblink_android_mojo_bindings_shared|libblink_common|libblink_controller|libblink_core_mojo_bindings_shared|libblink_core|libblink_embedded_frame_sink_mojo_bindings_shared|libblink_modules|libblink_mojo_bindings_shared|libblink_platform|libbluetooth|libboringssl|libbrowser_ui_views|libcaptive_portal|libcapture_base|libcapture_lib|libcatalog_lib|libcbor|libcc_animation|libcc_base|libcc_debug|libcc_mojo_embedder|libcc_paint|libcc|libcdm_manager|libchrome_features|libchromium_sqlite3|libclearkeycdm|libclient|libcloud_policy_proto_generated_compile|libcodec|libcolor_space|libcommon|libcompositor|libcontent_common_mojo_bindings_shared|libcontent_public_common_mojo_bindings_shared|libcontent_service_cpp|libcontent_service_mojom_shared|libcontent_service_mojom|libcontent|libcrash_key|libcrcrypto|libdbus|libdevice_base|libdevice_event_log|libdevice_features|libdevice_gamepad|libdevices|libdevice_vr_mojo_bindings_blink|libdevice_vr_mojo_bindings_shared|libdevice_vr_mojo_bindings|libdevice_vr|libdiscardable_memory_client|libdiscardable_memory_common|libdiscardable_memory_service|libdisplay|libdisplay_types|libdisplay_util|libdomain_reliability|libEGL|libembedder|libembedder_switches|libevents_base|libevents_devices_x11|libevents_ozone_layout|libevents|libevents_x|libextras|libffmpeg|libfido|libfingerprint|libfreetype_harfbuzz|libgamepad_mojom_blink|libgamepad_mojom_shared|libgamepad_mojom|libgamepad_shared_typemap_traits|libgcm|libgeometry_skia|libgeometry|libgesture_detection|libgfx_ipc_buffer_types|libgfx_ipc_color|libgfx_ipc_geometry|libgfx_ipc_skia|libgfx_ipc|libgfx|libgfx_switches|libgfx_x11|libgin|libgles2_implementation|libgles2|libgles2_utils|libGLESv2|libgl_init|libgl_in_process_context|libgl_wrapper|libgpu_ipc_service|libgpu|libgtkui|libheadless|libhost|libicui18n|libicuuc|libinterfaces_shared|libipc_mojom_shared|libipc_mojom|libipc|libkeycodes_x11|libkeyed_service_content|libkeyed_service_core|libleveldatabase|liblive_tab_count_metrics|libmanager|libmedia_blink|libmedia_devices_mojo_bindings_shared|libmedia_gpu|libmedia_mojo_services|libmedia_session_cpp|libmedia_session_public_mojom_shared|libmedia_session_public_mojom|libmedia|libmedia_webrtc|libmemory_instrumentation|libmessage_center|libmessage_support|libmetrics_cpp|libmidi|libmirroring_service|libmojo_base_lib|libmojo_base_mojom_blink|libmojo_base_mojom_shared|libmojo_base_mojom|libmojo_base_shared_typemap_traits|libmojo_core_embedder_internal|libmojo_core_embedder|libmojo_core_ports|libmojo_cpp_platform|libmojo_ime_lib|libmojom_core_shared|libmojo_mojom_bindings_shared|libmojo_mojom_bindings|libmojom_platform_shared|libmojo_public_system_cpp|libmojo_public_system|libnative_theme|libnet|libnet_with_v8|libnetwork_cpp_base|libnetwork_cpp|libnetwork_service|libnetwork_session_configurator|libonc|libos_crypt|libperfetto|libplatform|libplatform_window_handler_libs|libpolicy_component|libpolicy_proto|libppapi_host|libppapi_proxy|libppapi_shared|libprefs|libprinting|libprotobuf_lite|libproxy_config|libpublic|librange|libraster|libresource_coordinator_cpp_base|libresource_coordinator_cpp_features|libresource_coordinator_cpp|libresource_coordinator_public_mojom_blink|libresource_coordinator_public_mojom_shared|libresource_coordinator_public_mojom|libsandbox_services|libsandbox|libscheduling_metrics|libseccomp_bpf|libservice_manager_cpp|libservice_manager_cpp_types|libservice_manager_mojom_blink|libservice_manager_mojom_constants_blink|libservice_manager_mojom_constants_shared|libservice_manager_mojom_constants|libservice_manager_mojom_shared|libservice_manager_mojom|libservice|libsessions|libshared_memory_support|libshell_dialogs|libskia|libsnapshot|libsql|libstartup_tracing|libstorage_browser|libstorage_common|libstub_window|libsuid_sandbox_client|libsurface|libtracing_cpp|libtracing_mojom_shared|libtracing_mojom|libtracing|libui_base_ime_linux|libui_base_ime|libui_base_ime_types|libui_base|libui_base_x|libui_data_pack|libui_devtools|libui_message_center_cpp|libui_touch_selection|libui_views_mus_lib|liburl_ipc|liburl_matcher|liburl|libusb_shared|libuser_manager|libuser_prefs|libv8_libbase|libv8_libplatform|libv8|libviews|libviz_common|libviz_resource_format_utils|libVkICD_mock_icd|libVkLayer_core_validation|libVkLayer_object_tracker|libVkLayer_parameter_validation|libVkLayer_threading|libVkLayer_unique_objects|libvr_common|libvr_ui|libvulkan_init|libvulkan_wrapper|libvulkan_x11|libwebdata_common|libweb_dialogs|libwebgpu|libwebview|libwm_public|libwm|libwtf|libx11_events_platform|libx11_window|libzygote|libfontconfig
+%global privlibs libEGL|libGLESv2|libVkICD_mock_icd|libVkLayer_core_validation|libVkLayer_object_tracker|libVkLayer_parameter_validation|libVkLayer_threading|libVkLayer_unique_objects|libaccessibility|libandroid_mojo_bindings_shared|libanimation|libapdu|libaura|libaura_extra|libbase|libbase_i18n|libbindings|libbindings_base|libblink_android_mojo_bindings_shared|libblink_common|libblink_controller|libblink_core|libblink_core_mojo_bindings_shared|libblink_embedded_frame_sink_mojo_bindings_shared|libblink_modules|libblink_mojo_bindings_shared|libblink_platform|libbluetooth|libboringssl|libbrowser_ui_views|libcaptive_portal|libcapture_base|libcapture_lib|libcatalog_lib|libcbor|libcc|libcc_animation|libcc_base|libcc_debug|libcc_mojo_embedder|libcc_paint|libcdm_manager|libcertificate_matching|libchrome_features|libchromium_sqlite3|libclearkeycdm|libclient|libcloud_policy_proto_generated_compile|libcodec|libcolor_space|libcommon|libcompositor|libcontent|libcontent_common_mojo_bindings_shared|libcontent_public_common_mojo_bindings_shared|libcontent_service_cpp|libcontent_service_mojom|libcontent_service_mojom_shared|libcrash_key|libcrcrypto|libdbus|libdevice_base|libdevice_event_log|libdevice_features|libdevice_gamepad|libdevice_vr|libdevice_vr_mojo_bindings|libdevice_vr_mojo_bindings_blink|libdevice_vr_mojo_bindings_shared|libdevices|libdiscardable_memory_client|libdiscardable_memory_common|libdiscardable_memory_service|libdisplay|libdisplay_types|libdisplay_util|libdomain_reliability|libembedder|libembedder_switches|libevents|libevents_base|libevents_devices_x11|libevents_ozone_layout|libevents_x|libextras|libfido|libfingerprint|libfreetype_harfbuzz|libgamepad_mojom|libgamepad_mojom_blink|libgamepad_mojom_shared|libgamepad_shared_typemap_traits|libgcm|libgeometry|libgeometry_skia|libgesture_detection|libgfx|libgfx_ipc|libgfx_ipc_buffer_types|libgfx_ipc_color|libgfx_ipc_geometry|libgfx_ipc_skia|libgfx_switches|libgfx_x11|libgin|libgl_in_process_context|libgl_init|libgl_wrapper|libgles2|libgles2_implementation|libgles2_utils|libgpu|libgpu_ipc_service|libgtkui|libheadless|libhost|libicui18n|libicuuc|libinterfaces_shared|libipc|libipc_mojom|libipc_mojom_shared|libkeycodes_x11|libkeyed_service_content|libkeyed_service_core|liblearning_common|liblearning_impl|libleveldatabase|liblive_tab_count_metrics|libmanager|libmedia_blink|libmedia_gpu|libmedia_mojo_services|libmedia_session_cpp|libmedia_webrtc|libmemory_instrumentation|libmessage_center|libmessage_support|libmetrics_cpp|libmidi|libmirclient.so.9|libmirclient.so.9.TOC|libmirroring_service|libmojo_base_lib|libmojo_base_mojom|libmojo_base_mojom_blink|libmojo_base_mojom_shared|libmojo_base_shared_typemap_traits|libmojo_core_embedder|libmojo_core_embedder_internal|libmojo_core_ports|libmojo_cpp_platform|libmojo_ime_lib|libmojo_mojom_bindings|libmojo_mojom_bindings_shared|libmojo_public_system|libmojo_public_system_cpp|libmojom_core_shared|libmojom_modules_shared|libmojom_platform_shared|libnative_theme|libnet|libnet_with_v8|libnetwork_cpp|libnetwork_cpp_base|libnetwork_service|libnetwork_session_configurator|libonc|libos_crypt|libperfetto|libplatform|libplatform_window_handler_libs|libpolicy_component|libpolicy_proto|libppapi_host|libppapi_proxy|libppapi_shared|libprefs|libprinting|libprotobuf_lite|libproxy_config|libpublic|librange|libraster|libresource_coordinator_cpp|libresource_coordinator_cpp_base|libresource_coordinator_cpp_features|libresource_coordinator_public_mojom|libresource_coordinator_public_mojom_blink|libresource_coordinator_public_mojom_shared|libsandbox|libsandbox_services|libscheduling_metrics|libseccomp_bpf|libservice|libservice_manager_cpp|libservice_manager_cpp_types|libservice_manager_mojom|libservice_manager_mojom_blink|libservice_manager_mojom_constants|libservice_manager_mojom_constants_blink|libservice_manager_mojom_constants_shared|libservice_manager_mojom_shared|libservice_manager_mojom_traits|libsessions|libshared_memory_support|libshell_dialogs|libskia|libsnapshot|libspeech_recognition_error_code_mojom|libspeech_recognition_error_code_mojom_blink|libspeech_recognition_error_code_mojom_shared|libsql|libstartup_tracing|libstorage_browser|libstorage_common|libstub_window|libsuid_sandbox_client|libsurface|libtracing|libtracing_cpp|libtracing_mojom|libtracing_mojom_shared|libui_accessibility_ax_mojom|libui_accessibility_ax_mojom_blink|libui_accessibility_ax_mojom_shared|libui_base|libui_base_clipboard|libui_base_clipboard_types|libui_base_ime|libui_base_ime_linux|libui_base_ime_types|libui_base_x|libui_data_pack|libui_devtools|libui_message_center_cpp|libui_touch_selection|libui_views_mus_lib|liburl|liburl_ipc|liburl_matcher|libusb_shared|libuser_manager|libuser_prefs|libv8|libv8_libbase|libv8_libplatform|libviews|libviz_common|libviz_resource_format_utils|libviz_vulkan_context_provider|libvr_base|libvr_common|libvr_ui|libvulkan_init|libvulkan_wrapper|libvulkan_x11|libweb_dialogs|libweb_feature_mojo_bindings_mojom|libweb_feature_mojo_bindings_mojom_blink|libweb_feature_mojo_bindings_mojom_shared|libwebdata_common|libwebgpu|libwebview|libwm|libwm_public|libwtf|libx11_events_platform|libx11_window|libzygote|libmedia|libffmpeg|libfontconfig
 %else
-%global privlibs libaccessibility|libandroid_mojo_bindings_shared|libanimation|libapdu|libaura_extra|libaura|libbase_i18n|libbase|libbindings_base|libbindings|libblink_android_mojo_bindings_shared|libblink_common|libblink_controller|libblink_core_mojo_bindings_shared|libblink_core|libblink_embedded_frame_sink_mojo_bindings_shared|libblink_modules|libblink_mojo_bindings_shared|libblink_platform|libbluetooth|libboringssl|libbrowser_ui_views|libcaptive_portal|libcapture_base|libcapture_lib|libcatalog_lib|libcbor|libcc_animation|libcc_base|libcc_debug|libcc_mojo_embedder|libcc_paint|libcc|libcdm_manager|libchrome_features|libchromium_sqlite3|libclearkeycdm|libclient|libcloud_policy_proto_generated_compile|libcodec|libcolor_space|libcommon|libcompositor|libcontent_common_mojo_bindings_shared|libcontent_public_common_mojo_bindings_shared|libcontent_service_cpp|libcontent_service_mojom_shared|libcontent_service_mojom|libcontent|libcrash_key|libcrcrypto|libdbus|libdevice_base|libdevice_event_log|libdevice_features|libdevice_gamepad|libdevices|libdevice_vr_mojo_bindings_blink|libdevice_vr_mojo_bindings_shared|libdevice_vr_mojo_bindings|libdevice_vr|libdiscardable_memory_client|libdiscardable_memory_common|libdiscardable_memory_service|libdisplay|libdisplay_types|libdisplay_util|libdomain_reliability|libEGL|libembedder|libembedder_switches|libevents_base|libevents_devices_x11|libevents_ozone_layout|libevents|libevents_x|libextras|libffmpeg|libfido|libfingerprint|libfreetype_harfbuzz|libgamepad_mojom_blink|libgamepad_mojom_shared|libgamepad_mojom|libgamepad_shared_typemap_traits|libgcm|libgeometry_skia|libgeometry|libgesture_detection|libgfx_ipc_buffer_types|libgfx_ipc_color|libgfx_ipc_geometry|libgfx_ipc_skia|libgfx_ipc|libgfx|libgfx_switches|libgfx_x11|libgin|libgles2_implementation|libgles2|libgles2_utils|libGLESv2|libgl_init|libgl_in_process_context|libgl_wrapper|libgpu_ipc_service|libgpu|libgtkui|libheadless|libhost|libicui18n|libicuuc|libinterfaces_shared|libipc_mojom_shared|libipc_mojom|libipc|libkeycodes_x11|libkeyed_service_content|libkeyed_service_core|libleveldatabase|liblive_tab_count_metrics|libmanager|libmedia_blink|libmedia_devices_mojo_bindings_shared|libmedia_gpu|libmedia_mojo_services|libmedia_session_cpp|libmedia_session_public_mojom_shared|libmedia_session_public_mojom|libmedia|libmedia_webrtc|libmemory_instrumentation|libmessage_center|libmessage_support|libmetrics_cpp|libmidi|libmirroring_service|libmojo_base_lib|libmojo_base_mojom_blink|libmojo_base_mojom_shared|libmojo_base_mojom|libmojo_base_shared_typemap_traits|libmojo_core_embedder_internal|libmojo_core_embedder|libmojo_core_ports|libmojo_cpp_platform|libmojo_ime_lib|libmojom_core_shared|libmojo_mojom_bindings_shared|libmojo_mojom_bindings|libmojom_platform_shared|libmojo_public_system_cpp|libmojo_public_system|libnative_theme|libnet|libnet_with_v8|libnetwork_cpp_base|libnetwork_cpp|libnetwork_service|libnetwork_session_configurator|libonc|libos_crypt|libperfetto|libplatform|libplatform_window_handler_libs|libpolicy_component|libpolicy_proto|libppapi_host|libppapi_proxy|libppapi_shared|libprefs|libprinting|libprotobuf_lite|libproxy_config|libpublic|librange|libraster|libresource_coordinator_cpp_base|libresource_coordinator_cpp_features|libresource_coordinator_cpp|libresource_coordinator_public_mojom_blink|libresource_coordinator_public_mojom_shared|libresource_coordinator_public_mojom|libsandbox_services|libsandbox|libscheduling_metrics|libseccomp_bpf|libservice_manager_cpp|libservice_manager_cpp_types|libservice_manager_mojom_blink|libservice_manager_mojom_constants_blink|libservice_manager_mojom_constants_shared|libservice_manager_mojom_constants|libservice_manager_mojom_shared|libservice_manager_mojom|libservice|libsessions|libshared_memory_support|libshell_dialogs|libskia|libsnapshot|libsql|libstartup_tracing|libstorage_browser|libstorage_common|libstub_window|libsuid_sandbox_client|libsurface|libtracing_cpp|libtracing_mojom_shared|libtracing_mojom|libtracing|libui_base_ime_linux|libui_base_ime|libui_base_ime_types|libui_base|libui_base_x|libui_data_pack|libui_devtools|libui_message_center_cpp|libui_touch_selection|libui_views_mus_lib|liburl_ipc|liburl_matcher|liburl|libusb_shared|libuser_manager|libuser_prefs|libv8_libbase|libv8_libplatform|libv8|libviews|libviz_common|libviz_resource_format_utils|libVkICD_mock_icd|libVkLayer_core_validation|libVkLayer_object_tracker|libVkLayer_parameter_validation|libVkLayer_threading|libVkLayer_unique_objects|libvr_common|libvr_ui|libvulkan_init|libvulkan_wrapper|libvulkan_x11|libwebdata_common|libweb_dialogs|libwebgpu|libwebview|libwm_public|libwm|libwtf|libx11_events_platform|libx11_window|libzygote
+%global privlibs libEGL|libGLESv2|libVkICD_mock_icd|libVkLayer_core_validation|libVkLayer_object_tracker|libVkLayer_parameter_validation|libVkLayer_threading|libVkLayer_unique_objects|libaccessibility|libandroid_mojo_bindings_shared|libanimation|libapdu|libaura|libaura_extra|libbase|libbase_i18n|libbindings|libbindings_base|libblink_android_mojo_bindings_shared|libblink_common|libblink_controller|libblink_core|libblink_core_mojo_bindings_shared|libblink_embedded_frame_sink_mojo_bindings_shared|libblink_modules|libblink_mojo_bindings_shared|libblink_platform|libbluetooth|libboringssl|libbrowser_ui_views|libcaptive_portal|libcapture_base|libcapture_lib|libcatalog_lib|libcbor|libcc|libcc_animation|libcc_base|libcc_debug|libcc_mojo_embedder|libcc_paint|libcdm_manager|libcertificate_matching|libchrome_features|libchromium_sqlite3|libclearkeycdm|libclient|libcloud_policy_proto_generated_compile|libcodec|libcolor_space|libcommon|libcompositor|libcontent|libcontent_common_mojo_bindings_shared|libcontent_public_common_mojo_bindings_shared|libcontent_service_cpp|libcontent_service_mojom|libcontent_service_mojom_shared|libcrash_key|libcrcrypto|libdbus|libdevice_base|libdevice_event_log|libdevice_features|libdevice_gamepad|libdevice_vr|libdevice_vr_mojo_bindings|libdevice_vr_mojo_bindings_blink|libdevice_vr_mojo_bindings_shared|libdevices|libdiscardable_memory_client|libdiscardable_memory_common|libdiscardable_memory_service|libdisplay|libdisplay_types|libdisplay_util|libdomain_reliability|libembedder|libembedder_switches|libevents|libevents_base|libevents_devices_x11|libevents_ozone_layout|libevents_x|libextras|libfido|libfingerprint|libfreetype_harfbuzz|libgamepad_mojom|libgamepad_mojom_blink|libgamepad_mojom_shared|libgamepad_shared_typemap_traits|libgcm|libgeometry|libgeometry_skia|libgesture_detection|libgfx|libgfx_ipc|libgfx_ipc_buffer_types|libgfx_ipc_color|libgfx_ipc_geometry|libgfx_ipc_skia|libgfx_switches|libgfx_x11|libgin|libgl_in_process_context|libgl_init|libgl_wrapper|libgles2|libgles2_implementation|libgles2_utils|libgpu|libgpu_ipc_service|libgtkui|libheadless|libhost|libicui18n|libicuuc|libinterfaces_shared|libipc|libipc_mojom|libipc_mojom_shared|libkeycodes_x11|libkeyed_service_content|libkeyed_service_core|liblearning_common|liblearning_impl|libleveldatabase|liblive_tab_count_metrics|libmanager|libmedia_blink|libmedia_gpu|libmedia_mojo_services|libmedia_session_cpp|libmedia_webrtc|libmemory_instrumentation|libmessage_center|libmessage_support|libmetrics_cpp|libmidi|libmirclient.so.9|libmirclient.so.9.TOC|libmirroring_service|libmojo_base_lib|libmojo_base_mojom|libmojo_base_mojom_blink|libmojo_base_mojom_shared|libmojo_base_shared_typemap_traits|libmojo_core_embedder|libmojo_core_embedder_internal|libmojo_core_ports|libmojo_cpp_platform|libmojo_ime_lib|libmojo_mojom_bindings|libmojo_mojom_bindings_shared|libmojo_public_system|libmojo_public_system_cpp|libmojom_core_shared|libmojom_modules_shared|libmojom_platform_shared|libnative_theme|libnet|libnet_with_v8|libnetwork_cpp|libnetwork_cpp_base|libnetwork_service|libnetwork_session_configurator|libonc|libos_crypt|libperfetto|libplatform|libplatform_window_handler_libs|libpolicy_component|libpolicy_proto|libppapi_host|libppapi_proxy|libppapi_shared|libprefs|libprinting|libprotobuf_lite|libproxy_config|libpublic|librange|libraster|libresource_coordinator_cpp|libresource_coordinator_cpp_base|libresource_coordinator_cpp_features|libresource_coordinator_public_mojom|libresource_coordinator_public_mojom_blink|libresource_coordinator_public_mojom_shared|libsandbox|libsandbox_services|libscheduling_metrics|libseccomp_bpf|libservice|libservice_manager_cpp|libservice_manager_cpp_types|libservice_manager_mojom|libservice_manager_mojom_blink|libservice_manager_mojom_constants|libservice_manager_mojom_constants_blink|libservice_manager_mojom_constants_shared|libservice_manager_mojom_shared|libservice_manager_mojom_traits|libsessions|libshared_memory_support|libshell_dialogs|libskia|libsnapshot|libspeech_recognition_error_code_mojom|libspeech_recognition_error_code_mojom_blink|libspeech_recognition_error_code_mojom_shared|libsql|libstartup_tracing|libstorage_browser|libstorage_common|libstub_window|libsuid_sandbox_client|libsurface|libtracing|libtracing_cpp|libtracing_mojom|libtracing_mojom_shared|libui_accessibility_ax_mojom|libui_accessibility_ax_mojom_blink|libui_accessibility_ax_mojom_shared|libui_base|libui_base_clipboard|libui_base_clipboard_types|libui_base_ime|libui_base_ime_linux|libui_base_ime_types|libui_base_x|libui_data_pack|libui_devtools|libui_message_center_cpp|libui_touch_selection|libui_views_mus_lib|liburl|liburl_ipc|liburl_matcher|libusb_shared|libuser_manager|libuser_prefs|libv8|libv8_libbase|libv8_libplatform|libviews|libviz_common|libviz_resource_format_utils|libviz_vulkan_context_provider|libvr_base|libvr_common|libvr_ui|libvulkan_init|libvulkan_wrapper|libvulkan_x11|libweb_dialogs|libweb_feature_mojo_bindings_mojom|libweb_feature_mojo_bindings_mojom_blink|libweb_feature_mojo_bindings_mojom_shared|libwebdata_common|libwebgpu|libwebview|libwm|libwm_public|libwtf|libx11_events_platform|libx11_window|libzygote|libmedia|libffmpeg
 %endif
 %global __requires_exclude ^(%{privlibs})\\.so*
 
@@ -120,9 +130,9 @@ BuildRequires:  libicu-devel >= 5.4
 %global bundlefontconfig 0
 %endif
 
-# Needs at least harfbuzz 1.8.6 now.
-# 2018-10-24
-%if 0%{?fedora} < 29
+# Needs at least harfbuzz 2.3.0 now.
+# 2019-03-13
+%if 0%{?fedora} < 30
 %global bundleharfbuzz 1
 %else
 %global bundleharfbuzz 0
@@ -144,14 +154,14 @@ BuildRequires:  libicu-devel >= 5.4
 %global chromoting_client_id %nil
 %endif
 
-%global majorversion 71
+%global majorversion 73
 
 %if %{freeworld}
 Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 %else
 Name:		chromium%{chromium_channel}
 %endif
-Version:	%{majorversion}.0.3578.98
+Version:	%{majorversion}.0.3683.75
 Release:	2%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
@@ -161,7 +171,7 @@ License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and Open
 Patch0:		chromium-67.0.3396.62-gcc5.patch
 Patch1:		chromium-45.0.2454.101-linux-path-max.patch
 Patch2:		chromium-55.0.2883.75-addrfix.patch
-Patch4:		chromium-68.0.3440.106-notest.patch
+Patch4:		chromium-72.0.3626.121-notest.patch
 # In file included from ../linux/directory.c:21:
 # In file included from ../../../../native_client/src/nonsfi/linux/abi_conversion.h:20:
 # ../../../../native_client/src/nonsfi/linux/linux_syscall_structs.h:44:13: error: GNU-style inline assembly is disabled
@@ -229,7 +239,7 @@ Patch53:	chromium-61.0.3163.79-gcc-no-opt-safe-math.patch
 # Only needed when glibc 2.26.90 or later is used
 Patch57:	chromium-63.0.3289.84-aarch64-glibc-2.26.90.patch
 # From gentoo
-Patch62:	chromium-66.0.3359.117-gcc5-r3.patch
+Patch62:	chromium-72.0.3626.121-gcc5-r3.patch
 # Do not try to use libc++ in the remoting stack
 # Patch63:	chromium-63.0.3289.84-nolibc++.patch
 # To use round with gcc, you need to #include <cmath>
@@ -251,7 +261,7 @@ Patch88:	chromium-66.0.3359.117-missing-files.patch
 # https://bugs.chromium.org/p/chromium/issues/detail?id=816952
 # Patch91:	chromium-66.0.3359.117-gcc-vector-copy-constructor-fix.patch
 # Do not use unrar code, it is non-free
-Patch92:	chromium-71.0.3578.98-norar.patch
+Patch92:	chromium-73.0.3683.75-norar.patch
 # Upstream GCC fixes
 Patch93:	chromium-66.0.3359.117-GCC-build-fix-base-Optional-T-requires-the-full-decl.patch
 Patch94:	chromium-66.0.3359.117-GCC-fully-declare-ConfigurationPolicyProvider.patch
@@ -263,12 +273,12 @@ Patch94:	chromium-66.0.3359.117-GCC-fully-declare-ConfigurationPolicyProvider.pa
 # GCC8 has changed the alignof operator to return the minimal alignment required by the target ABI
 # instead of the preferred alignment. This means int64_t is now 4 on i686 (instead of 8).
 # Use __alignof__ to get the value we expect (and chromium checks for).
-Patch98:	chromium-69.0.3497.81-gcc8-alignof.patch
+# Patch98:	chromium-69.0.3497.81-gcc8-alignof.patch
 # RHEL 7 has a bug in its python2.7 which does not propely handle exec with a tuple
 # https://bugs.python.org/issue21591
 Patch100:	chromium-67.0.3396.62-epel7-use-old-python-exec-syntax.patch
 # Add "Fedora" to the user agent string
-Patch101:	chromium-68.0.3440.106-fedora-user-agent.patch
+Patch101:	chromium-72.0.3626.121-fedora-user-agent.patch
 # Try to fix version.py for Rawhide
 Patch102:	chromium-67.0.3396.99-py3fix.patch
 Patch103:	chromium-71.0.3578.98-py2-bootstrap.patch
@@ -289,29 +299,35 @@ Patch112:	chromium-69.0.3497.81-build-sanely-please.patch
 # Patch116:	chromium-gcc8-r591015.patch
 # Disable fontconfig cache magic that breaks remoting
 Patch117:	chromium-70.0.3538.67-disable-fontconfig-cache-magic.patch
-# Fix build against harfbuzz2
-Patch118:	chromium-70.0.3538.77-harfbuzz2-fix.patch
 # Fix aarch64 build against latest linux kernel headers
 Patch119:	chromium-70.0.3538.77-aarch64-arch-want-new-stat.patch
-# https://chromium.googlesource.com/chromium/src/tools/gn/+/6630c2e334d7bc179e95a3d543a8eca3201d6725
-Patch120:	chromium-71.0.3578.98-remove-sysroot-options.patch
 # Enable VAAPI support on Linux
 # NOTE: This patch will never land upstream
 Patch121:	enable-vaapi.patch
-Patch122:	chromium-70.0.3538.110-vaapi-i686-fpermissive.patch
-# Since the newer versions of VA-API are ABI compatible, relax the version checks for VA-API, by using VA_CHECK_VERSION().
-# This will help in updating the libva to the latest releases,while still supporting the old versions, till the new version of
-# libva is merged and picked by the builds. Thus ensuring that hardware accleration is not broken while updating the libva.
-# Taken and rebased from https://chromium-review.googlesource.com/c/chromium/src/+/1352519
-# The patch might land somewhere in the future and will be removed.
-Patch123:	relax-libva-version.patch
+Patch122:	chromium-73.0.3683.75-vaapi-i686-fpermissive.patch
 # Fix compatibility with VA-API library (libva) version 1
 Patch124:	chromium-71.0.3578.98-vaapi-libva1-compatibility.patch
-# From gentoo
-Patch125:	https://gitweb.gentoo.org/repo/gentoo.git/plain/www-client/chromium/files/chromium-71-gcc-0.patch
-# For el7: error: function 'gpu::GPUInfo::GPUDevice& gpu::GPUInfo::GPUDevice::operator=(gpu::GPUInfo::GPUDevice&&)' defaulted on its redeclaration with an exception-specification that differs from the implicit exception-specification ''
-Patch126:	chromium-71.0.3578.98-el7-fix-noexcept.patch
-
+# drop rsp clobber, which breaks gcc9 (thanks to Jeff Law)
+Patch126:	chromium-71.0.3578.98-gcc9-drop-rsp-clobber.patch
+# Thank you Gentoo.
+#
+Patch128:	chromium-73-gcc-0.patch
+Patch129:	chromium-73-gcc-1.patch
+Patch130:	chromium-73-gcc-2.patch
+Patch131:	chromium-73-gcc-3.patch
+Patch132:	chromium-73-gcc-4.patch
+Patch133:	chromium-73-gcc-5.patch
+Patch134:	chromium-73-gcc-6.patch
+# Disable -fno-delete-null-pointer-checks
+Patch135:	chromium-73.0.3683.75-disable-fno-delete-null-pointer-checks.patch
+# Add #include <cstring> to get pipewire code to build
+Patch136:	chromium-73.0.3683.75-pipewire-cstring-fix.patch
+# Conditionalize header-hygiene flags for clang
+Patch137:	chromium-73.0.3683.75-no-header-hygiene.patch
+# Add missing #include <limits> needed to build crashpad for aarch64
+Patch138:	chromium-73.0.3683.75-aarch64-crashpad-limits.patch
+# el7 only patch
+Patch139:	chromium-73.0.3683.75-el7-fix-noexcept.patch
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
 # http://build.chromium.org/buildbot/official/
@@ -368,6 +384,11 @@ BuildRequires:	gnome-keyring-devel
 %endif
 BuildRequires:	glibc-devel
 BuildRequires:	gperf
+%if 0%{?bundleharfbuzz}
+#nothing
+%else
+BuildRequires:	harfbuzz-devel >= 2.3.0
+%endif
 BuildRequires:	libatomic
 BuildRequires:	libcap-devel
 %if 0%{?bundlelibdrm}
@@ -394,6 +415,11 @@ BuildRequires:	nodejs
 BuildRequires:	nss-devel >= 3.26
 BuildRequires:	pciutils-devel
 BuildRequires:	pulseaudio-libs-devel
+
+# For screen sharing on Wayland, currently Fedora only thing - no epel
+%if 0%{?fedora}
+BuildRequires:	pkgconfig(libpipewire-0.2)
+%endif
 
 # for /usr/bin/appstream-util
 BuildRequires: libappstream-glib
@@ -550,6 +576,8 @@ BuildRequires:	google-noto-sans-khmer-fonts
 %endif
 # using the built from source version on aarch64
 BuildRequires:	ninja-build
+# Yes, java is needed as well..
+BuildRequires:	java-1.8.0-openjdk-headless
 
 %if 0%{?rhel} == 7
 BuildRequires: devtoolset-%{dts_version}-toolchain, devtoolset-%{dts_version}-libatomic-devel
@@ -622,7 +650,7 @@ Provides: bundled(freetype) = 2.9.3
 %endif
 Provides: bundled(gperftools) = svn144
 %if 0%{?bundleharfbuzz}
-Provides: bundled(harfbuzz) = 1.8.6
+Provides: bundled(harfbuzz) = 2.3.0
 %endif
 Provides: bundled(hunspell) = 1.6.0
 Provides: bundled(iccjpeg)
@@ -845,7 +873,7 @@ udev.
 # %%patch95 -p1 -b .gcc-getstring
 # %%patch96 -p1 -b .flatsetfix
 # %%patch97 -p1 -b .arm-init-fix
-%patch98 -p1 -b .gcc8-alignof
+# %%patch98 -p1 -b .gcc8-alignof
 %if 0%{?rhel} == 7
 # %%patch100 -p1 -b .oldexec
 %endif
@@ -861,20 +889,26 @@ udev.
 # %%patch115 -p1 -b .r589614
 # %%patch116 -p1 -b .r591015
 %patch117 -p1 -b .nofc
-%if 0%{?fedora} >= 30
-%patch118 -p1 -b .harfbuzz2
-%endif
 %patch119 -p1 -b .aarch64-new-stat
-%patch120 -p1 -b .sysrootfix
 %patch121 -p1 -b .vaapi
 %ifarch i686
 %patch122 -p1 -b .i686permissive
 %endif
-%patch123 -p1 -b .relaxva
 %patch124 -p1 -b .va1compat
-%patch125 -p1 -b .gcc-overloaded
+%patch126 -p1 -b .gcc9
+%patch128 -p1 -b .gentoogcc0
+%patch129 -p1 -b .gentoogcc1
+%patch130 -p1 -b .gentoogcc2
+%patch131 -p1 -b .gentoogcc3
+%patch132 -p1 -b .gentoogcc4
+%patch133 -p1 -b .gentoogcc5
+%patch134 -p1 -b .gentoogcc6
+%patch135 -p1 -b .disable-ndnpc
+%patch136 -p1 -b .cstring-fix
+%patch137 -p1 -b .nohh
+%patch138 -p1 -b .aarch64-limits
 %if 0%{?rhel} == 7
-%patch126 -p1 -b .fix-noexcept
+%patch139 -p1 -b .el7-noexcept
 %endif
 
 # Change shebang in all relevant files in this directory and all subdirectories
@@ -1051,7 +1085,9 @@ CHROMIUM_CORE_GN_DEFINES+=' use_custom_libcxx=false'
 %ifarch aarch64
 CHROMIUM_CORE_GN_DEFINES+=' target_cpu="arm64"'
 %endif
+%if %{?use_jumbo}
 CHROMIUM_CORE_GN_DEFINES+=' use_jumbo_build=true jumbo_file_merge_limit=8'
+%endif
 export CHROMIUM_CORE_GN_DEFINES
 
 CHROMIUM_BROWSER_GN_DEFINES=""
@@ -1068,7 +1104,9 @@ CHROMIUM_BROWSER_GN_DEFINES+=' remove_webcore_debug_symbols=true enable_hangout_
 CHROMIUM_BROWSER_GN_DEFINES+=' use_aura=true'
 CHROMIUM_BROWSER_GN_DEFINES+=' enable_widevine=true'
 CHROMIUM_BROWSER_GN_DEFINES+=' use_vaapi=true'
-# CHROMIUM_BROWSER_GN_DEFINES+=' enable_webrtc=true'
+%if 0%{?fedora}
+CHROMIUM_BROWSER_GN_DEFINES+=' rtc_use_pipewire=true rtc_link_pipewire=true'
+%endif
 export CHROMIUM_BROWSER_GN_DEFINES
 
 CHROMIUM_HEADLESS_GN_DEFINES=""
@@ -1106,19 +1144,16 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'buildtools/third_party/libc++abi' \
 	'chrome/third_party/mozilla_security_manager' \
 	'courgette/third_party' \
-	'net/third_party/http2' \
 	'net/third_party/mozilla_security_manager' \
 	'net/third_party/nss' \
 	'net/third_party/quic' \
-	'net/third_party/spdy' \
 	'net/third_party/uri_template' \
-	'third_party/WebKit' \
 	'third_party/abseil-cpp' \
 	'third_party/adobe' \
-	'third_party/analytics' \
 	'third_party/angle' \
 	'third_party/angle/src/common/third_party/base' \
 	'third_party/angle/src/common/third_party/smhasher' \
+	'third_party/angle/src/common/third_party/xxhash' \
 	'third_party/angle/src/third_party/compiler' \
 	'third_party/angle/src/third_party/libXNVCtrl' \
 	'third_party/angle/src/third_party/trace_event' \
@@ -1153,6 +1188,7 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/catapult/tracing/third_party/pako' \
         'third_party/ced' \
 	'third_party/cld_3' \
+	'third_party/closure_compiler' \
 	'third_party/crashpad' \
 	'third_party/crashpad/crashpad/third_party/zlib/' \
 	'third_party/crc32c' \
@@ -1167,7 +1203,6 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/flot' \
 	'third_party/fontconfig' \
 	'third_party/freetype' \
-	'third_party/glslang-angle' \
 	'third_party/google_input_tools' \
 	'third_party/google_input_tools/third_party/closure_library' \
 	'third_party/google_input_tools/third_party/closure_library/third_party/closure' \
@@ -1216,6 +1251,7 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/mesa' \
 	'third_party/metrics_proto' \
 	'third_party/modp_b64' \
+	'third_party/nasm' \
 	'third_party/node' \
 	'third_party/node/node_modules/polymer-bundler/lib/third_party/UglifyJS2' \
 %if %{freeworld}
@@ -1251,6 +1287,7 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/simplejson' \
 	'third_party/sinonjs' \
 	'third_party/skia' \
+	'third_party/skia/include/third_party/vulkan' \
 	'third_party/skia/third_party/gif' \
 	'third_party/skia/third_party/skcms' \
 	'third_party/skia/third_party/vulkan' \
@@ -1259,18 +1296,17 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/speech-dispatcher' \
 	'third_party/spirv-headers' \
 	'third_party/SPIRV-Tools' \
-	'third_party/spirv-tools-angle' \
 	'third_party/sqlite' \
 	'third_party/swiftshader' \
 	'third_party/swiftshader/third_party/subzero' \
 	'third_party/swiftshader/third_party/LLVM' \
 	'third_party/swiftshader/third_party/llvm-subzero' \
+	'third_party/swiftshader/third_party/llvm-7.0' \
 	'third_party/tcmalloc' \
 	'third_party/test_fonts' \
         'third_party/usb_ids' \
 	'third_party/usrsctp' \
 	'third_party/vulkan' \
-	'third_party/vulkan-validation-layers' \
 	'third_party/web-animations-js' \
 	'third_party/webdriver' \
 	'third_party/webrtc' \
@@ -1289,6 +1325,7 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/zlib/google' \
 	'tools/gn/base/third_party/icu' \
 	'url/third_party/mozilla' \
+	'v8/src/third_party/siphash' \
 	'v8/src/third_party/utf8-decoder' \
 	'v8/src/third_party/valgrind' \
 	'v8/third_party/v8' \
@@ -1388,7 +1425,9 @@ tools/gn/bootstrap/bootstrap.py -v "$CHROMIUM_CORE_GN_DEFINES $CHROMIUM_BROWSER_
 %if %{freeworld}
 # do not need to do headless gen
 %else
+%if %{build_headless}
 %{target}/gn --script-executable=/usr/bin/python2 gen --args="$CHROMIUM_CORE_GN_DEFINES $CHROMIUM_HEADLESS_GN_DEFINES" %{headlesstarget}
+%endif
 %endif
 
 %{target}/gn --script-executable=/usr/bin/python2 gen --args="$CHROMIUM_CORE_GN_DEFINES $CHROMIUM_BROWSER_GN_DEFINES" %{remotingtarget}
@@ -1415,8 +1454,10 @@ sed -i.orig -e 's/getenv("CHROME_VERSION_EXTRA")/"Fedora Project"/' $FILE
 %if 0%{freeworld}
 ../depot_tools/ninja -C %{target} -vvv media
 %else
+%if %{build_headless}
 # Do headless first.  
 ../depot_tools/ninja -C %{headlesstarget} -vvv headless_shell
+%endif
 
 ../depot_tools/ninja -C %{target} -vvv chrome chrome_sandbox chromedriver clear_key_cdm policy_templates
 
@@ -1480,8 +1521,11 @@ cp -a *.pak locales resources icudtl.dat %{buildroot}%{chromium_path}
 cp -a nacl_helper* *.nexe pnacl tls_edit %{buildroot}%{chromium_path}
 chmod -x %{buildroot}%{chromium_path}/nacl_helper_bootstrap* *.nexe
 %endif
+# Reasonably sure we don't need this anymore. Chrome doesn't include it.
+%if 0
 cp -a protoc pyproto %{buildroot}%{chromium_path}
-%ifarch x86_64 i686
+%endif
+%ifarch x86_64 i686 aarch64
 cp -a swiftshader %{buildroot}%{chromium_path}
 %endif
 cp -a chrome %{buildroot}%{chromium_path}/%{chromium_browser_channel}
@@ -1564,9 +1608,11 @@ cp -a remoting_client_plugin_newlib.* %{buildroot}%{chromium_path}
 %endif
 %endif
 
+%if %{build_headless}
 pushd %{headlesstarget}
 cp -a headless_lib.pak headless_shell %{buildroot}%{chromium_path}
 popd
+%endif
 
 cp -a remoting/host/linux/linux_me2me_host.py %{buildroot}%{crd_path}/chrome-remote-desktop
 cp -a remoting/host/installer/linux/is-remoting-session %{buildroot}%{crd_path}/
@@ -1622,19 +1668,6 @@ if selinuxenabled; then
 	semanage fcontext -a -t chrome_sandbox_exec_t /usr/lib/chrome-sandbox
 	restorecon -R -v %{chromium_path}/%{chromium_browser_channel}
 fi
-
-touch --no-create %{_datadir}/icons/hicolor &>/dev/null || :
-update-desktop-database &> /dev/null || :
-
-%postun
-if [ $1 -eq 0 ] ; then
-	touch --no-create %{_datadir}/icons/hicolor &>/dev/null
-	gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
-fi
-update-desktop-database &> /dev/null || :
-
-%posttrans
-gtk-update-icon-cache %{_datadir}/icons/hicolor &>/dev/null || :
 
 %pretrans -n chrome-remote-desktop -p <lua> 
 path = "/etc/opt/chrome/native-messaging-hosts"
@@ -1713,7 +1746,7 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/%{chromium_browser_channel}
 %{chromium_path}/%{chromium_browser_channel}.sh
 %{chromium_path}/MEIPreload/
-%ifarch x86_64 i686
+%ifarch x86_64 i686 aarch64
 %{chromium_path}/swiftshader/
 %endif
 %if 0%{?nacl}
@@ -1723,7 +1756,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{chromium_path}/tls_edit
 %endif
 %dir %{chromium_path}/PepperFlash/
+%if 0
 %{chromium_path}/protoc
+%endif
 # %%{chromium_path}/remoting_locales/
 # %%{chromium_path}/pseudo_locales/
 # %%{chromium_path}/plugins/
@@ -1737,9 +1772,13 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{_datadir}/gnome-control-center/default-apps/chromium-browser.xml
 
 %files common
+%if %{build_headless}
 %{chromium_path}/headless_lib.pak
+%endif
 # %%{chromium_path}/mus_app_resources_*.pak
+%if 0
 %{chromium_path}/pyproto/
+%endif
 %{chromium_path}/resources/
 %dir %{chromium_path}/locales/
 %lang(am) %{chromium_path}/locales/am.pak*
@@ -1796,8 +1835,10 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %lang(zh_CN) %{chromium_path}/locales/zh-CN.pak*
 %lang(zh_TW) %{chromium_path}/locales/zh-TW.pak*
 
+%if %{build_headless}
 %files headless
 %{chromium_path}/headless_shell
+%endif
 
 %if 0%{?shared}
 %files libs
@@ -1852,8 +1893,26 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
-* Wed Dec 19 2018 Tom Callaway <spot@fedoraproject.org> - 71.0.3578.98-2
-- need to use devtoolset-8-*. I love hardcoded versions in package names.
+* Tue Mar 19 2019 Tom Callaway <spot@fedoraproject.org> - 73.0.3683.75-2
+- do not include pyproto/protoc files in package
+
+* Tue Mar 12 2019 Tom Callaway <spot@fedoraproject.org> - 73.0.3683.75-1
+- update to 73.0.3683.75
+
+* Sat Mar  9 2019 Tom Callaway <spot@fedoraproject.org> - 72.0.3626.121-1
+- update to 72.0.3626.121
+
+* Tue Feb 26 2019 Tom Callaway <spot@fedoraproject.org> - 71.0.3578.98-5
+- rebuild for libva api change
+
+* Thu Jan 31 2019 Fedora Release Engineering <releng@fedoraproject.org> - 71.0.3578.98-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_30_Mass_Rebuild
+
+* Mon Jan 21 2019 Tom Callaway <spot@fedoraproject.org> - 71.0.3578.98-3
+- rebuild with widevine fix
+
+* Tue Jan  8 2019 Tom Callaway <spot@fedoraproject.org> - 71.0.3578.98-2
+- drop rsp clobber, which breaks gcc9 (thanks to Jeff Law)
 
 * Fri Dec 14 2018 Tom Callaway <spot@fedoraproject.org> - 71.0.3578.98-1
 - update to 71.0.3578.98
