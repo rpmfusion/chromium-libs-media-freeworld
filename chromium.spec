@@ -162,7 +162,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 Name:		chromium%{chromium_channel}
 %endif
 Version:	%{majorversion}.0.3683.86
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -1793,7 +1793,10 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %lang(de) %{chromium_path}/locales/de.pak*
 %lang(el) %{chromium_path}/locales/el.pak*
 %lang(en_GB) %{chromium_path}/locales/en-GB.pak*
-%lang(en_US) %{chromium_path}/locales/en-US.pak*
+# Chromium _ALWAYS_ needs en-US.pak as a fallback
+# This means we cannot apply the lang code here.
+# Otherwise, it is filtered out on install.
+%{chromium_path}/locales/en-US.pak*
 %lang(es) %{chromium_path}/locales/es.pak*
 %lang(es) %{chromium_path}/locales/es-419.pak*
 %lang(et) %{chromium_path}/locales/et.pak*
@@ -1895,6 +1898,10 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Wed Mar 27 2019 Tom Callaway <spot@fedoraproject.org> - 73.0.3683.86-2
+- remove lang macro from en-US.pak* because Chromium crashes if it is not present
+  (bz1692660)
+
 * Fri Mar 22 2019 Tom Callaway <spot@fedoraproject.org> - 73.0.3683.86-1
 - update to 73.0.3683.86
 
