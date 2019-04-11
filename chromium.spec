@@ -161,8 +161,8 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 %else
 Name:		chromium%{chromium_channel}
 %endif
-Version:	%{majorversion}.0.3683.86
-Release:	2%{?dist}
+Version:	%{majorversion}.0.3683.103
+Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -328,6 +328,8 @@ Patch137:	chromium-73.0.3683.75-no-header-hygiene.patch
 Patch138:	chromium-73.0.3683.75-aarch64-crashpad-limits.patch
 # el7 only patch
 Patch139:	chromium-73.0.3683.75-el7-fix-noexcept.patch
+# https://bugs.chromium.org/p/chromium/issues/detail?id=949312
+Patch140:	chromium-73.0.3683.86-glibc-2.29-clone-vfork.patch
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
 # http://build.chromium.org/buildbot/official/
@@ -910,6 +912,7 @@ udev.
 %if 0%{?rhel} == 7
 %patch139 -p1 -b .el7-noexcept
 %endif
+%patch140 -p1 -b .clonevfork
 
 # Change shebang in all relevant files in this directory and all subdirectories
 # See `man find` for how the `-exec command {} +` syntax works
@@ -1898,6 +1901,10 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Thu Apr 11 2019 Tom Callaway <spot@fedoraproject.org> - 73.0.3683.103-1
+- update to 73.0.3683.103
+- add CLONE_VFORK to seccomp filter for linux to handle glibc 2.29 change
+
 * Wed Mar 27 2019 Tom Callaway <spot@fedoraproject.org> - 73.0.3683.86-2
 - remove lang macro from en-US.pak* because Chromium crashes if it is not present
   (bz1692660)
