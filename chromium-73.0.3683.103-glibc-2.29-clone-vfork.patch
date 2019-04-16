@@ -1,0 +1,29 @@
+diff -up chromium-73.0.3683.103/sandbox/linux/seccomp-bpf-helpers/syscall_parameters_restrictions.cc.glibc229 chromium-73.0.3683.103/sandbox/linux/seccomp-bpf-helpers/syscall_parameters_restrictions.cc
+--- chromium-73.0.3683.103/sandbox/linux/seccomp-bpf-helpers/syscall_parameters_restrictions.cc.glibc229	2019-04-16 11:49:35.353081246 -0400
++++ chromium-73.0.3683.103/sandbox/linux/seccomp-bpf-helpers/syscall_parameters_restrictions.cc	2019-04-16 11:51:22.105794620 -0400
+@@ -134,7 +134,8 @@ namespace sandbox {
+ #if !defined(OS_NACL_NONSFI)
+ // Allow Glibc's and Android pthread creation flags, crash on any other
+ // thread creation attempts and EPERM attempts to use neither
+-// CLONE_VM, nor CLONE_THREAD, which includes all fork() implementations.
++// CLONE_VM nor CLONE_THREAD (all fork implementations), unless CLONE_VFORK is
++// present (as in posix_spawn).
+ ResultExpr RestrictCloneToThreadsAndEPERMFork() {
+   const Arg<unsigned long> flags(0);
+ 
+@@ -153,8 +154,14 @@ ResultExpr RestrictCloneToThreadsAndEPER
+       AnyOf(flags == kAndroidCloneMask, flags == kObsoleteAndroidCloneMask,
+             flags == kGlibcPthreadFlags);
+ 
++  const uint64_t kImportantSpawnFlags = CLONE_VFORK | CLONE_VM;
++
++  const BoolExpr isForkOrSpawn =
++      AnyOf((flags & (CLONE_VM | CLONE_THREAD)) == 0,
++            (flags & kImportantSpawnFlags) == kImportantSpawnFlags);
++
+   return If(IsAndroid() ? android_test : glibc_test, Allow())
+-      .ElseIf((flags & (CLONE_VM | CLONE_THREAD)) == 0, Error(EPERM))
++      .ElseIf(isForkOrSpawn, Error(EPERM))
+       .Else(CrashSIGSYSClone());
+ }
+ 
