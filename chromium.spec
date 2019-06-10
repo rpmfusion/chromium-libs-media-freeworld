@@ -306,7 +306,7 @@ Patch119:	chromium-70.0.3538.77-aarch64-arch-want-new-stat.patch
 # Enable VAAPI support on Linux
 # NOTE: This patch will never land upstream
 Patch121:	enable-vaapi.patch
-Patch122:	chromium-73.0.3683.75-vaapi-i686-fpermissive.patch
+Patch122:	chromium-75.0.3770.80-vaapi-i686-fpermissive.patch
 # Fix compatibility with VA-API library (libva) version 1
 Patch124:	chromium-75.0.3770.80-vaapi-libva1-compatibility.patch
 # drop rsp clobber, which breaks gcc9 (thanks to Jeff Law)
