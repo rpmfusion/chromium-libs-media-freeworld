@@ -111,6 +111,7 @@ header_files="	libavcodec/x86/inline_asm.h \
 		libavcodec/mpegvideodsp.h \
 		libavcodec/mpegvideoencdsp.h \
 		libavcodec/options_table.h \
+		libavcodec/opusdsp.h \
 		libavcodec/opus_celt.h \
 		libavcodec/opus_pvq.h \
 		libavcodec/opus_rc.h \
