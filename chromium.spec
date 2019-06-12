@@ -335,6 +335,9 @@ Patch143:	chromium-75.0.3770.80-revert-daff6b.patch
 # Avoid pure virtual crash destroying RenderProcessUserData
 # https://chromium.googlesource.com/chromium/src/+/cdf306db81efaaaa954487585d5a5a16205a5ebd%5E%21/
 Patch144:	chromium-75.0.3770.80-pure-virtual-crash-fix.patch
+# rename function to avoid conflict with rawhide glibc "gettid()"
+Patch145:	chromium-75.0.3770.80-grpc-gettid-fix.patch
+
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
 # http://build.chromium.org/buildbot/official/
@@ -917,6 +920,7 @@ udev.
 %patch142 -p1 -b .gcc-dcheck_ne-fix
 %patch143 -p1 -b .revert-daff6b
 %patch144 -p1 -b .pure-virtual-fix
+%patch145 -p1 -b .gettid-fix
 
 # Change shebang in all relevant files in this directory and all subdirectories
 # See `man find` for how the `-exec command {} +` syntax works
