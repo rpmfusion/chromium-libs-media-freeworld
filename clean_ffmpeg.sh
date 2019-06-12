@@ -58,6 +58,8 @@ generated_files_headers="$generated_files_headers ${generated_files//.asm/.h}"
 header_files="	libavcodec/x86/inline_asm.h \
 		libavcodec/x86/mathops.h \
 		libavcodec/x86/vp56_arith.h \
+		libavcodec/aarch64/vp8dsp.h \
+		libavcodec/arm/vp8dsp.h \
 		libavcodec/aac.h \
 		libavcodec/aacps.h \
 		libavcodec/aacpsdsp.h \
