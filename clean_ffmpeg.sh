@@ -206,6 +206,7 @@ manual_files="	libavcodec/aarch64/fft_neon.S \
 		libavcodec/aarch64/hpeldsp_neon.S \
 		libavcodec/aarch64/mdct_neon.S \
 		libavcodec/aarch64/vorbisdsp_neon.S \
+		libavcodec/aarch64/vp8dsp_neon.S \
 		libavcodec/x86/hpeldsp_rnd_template.c \
 		libavcodec/x86/mdct15.asm \
 		libavcodec/x86/mdct15_init.c \
