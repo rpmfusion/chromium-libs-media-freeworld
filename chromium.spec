@@ -164,7 +164,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 %else
 Name:		chromium%{chromium_channel}
 %endif
-Version:	%{majorversion}.0.3770.80
+Version:	%{majorversion}.0.3770.90
 Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
@@ -1919,6 +1919,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Fri Jun 14 2019 Tom Callaway <spot@fedoraproject.org> - 75.0.3770.90-1
+- update to 75.0.3770.90
+
 * Wed Jun  5 2019 Tom Callaway <spot@fedoraproject.org> - 75.0.3770.80-1
 - update to 75.0.3770.80
 - disable vaapi (via conditional), too broken
