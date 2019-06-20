@@ -254,7 +254,7 @@ Patch85:	chromium-68.0.3440.106-boolfix.patch
 # From Debian
 Patch86:	chromium-71.0.3578.98-skia-aarch64-buildfix.patch
 # Use lstdc++ on EPEL7 only
-Patch87:	chromium-65.0.3325.162-epel7-stdc++.patch
+Patch87:	chromium-75.0.3770.100-epel7-stdc++.patch
 # Missing files in tarball
 Patch88:	chromium-66.0.3359.117-missing-files.patch
 # https://chromium.googlesource.com/chromium/src/+/ba4141e451f4e0b1b19410b1b503bd32e150df06%5E%21/#F0
@@ -322,7 +322,7 @@ Patch135:	chromium-73.0.3683.75-disable-fno-delete-null-pointer-checks.patch
 # Add #include <cstring> to get pipewire code to build
 Patch136:	chromium-73.0.3683.75-pipewire-cstring-fix.patch
 # el7 only patch
-Patch139:	chromium-73.0.3683.75-el7-fix-noexcept.patch
+Patch139:	chromium-75.0.3770.100-el7-fix-noexcept.patch
 # gcc does not have __assume
 Patch140:	chromium-75.0.3770.80-gcc-no-assume.patch
 # Linux 5.2 defines SIOCGSTAMP in a slightly different way, so we need to teach chromium where to find it
