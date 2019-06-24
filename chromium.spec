@@ -6,7 +6,11 @@
 %ifarch aarch64
 %global use_jumbo 0
 %else
+%if 0%{?rhel}
+%global use_jumbo 0
+%else
 %global use_jumbo 1
+%endif
 %endif
 
 # We usually want this.
