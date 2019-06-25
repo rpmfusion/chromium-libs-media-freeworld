@@ -6,11 +6,7 @@
 %ifarch aarch64
 %global use_jumbo 0
 %else
-%if 0%{?rhel}
-%global use_jumbo 0
-%else
 %global use_jumbo 1
-%endif
 %endif
 
 # We usually want this.
@@ -169,7 +165,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 Name:		chromium%{chromium_channel}
 %endif
 Version:	%{majorversion}.0.3770.100
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -341,7 +337,9 @@ Patch143:	chromium-75.0.3770.80-revert-daff6b.patch
 Patch144:	chromium-75.0.3770.80-pure-virtual-crash-fix.patch
 # rename function to avoid conflict with rawhide glibc "gettid()"
 Patch145:	chromium-75.0.3770.80-grpc-gettid-fix.patch
-
+# fix v8 compile with gcc
+# https://chromium.googlesource.com/v8/v8/+/3b8c624bda58d05aea80dd9626cd550537d6ac3f%5E%21/#F1
+Patch146:	chromium-75.0.3770.100-fix-v8-gcc.patch
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
 # http://build.chromium.org/buildbot/official/
@@ -925,6 +923,7 @@ udev.
 %patch143 -p1 -b .revert-daff6b
 %patch144 -p1 -b .pure-virtual-fix
 %patch145 -p1 -b .gettid-fix
+%patch146 -p1 -b .fix-v8-gcc
 
 # Change shebang in all relevant files in this directory and all subdirectories
 # See `man find` for how the `-exec command {} +` syntax works
@@ -1923,6 +1922,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Tue Jun 25 2019 Tom Callaway <spot@fedoraproject.org> - 75.0.3770.100-2
+- fix v8 compile with gcc
+
 * Thu Jun 20 2019 Tom Callaway <spot@fedoraproject.org> - 75.0.3770.100-1
 - update to 75.0.3770.100
 
