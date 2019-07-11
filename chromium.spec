@@ -165,7 +165,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 Name:		chromium%{chromium_channel}
 %endif
 Version:	%{majorversion}.0.3770.100
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -340,6 +340,9 @@ Patch145:	chromium-75.0.3770.80-grpc-gettid-fix.patch
 # fix v8 compile with gcc
 # https://chromium.googlesource.com/v8/v8/+/3b8c624bda58d05aea80dd9626cd550537d6ac3f%5E%21/#F1
 Patch146:	chromium-75.0.3770.100-fix-v8-gcc.patch
+# https://chromium.googlesource.com/chromium/src/+/00281713519dbd84b90d2996a009bf3a7e294435%5E%21/#F0
+Patch147:	chromium-75.0.3770.100-git00281713.patch
+
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
 # http://build.chromium.org/buildbot/official/
@@ -924,6 +927,7 @@ udev.
 %patch144 -p1 -b .pure-virtual-fix
 %patch145 -p1 -b .gettid-fix
 %patch146 -p1 -b .fix-v8-gcc
+%patch147 -p1 -b .git00281713
 
 # Change shebang in all relevant files in this directory and all subdirectories
 # See `man find` for how the `-exec command {} +` syntax works
@@ -1922,6 +1926,11 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Tue Jul  2 2019 Tom Callaway <spot@fedoraproject.org> - 75.0.3770.100-3
+- apply upstream fix to resolve issue where it is dangerous to post a
+  task with a RenderProcessHost pointer because the RenderProcessHost
+  can go away before the task is run (causing a segfault).
+
 * Tue Jun 25 2019 Tom Callaway <spot@fedoraproject.org> - 75.0.3770.100-2
 - fix v8 compile with gcc
 
