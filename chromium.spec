@@ -165,7 +165,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 Name:		chromium%{chromium_channel}
 %endif
 Version:	%{majorversion}.0.3770.100
-Release:	3%{?dist}
+Release:	4%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -1926,6 +1926,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Wed Jul 24 2019 Fedora Release Engineering <releng@fedoraproject.org> - 75.0.3770.100-4
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
+
 * Tue Jul  2 2019 Tom Callaway <spot@fedoraproject.org> - 75.0.3770.100-3
 - apply upstream fix to resolve issue where it is dangerous to post a
   task with a RenderProcessHost pointer because the RenderProcessHost
