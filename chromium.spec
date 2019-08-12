@@ -174,175 +174,130 @@ License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and Open
 Patch0:		chromium-67.0.3396.62-gcc5.patch
 Patch1:		chromium-45.0.2454.101-linux-path-max.patch
 Patch2:		chromium-55.0.2883.75-addrfix.patch
-Patch4:		chromium-72.0.3626.121-notest.patch
+Patch3:		chromium-72.0.3626.121-notest.patch
+# Use libusb_interrupt_event_handler from current libusbx (1.0.21-0.1.git448584a)
+Patch4:		chromium-48.0.2564.116-libusb_interrupt_event_handler.patch
+# Ignore deprecations in cups 2.2
+# https://bugs.chromium.org/p/chromium/issues/detail?id=622493
+Patch5:		chromium-55.0.2883.75-cups22.patch
+# Use PIE in the Linux sandbox (from openSUSE via Russian Fedora)
+Patch6:		chromium-70.0.3538.67-sandbox-pie.patch
+# Use /etc/chromium for master_prefs
+Patch7:		chromium-68.0.3440.106-master-prefs-path.patch
+# Use gn system files
+Patch8:		chromium-67.0.3396.62-gn-system.patch
+# Fix issue where timespec is not defined when sys/stat.h is included.
+Patch9:		chromium-53.0.2785.92-boringssl-time-fix.patch
+# I wouldn't have to do this if there was a standard way to append extra compiler flags
+Patch10:	chromium-63.0.3289.84-nullfix.patch
+# Add explicit includedir for jpeglib.h
+Patch11:	chromium-54.0.2840.59-jpeg-include-dir.patch
+# On i686, pass --no-keep-memory --reduce-memory-overheads to ld.
+Patch12:	chromium-59.0.3071.86-i686-ld-memory-tricks.patch
+# Revert https://chromium.googlesource.com/chromium/src/+/b794998819088f76b4cf44c8db6940240c563cf4%5E%21/#F0
+# https://bugs.chromium.org/p/chromium/issues/detail?id=712737
+# https://bugzilla.redhat.com/show_bug.cgi?id=1446851
+Patch13:	chromium-58.0.3029.96-revert-b794998819088f76b4cf44c8db6940240c563cf4.patch
+# Correctly compile the stdatomic.h in ffmpeg with gcc 4.8
+Patch14:	chromium-64.0.3282.119-ffmpeg-stdatomic.patch
+# Nacl can't die soon enough
+Patch15:	chromium-66.0.3359.117-system-clang.patch
+# Do not prefix libpng functions
+Patch16:	chromium-60.0.3112.78-no-libpng-prefix.patch
+# Do not mangle libjpeg
+Patch17:	chromium-60.0.3112.78-jpeg-nomangle.patch
+# Do not mangle zlib
+Patch18:	chromium-75.0.3770.80-no-zlib-mangle.patch
+# Fix libavutil include pathing to find arch specific timer.h
+# For some reason, this only fails on aarch64. No idea why.
+Patch19:	chromium-60.0.3112.113-libavutil-timer-include-path-fix.patch
+# from gentoo
+Patch20:	chromium-61.0.3163.79-gcc-no-opt-safe-math.patch
+# From gentoo
+Patch21:	chromium-72.0.3626.121-gcc5-r3.patch
+# To use round with gcc, you need to #include <cmath>
+Patch22:	chromium-65.0.3325.146-gcc-round-fix.patch
+# Include proper headers to invoke memcpy()
+Patch23:	chromium-65.0.3325.146-memcpy-fix.patch
+# ../../mojo/public/cpp/bindings/associated_interface_ptr_info.h:48:43: error: cannot convert 'const mojo::ScopedInterfaceEndpointHandle' to 'bool' in return
+Patch24:	chromium-68.0.3440.106-boolfix.patch
+# From Debian
+Patch25:	chromium-71.0.3578.98-skia-aarch64-buildfix.patch
+# Missing files in tarball
+Patch26:	chromium-66.0.3359.117-missing-files.patch
+# Do not use unrar code, it is non-free
+Patch27:	chromium-73.0.3683.75-norar.patch
+# Upstream GCC fixes
+Patch28:	chromium-66.0.3359.117-GCC-fully-declare-ConfigurationPolicyProvider.patch
+# Add "Fedora" to the user agent string
+Patch29:	chromium-72.0.3626.121-fedora-user-agent.patch
+# Try to fix version.py for Rawhide
+Patch30:	chromium-71.0.3578.98-py2-bootstrap.patch
+# Fix default on redeclaration error
+# https://chromium.googlesource.com/chromium/src/+/122692ccee62223f266a988c575ae687e3f4c056%5E%21/#F0
+Patch31:	chromium-68.0.3440.106-fix-default-on-redeclaration.patch
+# Use Gentoo's Widevine hack
+# https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-widevine-r3.patch
+Patch32:	chromium-71.0.3578.98-widevine-r3.patch
+# Do not require sysroot
+# Forget about trying to make libc++
+# BUILD SANELY PLEASE
+Patch33:	chromium-69.0.3497.81-build-sanely-please.patch
+# Disable fontconfig cache magic that breaks remoting
+Patch34:	chromium-70.0.3538.67-disable-fontconfig-cache-magic.patch
+# Fix aarch64 build against latest linux kernel headers
+Patch35:	chromium-70.0.3538.77-aarch64-arch-want-new-stat.patch
+# drop rsp clobber, which breaks gcc9 (thanks to Jeff Law)
+Patch36:	chromium-71.0.3578.98-gcc9-drop-rsp-clobber.patch
+# Try to load widevine from other places
+Patch37:	chromium-widevine-other-locations.patch
+# Disable -fno-delete-null-pointer-checks
+Patch38:	chromium-73.0.3683.75-disable-fno-delete-null-pointer-checks.patch
+# Add #include <cstring> to get pipewire code to build
+Patch39:	chromium-73.0.3683.75-pipewire-cstring-fix.patch
+# gcc does not have __assume
+Patch40:	chromium-75.0.3770.80-gcc-no-assume.patch
+# Linux 5.2 defines SIOCGSTAMP in a slightly different way, so we need to teach chromium where to find it
+Patch41:	chromium-75.0.3770.80-SIOCGSTAMP.patch
+# https://chromium.googlesource.com/chromium/src/+/aeed4d1f15ce84a17ea0bc219e258dc4982b2368%5E%21/#F0
+Patch42:	chromium-75.0.3770.80-aeed4d-gcc-dcheck_ne-fix.patch
+# Revert https://chromium.googlesource.com/chromium/src/+/daff6b66faae53a0cefb88987c9ff4843629b728%5E%21/#F0
+# It might make clang happy but it breaks gcc. F*** clang.
+Patch43:	chromium-75.0.3770.80-revert-daff6b.patch
+# Avoid pure virtual crash destroying RenderProcessUserData
+# https://chromium.googlesource.com/chromium/src/+/cdf306db81efaaaa954487585d5a5a16205a5ebd%5E%21/
+Patch44:	chromium-75.0.3770.80-pure-virtual-crash-fix.patch
+# rename function to avoid conflict with rawhide glibc "gettid()"
+Patch45:	chromium-75.0.3770.80-grpc-gettid-fix.patch
+# fix v8 compile with gcc
+# https://chromium.googlesource.com/v8/v8/+/3b8c624bda58d05aea80dd9626cd550537d6ac3f%5E%21/#F1
+Patch46:	chromium-75.0.3770.100-fix-v8-gcc.patch
+# https://chromium.googlesource.com/chromium/src/+/00281713519dbd84b90d2996a009bf3a7e294435%5E%21/#F0
+Patch47:	chromium-75.0.3770.100-git00281713.patch
+
+# Apply these changes to work around EPEL7 compiler issues
+Patch100:	chromium-62.0.3202.62-kmaxskip-constexpr.patch
+# Use lstdc++ on EPEL7 only
+Patch101:	chromium-75.0.3770.100-epel7-stdc++.patch
+# el7 only patch
+Patch102:	chromium-75.0.3770.100-el7-fix-noexcept.patch
+
 # In file included from ../linux/directory.c:21:
 # In file included from ../../../../native_client/src/nonsfi/linux/abi_conversion.h:20:
 # ../../../../native_client/src/nonsfi/linux/linux_syscall_structs.h:44:13: error: GNU-style inline assembly is disabled
 #     __asm__ __volatile__("mov %%gs, %0" : "=r"(gs));
 #             ^
 # 1 error generated.
-Patch6:		chromium-47.0.2526.80-pnacl-fgnu-inline-asm.patch
+Patch200:		chromium-47.0.2526.80-pnacl-fgnu-inline-asm.patch
 # Ignore broken nacl open fd counter
-Patch7:		chromium-47.0.2526.80-nacl-ignore-broken-fd-counter.patch
-# Use libusb_interrupt_event_handler from current libusbx (1.0.21-0.1.git448584a)
-Patch9:		chromium-48.0.2564.116-libusb_interrupt_event_handler.patch
-# Ignore deprecations in cups 2.2
-# https://bugs.chromium.org/p/chromium/issues/detail?id=622493
-Patch12:	chromium-55.0.2883.75-cups22.patch
-# Use PIE in the Linux sandbox (from openSUSE via Russian Fedora)
-Patch15:	chromium-70.0.3538.67-sandbox-pie.patch
-# Use /etc/chromium for master_prefs
-Patch18:	chromium-68.0.3440.106-master-prefs-path.patch
-# Disable MADV_FREE (if set by glibc)
-# https://bugzilla.redhat.com/show_bug.cgi?id=1361157
-Patch19:	chromium-52.0.2743.116-unset-madv_free.patch
-# Use gn system files
-Patch20:	chromium-67.0.3396.62-gn-system.patch
-# Fix last commit position issue
-# https://groups.google.com/a/chromium.org/forum/#!topic/gn-dev/7nlJv486bD4
-# Patch21:	chromium-60.0.3112.78-last-commit-position.patch
-# Fix issue where timespec is not defined when sys/stat.h is included.
-Patch22:	chromium-53.0.2785.92-boringssl-time-fix.patch
-# I wouldn't have to do this if there was a standard way to append extra compiler flags
-Patch24:	chromium-63.0.3289.84-nullfix.patch
-# Add explicit includedir for jpeglib.h
-Patch25:	chromium-54.0.2840.59-jpeg-include-dir.patch
-# On i686, pass --no-keep-memory --reduce-memory-overheads to ld.
-Patch26:	chromium-59.0.3071.86-i686-ld-memory-tricks.patch
-# obj/content/renderer/renderer/child_frame_compositing_helper.o: In function `content::ChildFrameCompositingHelper::OnSetSurface(cc::SurfaceId const&, gfx::Size const&, float, cc::SurfaceSequence const&)':
-# /builddir/build/BUILD/chromium-54.0.2840.90/out/Release/../../content/renderer/child_frame_compositing_helper.cc:214: undefined reference to `cc_blink::WebLayerImpl::setOpaque(bool)'
-# Patch27:	chromium-63.0.3289.84-setopaque.patch
-# Use -fpermissive to build WebKit
-# Patch31:	chromium-56.0.2924.87-fpermissive.patch
-# Fix issue with compilation on gcc7
-# Thanks to Ben Noordhuis
-# Patch33: 	chromium-65.0.3325.146-gcc7.patch
-# Revert https://chromium.googlesource.com/chromium/src/+/b794998819088f76b4cf44c8db6940240c563cf4%5E%21/#F0
-# https://bugs.chromium.org/p/chromium/issues/detail?id=712737
-# https://bugzilla.redhat.com/show_bug.cgi?id=1446851
-Patch36:	chromium-58.0.3029.96-revert-b794998819088f76b4cf44c8db6940240c563cf4.patch
-# Correctly compile the stdatomic.h in ffmpeg with gcc 4.8
-Patch37:	chromium-64.0.3282.119-ffmpeg-stdatomic.patch
-# Nacl can't die soon enough
-Patch39:	chromium-66.0.3359.117-system-clang.patch
-# Do not prefix libpng functions
-Patch42:	chromium-60.0.3112.78-no-libpng-prefix.patch
-# Do not mangle libjpeg
-Patch43:	chromium-60.0.3112.78-jpeg-nomangle.patch
-# Do not mangle zlib
-Patch45:	chromium-75.0.3770.80-no-zlib-mangle.patch
-# Apply these changes to work around EPEL7 compiler issues
-Patch46:	chromium-62.0.3202.62-kmaxskip-constexpr.patch
-Patch47:	chromium-60.0.3112.90-vulkan-force-c99.patch
-# Fix libavutil include pathing to find arch specific timer.h
-# For some reason, this only fails on aarch64. No idea why.
-Patch50:	chromium-60.0.3112.113-libavutil-timer-include-path-fix.patch
-# from gentoo
-Patch53:	chromium-61.0.3163.79-gcc-no-opt-safe-math.patch
-# Only needed when glibc 2.26.90 or later is used
-Patch57:	chromium-63.0.3289.84-aarch64-glibc-2.26.90.patch
-# From gentoo
-Patch62:	chromium-72.0.3626.121-gcc5-r3.patch
-# Do not try to use libc++ in the remoting stack
-# Patch63:	chromium-63.0.3289.84-nolibc++.patch
-# To use round with gcc, you need to #include <cmath>
-Patch65:	chromium-65.0.3325.146-gcc-round-fix.patch
-# Include proper headers to invoke memcpy()
-Patch67:	chromium-65.0.3325.146-memcpy-fix.patch
-# ../../mojo/public/cpp/bindings/associated_interface_ptr_info.h:48:43: error: cannot convert 'const mojo::ScopedInterfaceEndpointHandle' to 'bool' in return
-Patch85:	chromium-68.0.3440.106-boolfix.patch
-# From Debian
-Patch86:	chromium-71.0.3578.98-skia-aarch64-buildfix.patch
-# Use lstdc++ on EPEL7 only
-Patch87:	chromium-75.0.3770.100-epel7-stdc++.patch
-# Missing files in tarball
-Patch88:	chromium-66.0.3359.117-missing-files.patch
-# https://chromium.googlesource.com/chromium/src/+/ba4141e451f4e0b1b19410b1b503bd32e150df06%5E%21/#F0
-# Patch89:	chromium-66.0.3359.117-gcc-optional-move-fixes.patch
-# https://chromium.googlesource.com/chromium/src/+/4f2b52281ce1649ea8347489443965ad33262ecc%5E%21
-# Patch90:	chromium-66.0.3359.117-gcc-copy-constructor-fix.patch
-# https://bugs.chromium.org/p/chromium/issues/detail?id=816952
-# Patch91:	chromium-66.0.3359.117-gcc-vector-copy-constructor-fix.patch
-# Do not use unrar code, it is non-free
-Patch92:	chromium-73.0.3683.75-norar.patch
-# Upstream GCC fixes
-Patch93:	chromium-66.0.3359.117-GCC-build-fix-base-Optional-T-requires-the-full-decl.patch
-Patch94:	chromium-66.0.3359.117-GCC-fully-declare-ConfigurationPolicyProvider.patch
-# Patch95:	chromium-65.0.3325.146-GCC-IDB-methods-String-renamed-to-GetString.patch
-# https://github.com/archlinuxarm/PKGBUILDs/blob/master/extra/chromium/0006-GCC-do-not-use-initializer-list-for-NoDestructor-of-.patch
-# Patch96:	chromium-66.0.3359.117-GCC-do-not-use-initializer-list-for-NoDestructor-of-.patch
-# https://chromium.googlesource.com/chromium/src/+/b84682f31dc99b9c90f5a04947075815697c68d9%5E%21/#F0
-# Patch97:	chromium-66.0.3359.139-arm-init-fix.patch
-# GCC8 has changed the alignof operator to return the minimal alignment required by the target ABI
-# instead of the preferred alignment. This means int64_t is now 4 on i686 (instead of 8).
-# Use __alignof__ to get the value we expect (and chromium checks for).
-# Patch98:	chromium-69.0.3497.81-gcc8-alignof.patch
-# RHEL 7 has a bug in its python2.7 which does not propely handle exec with a tuple
-# https://bugs.python.org/issue21591
-Patch100:	chromium-67.0.3396.62-epel7-use-old-python-exec-syntax.patch
-# Add "Fedora" to the user agent string
-Patch101:	chromium-72.0.3626.121-fedora-user-agent.patch
-# Try to fix version.py for Rawhide
-Patch103:	chromium-71.0.3578.98-py2-bootstrap.patch
-# Fix default on redeclaration error
-# https://chromium.googlesource.com/chromium/src/+/122692ccee62223f266a988c575ae687e3f4c056%5E%21/#F0
-Patch110:	chromium-68.0.3440.106-fix-default-on-redeclaration.patch
-# Use Gentoo's Widevine hack
-# https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-widevine-r3.patch
-Patch111:	chromium-71.0.3578.98-widevine-r3.patch
-# Do not require sysroot
-# Forget about trying to make libc++
-# BUILD SANELY PLEASE
-Patch112:	chromium-69.0.3497.81-build-sanely-please.patch
-# Still moar GCC cleanups from upstream
-# Patch113:	chromium-gcc8-r588316.patch
-# Patch114:	chromium-gcc8-r588547.patch
-# Patch115:	chromium-gcc8-r589614.patch
-# Patch116:	chromium-gcc8-r591015.patch
-# Disable fontconfig cache magic that breaks remoting
-Patch117:	chromium-70.0.3538.67-disable-fontconfig-cache-magic.patch
-# Fix aarch64 build against latest linux kernel headers
-Patch119:	chromium-70.0.3538.77-aarch64-arch-want-new-stat.patch
+Patch201:		chromium-47.0.2526.80-nacl-ignore-broken-fd-counter.patch
+
 # Enable VAAPI support on Linux
 # NOTE: This patch will never land upstream
-Patch121:	enable-vaapi.patch
-Patch122:	chromium-75.0.3770.80-vaapi-i686-fpermissive.patch
+Patch202:	enable-vaapi.patch
+Patch203:	chromium-75.0.3770.80-vaapi-i686-fpermissive.patch
 # Fix compatibility with VA-API library (libva) version 1
-Patch124:	chromium-75.0.3770.80-vaapi-libva1-compatibility.patch
-# drop rsp clobber, which breaks gcc9 (thanks to Jeff Law)
-Patch126:	chromium-71.0.3578.98-gcc9-drop-rsp-clobber.patch
-# Thanks Ubuntu
-# Disable these two patches when v75 lands
-Patch130:	revert-gn-4980.patch
-Patch131:	revert-gn-4960.patch
-# Try to load widevine from other places
-Patch132:	chromium-widevine-other-locations.patch
-# Disable -fno-delete-null-pointer-checks
-Patch135:	chromium-73.0.3683.75-disable-fno-delete-null-pointer-checks.patch
-# Add #include <cstring> to get pipewire code to build
-Patch136:	chromium-73.0.3683.75-pipewire-cstring-fix.patch
-# el7 only patch
-Patch139:	chromium-75.0.3770.100-el7-fix-noexcept.patch
-# gcc does not have __assume
-Patch140:	chromium-75.0.3770.80-gcc-no-assume.patch
-# Linux 5.2 defines SIOCGSTAMP in a slightly different way, so we need to teach chromium where to find it
-Patch141:	chromium-75.0.3770.80-SIOCGSTAMP.patch
-# https://chromium.googlesource.com/chromium/src/+/aeed4d1f15ce84a17ea0bc219e258dc4982b2368%5E%21/#F0
-Patch142:	chromium-75.0.3770.80-aeed4d-gcc-dcheck_ne-fix.patch
-# Revert https://chromium.googlesource.com/chromium/src/+/daff6b66faae53a0cefb88987c9ff4843629b728%5E%21/#F0
-# It might make clang happy but it breaks gcc. F*** clang.
-Patch143:	chromium-75.0.3770.80-revert-daff6b.patch
-# Avoid pure virtual crash destroying RenderProcessUserData
-# https://chromium.googlesource.com/chromium/src/+/cdf306db81efaaaa954487585d5a5a16205a5ebd%5E%21/
-Patch144:	chromium-75.0.3770.80-pure-virtual-crash-fix.patch
-# rename function to avoid conflict with rawhide glibc "gettid()"
-Patch145:	chromium-75.0.3770.80-grpc-gettid-fix.patch
-# fix v8 compile with gcc
-# https://chromium.googlesource.com/v8/v8/+/3b8c624bda58d05aea80dd9626cd550537d6ac3f%5E%21/#F1
-Patch146:	chromium-75.0.3770.100-fix-v8-gcc.patch
-# https://chromium.googlesource.com/chromium/src/+/00281713519dbd84b90d2996a009bf3a7e294435%5E%21/#F0
-Patch147:	chromium-75.0.3770.100-git00281713.patch
-
+Patch204:	chromium-75.0.3770.80-vaapi-libva1-compatibility.patch
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
 # http://build.chromium.org/buildbot/official/
@@ -837,97 +792,73 @@ udev.
 %patch0 -p1 -b .gcc5
 %patch1 -p1 -b .pathmax
 %patch2 -p1 -b .addrfix
-%patch4 -p1 -b .notest
-# %%patch6 -p1 -b .gnu-inline
-%patch7 -p1 -b .ignore-fd-count
-%patch9 -p1 -b .modern-libusbx
-%patch12 -p1 -b .cups22
-%patch15 -p1 -b .sandboxpie
-%patch18 -p1 -b .etc
-# %%patch19 -p1 -b .madv_free
-%patch20 -p1 -b .gnsystem
-# %%patch21 -p1 -b .lastcommit
-%patch22 -p1 -b .timefix
-%patch24 -p1 -b .nullfix
-%patch25 -p1 -b .jpegfix
-%patch26 -p1 -b .ldmemory
-# %%patch27 -p1 -b .setopaque
-# %%patch31 -p1 -b .permissive
-# %%patch33 -p1 -b .gcc7
-%patch36 -p1 -b .revert
-%patch37 -p1 -b .ffmpeg-stdatomic
-%patch39 -p1 -b .system-clang
-%patch42 -p1 -b .noprefix
-%patch43 -p1 -b .nomangle
-%patch45 -p1 -b .nozmangle
+%patch3 -p1 -b .notest
+%patch4 -p1 -b .modern-libusbx
+%patch5 -p1 -b .cups22
+%patch6 -p1 -b .sandboxpie
+%patch7 -p1 -b .etc
+%patch8 -p1 -b .gnsystem
+%patch9 -p1 -b .timefix
+%patch10 -p1 -b .nullfix
+%patch11 -p1 -b .jpegfix
+%patch12 -p1 -b .ldmemory
+%patch13 -p1 -b .revert
+%patch14 -p1 -b .ffmpeg-stdatomic
+%patch15 -p1 -b .system-clang
+%patch16 -p1 -b .noprefix
+%patch17 -p1 -b .nomangle
+%patch18 -p1 -b .nozmangle
+%patch19 -p1 -b .pathfix
+%patch20 -p1 -b .nogccoptmath
+%patch21 -p1 -b .gcc5-r3
+%patch22 -p1 -b .gcc-round-fix
+%patch23 -p1 -b .memcpyfix
+%patch24 -p1 -b .boolfix
+%patch25 -p1 -b .aarch64fix
+%patch26 -p1 -b .missing-files
+%patch27 -p1 -b .nounrar
+%patch28 -p1 -b .gcc-cpolicyprovider
+%patch29 -p1 -b .fedora-user-agent
+%patch30 -p1 -b .py2
+%patch31 -p1 -b .fix-default-redeclaration
+%patch32 -p1 -b .wvhack
+%patch33 -p1 -b .sanebuild
+%patch34 -p1 -b .nofc
+%patch35 -p1 -b .aarch64-new-stat
+%patch36 -p1 -b .gcc9
+%patch37 -p1 -b .widevine-other-locations
+%patch38 -p1 -b .disable-ndnpc
+%patch39 -p1 -b .cstring-fix
+%patch40 -p1 -b .gcc-assume
+%patch41 -p1 -b .SIOCGSTAMP
+%patch42 -p1 -b .gcc-dcheck_ne-fix
+%patch43 -p1 -b .revert-daff6b
+%patch44 -p1 -b .pure-virtual-fix
+%patch45 -p1 -b .gettid-fix
+%patch46 -p1 -b .fix-v8-gcc
+%patch47 -p1 -b .git00281713
+
+# EPEL specific patches
 %if 0%{?rhel} == 7
-%patch46 -p1 -b .kmaxskip
-# %%patch47 -p1 -b .c99
+%patch100 -p1 -b .kmaxskip
+%patch101 -p1 -b .epel7
+%patch102 -p1 -b .el7-noexcept
 %endif
-%patch50 -p1 -b .pathfix
-%patch53 -p1 -b .nogccoptmath
-# %%if 0%%{?fedora} >= 28
-# %%patch57 -p1 -b .aarch64glibc
-# %%endif
-%patch62 -p1 -b .gcc5-r3
-# %%patch63 -p1 -b .nolibc++
-%patch65 -p1 -b .gcc-round-fix
-%patch67 -p1 -b .memcpyfix
-%patch85 -p1 -b .boolfix
-%patch86 -p1 -b .aarch64fix
-%if 0%{?rhel} == 7
-%patch87 -p1 -b .epel7
+
+# Feature specific patches
+%if ! 0%{?killnacl}
+%patch200 -p1 -b .gnu-inline
+%patch201 -p1 -b .ignore-fd-count
 %endif
-%patch88 -p1 -b .missing
-# %%patch89 -p1 -b .gccomove
-# %%patch90 -p1 -b .copycon
-# %%patch91 -p1 -b .944404
-%patch92 -p1 -b .nounrar
-# %%patch93 -p1 -b .gcc-full-decl
-%patch94 -p1 -b .gcc-cpolicyprovider
-# %%patch95 -p1 -b .gcc-getstring
-# %%patch96 -p1 -b .flatsetfix
-# %%patch97 -p1 -b .arm-init-fix
-# %%patch98 -p1 -b .gcc8-alignof
-%if 0%{?rhel} == 7
-# %%patch100 -p1 -b .oldexec
-%endif
-%patch101 -p1 -b .fedora-user-agent
-%patch103 -p1 -b .py2
-# %%patch108 -p1 -b .move-unique-ptr
-%patch110 -p1 -b .fix-default-redeclaration
-%patch111 -p1 -b .wvhack
-%patch112 -p1 -b .sanebuild
-# %%patch113 -p1 -b .r588316
-# %%patch114 -p1 -b .r588547
-# %%patch115 -p1 -b .r589614
-# %%patch116 -p1 -b .r591015
-%patch117 -p1 -b .nofc
-%patch119 -p1 -b .aarch64-new-stat
+
 %if %{use_vaapi}
-%patch121 -p1 -b .vaapi
-%endif
+%patch202 -p1 -b .vaapi
 %ifarch i686
-%patch122 -p1 -b .i686permissive
+%patch203 -p1 -b .i686permissive
+%patch204 -p1 -b .va1compat
 %endif
-%patch124 -p1 -b .va1compat
-%patch126 -p1 -b .gcc9
-# %%patch130 -p1 -b .revert-gn-4980
-# %%patch131 -p1 -b .revert-gn-4960
-%patch132 -p1 -b .widevine-other-locations
-%patch135 -p1 -b .disable-ndnpc
-%patch136 -p1 -b .cstring-fix
-%if 0%{?rhel} == 7
-%patch139 -p1 -b .el7-noexcept
 %endif
-%patch140 -p1 -b .gcc-assume
-%patch141 -p1 -b .SIOCGSTAMP
-%patch142 -p1 -b .gcc-dcheck_ne-fix
-%patch143 -p1 -b .revert-daff6b
-%patch144 -p1 -b .pure-virtual-fix
-%patch145 -p1 -b .gettid-fix
-%patch146 -p1 -b .fix-v8-gcc
-%patch147 -p1 -b .git00281713
+
 
 # Change shebang in all relevant files in this directory and all subdirectories
 # See `man find` for how the `-exec command {} +` syntax works
