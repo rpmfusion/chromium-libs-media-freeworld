@@ -157,15 +157,15 @@ BuildRequires:  libicu-devel >= 5.4
 %global chromoting_client_id %nil
 %endif
 
-%global majorversion 75
+%global majorversion 76
 
 %if %{freeworld}
 Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 %else
 Name:		chromium%{chromium_channel}
 %endif
-Version:	%{majorversion}.0.3770.100
-Release:	3%{?dist}
+Version:	%{majorversion}.0.3809.100
+Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -176,10 +176,7 @@ Patch1:		chromium-45.0.2454.101-linux-path-max.patch
 Patch2:		chromium-55.0.2883.75-addrfix.patch
 Patch3:		chromium-72.0.3626.121-notest.patch
 # Use libusb_interrupt_event_handler from current libusbx (1.0.21-0.1.git448584a)
-Patch4:		chromium-48.0.2564.116-libusb_interrupt_event_handler.patch
-# Ignore deprecations in cups 2.2
-# https://bugs.chromium.org/p/chromium/issues/detail?id=622493
-Patch5:		chromium-55.0.2883.75-cups22.patch
+Patch4:		chromium-76.0.3809.100-libusb_interrupt_event_handler.patch
 # Use PIE in the Linux sandbox (from openSUSE via Russian Fedora)
 Patch6:		chromium-70.0.3538.67-sandbox-pie.patch
 # Use /etc/chromium for master_prefs
@@ -223,8 +220,6 @@ Patch23:	chromium-65.0.3325.146-memcpy-fix.patch
 Patch24:	chromium-68.0.3440.106-boolfix.patch
 # From Debian
 Patch25:	chromium-71.0.3578.98-skia-aarch64-buildfix.patch
-# Missing files in tarball
-Patch26:	chromium-66.0.3359.117-missing-files.patch
 # Do not use unrar code, it is non-free
 Patch27:	chromium-73.0.3683.75-norar.patch
 # Upstream GCC fixes
@@ -253,14 +248,8 @@ Patch36:	chromium-71.0.3578.98-gcc9-drop-rsp-clobber.patch
 Patch37:	chromium-widevine-other-locations.patch
 # Disable -fno-delete-null-pointer-checks
 Patch38:	chromium-73.0.3683.75-disable-fno-delete-null-pointer-checks.patch
-# Add #include <cstring> to get pipewire code to build
-Patch39:	chromium-73.0.3683.75-pipewire-cstring-fix.patch
-# gcc does not have __assume
-Patch40:	chromium-75.0.3770.80-gcc-no-assume.patch
 # Linux 5.2 defines SIOCGSTAMP in a slightly different way, so we need to teach chromium where to find it
 Patch41:	chromium-75.0.3770.80-SIOCGSTAMP.patch
-# https://chromium.googlesource.com/chromium/src/+/aeed4d1f15ce84a17ea0bc219e258dc4982b2368%5E%21/#F0
-Patch42:	chromium-75.0.3770.80-aeed4d-gcc-dcheck_ne-fix.patch
 # Revert https://chromium.googlesource.com/chromium/src/+/daff6b66faae53a0cefb88987c9ff4843629b728%5E%21/#F0
 # It might make clang happy but it breaks gcc. F*** clang.
 Patch43:	chromium-75.0.3770.80-revert-daff6b.patch
@@ -272,8 +261,6 @@ Patch45:	chromium-75.0.3770.80-grpc-gettid-fix.patch
 # fix v8 compile with gcc
 # https://chromium.googlesource.com/v8/v8/+/3b8c624bda58d05aea80dd9626cd550537d6ac3f%5E%21/#F1
 Patch46:	chromium-75.0.3770.100-fix-v8-gcc.patch
-# https://chromium.googlesource.com/chromium/src/+/00281713519dbd84b90d2996a009bf3a7e294435%5E%21/#F0
-Patch47:	chromium-75.0.3770.100-git00281713.patch
 
 # Apply these changes to work around EPEL7 compiler issues
 Patch100:	chromium-62.0.3202.62-kmaxskip-constexpr.patch
@@ -794,7 +781,6 @@ udev.
 %patch2 -p1 -b .addrfix
 %patch3 -p1 -b .notest
 %patch4 -p1 -b .modern-libusbx
-%patch5 -p1 -b .cups22
 %patch6 -p1 -b .sandboxpie
 %patch7 -p1 -b .etc
 %patch8 -p1 -b .gnsystem
@@ -815,7 +801,6 @@ udev.
 %patch23 -p1 -b .memcpyfix
 %patch24 -p1 -b .boolfix
 %patch25 -p1 -b .aarch64fix
-%patch26 -p1 -b .missing-files
 %patch27 -p1 -b .nounrar
 %patch28 -p1 -b .gcc-cpolicyprovider
 %patch29 -p1 -b .fedora-user-agent
@@ -828,15 +813,11 @@ udev.
 %patch36 -p1 -b .gcc9
 %patch37 -p1 -b .widevine-other-locations
 %patch38 -p1 -b .disable-ndnpc
-%patch39 -p1 -b .cstring-fix
-%patch40 -p1 -b .gcc-assume
 %patch41 -p1 -b .SIOCGSTAMP
-%patch42 -p1 -b .gcc-dcheck_ne-fix
 %patch43 -p1 -b .revert-daff6b
 %patch44 -p1 -b .pure-virtual-fix
 %patch45 -p1 -b .gettid-fix
 %patch46 -p1 -b .fix-v8-gcc
-%patch47 -p1 -b .git00281713
 
 # EPEL specific patches
 %if 0%{?rhel} == 7
@@ -1217,7 +1198,6 @@ build/linux/unbundle/remove_bundled_libraries.py \
 %if %{freeworld}
 	'third_party/openh264' \
 %endif
-	'third_party/openmax_dl' \
 	'third_party/opus' \
 	'third_party/ots' \
 	'third_party/pdfium' \
@@ -1260,7 +1240,6 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/sqlite' \
 	'third_party/swiftshader' \
 	'third_party/swiftshader/third_party/subzero' \
-	'third_party/swiftshader/third_party/LLVM' \
 	'third_party/swiftshader/third_party/llvm-subzero' \
 	'third_party/swiftshader/third_party/llvm-7.0' \
 	'third_party/tcmalloc' \
@@ -1857,6 +1836,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Tue Aug 13 2019 Tomas Popela <tpopela@redhat.com> - 76.0.3809.100-1
+- Update to 76.0.3809.100
+
 * Tue Jul  2 2019 Tom Callaway <spot@fedoraproject.org> - 75.0.3770.100-3
 - apply upstream fix to resolve issue where it is dangerous to post a
   task with a RenderProcessHost pointer because the RenderProcessHost
