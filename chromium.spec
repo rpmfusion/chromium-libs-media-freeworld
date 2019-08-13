@@ -261,6 +261,13 @@ Patch45:	chromium-75.0.3770.80-grpc-gettid-fix.patch
 # fix v8 compile with gcc
 # https://chromium.googlesource.com/v8/v8/+/3b8c624bda58d05aea80dd9626cd550537d6ac3f%5E%21/#F1
 Patch46:	chromium-75.0.3770.100-fix-v8-gcc.patch
+# Fix Vulkan compilation with gcc
+# https://chromium.googlesource.com/chromium/src/+/fdb3bb1f8c41d044a5b0cb80257a26dd3c8f83a3
+Patch47:	chromium-76.0.3809.100-gcc-vulkan.patch
+# https://chromium-review.googlesource.com/c/chromium/src/+/1645297
+Patch48:	chromium-76.0.3809.100-gcc-cc-no-except.patch
+# https://chromium.googlesource.com/chromium/src.git/+/502e6e42633d2571c8236c8649b031fe9915eb5b
+Patch49:	chromium-76.0.3809.100-gcc-net-fetcher.patch
 
 # Apply these changes to work around EPEL7 compiler issues
 Patch100:	chromium-62.0.3202.62-kmaxskip-constexpr.patch
@@ -818,6 +825,9 @@ udev.
 %patch44 -p1 -b .pure-virtual-fix
 %patch45 -p1 -b .gettid-fix
 %patch46 -p1 -b .fix-v8-gcc
+%patch47 -p1 -b .gcc-vulkan
+%patch48 -p1 -b .gcc-cc-no-except
+%patch49 -p1 -b .gcc-net-fetcher
 
 # EPEL specific patches
 %if 0%{?rhel} == 7
@@ -1064,6 +1074,7 @@ ln -s %{_bindir}/node third_party/node/linux/node-linux-x64/bin/node
 # Remove most of the bundled libraries. Libraries specified below (taken from
 # Gentoo's Chromium ebuild) are the libraries that needs to be preserved.
 build/linux/unbundle/remove_bundled_libraries.py \
+	'base/third_party/cityhash' \
 	'base/third_party/dmg_fp' \
 	'base/third_party/dynamic_annotations' \
 	'base/third_party/icu' \
@@ -1104,6 +1115,8 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/blink' \
 	'third_party/boringssl' \
 	'third_party/boringssl/src/third_party/fiat' \
+	'third_party/boringssl/src/third_party/sike' \
+	'third_party/boringssl/linux-x86_64/crypto/third_party/sike/' \
 	'third_party/breakpad' \
 	'third_party/breakpad/breakpad/src/third_party/curl' \
 	'third_party/brotli' \
@@ -1229,6 +1242,7 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/sinonjs' \
 	'third_party/skia' \
 	'third_party/skia/include/third_party/vulkan' \
+	'third_party/skia/include/third_party/skcms' \
 	'third_party/skia/third_party/gif' \
 	'third_party/skia/third_party/skcms' \
 	'third_party/skia/third_party/vulkan' \
