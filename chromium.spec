@@ -1137,7 +1137,8 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/boringssl' \
 	'third_party/boringssl/src/third_party/fiat' \
 	'third_party/boringssl/src/third_party/sike' \
-	'third_party/boringssl/linux-x86_64/crypto/third_party/sike/' \
+	'third_party/boringssl/linux-x86_64/crypto/third_party/sike' \
+        'third_party/boringssl/linux-aarch64/crypto/third_party/sike' \
 	'third_party/breakpad' \
 	'third_party/breakpad/breakpad/src/third_party/curl' \
 	'third_party/brotli' \
