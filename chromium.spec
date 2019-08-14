@@ -1232,6 +1232,7 @@ build/linux/unbundle/remove_bundled_libraries.py \
 %if %{freeworld}
 	'third_party/openh264' \
 %endif
+	'third_party/openscreen' \
 	'third_party/opus' \
 	'third_party/ots' \
 	'third_party/pdfium' \
