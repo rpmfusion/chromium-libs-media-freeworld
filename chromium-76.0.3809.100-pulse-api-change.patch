@@ -1,7 +1,7 @@
-diff -up chromium-76.0.3809.100/media/audio/pulse/pulse.sigs.pulse_api_change chromium-76.0.3809.100/media/audio/pulse/pulse.sigs
---- chromium-76.0.3809.100/media/audio/pulse/pulse.sigs.pulse_api_change	2019-08-14 16:27:55.057702172 +0200
-+++ chromium-76.0.3809.100/media/audio/pulse/pulse.sigs	2019-08-14 16:37:21.603479886 +0200
-@@ -24,7 +24,7 @@ pa_operation* pa_context_get_source_info
+diff -up chromium-76.0.3809.100/media/audio/pulse/pulse.sigs.pulse-api-change chromium-76.0.3809.100/media/audio/pulse/pulse.sigs
+--- chromium-76.0.3809.100/media/audio/pulse/pulse.sigs.pulse-api-change	2019-08-14 23:18:59.624627870 +0200
++++ chromium-76.0.3809.100/media/audio/pulse/pulse.sigs	2019-08-14 23:19:41.258104998 +0200
+@@ -24,11 +24,11 @@ pa_operation* pa_context_get_source_info
  pa_operation* pa_context_get_source_info_by_name(pa_context* c, const char* name, pa_source_info_cb_t cb, void *userdata);
  pa_operation* pa_context_get_source_info_list(pa_context* c, pa_source_info_cb_t cb, void* userdata);
  pa_operation* pa_context_get_sink_info_list(pa_context* c, pa_sink_info_cb_t cb, void* userdata);
@@ -10,6 +10,11 @@ diff -up chromium-76.0.3809.100/media/audio/pulse/pulse.sigs.pulse_api_change ch
  pa_context* pa_context_new(pa_mainloop_api* mainloop, const char* name);
  pa_operation* pa_context_set_source_volume_by_index(pa_context* c, uint32_t idx, const pa_cvolume* volume, pa_context_success_cb_t cb, void* userdata);
  void pa_context_set_state_callback(pa_context* c, pa_context_notify_cb_t cb, void* userdata);
+-pa_operation_state_t pa_operation_get_state(pa_operation* o);
++pa_operation_state_t pa_operation_get_state(const pa_operation* o);
+ void pa_context_unref(pa_context* c);
+ void pa_operation_unref(pa_operation* o);
+ int pa_stream_begin_write(pa_stream* p, void** data, size_t* nbytes);
 @@ -38,23 +38,23 @@ pa_operation* pa_stream_cork(pa_stream*
  int pa_stream_disconnect(pa_stream* s);
  int pa_stream_drop(pa_stream *p);
