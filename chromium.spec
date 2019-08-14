@@ -268,6 +268,20 @@ Patch47:	chromium-76.0.3809.100-gcc-vulkan.patch
 Patch48:	chromium-76.0.3809.100-gcc-cc-no-except.patch
 # https://chromium.googlesource.com/chromium/src.git/+/502e6e42633d2571c8236c8649b031fe9915eb5b
 Patch49:	chromium-76.0.3809.100-gcc-net-fetcher.patch
+# https://quiche.googlesource.com/quiche.git/+/9424add9d73432a794b7944790253213cce6dcb8
+Patch50:	chromium-76.0.3809.100-quiche-compile-fix.patch
+# https://chromium.googlesource.com/chromium/src/+/53bb5a463ee956c70230eaa5450022185d0ddc3c
+Patch51:	chromium-76.0.3809.100-throttling-dead-beef.patch
+# https://chromium.googlesource.com/chromium/src/+/52b5ceac95b67491b1c71f0ef9a32b778bbbaa2e
+Patch52:	chromium-76.0.3809.100-gcc-ambigous-instantiation.patch
+# https://chromium.googlesource.com/chromium/src.git/+/715cb38eac889625de0c429d2672562188b4107e
+Patch53:	chromium-76.0.3809.100-weak-ptr-no-except.patch
+# https://chromium.googlesource.com/chromium/src.git/+/c6afbd59c997c2b64f11abdd1eaef71ae8ea2ddc
+Patch54:	chromium-76.0.3809.100-gcc-feature-policy-parser.patch
+# https://chromium.googlesource.com/chromium/src.git/+/cf6d6b40d711fce93a24a2cf517fa3becdbae8bb
+Patch55:	chromium-76.0.3809.100-gcc-hasfraction-constexpr.patch
+# https://chromium.googlesource.com/chromium/src.git/+/dcb55fb8f18abe5f43d260aa67b14b2dc996f992
+Patch56:	chromium-76.0.3809.100-gcc-move-explicit-initialization.patch
 
 # Apply these changes to work around EPEL7 compiler issues
 Patch100:	chromium-62.0.3202.62-kmaxskip-constexpr.patch
@@ -828,6 +842,13 @@ udev.
 %patch47 -p1 -b .gcc-vulkan
 %patch48 -p1 -b .gcc-cc-no-except
 %patch49 -p1 -b .gcc-net-fetcher
+%patch50 -p1 -b .quiche-compile-fix
+%patch51 -p1 -b .throttling-dead-beef
+%patch52 -p1 -b .gcc-ambigous-instantiation
+%patch53 -p1 -b .weak-ptr-no-except
+%patch54 -p1 -b .gcc-feature-policy-parser
+%patch55 -p1 -b .gcc-hasfraction-constexpr
+%patch56 -p1 -b .gcc-move-explicit-initialization
 
 # EPEL specific patches
 %if 0%{?rhel} == 7
