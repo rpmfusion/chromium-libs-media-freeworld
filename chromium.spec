@@ -141,6 +141,13 @@ BuildRequires:  libicu-devel >= 5.4
 %global bundleharfbuzz 0
 %endif
 
+# Pulseaudio changed the API a little in 12.99.1
+%if 0%{?fedora} > 30
+%global pulseaudioapichange 1
+%else
+%global pulseaudioapichange 0
+%endif
+
 ### Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
 ### Note: These are for Fedora use ONLY.
 ### For your own distribution, please get your own set of keys.
@@ -306,6 +313,8 @@ Patch202:	enable-vaapi.patch
 Patch203:	chromium-75.0.3770.80-vaapi-i686-fpermissive.patch
 # Fix compatibility with VA-API library (libva) version 1
 Patch204:	chromium-75.0.3770.80-vaapi-libva1-compatibility.patch
+# Pulseaudio changed the API a little in 12.99.1
+Patch205:	chromium-76.0.3809.100-pulse-api-change.patch
 
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
 # http://build.chromium.org/buildbot/official/
@@ -491,7 +500,6 @@ BuildRequires:	pkgconfig(gtk+-3.0)
 %else
 BuildRequires:	pkgconfig(gtk+-2.0)
 %endif
-BuildRequires:	pulseaudio-libs-devel
 BuildRequires:	python2-devel
 %if 0%{?fedora} > 27
 BuildRequires:	python2-beautifulsoup4
@@ -871,6 +879,9 @@ udev.
 %endif
 %endif
 
+%if 0%{?pulseaudioapichange}
+%patch205 -p1 -b .pulseaudioapichange
+%endif
 
 # Change shebang in all relevant files in this directory and all subdirectories
 # See `man find` for how the `-exec command {} +` syntax works
