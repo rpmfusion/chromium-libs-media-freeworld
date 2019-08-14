@@ -1,0 +1,76 @@
+From 0aca7b8dea0f52ba7bd58dfce4ac236ee60670a8 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jose.dapena@lge.com>
+Date: Tue, 04 Jun 2019 19:44:58 +0200
+Subject: [PATCH] GCC: FeaturePolicyParser ParseValueForFuzzer is not in anonymous namespace
+
+Compilation fails because we are declaring ParseValueForFuzzer as friend method,
+but we are declaring it is in anonymous namespace. Moving to global namespace
+still fails (in this case in Clang).
+
+So final solution is making it a public static method of FeaturePolicyParser.
+
+Bug: 819294
+Change-Id: Iea307cb6faef675b748d6eb5da2175dcbb17fdc7
+---
+
+diff --git a/third_party/blink/renderer/core/feature_policy/feature_policy_parser.cc b/third_party/blink/renderer/core/feature_policy/feature_policy_parser.cc
+index 3b7f4a9..eaee409 100644
+--- a/third_party/blink/renderer/core/feature_policy/feature_policy_parser.cc
++++ b/third_party/blink/renderer/core/feature_policy/feature_policy_parser.cc
+@@ -317,6 +317,13 @@
+   return value;
+ }
+ 
++void FeaturePolicyParser::ParseValueForFuzzer(
++    blink::mojom::PolicyValueType feature_type,
++    const WTF::String& value_string) {
++  bool ok;
++  ParseValueForType(feature_type, value_string, &ok);
++}
++
+ bool IsFeatureDeclared(mojom::FeaturePolicyFeature feature,
+                        const ParsedFeaturePolicy& policy) {
+   return std::any_of(policy.begin(), policy.end(),
+diff --git a/third_party/blink/renderer/core/feature_policy/feature_policy_parser.h b/third_party/blink/renderer/core/feature_policy/feature_policy_parser.h
+index fd25d90..36af405 100644
+--- a/third_party/blink/renderer/core/feature_policy/feature_policy_parser.h
++++ b/third_party/blink/renderer/core/feature_policy/feature_policy_parser.h
+@@ -16,9 +16,6 @@
+ #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+ #include "third_party/blink/renderer/platform/wtf/vector.h"
+ 
+-// Forward declare for friendship.
+-void ParseValueForFuzzer(blink::mojom::PolicyValueType, const WTF::String&);
+-
+ namespace blink {
+ 
+ class Document;
+@@ -79,8 +76,9 @@
+       const FeatureNameMap& feature_names,
+       ExecutionContext* execution_context = nullptr);
+ 
++  static void ParseValueForFuzzer(mojom::PolicyValueType, const String&);
++
+  private:
+-  friend void ::ParseValueForFuzzer(mojom::PolicyValueType, const String&);
+   static PolicyValue GetFallbackValueForFeature(
+       mojom::FeaturePolicyFeature feature);
+   static PolicyValue ParseValueForType(mojom::PolicyValueType feature_type,
+diff --git a/third_party/blink/renderer/core/feature_policy/feature_policy_value_fuzzer.cc b/third_party/blink/renderer/core/feature_policy/feature_policy_value_fuzzer.cc
+index 7f8e6aa..53350e43 100644
+--- a/third_party/blink/renderer/core/feature_policy/feature_policy_value_fuzzer.cc
++++ b/third_party/blink/renderer/core/feature_policy/feature_policy_value_fuzzer.cc
+@@ -23,9 +23,9 @@
+ extern "C" int LLVMFuzzerTestOneInput(const uint8_t* data, size_t size) {
+   static blink::BlinkFuzzerTestSupport test_support =
+       blink::BlinkFuzzerTestSupport();
+-  ParseValueForFuzzer(blink::mojom::PolicyValueType::kBool,
+-                      WTF::String(data, size));
+-  ParseValueForFuzzer(blink::mojom::PolicyValueType::kDecDouble,
+-                      WTF::String(data, size));
++  blink::FeaturePolicyParser::ParseValueForFuzzer(
++      blink::mojom::PolicyValueType::kBool, WTF::String(data, size));
++  blink::FeaturePolicyParser::ParseValueForFuzzer(
++      blink::mojom::PolicyValueType::kDecDouble, WTF::String(data, size));
+   return 0;
+ }
