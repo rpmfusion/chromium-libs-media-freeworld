@@ -216,6 +216,7 @@ manual_files="	libavcodec/aarch64/fft_neon.S \
 		libavcodec/x86/videodsp_init.c \
 		libavcodec/x86/vorbisdsp_init.c \
 		libavcodec/autorename_libavcodec_mdct15.c \
+		libavcodec/aarch64/autorename_libavcodec_aarch64_fft_neon.S \
 		libavcodec/bit_depth_template.c \
 		libavcodec/fft_template.c \
 		libavcodec/flacdec.c \
