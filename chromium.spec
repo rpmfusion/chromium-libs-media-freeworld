@@ -291,6 +291,16 @@ Patch55:	chromium-76.0.3809.100-gcc-hasfraction-constexpr.patch
 Patch56:	chromium-76.0.3809.100-gcc-move-explicit-initialization.patch
 # https://chromium.googlesource.com/chromium/src.git/+/7dc76c8d9f4cfbce7cf11424120aa6f6094916dc
 Patch57:	chromium-76.0.3809.100-gcc-initialization-order.patch
+# https://chromium.googlesource.com/chromium/src.git/+/138904af5d6a4158ef4247fda816a8035e621e59
+Patch58:	chromium-76.0.3809.100-gcc-history-move-noexcept.patch
+# https://chromium.googlesource.com/chromium/src.git/+/bdc24128b75008743d819e298557a53205706e7c
+Patch59:	chromium-76.0.3809.100-gcc-accountinfo-move-noexcept.patch
+# https://chromium.googlesource.com/chromium/src.git/+/5d7f227fa844e79568df64e495e7ef958c12d7b2
+Patch60:	chromium-76.0.3809.100-gcc-themeservice-includes.patch
+# TBD - need to submit it
+# In GCC one can't use alignas() for exported classes (as described in
+# https://cs.chromium.org/chromium/src/base/compiler_specific.h?rcl=a5bcc05a48f6cc6299edfaf0179278aa03653ee4&l=103)
+Patch61:	chromium-76.0.3809.100-gcc-no-alignas-and-export.patch
 
 # Apply these changes to work around EPEL7 compiler issues
 Patch100:	chromium-62.0.3202.62-kmaxskip-constexpr.patch
@@ -860,6 +870,10 @@ udev.
 %patch55 -p1 -b .gcc-hasfraction-constexpr
 %patch56 -p1 -b .gcc-move-explicit-initialization
 %patch57 -p1 -b .gcc-initialization-order
+%patch58 -p1 -b .gcc-history-move-noexcept
+%patch59 -p1 -b .gcc-accountinfo-move-noexcept
+%patch60 -p1 -b .gcc-themeservice-includes
+%patch61 -p1 -b .gcc-no-alignas-and-export
 
 # EPEL specific patches
 %if 0%{?rhel} == 7
