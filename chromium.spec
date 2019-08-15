@@ -289,6 +289,8 @@ Patch54:	chromium-76.0.3809.100-gcc-feature-policy-parser.patch
 Patch55:	chromium-76.0.3809.100-gcc-hasfraction-constexpr.patch
 # https://chromium.googlesource.com/chromium/src.git/+/dcb55fb8f18abe5f43d260aa67b14b2dc996f992
 Patch56:	chromium-76.0.3809.100-gcc-move-explicit-initialization.patch
+# https://chromium.googlesource.com/chromium/src.git/+/7dc76c8d9f4cfbce7cf11424120aa6f6094916dc
+Patch57:	chromium-76.0.3809.100-gcc-initialization-order.patch
 
 # Apply these changes to work around EPEL7 compiler issues
 Patch100:	chromium-62.0.3202.62-kmaxskip-constexpr.patch
@@ -857,6 +859,7 @@ udev.
 %patch54 -p1 -b .gcc-feature-policy-parser
 %patch55 -p1 -b .gcc-hasfraction-constexpr
 %patch56 -p1 -b .gcc-move-explicit-initialization
+%patch57 -p1 -b .gcc-initialization-order
 
 # EPEL specific patches
 %if 0%{?rhel} == 7
