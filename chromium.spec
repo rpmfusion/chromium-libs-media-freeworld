@@ -1207,6 +1207,7 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/google_input_tools' \
 	'third_party/google_input_tools/third_party/closure_library' \
 	'third_party/google_input_tools/third_party/closure_library/third_party/closure' \
+	'third_party/google_trust_services' \
 	'third_party/googletest' \
 	'third_party/glslang' \
 	'third_party/grpc' \
