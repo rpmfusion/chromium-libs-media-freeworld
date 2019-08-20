@@ -297,10 +297,13 @@ Patch58:	chromium-76.0.3809.100-gcc-history-move-noexcept.patch
 Patch59:	chromium-76.0.3809.100-gcc-accountinfo-move-noexcept.patch
 # https://chromium.googlesource.com/chromium/src.git/+/5d7f227fa844e79568df64e495e7ef958c12d7b2
 Patch60:	chromium-76.0.3809.100-gcc-themeservice-includes.patch
-# TBD - need to submit it
-# In GCC one can't use alignas() for exported classes (as described in
-# https://cs.chromium.org/chromium/src/base/compiler_specific.h?rcl=a5bcc05a48f6cc6299edfaf0179278aa03653ee4&l=103)
+# In GCC one can't use alignas() for exported classes
+# https://chromium.googlesource.com/chromium/src.git/+/8148fd96ae04a1150a9c6012634dcd2a7335f87a
 Patch61:	chromium-76.0.3809.100-gcc-no-alignas-and-export.patch
+# Needs to be submitted..
+Patch62:	chromium-76.0.3809.100-gcc-remoting-constexpr.patch
+# Needs to be submitted.. (ugly hack, needs to be added properly to GN files)
+Patch63:	chromium-76.0.3809.100-vtable-symbol-undefined.patch
 
 # Apply these changes to work around EPEL7 compiler issues
 Patch100:	chromium-62.0.3202.62-kmaxskip-constexpr.patch
@@ -874,6 +877,8 @@ udev.
 %patch59 -p1 -b .gcc-accountinfo-move-noexcept
 %patch60 -p1 -b .gcc-themeservice-includes
 %patch61 -p1 -b .gcc-no-alignas-and-export
+%patch62 -p1 -b .gcc-remoting-constexpr
+%patch63 -p1 -b .vtable-symbol-undefined
 
 # EPEL specific patches
 %if 0%{?rhel} == 7
