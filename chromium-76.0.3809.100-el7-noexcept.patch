@@ -1,0 +1,89 @@
+diff -up chromium-76.0.3809.100/chrome/common/media_router/media_sink.cc.el7-noexcept chromium-76.0.3809.100/chrome/common/media_router/media_sink.cc
+--- chromium-76.0.3809.100/chrome/common/media_router/media_sink.cc.el7-noexcept	2019-08-23 10:35:14.911079823 +0200
++++ chromium-76.0.3809.100/chrome/common/media_router/media_sink.cc	2019-08-23 10:35:14.911079823 +0200
+@@ -19,12 +19,12 @@ MediaSink::MediaSink(const MediaSink::Id
+       provider_id_(provider_id) {}
+ 
+ MediaSink::MediaSink(const MediaSink& other) = default;
+-MediaSink::MediaSink(MediaSink&& other) noexcept = default;
++MediaSink::MediaSink(MediaSink&& other) = default;
+ MediaSink::MediaSink() = default;
+ MediaSink::~MediaSink() = default;
+ 
+ MediaSink& MediaSink::operator=(const MediaSink& other) = default;
+-MediaSink& MediaSink::operator=(MediaSink&& other) noexcept = default;
++MediaSink& MediaSink::operator=(MediaSink&& other) = default;
+ 
+ bool MediaSink::IsMaybeCloudSink() const {
+   switch (icon_type_) {
+diff -up chromium-76.0.3809.100/components/history/core/browser/url_row.cc.el7-noexcept chromium-76.0.3809.100/components/history/core/browser/url_row.cc
+diff -up chromium-76.0.3809.100/components/history/core/browser/url_row.h.el7-noexcept chromium-76.0.3809.100/components/history/core/browser/url_row.h
+diff -up chromium-76.0.3809.100/components/policy/core/common/policy_map.cc.el7-noexcept chromium-76.0.3809.100/components/policy/core/common/policy_map.cc
+--- chromium-76.0.3809.100/components/policy/core/common/policy_map.cc.el7-noexcept	2019-08-23 10:35:01.127962168 +0200
++++ chromium-76.0.3809.100/components/policy/core/common/policy_map.cc	2019-08-23 10:35:01.075961724 +0200
+@@ -52,7 +52,7 @@ PolicyMap::Entry::Entry(
+ PolicyMap::Entry::~Entry() = default;
+ 
+ PolicyMap::Entry::Entry(Entry&&) noexcept = default;
+-PolicyMap::Entry& PolicyMap::Entry::operator=(Entry&&) noexcept = default;
++PolicyMap::Entry& PolicyMap::Entry::operator=(Entry&&) = default;
+ 
+ PolicyMap::Entry PolicyMap::Entry::DeepCopy() const {
+   Entry copy;
+diff -up chromium-76.0.3809.100/components/signin/core/browser/account_info.cc.el7-noexcept chromium-76.0.3809.100/components/signin/core/browser/account_info.cc
+--- chromium-76.0.3809.100/components/signin/core/browser/account_info.cc.el7-noexcept	2019-08-23 10:35:02.341972531 +0200
++++ chromium-76.0.3809.100/components/signin/core/browser/account_info.cc	2019-08-23 10:35:02.314972300 +0200
+@@ -52,7 +52,7 @@ CoreAccountInfo::CoreAccountInfo(CoreAcc
+ CoreAccountInfo& CoreAccountInfo::operator=(const CoreAccountInfo& other) =
+     default;
+ 
+-CoreAccountInfo& CoreAccountInfo::operator=(CoreAccountInfo&& other) noexcept =
++CoreAccountInfo& CoreAccountInfo::operator=(CoreAccountInfo&& other) =
+     default;
+ 
+ bool CoreAccountInfo::IsEmpty() const {
+@@ -69,7 +69,7 @@ AccountInfo::AccountInfo(AccountInfo&& o
+ 
+ AccountInfo& AccountInfo::operator=(const AccountInfo& other) = default;
+ 
+-AccountInfo& AccountInfo::operator=(AccountInfo&& other) noexcept = default;
++AccountInfo& AccountInfo::operator=(AccountInfo&& other) = default;
+ 
+ bool AccountInfo::IsEmpty() const {
+   return CoreAccountInfo::IsEmpty() && hosted_domain.empty() &&
+diff -up chromium-76.0.3809.100/google_apis/gaia/core_account_id.cc.el7-noexcept chromium-76.0.3809.100/google_apis/gaia/core_account_id.cc
+--- chromium-76.0.3809.100/google_apis/gaia/core_account_id.cc.el7-noexcept	2019-08-23 10:52:29.047592493 +0200
++++ chromium-76.0.3809.100/google_apis/gaia/core_account_id.cc	2019-08-23 10:52:48.243763687 +0200
+@@ -14,7 +14,7 @@ CoreAccountId::~CoreAccountId() = defaul
+ 
+ CoreAccountId& CoreAccountId::operator=(const CoreAccountId&) = default;
+ 
+-CoreAccountId& CoreAccountId::operator=(CoreAccountId&&) noexcept = default;
++CoreAccountId& CoreAccountId::operator=(CoreAccountId&&) = default;
+ 
+ CoreAccountId::CoreAccountId(const char* id) : id(id) {}
+ 
+diff -up chromium-76.0.3809.100/google_apis/gaia/core_account_id.h.el7-noexcept chromium-76.0.3809.100/google_apis/gaia/core_account_id.h
+--- chromium-76.0.3809.100/google_apis/gaia/core_account_id.h.el7-noexcept	2019-08-23 10:52:31.541614735 +0200
++++ chromium-76.0.3809.100/google_apis/gaia/core_account_id.h	2019-08-23 10:53:03.252898948 +0200
+@@ -19,7 +19,7 @@ struct CoreAccountId {
+   ~CoreAccountId();
+ 
+   CoreAccountId& operator=(const CoreAccountId&);
+-  CoreAccountId& operator=(CoreAccountId&&) noexcept;
++  CoreAccountId& operator=(CoreAccountId&&);
+ 
+   // Those implicit constructor and conversion operator allow to
+   // progressively migrate the code to use this struct. Removing
+diff -up chromium-76.0.3809.100/gpu/config/gpu_info.cc.el7-noexcept chromium-76.0.3809.100/gpu/config/gpu_info.cc
+--- chromium-76.0.3809.100/gpu/config/gpu_info.cc.el7-noexcept	2019-08-23 10:38:00.659317249 +0200
++++ chromium-76.0.3809.100/gpu/config/gpu_info.cc	2019-08-23 10:38:00.656317223 +0200
+@@ -166,7 +166,7 @@ GPUInfo::GPUDevice& GPUInfo::GPUDevice::
+     const GPUInfo::GPUDevice& other) = default;
+ 
+ GPUInfo::GPUDevice& GPUInfo::GPUDevice::operator=(
+-    GPUInfo::GPUDevice&& other) noexcept = default;
++    GPUInfo::GPUDevice&& other) = default;
+ 
+ GPUInfo::GPUInfo()
+     : optimus(false),
