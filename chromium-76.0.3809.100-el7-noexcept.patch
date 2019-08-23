@@ -1,6 +1,6 @@
 diff -up chromium-76.0.3809.100/chrome/common/media_router/media_sink.cc.el7-noexcept chromium-76.0.3809.100/chrome/common/media_router/media_sink.cc
---- chromium-76.0.3809.100/chrome/common/media_router/media_sink.cc.el7-noexcept	2019-08-23 10:35:14.911079823 +0200
-+++ chromium-76.0.3809.100/chrome/common/media_router/media_sink.cc	2019-08-23 10:35:14.911079823 +0200
+--- chromium-76.0.3809.100/chrome/common/media_router/media_sink.cc.el7-noexcept	2019-08-23 13:41:04.842597850 +0200
++++ chromium-76.0.3809.100/chrome/common/media_router/media_sink.cc	2019-08-23 13:41:04.842597850 +0200
 @@ -19,12 +19,12 @@ MediaSink::MediaSink(const MediaSink::Id
        provider_id_(provider_id) {}
  
@@ -16,11 +16,33 @@ diff -up chromium-76.0.3809.100/chrome/common/media_router/media_sink.cc.el7-noe
  
  bool MediaSink::IsMaybeCloudSink() const {
    switch (icon_type_) {
-diff -up chromium-76.0.3809.100/components/history/core/browser/url_row.cc.el7-noexcept chromium-76.0.3809.100/components/history/core/browser/url_row.cc
-diff -up chromium-76.0.3809.100/components/history/core/browser/url_row.h.el7-noexcept chromium-76.0.3809.100/components/history/core/browser/url_row.h
+diff -up chromium-76.0.3809.100/components/history/core/browser/history_types.cc.el7-noexcept chromium-76.0.3809.100/components/history/core/browser/history_types.cc
+--- chromium-76.0.3809.100/components/history/core/browser/history_types.cc.el7-noexcept	2019-08-23 13:45:57.673815531 +0200
++++ chromium-76.0.3809.100/components/history/core/browser/history_types.cc	2019-08-23 13:47:02.463525385 +0200
+@@ -42,7 +42,7 @@ QueryResults::QueryResults(QueryResults&
+   Swap(&other);
+ }
+ 
+-QueryResults& QueryResults::operator=(QueryResults&& other) noexcept {
++QueryResults& QueryResults::operator=(QueryResults&& other) {
+   Swap(&other);
+   return *this;
+ }
+diff -up chromium-76.0.3809.100/components/history/core/browser/history_types.h.el7-noexcept chromium-76.0.3809.100/components/history/core/browser/history_types.h
+--- chromium-76.0.3809.100/components/history/core/browser/history_types.h.el7-noexcept	2019-08-23 13:46:11.455966965 +0200
++++ chromium-76.0.3809.100/components/history/core/browser/history_types.h	2019-08-23 13:46:48.022367596 +0200
+@@ -143,7 +143,7 @@ class QueryResults {
+   ~QueryResults();
+ 
+   QueryResults(QueryResults&& other) noexcept;
+-  QueryResults& operator=(QueryResults&& other) noexcept;
++  QueryResults& operator=(QueryResults&& other);
+ 
+   void set_reached_beginning(bool reached) { reached_beginning_ = reached; }
+   bool reached_beginning() { return reached_beginning_; }
 diff -up chromium-76.0.3809.100/components/policy/core/common/policy_map.cc.el7-noexcept chromium-76.0.3809.100/components/policy/core/common/policy_map.cc
---- chromium-76.0.3809.100/components/policy/core/common/policy_map.cc.el7-noexcept	2019-08-23 10:35:01.127962168 +0200
-+++ chromium-76.0.3809.100/components/policy/core/common/policy_map.cc	2019-08-23 10:35:01.075961724 +0200
+--- chromium-76.0.3809.100/components/policy/core/common/policy_map.cc.el7-noexcept	2019-08-23 13:40:42.633353810 +0200
++++ chromium-76.0.3809.100/components/policy/core/common/policy_map.cc	2019-08-23 13:40:42.576353183 +0200
 @@ -52,7 +52,7 @@ PolicyMap::Entry::Entry(
  PolicyMap::Entry::~Entry() = default;
  
@@ -31,8 +53,8 @@ diff -up chromium-76.0.3809.100/components/policy/core/common/policy_map.cc.el7-
  PolicyMap::Entry PolicyMap::Entry::DeepCopy() const {
    Entry copy;
 diff -up chromium-76.0.3809.100/components/signin/core/browser/account_info.cc.el7-noexcept chromium-76.0.3809.100/components/signin/core/browser/account_info.cc
---- chromium-76.0.3809.100/components/signin/core/browser/account_info.cc.el7-noexcept	2019-08-23 10:35:02.341972531 +0200
-+++ chromium-76.0.3809.100/components/signin/core/browser/account_info.cc	2019-08-23 10:35:02.314972300 +0200
+--- chromium-76.0.3809.100/components/signin/core/browser/account_info.cc.el7-noexcept	2019-08-23 13:40:44.224371292 +0200
++++ chromium-76.0.3809.100/components/signin/core/browser/account_info.cc	2019-08-23 13:40:44.190370918 +0200
 @@ -52,7 +52,7 @@ CoreAccountInfo::CoreAccountInfo(CoreAcc
  CoreAccountInfo& CoreAccountInfo::operator=(const CoreAccountInfo& other) =
      default;
@@ -52,8 +74,8 @@ diff -up chromium-76.0.3809.100/components/signin/core/browser/account_info.cc.e
  bool AccountInfo::IsEmpty() const {
    return CoreAccountInfo::IsEmpty() && hosted_domain.empty() &&
 diff -up chromium-76.0.3809.100/google_apis/gaia/core_account_id.cc.el7-noexcept chromium-76.0.3809.100/google_apis/gaia/core_account_id.cc
---- chromium-76.0.3809.100/google_apis/gaia/core_account_id.cc.el7-noexcept	2019-08-23 10:52:29.047592493 +0200
-+++ chromium-76.0.3809.100/google_apis/gaia/core_account_id.cc	2019-08-23 10:52:48.243763687 +0200
+--- chromium-76.0.3809.100/google_apis/gaia/core_account_id.cc.el7-noexcept	2019-08-23 13:40:25.468165195 +0200
++++ chromium-76.0.3809.100/google_apis/gaia/core_account_id.cc	2019-08-23 13:40:25.481165338 +0200
 @@ -14,7 +14,7 @@ CoreAccountId::~CoreAccountId() = defaul
  
  CoreAccountId& CoreAccountId::operator=(const CoreAccountId&) = default;
@@ -64,8 +86,8 @@ diff -up chromium-76.0.3809.100/google_apis/gaia/core_account_id.cc.el7-noexcept
  CoreAccountId::CoreAccountId(const char* id) : id(id) {}
  
 diff -up chromium-76.0.3809.100/google_apis/gaia/core_account_id.h.el7-noexcept chromium-76.0.3809.100/google_apis/gaia/core_account_id.h
---- chromium-76.0.3809.100/google_apis/gaia/core_account_id.h.el7-noexcept	2019-08-23 10:52:31.541614735 +0200
-+++ chromium-76.0.3809.100/google_apis/gaia/core_account_id.h	2019-08-23 10:53:03.252898948 +0200
+--- chromium-76.0.3809.100/google_apis/gaia/core_account_id.h.el7-noexcept	2019-08-23 13:40:25.468165195 +0200
++++ chromium-76.0.3809.100/google_apis/gaia/core_account_id.h	2019-08-23 13:40:25.481165338 +0200
 @@ -19,7 +19,7 @@ struct CoreAccountId {
    ~CoreAccountId();
  
@@ -76,8 +98,8 @@ diff -up chromium-76.0.3809.100/google_apis/gaia/core_account_id.h.el7-noexcept 
    // Those implicit constructor and conversion operator allow to
    // progressively migrate the code to use this struct. Removing
 diff -up chromium-76.0.3809.100/gpu/config/gpu_info.cc.el7-noexcept chromium-76.0.3809.100/gpu/config/gpu_info.cc
---- chromium-76.0.3809.100/gpu/config/gpu_info.cc.el7-noexcept	2019-08-23 10:38:00.659317249 +0200
-+++ chromium-76.0.3809.100/gpu/config/gpu_info.cc	2019-08-23 10:38:00.656317223 +0200
+--- chromium-76.0.3809.100/gpu/config/gpu_info.cc.el7-noexcept	2019-08-09 16:48:01.000000000 +0200
++++ chromium-76.0.3809.100/gpu/config/gpu_info.cc	2019-08-23 13:40:25.482165349 +0200
 @@ -166,7 +166,7 @@ GPUInfo::GPUDevice& GPUInfo::GPUDevice::
      const GPUInfo::GPUDevice& other) = default;
  
