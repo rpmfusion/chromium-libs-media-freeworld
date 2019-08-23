@@ -1,0 +1,36 @@
+From d08ea83acc2f5ff395c1fe54f52687e92fe51c3b Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jose.dapena@lge.com>
+Date: Tue, 04 Jun 2019 22:01:03 +0200
+Subject: [PATCH] IWYU: ThemeService requires NativeTheme
+
+As ThemeService referes to NativeTheme through a ScopedObserver,
+the full declaration is required.
+
+Bug: 819294
+Change-Id: I9d5bd2e87cfaa76e87f9b5509daea24848906a63
+---
+
+diff --git a/chrome/browser/themes/theme_service.cc b/chrome/browser/themes/theme_service.cc
+index d65388e2..23dc86d 100644
+--- a/chrome/browser/themes/theme_service.cc
++++ b/chrome/browser/themes/theme_service.cc
+@@ -54,7 +54,6 @@
+ #include "ui/gfx/color_palette.h"
+ #include "ui/gfx/image/image_skia.h"
+ #include "ui/native_theme/common_theme.h"
+-#include "ui/native_theme/native_theme.h"
+ 
+ #if BUILDFLAG(ENABLE_EXTENSIONS)
+ #include "base/scoped_observer.h"
+diff --git a/chrome/browser/themes/theme_service.h b/chrome/browser/themes/theme_service.h
+index 6c79c72..f93dc0d 100644
+--- a/chrome/browser/themes/theme_service.h
++++ b/chrome/browser/themes/theme_service.h
+@@ -25,6 +25,7 @@
+ #include "extensions/buildflags/buildflags.h"
+ #include "extensions/common/extension_id.h"
+ #include "ui/base/theme_provider.h"
++#include "ui/native_theme/native_theme.h"
+ #include "ui/native_theme/native_theme_observer.h"
+ 
+ class BrowserThemePack;

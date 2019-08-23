@@ -1,0 +1,66 @@
+From 0370838723e786b51e7ec8ab55014811ec3e3aa3 Mon Sep 17 00:00:00 2001
+From: Jose Dapena Paz <jose.dapena@lge.com>
+Date: Thu, 18 Jul 2019 14:26:11 +0200
+Subject: [PATCH] Make base::WeakPtr move constructor/operator noexcept to fix GCC build regression
+
+A GCC build regression has happened on DisjointRangeLockManager, as its move
+operator and constructor were declared noexcept. This was failing because the
+default implementation depended on base::WeakPtr, that did not provide
+noexcept declaration for them.
+
+So make base::WeakPtr noexcept.
+
+Bug: 819294
+Change-Id: I936784b881c7c1afea136ceedbe9341e76464f95
+---
+
+diff --git a/base/memory/weak_ptr.cc b/base/memory/weak_ptr.cc
+index 64fd499..0efcc44 100644
+--- a/base/memory/weak_ptr.cc
++++ b/base/memory/weak_ptr.cc
+@@ -46,7 +46,7 @@
+ 
+ WeakReference::~WeakReference() = default;
+ 
+-WeakReference::WeakReference(WeakReference&& other) = default;
++WeakReference::WeakReference(WeakReference&& other) noexcept = default;
+ 
+ WeakReference::WeakReference(const WeakReference& other) = default;
+ 
+diff --git a/base/memory/weak_ptr.h b/base/memory/weak_ptr.h
+index 72b5f1f..ccd22fd13 100644
+--- a/base/memory/weak_ptr.h
++++ b/base/memory/weak_ptr.h
+@@ -116,9 +116,9 @@
+   explicit WeakReference(const scoped_refptr<Flag>& flag);
+   ~WeakReference();
+ 
+-  WeakReference(WeakReference&& other);
++  WeakReference(WeakReference&& other) noexcept;
+   WeakReference(const WeakReference& other);
+-  WeakReference& operator=(WeakReference&& other) = default;
++  WeakReference& operator=(WeakReference&& other) noexcept = default;
+   WeakReference& operator=(const WeakReference& other) = default;
+ 
+   bool IsValid() const;
+@@ -153,9 +153,9 @@
+   ~WeakPtrBase();
+ 
+   WeakPtrBase(const WeakPtrBase& other) = default;
+-  WeakPtrBase(WeakPtrBase&& other) = default;
++  WeakPtrBase(WeakPtrBase&& other) noexcept = default;
+   WeakPtrBase& operator=(const WeakPtrBase& other) = default;
+-  WeakPtrBase& operator=(WeakPtrBase&& other) = default;
++  WeakPtrBase& operator=(WeakPtrBase&& other) noexcept = default;
+ 
+   void reset() {
+     ref_ = internal::WeakReference();
+@@ -236,7 +236,7 @@
+     ptr_ = reinterpret_cast<uintptr_t>(t);
+   }
+   template <typename U>
+-  WeakPtr(WeakPtr<U>&& other) : WeakPtrBase(std::move(other)) {
++  WeakPtr(WeakPtr<U>&& other) noexcept : WeakPtrBase(std::move(other)) {
+     // Need to cast from U* to T* to do pointer adjustment in case of multiple
+     // inheritance. This also enforces the "U is a T" rule.
+     T* t = reinterpret_cast<U*>(other.ptr_);
