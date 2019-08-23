@@ -311,6 +311,8 @@ Patch100:	chromium-62.0.3202.62-kmaxskip-constexpr.patch
 Patch101:	chromium-75.0.3770.100-epel7-stdc++.patch
 # el7 only patch
 Patch102:	chromium-75.0.3770.100-el7-fix-noexcept.patch
+# el7 only patch as it doesn't like on of the operator= change in patch59
+Patch103:	chromium-76.0.3809.100-el7-gcc-accountinfo-move-noexcept.patch
 
 # In file included from ../linux/directory.c:21:
 # In file included from ../../../../native_client/src/nonsfi/linux/abi_conversion.h:20:
@@ -885,6 +887,7 @@ udev.
 %patch100 -p1 -b .kmaxskip
 %patch101 -p1 -b .epel7
 %patch102 -p1 -b .el7-noexcept
+%patch103 -p1 -b .el7-gcc-accountinfo-move-noexcept
 %endif
 
 # Feature specific patches
