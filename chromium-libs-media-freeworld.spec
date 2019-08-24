@@ -749,7 +749,7 @@ Requires(preun): %{_sbindir}/update-alternatives
 Shared libraries used by chromium (and chrome-remote-desktop).
 
 %if %{freeworld}
-%package -n chromium-libs-media-freeworld
+%package
 Summary: Chromium media libraries built with all possible codecs
 Provides: chromium-libs-media = %{version}-%{release}
 Provides: chromium-libs-media%{_isa} = %{version}-%{release}
@@ -757,7 +757,7 @@ Requires: chromium-libs%{_isa} = %{version}
 Requires(post): %{_sbindir}/update-alternatives
 Requires(preun): %{_sbindir}/update-alternatives
 
-%description -n chromium-libs-media-freeworld
+%description
 Chromium media libraries built with all possible codecs. Chromium is an
 open-source web browser, powered by WebKit (Blink). This package replaces
 the default chromium-libs-media package, which is limited in what it
@@ -1688,7 +1688,7 @@ if st and st.type == "link" then
 end
 
 %if %{freeworld}
-%posttrans -n chromium-libs-media-freeworld
+%posttrans
 %{_sbindir}/update-alternatives --install \
   %{_libdir}/chromium-browser/libffmpeg.so libffmpeg.so \
   %{_libdir}/chromium-browser/libffmpeg.so.freeworld 20 \
@@ -1699,7 +1699,7 @@ end
   --slave %{_libdir}/chromium-browser/libmedia.so.TOC libmedia.so.TOC \
           %{_libdir}/chromium-browser/libmedia.so.TOC.freeworld
 
-%preun -n chromium-libs-media-freeworld
+%preun
 if [ $1 = 0 ]; then
   %{_sbindir}/alternatives --remove libffmpeg.so \
     %{_libdir}/chromium-browser/libffmpeg.so.freeworld
@@ -1894,7 +1894,7 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 %if 0%{?shared}
 %if %{freeworld}
-%files -n chromium-libs-media-freeworld
+%files
 %else
 %files libs-media
 %endif
