@@ -167,7 +167,7 @@ BuildRequires:  libicu-devel >= 5.4
 %global majorversion 76
 
 %if %{freeworld}
-Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
+Name:		chromium%{chromium_channel}-libs-media%{?freeworld:-freeworld}
 %else
 Name:		chromium%{chromium_channel}
 %endif
