@@ -18,7 +18,7 @@ diff -up chromium-76.0.3809.100/chrome/common/media_router/media_sink.cc.el7-noe
    switch (icon_type_) {
 diff -up chromium-76.0.3809.100/components/history/core/browser/history_types.cc.el7-noexcept chromium-76.0.3809.100/components/history/core/browser/history_types.cc
 --- chromium-76.0.3809.100/components/history/core/browser/history_types.cc.el7-noexcept	2019-08-23 13:45:57.673815531 +0200
-+++ chromium-76.0.3809.100/components/history/core/browser/history_types.cc	2019-08-23 13:47:02.463525385 +0200
++++ chromium-76.0.3809.100/components/history/core/browser/history_types.cc	2019-08-26 10:13:00.815409764 +0200
 @@ -42,7 +42,7 @@ QueryResults::QueryResults(QueryResults&
    Swap(&other);
  }
@@ -28,9 +28,18 @@ diff -up chromium-76.0.3809.100/components/history/core/browser/history_types.cc
    Swap(&other);
    return *this;
  }
+@@ -186,7 +186,7 @@ QueryURLResult::QueryURLResult(QueryURLR
+ 
+ QueryURLResult& QueryURLResult::operator=(const QueryURLResult&) = default;
+ 
+-QueryURLResult& QueryURLResult::operator=(QueryURLResult&&) noexcept = default;
++QueryURLResult& QueryURLResult::operator=(QueryURLResult&&) = default;
+ 
+ // MostVisitedURL --------------------------------------------------------------
+ 
 diff -up chromium-76.0.3809.100/components/history/core/browser/history_types.h.el7-noexcept chromium-76.0.3809.100/components/history/core/browser/history_types.h
 --- chromium-76.0.3809.100/components/history/core/browser/history_types.h.el7-noexcept	2019-08-23 13:46:11.455966965 +0200
-+++ chromium-76.0.3809.100/components/history/core/browser/history_types.h	2019-08-23 13:46:48.022367596 +0200
++++ chromium-76.0.3809.100/components/history/core/browser/history_types.h	2019-08-26 10:13:49.951881558 +0200
 @@ -143,7 +143,7 @@ class QueryResults {
    ~QueryResults();
  
@@ -40,6 +49,15 @@ diff -up chromium-76.0.3809.100/components/history/core/browser/history_types.h.
  
    void set_reached_beginning(bool reached) { reached_beginning_ = reached; }
    bool reached_beginning() { return reached_beginning_; }
+@@ -278,7 +278,7 @@ struct QueryURLResult {
+   QueryURLResult(const QueryURLResult&);
+   QueryURLResult(QueryURLResult&&) noexcept;
+   QueryURLResult& operator=(const QueryURLResult&);
+-  QueryURLResult& operator=(QueryURLResult&&) noexcept;
++  QueryURLResult& operator=(QueryURLResult&&);
+   ~QueryURLResult();
+ 
+   // Indicates whether the call to HistoryBackend::QueryURL was successfull
 diff -up chromium-76.0.3809.100/components/policy/core/common/policy_map.cc.el7-noexcept chromium-76.0.3809.100/components/policy/core/common/policy_map.cc
 --- chromium-76.0.3809.100/components/policy/core/common/policy_map.cc.el7-noexcept	2019-08-23 13:40:42.633353810 +0200
 +++ chromium-76.0.3809.100/components/policy/core/common/policy_map.cc	2019-08-23 13:40:42.576353183 +0200
