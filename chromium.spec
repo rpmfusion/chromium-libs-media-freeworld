@@ -105,6 +105,10 @@ BuildRequires:  libicu-devel >= 5.4
 # 2017-06-08.
 %global bundlelibxml 1
 
+# Fedora's Python 2 stack is being removed, we use the bundled Python libraries
+# This can be revisited once we upgrade to Python 3
+%global bundlepylibs 1
+
 # Chromium used to break on wayland, hidpi, and colors with gtk3 enabled.
 # Hopefully it does not anymore.
 %global gtk3 1
@@ -515,8 +519,11 @@ BuildRequires:	pkgconfig(gtk+-3.0)
 %else
 BuildRequires:	pkgconfig(gtk+-2.0)
 %endif
-BuildRequires:	python2-devel
-%if 0%{?fedora} > 27
+BuildRequires:	/usr/bin/python2
+%if 0%{?bundlepylibs}
+# Using bundled bits, do nothing.
+%else
+%if 0%{?fedora}
 BuildRequires:	python2-beautifulsoup4
 BuildRequires:	python2-beautifulsoup
 BuildRequires:	python2-html5lib
@@ -530,6 +537,8 @@ BuildRequires:	python-markupsafe
 BuildRequires:	python-ply
 %endif
 BuildRequires:	python2-simplejson
+BuildRequires:	python2-devel
+%endif
 %if 0%{?bundlere2}
 # Using bundled bits, do nothing.
 %else
@@ -1257,7 +1266,7 @@ build/linux/unbundle/remove_bundled_libraries.py \
 %endif
 	'third_party/lss' \
 	'third_party/lzma_sdk' \
-%if 0
+%if 0%{?bundlepylibs}
 	'third_party/markupsafe' \
 %endif
 	'third_party/mesa' \
@@ -1345,10 +1354,12 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'v8/third_party/inspector_protocol' \
 	--do-remove
 
+%if ! 0%{?bundlepylibs}
 # Look, I don't know. This package is spit and chewing gum. Sorry.
 rm -rf third_party/markupsafe
 ln -s %{python2_sitearch}/markupsafe third_party/markupsafe
 # We should look on removing other python2 packages as well i.e. ply
+%endif
 
 # Fix hardcoded path in remoting code
 sed -i 's|/opt/google/chrome-remote-desktop|%{crd_path}|g' remoting/host/setup/daemon_controller_delegate_linux.cc
