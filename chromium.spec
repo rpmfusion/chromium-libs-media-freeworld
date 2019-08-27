@@ -171,7 +171,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 %else
 Name:		chromium%{chromium_channel}
 %endif
-Version:	%{majorversion}.0.3809.100
+Version:	%{majorversion}.0.3809.132
 Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
@@ -280,7 +280,7 @@ Patch50:	chromium-76.0.3809.100-quiche-compile-fix.patch
 # https://chromium.googlesource.com/chromium/src/+/53bb5a463ee956c70230eaa5450022185d0ddc3c
 Patch51:	chromium-76.0.3809.100-throttling-dead-beef.patch
 # https://chromium.googlesource.com/chromium/src/+/52b5ceac95b67491b1c71f0ef9a32b778bbbaa2e
-Patch52:	chromium-76.0.3809.100-gcc-ambigous-instantiation.patch
+Patch52:	chromium-76.0.3809.132-gcc-ambigous-instantiation.patch
 # https://chromium.googlesource.com/chromium/src.git/+/715cb38eac889625de0c429d2672562188b4107e
 Patch53:	chromium-76.0.3809.100-weak-ptr-no-except.patch
 # https://chromium.googlesource.com/chromium/src.git/+/c6afbd59c997c2b64f11abdd1eaef71ae8ea2ddc
@@ -1908,6 +1908,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Tue Aug 27 2019 Tomas Popela <tpopela@redhat.com> - 76.0.3809.132-1
+- Update to 76.0.3809.132
+
 * Tue Aug 13 2019 Tomas Popela <tpopela@redhat.com> - 76.0.3809.100-1
 - Update to 76.0.3809.100
 
