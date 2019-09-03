@@ -121,7 +121,7 @@ diff -up chromium-76.0.3809.132/services/network/network_context.cc.certificate-
    }
 +
 +  if (params_->enforce_chrome_ct_policy) {
-+    builder.set_ct_policy_enforcer(
++    builder->set_ct_policy_enforcer(
 +        std::make_unique<certificate_transparency::ChromeCTPolicyEnforcer>(
 +            params_->ct_log_update_time, disqualified_logs,
 +            operated_by_google_logs));
