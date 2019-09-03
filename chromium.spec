@@ -176,7 +176,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 Name:		chromium%{chromium_channel}
 %endif
 Version:	%{majorversion}.0.3809.132
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -308,6 +308,8 @@ Patch61:	chromium-76.0.3809.100-gcc-no-alignas-and-export.patch
 Patch62:	chromium-76.0.3809.100-gcc-remoting-constexpr.patch
 # Needs to be submitted.. (ugly hack, needs to be added properly to GN files)
 Patch63:	chromium-76.0.3809.100-vtable-symbol-undefined.patch
+# https://chromium.googlesource.com/chromium/src.git/+/3c9720245e440c4b7222f8348d2a2a3c25e098ae
+Patch64:	chromium-76.0.3809.132-certificate-transparency.patch
 
 # Apply these changes to work around EPEL7 compiler issues
 Patch100:	chromium-62.0.3202.62-kmaxskip-constexpr.patch
@@ -888,6 +890,7 @@ udev.
 %patch61 -p1 -b .gcc-no-alignas-and-export
 %patch62 -p1 -b .gcc-remoting-constexpr
 %patch63 -p1 -b .vtable-symbol-undefined
+%patch64 -p1 -b .certificate-transparency
 
 # EPEL specific patches
 %if 0%{?rhel} == 7
@@ -1919,6 +1922,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Tue Sep 03 2019 Tomas Popela <tpopela@redhat.com> - 76.0.3809.132-2
+- Backport patch to fix certificate transparency
+
 * Tue Aug 27 2019 Tomas Popela <tpopela@redhat.com> - 76.0.3809.132-1
 - Update to 76.0.3809.132
 

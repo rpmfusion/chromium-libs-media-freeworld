@@ -1,0 +1,206 @@
+diff -up chromium-76.0.3809.132/chrome/browser/net/system_network_context_manager.cc.certificate-transparency chromium-76.0.3809.132/chrome/browser/net/system_network_context_manager.cc
+--- chromium-76.0.3809.132/chrome/browser/net/system_network_context_manager.cc.certificate-transparency	2019-08-26 21:02:05.000000000 +0200
++++ chromium-76.0.3809.132/chrome/browser/net/system_network_context_manager.cc	2019-09-03 12:01:33.004949320 +0200
+@@ -4,11 +4,13 @@
+ 
+ #include "chrome/browser/net/system_network_context_manager.h"
+ 
++#include <algorithm>
+ #include <set>
+ #include <unordered_map>
+ #include <utility>
+ 
+ #include "base/bind.h"
++#include "base/build_time.h"
+ #include "base/command_line.h"
+ #include "base/feature_list.h"
+ #include "base/logging.h"
+@@ -51,6 +53,7 @@
+ #include "content/public/common/mime_handler_view_mode.h"
+ #include "content/public/common/service_names.mojom.h"
+ #include "content/public/common/user_agent.h"
++#include "crypto/sha2.h"
+ #include "mojo/public/cpp/bindings/associated_interface_ptr.h"
+ #include "net/dns/public/util.h"
+ #include "net/net_buildflags.h"
+@@ -686,15 +689,41 @@ SystemNetworkContextManager::CreateDefau
+ 
+   bool http_09_on_non_default_ports_enabled = false;
+ #if !defined(OS_ANDROID)
+-  // CT is only enabled on Desktop platforms for now.
++
++#if BUILDFLAG(GOOGLE_CHROME_BRANDING) && defined(OFFICIAL_BUILD) && \
++    !defined(OS_IOS)
++  // Certificate Transparency is only enabled if:
++  //   - Desktop (!OS_ANDROID, !OS_IOS)
++  //   - base::GetBuildTime() is deterministic to the source (OFFICIAL_BUILD)
++  //   - The build in reliably updatable (GOOGLE_CHROME_BRANDING)
+   network_context_params->enforce_chrome_ct_policy = true;
++  network_context_params->ct_log_update_time = base::GetBuildTime();
++
++  std::vector<std::string> operated_by_google_logs =
++      certificate_transparency::GetLogsOperatedByGoogle();
++  std::vector<std::pair<std::string, base::TimeDelta>> disqualified_logs =
++      certificate_transparency::GetDisqualifiedLogs();
+   for (const auto& ct_log : certificate_transparency::GetKnownLogs()) {
+     // TODO(rsleevi): https://crbug.com/702062 - Remove this duplication.
+     network::mojom::CTLogInfoPtr log_info = network::mojom::CTLogInfo::New();
+     log_info->public_key = std::string(ct_log.log_key, ct_log.log_key_length);
+     log_info->name = ct_log.log_name;
++
++    std::string log_id = crypto::SHA256HashString(log_info->public_key);
++    log_info->operated_by_google =
++        std::binary_search(std::begin(operated_by_google_logs),
++                           std::end(operated_by_google_logs), log_id);
++    auto it = std::lower_bound(
++        std::begin(disqualified_logs), std::end(disqualified_logs), log_id,
++        [](const auto& disqualified_log, const std::string& log_id) {
++          return disqualified_log.first < log_id;
++        });
++    if (it != std::end(disqualified_logs) && it->first == log_id) {
++      log_info->disqualified_at = it->second;
++    }
+     network_context_params->ct_logs.push_back(std::move(log_info));
+   }
++#endif
+ 
+   const base::Value* value =
+       g_browser_process->policy_service()
+diff -up chromium-76.0.3809.132/services/network/network_context.cc.certificate-transparency chromium-76.0.3809.132/services/network/network_context.cc
+--- chromium-76.0.3809.132/services/network/network_context.cc.certificate-transparency	2019-08-26 21:02:33.000000000 +0200
++++ chromium-76.0.3809.132/services/network/network_context.cc	2019-09-03 12:04:01.983890928 +0200
+@@ -35,6 +35,7 @@
+ #include "components/prefs/pref_registry_simple.h"
+ #include "components/prefs/pref_service.h"
+ #include "components/prefs/pref_service_factory.h"
++#include "crypto/sha2.h"
+ #include "mojo/public/cpp/bindings/strong_binding.h"
+ #include "net/base/layered_network_delegate.h"
+ #include "net/base/load_flags.h"
+@@ -1851,16 +1852,6 @@ URLRequestContextOwner NetworkContext::A
+       base::FeatureList::IsEnabled(features::kNetworkErrorLogging));
+ #endif  // BUILDFLAG(ENABLE_REPORTING)
+ 
+-#if BUILDFLAG(IS_CT_SUPPORTED)
+-  if (params_->enforce_chrome_ct_policy) {
+-    builder->set_ct_policy_enforcer(
+-        std::make_unique<certificate_transparency::ChromeCTPolicyEnforcer>(
+-            base::GetBuildTime(),
+-            certificate_transparency::GetDisqualifiedLogs(),
+-            certificate_transparency::GetLogsOperatedByGoogle()));
+-  }
+-#endif  // BUILDFLAG(IS_CT_SUPPORTED)
+-
+   net::HttpNetworkSession::Params session_params;
+   bool is_quic_force_disabled = false;
+   if (network_service_ && network_service_->quic_disabled())
+@@ -1910,8 +1901,20 @@ URLRequestContextOwner NetworkContext::A
+ 
+ #if BUILDFLAG(IS_CT_SUPPORTED)
+   std::vector<scoped_refptr<const net::CTLogVerifier>> ct_logs;
++  std::vector<std::pair<std::string, base::TimeDelta>> disqualified_logs;
++  std::vector<std::string> operated_by_google_logs;
++
+   if (!params_->ct_logs.empty()) {
+     for (const auto& log : params_->ct_logs) {
++      if (log->operated_by_google || log->disqualified_at) {
++        std::string log_id = crypto::SHA256HashString(log->public_key);
++        if (log->operated_by_google)
++          operated_by_google_logs.push_back(log_id);
++        if (log->disqualified_at) {
++          disqualified_logs.push_back(
++              std::make_pair(log_id, log->disqualified_at.value()));
++        }
++      }
+       scoped_refptr<const net::CTLogVerifier> log_verifier =
+           net::CTLogVerifier::Create(log->public_key, log->name);
+       if (!log_verifier) {
+@@ -1924,6 +1927,13 @@ URLRequestContextOwner NetworkContext::A
+     ct_verifier->AddLogs(ct_logs);
+     builder->set_ct_verifier(std::move(ct_verifier));
+   }
++
++  if (params_->enforce_chrome_ct_policy) {
++    builder.set_ct_policy_enforcer(
++        std::make_unique<certificate_transparency::ChromeCTPolicyEnforcer>(
++            params_->ct_log_update_time, disqualified_logs,
++            operated_by_google_logs));
++  }
+ #endif  // BUILDFLAG(IS_CT_SUPPORTED)
+ 
+   const base::CommandLine* command_line =
+diff -up chromium-76.0.3809.132/services/network/public/mojom/ct_log_info.mojom.certificate-transparency chromium-76.0.3809.132/services/network/public/mojom/ct_log_info.mojom
+--- chromium-76.0.3809.132/services/network/public/mojom/ct_log_info.mojom.certificate-transparency	2019-08-26 21:02:33.000000000 +0200
++++ chromium-76.0.3809.132/services/network/public/mojom/ct_log_info.mojom	2019-09-03 11:59:48.423862022 +0200
+@@ -4,6 +4,8 @@
+ 
+ module network.mojom;
+ 
++import "mojo/public/mojom/base/time.mojom";
++
+ // A single Certificate Transparency Log configuration.
+ struct CTLogInfo {
+   // The DER-encoded SubjectPublicKeyInfo of the log.
+@@ -14,4 +16,13 @@ struct CTLogInfo {
+   // The human-readable, log-supplied log name. Note that this will not be
+   // translated.
+   string name;
++
++  // Whether or not the log should should be considered a Google Log for the
++  // purposes of enforcing the "Certificate Transparency in Chrome" policy.
++  bool operated_by_google;
++
++  // If set, the time since the Unix Epoch when the log was disqualified. This
++  // is used to determine the "once or currently qualified" status of the log.
++  // If the log is currently qualified, this will not be set.
++  mojo_base.mojom.TimeDelta? disqualified_at;
+ };
+diff -up chromium-76.0.3809.132/services/network/public/mojom/network_context.mojom.certificate-transparency chromium-76.0.3809.132/services/network/public/mojom/network_context.mojom
+--- chromium-76.0.3809.132/services/network/public/mojom/network_context.mojom.certificate-transparency	2019-08-26 21:02:33.000000000 +0200
++++ chromium-76.0.3809.132/services/network/public/mojom/network_context.mojom	2019-09-03 11:59:48.424862032 +0200
+@@ -238,15 +238,6 @@ struct NetworkContextParams {
+   [EnableIf=is_android]
+   bool check_clear_text_permitted = false;
+ 
+-  // True if the "Certificate Transparency in Chrome" policy (see
+-  // https://github.com/chromium/ct-policy/blob/master/ct_policy.md) should
+-  // be enforced for certificates and connections.
+-  //
+-  // See //net/docs/certificate-transparency.md before setting this flag to
+-  // true.
+-  [EnableIf=is_ct_supported]
+-  bool enforce_chrome_ct_policy = false;
+-
+   // Enables HTTP/0.9 on ports other than 80 for HTTP and 443 for HTTPS.
+   bool http_09_on_non_default_ports_enabled = false;
+ 
+@@ -299,6 +290,15 @@ struct NetworkContextParams {
+   // servers, so they can discover misconfigurations.
+   bool enable_certificate_reporting = false;
+ 
++  // True if the "Certificate Transparency in Chrome" policy (see
++  // https://github.com/chromium/ct-policy/blob/master/ct_policy.md) should
++  // be enforced for certificates and connections.
++  //
++  // See //net/docs/certificate-transparency.md before setting this flag to
++  // true.
++  [EnableIf=is_ct_supported]
++  bool enforce_chrome_ct_policy = false;
++
+   // Enables Expect CT reporting, which sends reports for opted-in sites that
+   // don't serve sufficient Certificate Transparency information.
+   [EnableIf=is_ct_supported]
+@@ -310,6 +310,13 @@ struct NetworkContextParams {
+   [EnableIf=is_ct_supported]
+   array<CTLogInfo> ct_logs;
+ 
++  // When the Certificate Transparency logs in |ct_logs| were last updated. If
++  // |enforce_chrome_ct_policy| is set, and |ct_log_update_time| is not
++  // sufficiently recent, enforcement of the "Certificate Transparency in
++  // Chrome" policy will be disabled.
++  [EnableIf=is_ct_supported]
++  mojo_base.mojom.Time ct_log_update_time;
++
+   // Specifies the path to the directory where NSS will store its database.
+   [EnableIf=is_chromeos]
+   mojo_base.mojom.FilePath? nss_path;
