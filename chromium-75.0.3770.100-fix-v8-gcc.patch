@@ -1,0 +1,14 @@
+diff -up chromium-75.0.3770.100/v8/src/objects/js-objects.cc.fix-v8-gcc chromium-75.0.3770.100/v8/src/objects/js-objects.cc
+--- chromium-75.0.3770.100/v8/src/objects/js-objects.cc.fix-v8-gcc	2019-06-25 10:55:08.132254304 -0400
++++ chromium-75.0.3770.100/v8/src/objects/js-objects.cc	2019-06-25 10:55:23.147933648 -0400
+@@ -3792,6 +3792,10 @@ void JSObject::ApplyAttributesToDictiona
+   }
+ }
+ 
++template void JSObject::ApplyAttributesToDictionary(
++    Isolate* isolate, ReadOnlyRoots roots, Handle<NumberDictionary> dictionary,
++    const PropertyAttributes attributes);
++
+ template <PropertyAttributes attrs>
+ Maybe<bool> JSObject::PreventExtensionsWithTransition(
+     Handle<JSObject> object, ShouldThrow should_throw) {

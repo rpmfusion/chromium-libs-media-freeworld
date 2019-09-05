@@ -1,0 +1,15 @@
+diff -up chromium-76.0.3809.100/services/device/usb/usb_context.cc.modern-libusbx chromium-76.0.3809.100/services/device/usb/usb_context.cc
+--- chromium-76.0.3809.100/services/device/usb/usb_context.cc.modern-libusbx	2019-08-12 15:40:49.034170484 +0200
++++ chromium-76.0.3809.100/services/device/usb/usb_context.cc	2019-08-12 15:41:23.775558867 +0200
+@@ -58,7 +58,11 @@ void UsbContext::UsbEventHandler::Run()
+ 
+ void UsbContext::UsbEventHandler::Stop() {
+   base::subtle::Release_Store(&running_, 0);
++#ifdef LIBUSB_API_VERSION >= 0x01000105
++  libusb_interrupt_event_handler(context_);
++#else
+   libusb_interrupt_handle_event(context_);
++#endif
+ }
+ 
+ UsbContext::UsbContext(PlatformUsbContext context) : context_(context) {
