@@ -70,25 +70,6 @@
 # https://www.chromium.org/developers/testing/addresssanitizer
 %global asan 0
 
-# nacl/pnacl are soon to be dead. We're just killing them off early.
-%global killnacl 1
-
-%if 0%{?killnacl}
- %global nacl 0
- %global nonacl 1
-%else
-# TODO: Try arm (nacl disabled)
-%if 0%{?fedora}
- %ifarch i686
- %global nacl 0
- %global nonacl 1
- %else
- %global nacl 1
- %global nonacl 0
- %endif
-%endif
-%endif
-
 %if 0
 # Chromium's fork of ICU is now something we can't unbundle.
 # This is left here to ease the change if that ever switches.
@@ -171,13 +152,14 @@ BuildRequires:  libicu-devel >= 5.4
 %global majorversion 76
 
 %if %{freeworld}
-Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
+Name:		chromium%{chromium_channel}%{?freeworld:-libs-media-freeworld}
+Summary:	Chromium media libraries built with all possible codecs
 %else
 Name:		chromium%{chromium_channel}
+Summary:	A WebKit (Blink) powered web browser
 %endif
 Version:	%{majorversion}.0.3809.132
-Release:	2%{?dist}
-Summary:	A WebKit (Blink) powered web browser
+Release:	3%{?dist}
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
 
@@ -318,16 +300,6 @@ Patch101:	chromium-75.0.3770.100-epel7-stdc++.patch
 # el7 only patch
 Patch102:	chromium-76.0.3809.100-el7-noexcept.patch
 
-# In file included from ../linux/directory.c:21:
-# In file included from ../../../../native_client/src/nonsfi/linux/abi_conversion.h:20:
-# ../../../../native_client/src/nonsfi/linux/linux_syscall_structs.h:44:13: error: GNU-style inline assembly is disabled
-#     __asm__ __volatile__("mov %%gs, %0" : "=r"(gs));
-#             ^
-# 1 error generated.
-Patch200:		chromium-47.0.2526.80-pnacl-fgnu-inline-asm.patch
-# Ignore broken nacl open fd counter
-Patch201:		chromium-47.0.2526.80-nacl-ignore-broken-fd-counter.patch
-
 # Enable VAAPI support on Linux
 # NOTE: This patch will never land upstream
 Patch202:	enable-vaapi.patch
@@ -387,9 +359,6 @@ BuildRequires:	flex
 BuildRequires:	fontconfig-devel
 BuildRequires:	GConf2-devel
 BuildRequires:	glib2-devel
-%if 0%{?fedora} <= 27
-BuildRequires:	gnome-keyring-devel
-%endif
 BuildRequires:	glibc-devel
 BuildRequires:	gperf
 %if 0%{?bundleharfbuzz}
@@ -435,24 +404,6 @@ BuildRequires: libappstream-glib
 # gn needs these
 BuildRequires:  libstdc++-static
 BuildRequires:	libstdc++-devel, openssl-devel
-%if 0%{?nacl}
-BuildRequires:	nacl-gcc, nacl-binutils, nacl-newlib
-BuildRequires:	nacl-arm-gcc, nacl-arm-binutils, nacl-arm-newlib
-# pNaCl needs this monster
-# It's possible that someday this dep will stabilize, but 
-# right now, it needs to be updated everytime chromium bumps
-# a major version.
-BuildRequires:	chromium-native_client >= 52.0.2743.82
-BuildRequires:	clang
-BuildRequires:	llvm
-%ifarch x86_64
-# Really, this is what we want:
-# BuildRequires:  glibc-devel(x86-32) libgcc(x86-32)
-# But, koji only offers glibc32. Maybe that's enough.
-# This BR will pull in either glibc.i686 or glibc32.
-BuildRequires:	/lib/libc.so.6 /usr/lib/libc.so
-%endif
-%endif
 # Fedora tries to use system libs whenever it can.
 BuildRequires:	bzip2-devel
 BuildRequires:	dbus-glib-devel
@@ -550,7 +501,9 @@ BuildRequires:	re2-devel >= 20160401
 BuildRequires:	speech-dispatcher-devel
 BuildRequires:	yasm
 BuildRequires:	zlib-devel
+%if 0%{?rhel} < 8
 BuildRequires:	pkgconfig(gnome-keyring-1)
+%endif
 # remote desktop needs this
 BuildRequires:	pam-devel
 BuildRequires:	systemd
@@ -558,7 +511,7 @@ BuildRequires:	systemd
 %if %{freeworld}
 # dont need fonts for this
 %else
-%if 0%{?rhel} == 7
+%if 0%{?rhel} >= 7
 Source100:      https://github.com/google/fonts/blob/master/apache/arimo/Arimo-Bold.ttf
 Source101:	https://github.com/google/fonts/blob/master/apache/arimo/Arimo-BoldItalic.ttf
 Source102:	https://github.com/google/fonts/blob/master/apache/arimo/Arimo-Italic.ttf
@@ -571,12 +524,15 @@ Source108:	https://github.com/google/fonts/blob/master/apache/tinos/Tinos-Bold.t
 Source109:	https://github.com/google/fonts/blob/master/apache/tinos/Tinos-BoldItalic.ttf
 Source110:	https://github.com/google/fonts/blob/master/apache/tinos/Tinos-Italic.ttf
 Source111:	https://github.com/google/fonts/blob/master/apache/tinos/Tinos-Regular.ttf
+%else
+BuildRequires:  google-croscore-arimo-fonts
+BuildRequires:  google-croscore-cousine-fonts
+BuildRequires:  google-croscore-tinos-fonts
+%endif
+%if 0%{?rhel} == 7
 Source112:	https://releases.pagure.org/lohit/lohit-gurmukhi-ttf-2.91.2.tar.gz
 Source113:	https://noto-website-2.storage.googleapis.com/pkgs/NotoSansCJKjp-hinted.zip
 %else
-BuildRequires:	google-croscore-arimo-fonts
-BuildRequires:	google-croscore-cousine-fonts
-BuildRequires:  google-croscore-tinos-fonts
 BuildRequires:  google-noto-sans-cjk-jp-fonts
 BuildRequires:  lohit-gurmukhi-fonts
 %endif
@@ -732,8 +688,22 @@ Provides: bundled(xdg-user-dirs)
 Requires(post): /usr/sbin/semanage
 Requires(post): /usr/sbin/restorecon
 
+%if %{freeworld}
+Provides: chromium-libs-media = %{version}-%{release}
+Provides: chromium-libs-media%{_isa} = %{version}-%{release}
+Requires: chromium-libs%{_isa} = %{version}
+Requires(post): %{_sbindir}/update-alternatives
+Requires(preun): %{_sbindir}/update-alternatives
+
+%description
+Chromium media libraries built with all possible codecs. Chromium is an
+open-source web browser, powered by WebKit (Blink). This package replaces
+the default chromium-libs-media package, which is limited in what it
+can include.
+%else
 %description
 Chromium is an open-source web browser, powered by WebKit (Blink).
+%endif
 
 %package common
 Summary: Files needed for both the headless_shell and full Chromium
@@ -760,19 +730,6 @@ Requires(preun): %{_sbindir}/update-alternatives
 Shared libraries used by chromium (and chrome-remote-desktop).
 
 %if %{freeworld}
-%package -n chromium-libs-media-freeworld
-Summary: Chromium media libraries built with all possible codecs
-Provides: chromium-libs-media = %{version}-%{release}
-Provides: chromium-libs-media%{_isa} = %{version}-%{release}
-Requires: chromium-libs%{_isa} = %{version}
-Requires(post): %{_sbindir}/update-alternatives
-Requires(preun): %{_sbindir}/update-alternatives
-
-%description -n chromium-libs-media-freeworld
-Chromium media libraries built with all possible codecs. Chromium is an
-open-source web browser, powered by WebKit (Blink). This package replaces
-the default chromium-libs-media package, which is limited in what it
-can include.
 %else
 %package libs-media
 Summary: Shared libraries used by the chromium media subsystem
@@ -901,12 +858,6 @@ udev.
 %patch58 -R -p1
 %endif
 
-# Feature specific patches
-%if ! 0%{?killnacl}
-%patch200 -p1 -b .gnu-inline
-%patch201 -p1 -b .ignore-fd-count
-%endif
-
 %if %{use_vaapi}
 %patch202 -p1 -b .vaapi
 %ifarch i686
@@ -935,101 +886,6 @@ export RANLIB="ranlib"
 
 rm -rf buildtools/third_party/libc++/BUILD.gn
 
-%if 0%{?nacl}
-# prep the nacl tree
-mkdir -p out/Release/gen/sdk/linux_x86/nacl_x86_newlib
-cp -a --no-preserve=context /usr/%{_arch}-nacl/* out/Release/gen/sdk/linux_x86/nacl_x86_newlib
-
-mkdir -p out/Release/gen/sdk/linux_x86/nacl_arm_newlib
-cp -a --no-preserve=context /usr/arm-nacl/* out/Release/gen/sdk/linux_x86/nacl_arm_newlib
-
-# Not sure if we need this or not, but better safe than sorry.
-pushd out/Release/gen/sdk/linux_x86
-ln -s nacl_x86_newlib nacl_x86_newlib_raw
-ln -s nacl_arm_newlib nacl_arm_newlib_raw
-popd
-
-mkdir -p out/Release/gen/sdk/linux_x86/nacl_x86_newlib/bin
-pushd out/Release/gen/sdk/linux_x86/nacl_x86_newlib/bin
-ln -s /usr/bin/x86_64-nacl-gcc gcc
-ln -s /usr/bin/x86_64-nacl-gcc x86_64-nacl-gcc
-ln -s /usr/bin/x86_64-nacl-g++ g++
-ln -s /usr/bin/x86_64-nacl-g++ x86_64-nacl-g++
-# ln -s /usr/bin/x86_64-nacl-ar ar
-ln -s /usr/bin/x86_64-nacl-ar x86_64-nacl-ar
-# ln -s /usr/bin/x86_64-nacl-as as
-ln -s /usr/bin/x86_64-nacl-as x86_64-nacl-as
-# ln -s /usr/bin/x86_64-nacl-ranlib ranlib
-ln -s /usr/bin/x86_64-nacl-ranlib x86_64-nacl-ranlib
-# Cleanups
-rm addr2line
-ln -s /usr/bin/x86_64-nacl-addr2line addr2line
-rm c++filt
-ln -s /usr/bin/x86_64-nacl-c++filt c++filt
-rm gprof
-ln -s /usr/bin/x86_64-nacl-gprof gprof
-rm readelf
-ln -s /usr/bin/x86_64-nacl-readelf readelf
-rm size
-ln -s /usr/bin/x86_64-nacl-size size
-rm strings
-ln -s /usr/bin/x86_64-nacl-strings strings
-popd
-
-mkdir -p out/Release/gen/sdk/linux_x86/nacl_arm_newlib/bin
-pushd out/Release/gen/sdk/linux_x86/nacl_arm_newlib/bin
-ln -s /usr/bin/arm-nacl-gcc gcc
-ln -s /usr/bin/arm-nacl-gcc arm-nacl-gcc
-ln -s /usr/bin/arm-nacl-g++ g++
-ln -s /usr/bin/arm-nacl-g++ arm-nacl-g++
-ln -s /usr/bin/arm-nacl-ar arm-nacl-ar
-ln -s /usr/bin/arm-nacl-as arm-nacl-as
-ln -s /usr/bin/arm-nacl-ranlib arm-nacl-ranlib
-popd
-
-touch out/Release/gen/sdk/linux_x86/nacl_x86_newlib/stamp.untar out/Release/gen/sdk/linux_x86/nacl_x86_newlib/stamp.prep
-touch out/Release/gen/sdk/linux_x86/nacl_x86_newlib/nacl_x86_newlib.json
-touch out/Release/gen/sdk/linux_x86/nacl_arm_newlib/stamp.untar out/Release/gen/sdk/linux_x86/nacl_arm_newlib/stamp.prep
-touch out/Release/gen/sdk/linux_x86/nacl_arm_newlib/nacl_arm_newlib.json
-
-pushd out/Release/gen/sdk/linux_x86/
-mkdir -p pnacl_newlib pnacl_translator
-# Might be able to do symlinks here, but eh.
-cp -a --no-preserve=context /usr/pnacl_newlib/* pnacl_newlib/
-cp -a --no-preserve=context /usr/pnacl_translator/* pnacl_translator/
-for i in lib/libc.a lib/libc++.a lib/libg.a lib/libm.a; do
-	/usr/pnacl_newlib/bin/pnacl-ranlib pnacl_newlib/x86_64_bc-nacl/$i
-	/usr/pnacl_newlib/bin/pnacl-ranlib pnacl_newlib/i686_bc-nacl/$i
-	/usr/pnacl_newlib/bin/pnacl-ranlib pnacl_newlib/le32-nacl/$i
-done
-
-for i in lib/libpthread.a lib/libnacl.a; do
-	/usr/pnacl_newlib/bin/pnacl-ranlib pnacl_newlib/le32-nacl/$i
-done
-
-for i in lib/clang/3.7.0/lib/x86_64_bc-nacl/libpnaclmm.a lib/clang/3.7.0/lib/i686_bc-nacl/libpnaclmm.a; do
-	/usr/pnacl_newlib/bin/pnacl-ranlib pnacl_newlib/$i
-done
-
-for i in lib/clang/3.7.0/lib/le32-nacl/libpnaclmm.a lib/clang/3.7.0/lib/le32-nacl/libgcc.a; do
-	/usr/pnacl_newlib/bin/pnacl-ranlib pnacl_newlib/$i
-done
-
-popd
-
-mkdir -p native_client/toolchain/.tars/linux_x86
-touch native_client/toolchain/.tars/linux_x86/pnacl_translator.json
-
-pushd native_client/toolchain
-ln -s ../../out/Release/gen/sdk/linux_x86 linux_x86
-popd
-
-mkdir -p third_party/llvm-build/Release+Asserts/bin
-pushd third_party/llvm-build/Release+Asserts/bin
-ln -s /usr/bin/clang clang
-popd
-%endif
-
 # Unpack fonts
 %if %{freeworld}
 # no font fun needed.
@@ -1044,7 +900,7 @@ rm -rf MuktiNarrow0.94
 cp %{SOURCE16} .
 cp %{SOURCE17} .
 cp %{SOURCE18} .
-%if 0%{?rhel} == 7
+%if 0%{?rhel} >= 7
 cp %{SOURCE100} .
 cp %{SOURCE101} .
 cp %{SOURCE102} .
@@ -1057,14 +913,17 @@ cp %{SOURCE108} .
 cp %{SOURCE109} .
 cp %{SOURCE110} .
 cp %{SOURCE111} .
+%else
+cp -a /usr/share/fonts/google-croscore/Arimo-*.ttf .
+cp -a /usr/share/fonts/google-croscore/Cousine-*.ttf .
+cp -a /usr/share/fonts/google-croscore/Tinos-*.ttf .
+%endif
+%if 0%{?rhel} == 7
 tar xf %{SOURCE112}
 mv lohit-gurmukhi-ttf-2.91.2/Lohit-Gurmukhi.ttf .
 rm -rf lohit-gurmukhi-ttf-2.91.2
 unzip %{SOURCE113}
 %else
-cp -a /usr/share/fonts/google-croscore/Arimo-*.ttf .
-cp -a /usr/share/fonts/google-croscore/Cousine-*.ttf .
-cp -a /usr/share/fonts/google-croscore/Tinos-*.ttf .
 cp -a /usr/share/fonts/lohit-gurmukhi/Lohit-Gurmukhi.ttf .
 cp -a /usr/share/fonts/google-noto-cjk/NotoSansCJKjp-Regular.otf .
 %endif
@@ -1100,9 +959,7 @@ export CHROMIUM_CORE_GN_DEFINES
 
 CHROMIUM_BROWSER_GN_DEFINES=""
 CHROMIUM_BROWSER_GN_DEFINES+=' use_gio=true use_pulseaudio=true icu_use_data_file=true'
-%if 0%{?nonacl}
 CHROMIUM_BROWSER_GN_DEFINES+=' enable_nacl=false'
-%endif
 %if 0%{?shared}
 CHROMIUM_BROWSER_GN_DEFINES+=' is_component_ffmpeg=true is_component_build=true'
 %else
@@ -1264,9 +1121,6 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/libwebm' \
 	'third_party/libwebp' \
 	'third_party/libyuv' \
-%if 0%{?nacl}
-	'third_party/llvm-build' \
-%endif
 	'third_party/lss' \
 	'third_party/lzma_sdk' \
 %if 0%{?bundlepylibs}
@@ -1494,9 +1348,7 @@ pushd remoting
 # ../../depot_tools/ninja -C ../%{target} -vvv remoting_me2me_host remoting_start_host remoting_it2me_native_messaging_host remoting_me2me_native_messaging_host remoting_native_messaging_manifests remoting_resources
 ../../depot_tools/ninja -C ../%{remotingtarget} -vvv remoting_all
 %if 0%{?build_remoting_app}
-%if 0%{?nacl}
 GOOGLE_CLIENT_ID_REMOTING_IDENTITY_API=%{chromoting_client_id} ../../depot_tools/ninja -vv -C ../out/Release/ remoting_webapp
-%endif
 %endif
 popd
 
@@ -1544,14 +1396,7 @@ mkdir -p %{buildroot}%{_mandir}/man1/
 
 pushd %{target}
 cp -a *.pak locales resources icudtl.dat %{buildroot}%{chromium_path}
-%if 0%{?nacl}
-cp -a nacl_helper* *.nexe pnacl tls_edit %{buildroot}%{chromium_path}
-chmod -x %{buildroot}%{chromium_path}/nacl_helper_bootstrap* *.nexe
-%endif
 # Reasonably sure we don't need this anymore. Chrome doesn't include it.
-%if 0
-cp -a protoc pyproto %{buildroot}%{chromium_path}
-%endif
 %ifarch x86_64 i686 aarch64
 cp -a swiftshader %{buildroot}%{chromium_path}
 %endif
@@ -1630,9 +1475,7 @@ ln -s system-auth chrome-remote-desktop
 popd
 
 %if 0%{?build_remoting_app}
-%if 0%{?nacl}
 cp -a remoting_client_plugin_newlib.* %{buildroot}%{chromium_path}
-%endif
 %endif
 
 %if %{build_headless}
@@ -1704,7 +1547,7 @@ if st and st.type == "link" then
 end
 
 %if %{freeworld}
-%posttrans -n chromium-libs-media-freeworld
+%posttrans
 %{_sbindir}/update-alternatives --install \
   %{_libdir}/chromium-browser/libffmpeg.so libffmpeg.so \
   %{_libdir}/chromium-browser/libffmpeg.so.freeworld 20 \
@@ -1715,7 +1558,7 @@ end
   --slave %{_libdir}/chromium-browser/libmedia.so.TOC libmedia.so.TOC \
           %{_libdir}/chromium-browser/libmedia.so.TOC.freeworld
 
-%preun -n chromium-libs-media-freeworld
+%preun
 if [ $1 = 0 ]; then
   %{_sbindir}/alternatives --remove libffmpeg.so \
     %{_libdir}/chromium-browser/libffmpeg.so.freeworld
@@ -1775,16 +1618,7 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %ifarch x86_64 i686 aarch64
 %{chromium_path}/swiftshader/
 %endif
-%if 0%{?nacl}
-%{chromium_path}/nacl_helper*
-%{chromium_path}/*.nexe
-%{chromium_path}/pnacl/
-%{chromium_path}/tls_edit
-%endif
 %dir %{chromium_path}/PepperFlash/
-%if 0
-%{chromium_path}/protoc
-%endif
 # %%{chromium_path}/remoting_locales/
 # %%{chromium_path}/pseudo_locales/
 # %%{chromium_path}/plugins/
@@ -1895,9 +1729,7 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{_unitdir}/chrome-remote-desktop@.service
 /var/lib/chrome-remote-desktop/
 %if 0%{?build_remoting_app}
-%if 0%{?nacl}
 %{chromium_path}/remoting_client_plugin_newlib.*
-%endif
 %endif
 
 %files -n chromedriver
@@ -1910,7 +1742,7 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 %if 0%{?shared}
 %if %{freeworld}
-%files -n chromium-libs-media-freeworld
+%files
 %else
 %files libs-media
 %endif
@@ -1922,6 +1754,10 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Fri Sep  6 2019 Tom Callaway <spot@fedoraproject.org> - 76.0.3809.132-3
+- spec cleanups and changes to make EPEL8 try to build
+- freeworld changes from Nicolas Chauvet
+
 * Tue Sep 03 2019 Tomas Popela <tpopela@redhat.com> - 76.0.3809.132-2
 - Backport patch to fix certificate transparency
 
