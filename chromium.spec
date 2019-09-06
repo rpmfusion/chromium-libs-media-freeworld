@@ -316,6 +316,9 @@ Patch204:	chromium-75.0.3770.80-vaapi-libva1-compatibility.patch
 # Pulseaudio changed the API a little in 12.99.1
 Patch205:	chromium-76.0.3809.100-pulse-api-change.patch
 
+# Apply this patches to work around EPEL8 issues
+Patch300:	chromium-76.0.3809.132-rhel8-force-disable-use_gnome_keyring.patch
+
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
 # http://build.chromium.org/buildbot/official/
 # For Chromium Fedora use chromium-latest.py --stable --ffmpegclean --ffmpegarm
@@ -883,6 +886,10 @@ udev.
 
 %if 0%{?pulseaudioapichange}
 %patch205 -p1 -b .pulseaudioapichange
+%endif
+
+%if 0%{?rhel} == 8
+%patch300 -p1 -b .disblegnomekeyring
 %endif
 
 # Change shebang in all relevant files in this directory and all subdirectories
