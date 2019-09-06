@@ -133,6 +133,13 @@ BuildRequires:  libicu-devel >= 5.4
 %global pulseaudioapichange 0
 %endif
 
+# RHEL 8 doesn't have minizip
+%if 0%{?rhel} == 8
+%global bundleminizip 1
+%else
+%global bundleminizip 0
+%endif
+
 ### Google API keys (see http://www.chromium.org/developers/how-tos/api-keys)
 ### Note: These are for Fedora use ONLY.
 ### For your own distribution, please get your own set of keys.
@@ -380,10 +387,14 @@ BuildRequires:	libusb-devel
 BuildRequires:	libXdamage-devel
 BuildRequires:	libXScrnSaver-devel
 BuildRequires:	libXtst-devel
+%if %{bundleminizip}
+# We're using the bundle, baby.
+%else
 %if 0%{?fedora} >= 30
 BuildRequires:	minizip-compat-devel
 %else
 BuildRequires:	minizip-devel
+%endif
 %endif
 # RHEL 7's nodejs is too old
 %if 0%{?fedora}
@@ -709,10 +720,14 @@ Chromium is an open-source web browser, powered by WebKit (Blink).
 Summary: Files needed for both the headless_shell and full Chromium
 # Chromium needs an explicit Requires: minizip-compat
 # We put it here to cover headless too.
+%if %{bundleminizip}
+# Using the bundle. No Requires needed.
+%else
 %if 0%{?fedora} >= 30
 Requires: minizip-compat%{_isa}
 %else
 Requires: minizip%{_isa}
+%endif
 %endif
 
 %description common
@@ -1131,6 +1146,9 @@ build/linux/unbundle/remove_bundled_libraries.py \
 %endif
 	'third_party/mesa' \
 	'third_party/metrics_proto' \
+%if %{bundleminizip}
+	'third_party/minizip' \
+%endif
 	'third_party/modp_b64' \
 	'third_party/nasm' \
 	'third_party/node' \
