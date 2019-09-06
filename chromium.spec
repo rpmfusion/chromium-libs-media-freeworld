@@ -955,6 +955,9 @@ CHROMIUM_CORE_GN_DEFINES+=' target_cpu="arm64"'
 %if %{?use_jumbo}
 CHROMIUM_CORE_GN_DEFINES+=' use_jumbo_build=true jumbo_file_merge_limit=8'
 %endif
+%if 0%{?rhel} == 8
+CHROMIUM_CORE_GN_DEFINES+=' use_gnome_keyring=false use_glib=true'
+%endif
 export CHROMIUM_CORE_GN_DEFINES
 
 CHROMIUM_BROWSER_GN_DEFINES=""
