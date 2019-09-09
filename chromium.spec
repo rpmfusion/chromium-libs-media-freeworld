@@ -1302,8 +1302,12 @@ build/linux/unbundle/replace_gn_files.py --system-libraries \
 %else
 	re2 \
 %endif
+%if %{bundleminizip}
+	yasm
+%else
 	yasm \
 	zlib
+%endif
 
 # fix arm gcc
 sed -i 's|arm-linux-gnueabihf-|arm-linux-gnu-|g' build/toolchain/linux/BUILD.gn
