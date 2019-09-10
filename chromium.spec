@@ -823,7 +823,11 @@ udev.
 %patch15 -p1 -b .system-clang
 %patch16 -p1 -b .noprefix
 %patch17 -p1 -b .nomangle
+%if %{bundleminizip}
+# Leave zlib mangling in place
+%else
 %patch18 -p1 -b .nozmangle
+%endif
 %patch19 -p1 -b .pathfix
 %patch20 -p1 -b .nogccoptmath
 %patch21 -p1 -b .gcc5-r3
