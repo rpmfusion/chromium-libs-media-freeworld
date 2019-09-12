@@ -1,18 +1,18 @@
-diff -up chromium-76.0.3809.132/chrome/browser/net/system_network_context_manager_browsertest.cc.certificate-transparency chromium-76.0.3809.132/chrome/browser/net/system_network_context_manager_browsertest.cc
---- chromium-76.0.3809.132/chrome/browser/net/system_network_context_manager_browsertest.cc.certificate-transparency	2019-09-03 22:08:28.931786496 +0200
-+++ chromium-76.0.3809.132/chrome/browser/net/system_network_context_manager_browsertest.cc	2019-09-03 22:15:24.743555759 +0200
-@@ -17,6 +17,7 @@
- #include "chrome/common/pref_names.h"
- #include "chrome/test/base/in_process_browser_test.h"
- #include "components/prefs/pref_service.h"
+diff -up chromium-77.0.3865.75/chrome/browser/net/system_network_context_manager_browsertest.cc.certificate-transparency chromium-77.0.3865.75/chrome/browser/net/system_network_context_manager_browsertest.cc
+--- chromium-77.0.3865.75/chrome/browser/net/system_network_context_manager_browsertest.cc.certificate-transparency	2019-09-12 16:09:52.818635106 +0200
++++ chromium-77.0.3865.75/chrome/browser/net/system_network_context_manager_browsertest.cc	2019-09-12 16:11:07.662562005 +0200
+@@ -21,6 +21,7 @@
+ #include "components/version_info/version_info.h"
+ #include "content/public/common/content_switches.h"
+ #include "content/public/common/user_agent.h"
 +#include "services/network/public/cpp/network_service_buildflags.h"
  #include "services/network/public/mojom/network_context.mojom.h"
  #include "services/network/public/mojom/network_service.mojom.h"
  #include "testing/gmock/include/gmock/gmock.h"
-@@ -297,3 +298,55 @@ IN_PROC_BROWSER_TEST_P(SystemNetworkCont
+@@ -356,3 +357,55 @@ IN_PROC_BROWSER_TEST_P(SystemNetworkCont
  INSTANTIATE_TEST_SUITE_P(,
-                          SystemNetworkContextManagerStubResolverBrowsertest,
-                          ::testing::Values(false, true));
+                          SystemNetworkContextManagerFreezeQUICUaBrowsertest,
+                          ::testing::Values(true, false));
 +
 +class SystemNetworkContextManagerCertificateTransparencyBrowsertest
 +    : public SystemNetworkContextManagerBrowsertest,
@@ -65,9 +65,9 @@ diff -up chromium-76.0.3809.132/chrome/browser/net/system_network_context_manage
 +    ,
 +    SystemNetworkContextManagerCertificateTransparencyBrowsertest,
 +    ::testing::Values(base::nullopt, true, false));
-diff -up chromium-76.0.3809.132/chrome/browser/net/system_network_context_manager.cc.certificate-transparency chromium-76.0.3809.132/chrome/browser/net/system_network_context_manager.cc
---- chromium-76.0.3809.132/chrome/browser/net/system_network_context_manager.cc.certificate-transparency	2019-08-26 21:02:05.000000000 +0200
-+++ chromium-76.0.3809.132/chrome/browser/net/system_network_context_manager.cc	2019-09-03 22:13:26.451198970 +0200
+diff -up chromium-77.0.3865.75/chrome/browser/net/system_network_context_manager.cc.certificate-transparency chromium-77.0.3865.75/chrome/browser/net/system_network_context_manager.cc
+--- chromium-77.0.3865.75/chrome/browser/net/system_network_context_manager.cc.certificate-transparency	2019-09-09 23:55:09.000000000 +0200
++++ chromium-77.0.3865.75/chrome/browser/net/system_network_context_manager.cc	2019-09-12 16:09:52.819635118 +0200
 @@ -4,11 +4,13 @@
  
  #include "chrome/browser/net/system_network_context_manager.h"
@@ -82,7 +82,7 @@ diff -up chromium-76.0.3809.132/chrome/browser/net/system_network_context_manage
  #include "base/command_line.h"
  #include "base/feature_list.h"
  #include "base/logging.h"
-@@ -51,6 +53,7 @@
+@@ -50,6 +52,7 @@
  #include "content/public/common/mime_handler_view_mode.h"
  #include "content/public/common/service_names.mojom.h"
  #include "content/public/common/user_agent.h"
@@ -90,7 +90,7 @@ diff -up chromium-76.0.3809.132/chrome/browser/net/system_network_context_manage
  #include "mojo/public/cpp/bindings/associated_interface_ptr.h"
  #include "net/dns/public/util.h"
  #include "net/net_buildflags.h"
-@@ -81,6 +84,20 @@
+@@ -79,6 +82,20 @@
  
  namespace {
  
@@ -111,7 +111,7 @@ diff -up chromium-76.0.3809.132/chrome/browser/net/system_network_context_manage
  // The global instance of the SystemNetworkContextmanager.
  SystemNetworkContextManager* g_system_network_context_manager = nullptr;
  
-@@ -686,14 +703,35 @@ SystemNetworkContextManager::CreateDefau
+@@ -658,14 +675,35 @@ SystemNetworkContextManager::CreateDefau
  
    bool http_09_on_non_default_ports_enabled = false;
  #if !defined(OS_ANDROID)
@@ -155,7 +155,7 @@ diff -up chromium-76.0.3809.132/chrome/browser/net/system_network_context_manage
    }
  
    const base::Value* value =
-@@ -756,6 +794,12 @@ SystemNetworkContextManager::GetHttpAuth
+@@ -723,6 +761,12 @@ SystemNetworkContextManager::GetHttpAuth
    return CreateHttpAuthDynamicParams(g_browser_process->local_state());
  }
  
@@ -168,10 +168,10 @@ diff -up chromium-76.0.3809.132/chrome/browser/net/system_network_context_manage
  network::mojom::NetworkContextParamsPtr
  SystemNetworkContextManager::CreateNetworkContextParams() {
    // TODO(mmenke): Set up parameters here (in memory cookie store, etc).
-diff -up chromium-76.0.3809.132/chrome/browser/net/system_network_context_manager.h.certificate-transparency chromium-76.0.3809.132/chrome/browser/net/system_network_context_manager.h
---- chromium-76.0.3809.132/chrome/browser/net/system_network_context_manager.h.certificate-transparency	2019-08-26 21:02:05.000000000 +0200
-+++ chromium-76.0.3809.132/chrome/browser/net/system_network_context_manager.h	2019-09-03 22:08:28.931786496 +0200
-@@ -158,6 +158,12 @@ class SystemNetworkContextManager {
+diff -up chromium-77.0.3865.75/chrome/browser/net/system_network_context_manager.h.certificate-transparency chromium-77.0.3865.75/chrome/browser/net/system_network_context_manager.h
+--- chromium-77.0.3865.75/chrome/browser/net/system_network_context_manager.h.certificate-transparency	2019-09-09 23:55:09.000000000 +0200
++++ chromium-77.0.3865.75/chrome/browser/net/system_network_context_manager.h	2019-09-12 16:09:52.819635118 +0200
+@@ -139,6 +139,12 @@ class SystemNetworkContextManager {
    static network::mojom::HttpAuthDynamicParamsPtr
    GetHttpAuthDynamicParamsForTesting();
  
@@ -184,10 +184,10 @@ diff -up chromium-76.0.3809.132/chrome/browser/net/system_network_context_manage
   private:
    class URLLoaderFactoryForSystem;
  
-diff -up chromium-76.0.3809.132/chrome/browser/policy/policy_browsertest.cc.certificate-transparency chromium-76.0.3809.132/chrome/browser/policy/policy_browsertest.cc
---- chromium-76.0.3809.132/chrome/browser/policy/policy_browsertest.cc.certificate-transparency	2019-08-26 21:02:05.000000000 +0200
-+++ chromium-76.0.3809.132/chrome/browser/policy/policy_browsertest.cc	2019-09-03 22:08:28.932786508 +0200
-@@ -4834,7 +4834,7 @@ IN_PROC_BROWSER_TEST_P(SSLPolicyTestComm
+diff -up chromium-77.0.3865.75/chrome/browser/policy/policy_browsertest.cc.certificate-transparency chromium-77.0.3865.75/chrome/browser/policy/policy_browsertest.cc
+--- chromium-77.0.3865.75/chrome/browser/policy/policy_browsertest.cc.certificate-transparency	2019-09-09 23:55:10.000000000 +0200
++++ chromium-77.0.3865.75/chrome/browser/policy/policy_browsertest.cc	2019-09-12 16:09:52.820635131 +0200
+@@ -4836,7 +4836,7 @@ IN_PROC_BROWSER_TEST_F(PolicyTest,
              browser()->tab_strip_model()->GetActiveWebContents()->GetTitle());
  }
  
@@ -196,9 +196,9 @@ diff -up chromium-76.0.3809.132/chrome/browser/policy/policy_browsertest.cc.cert
                         CertificateTransparencyEnforcementDisabledForCas) {
    net::EmbeddedTestServer https_server_ok(net::EmbeddedTestServer::TYPE_HTTPS);
    https_server_ok.SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
-diff -up chromium-76.0.3809.132/chrome/browser/ssl/chrome_expect_ct_reporter_browsertest.cc.certificate-transparency chromium-76.0.3809.132/chrome/browser/ssl/chrome_expect_ct_reporter_browsertest.cc
---- chromium-76.0.3809.132/chrome/browser/ssl/chrome_expect_ct_reporter_browsertest.cc.certificate-transparency	2019-08-26 21:02:07.000000000 +0200
-+++ chromium-76.0.3809.132/chrome/browser/ssl/chrome_expect_ct_reporter_browsertest.cc	2019-09-03 22:08:28.932786508 +0200
+diff -up chromium-77.0.3865.75/chrome/browser/ssl/chrome_expect_ct_reporter_browsertest.cc.certificate-transparency chromium-77.0.3865.75/chrome/browser/ssl/chrome_expect_ct_reporter_browsertest.cc
+--- chromium-77.0.3865.75/chrome/browser/ssl/chrome_expect_ct_reporter_browsertest.cc.certificate-transparency	2019-09-09 23:55:10.000000000 +0200
++++ chromium-77.0.3865.75/chrome/browser/ssl/chrome_expect_ct_reporter_browsertest.cc	2019-09-12 16:09:52.821635143 +0200
 @@ -8,6 +8,7 @@
  #include "base/callback.h"
  #include "base/run_loop.h"
@@ -226,10 +226,10 @@ diff -up chromium-76.0.3809.132/chrome/browser/ssl/chrome_expect_ct_reporter_bro
  
    void SetUpOnMainThread() override {
      run_loop_ = std::make_unique<base::RunLoop>();
-diff -up chromium-76.0.3809.132/chrome/browser/ssl/security_state_tab_helper_browsertest.cc.certificate-transparency chromium-76.0.3809.132/chrome/browser/ssl/security_state_tab_helper_browsertest.cc
---- chromium-76.0.3809.132/chrome/browser/ssl/security_state_tab_helper_browsertest.cc.certificate-transparency	2019-08-26 21:02:07.000000000 +0200
-+++ chromium-76.0.3809.132/chrome/browser/ssl/security_state_tab_helper_browsertest.cc	2019-09-03 22:08:28.932786508 +0200
-@@ -457,6 +457,13 @@ class SecurityStateTabHelperTest : publi
+diff -up chromium-77.0.3865.75/chrome/browser/ssl/security_state_tab_helper_browsertest.cc.certificate-transparency chromium-77.0.3865.75/chrome/browser/ssl/security_state_tab_helper_browsertest.cc
+--- chromium-77.0.3865.75/chrome/browser/ssl/security_state_tab_helper_browsertest.cc.certificate-transparency	2019-09-09 23:55:10.000000000 +0200
++++ chromium-77.0.3865.75/chrome/browser/ssl/security_state_tab_helper_browsertest.cc	2019-09-12 16:09:52.821635143 +0200
+@@ -433,6 +433,13 @@ class SecurityStateTabHelperTest : publi
    SecurityStateTabHelperTest()
        : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
      https_server_.ServeFilesFromSourceDirectory(GetChromeTestDataDir());
@@ -243,10 +243,10 @@ diff -up chromium-76.0.3809.132/chrome/browser/ssl/security_state_tab_helper_bro
    }
  
    void SetUpOnMainThread() override {
-diff -up chromium-76.0.3809.132/chrome/browser/ssl/ssl_browsertest.cc.certificate-transparency chromium-76.0.3809.132/chrome/browser/ssl/ssl_browsertest.cc
---- chromium-76.0.3809.132/chrome/browser/ssl/ssl_browsertest.cc.certificate-transparency	2019-08-26 21:02:07.000000000 +0200
-+++ chromium-76.0.3809.132/chrome/browser/ssl/ssl_browsertest.cc	2019-09-03 22:08:28.934786531 +0200
-@@ -2008,8 +2008,14 @@ class CertificateTransparencySSLUITest :
+diff -up chromium-77.0.3865.75/chrome/browser/ssl/ssl_browsertest.cc.certificate-transparency chromium-77.0.3865.75/chrome/browser/ssl/ssl_browsertest.cc
+--- chromium-77.0.3865.75/chrome/browser/ssl/ssl_browsertest.cc.certificate-transparency	2019-09-09 23:55:10.000000000 +0200
++++ chromium-77.0.3865.75/chrome/browser/ssl/ssl_browsertest.cc	2019-09-12 16:09:52.822635155 +0200
+@@ -1853,8 +1853,14 @@ class CertificateTransparencySSLUITest :
   public:
    CertificateTransparencySSLUITest()
        : CertVerifierBrowserTest(),
@@ -263,9 +263,9 @@ diff -up chromium-76.0.3809.132/chrome/browser/ssl/ssl_browsertest.cc.certificat
  
    void SetUpOnMainThread() override {
      CertVerifierBrowserTest::SetUpOnMainThread();
-diff -up chromium-76.0.3809.132/components/certificate_transparency/chrome_ct_policy_enforcer.h.certificate-transparency chromium-76.0.3809.132/components/certificate_transparency/chrome_ct_policy_enforcer.h
---- chromium-76.0.3809.132/components/certificate_transparency/chrome_ct_policy_enforcer.h.certificate-transparency	2019-08-26 21:02:14.000000000 +0200
-+++ chromium-76.0.3809.132/components/certificate_transparency/chrome_ct_policy_enforcer.h	2019-09-03 22:08:28.934786531 +0200
+diff -up chromium-77.0.3865.75/components/certificate_transparency/chrome_ct_policy_enforcer.h.certificate-transparency chromium-77.0.3865.75/components/certificate_transparency/chrome_ct_policy_enforcer.h
+--- chromium-77.0.3865.75/components/certificate_transparency/chrome_ct_policy_enforcer.h.certificate-transparency	2019-09-09 23:55:14.000000000 +0200
++++ chromium-77.0.3865.75/components/certificate_transparency/chrome_ct_policy_enforcer.h	2019-09-12 16:09:52.823635168 +0200
 @@ -45,6 +45,19 @@ class ChromeCTPolicyEnforcer : public ne
  
    void SetClockForTesting(const base::Clock* clock) { clock_ = clock; }
@@ -286,10 +286,10 @@ diff -up chromium-76.0.3809.132/components/certificate_transparency/chrome_ct_po
   private:
    // Returns true if the log identified by |log_id| (the SHA-256 hash of the
    // log's DER-encoded SPKI) has been disqualified, and sets
-diff -up chromium-76.0.3809.132/services/network/network_context.cc.certificate-transparency chromium-76.0.3809.132/services/network/network_context.cc
---- chromium-76.0.3809.132/services/network/network_context.cc.certificate-transparency	2019-08-26 21:02:33.000000000 +0200
-+++ chromium-76.0.3809.132/services/network/network_context.cc	2019-09-03 22:17:27.977834857 +0200
-@@ -35,6 +35,7 @@
+diff -up chromium-77.0.3865.75/services/network/network_context.cc.certificate-transparency chromium-77.0.3865.75/services/network/network_context.cc
+--- chromium-77.0.3865.75/services/network/network_context.cc.certificate-transparency	2019-09-09 23:55:22.000000000 +0200
++++ chromium-77.0.3865.75/services/network/network_context.cc	2019-09-12 16:09:52.823635168 +0200
+@@ -36,6 +36,7 @@
  #include "components/prefs/pref_registry_simple.h"
  #include "components/prefs/pref_service.h"
  #include "components/prefs/pref_service_factory.h"
@@ -297,7 +297,7 @@ diff -up chromium-76.0.3809.132/services/network/network_context.cc.certificate-
  #include "mojo/public/cpp/bindings/strong_binding.h"
  #include "net/base/layered_network_delegate.h"
  #include "net/base/load_flags.h"
-@@ -1851,16 +1852,6 @@ URLRequestContextOwner NetworkContext::A
+@@ -1877,16 +1878,6 @@ URLRequestContextOwner NetworkContext::A
        base::FeatureList::IsEnabled(features::kNetworkErrorLogging));
  #endif  // BUILDFLAG(ENABLE_REPORTING)
  
@@ -314,7 +314,7 @@ diff -up chromium-76.0.3809.132/services/network/network_context.cc.certificate-
    net::HttpNetworkSession::Params session_params;
    bool is_quic_force_disabled = false;
    if (network_service_ && network_service_->quic_disabled())
-@@ -1910,8 +1901,20 @@ URLRequestContextOwner NetworkContext::A
+@@ -1936,8 +1927,20 @@ URLRequestContextOwner NetworkContext::A
  
  #if BUILDFLAG(IS_CT_SUPPORTED)
    std::vector<scoped_refptr<const net::CTLogVerifier>> ct_logs;
@@ -335,7 +335,7 @@ diff -up chromium-76.0.3809.132/services/network/network_context.cc.certificate-
        scoped_refptr<const net::CTLogVerifier> log_verifier =
            net::CTLogVerifier::Create(log->public_key, log->name);
        if (!log_verifier) {
-@@ -1924,6 +1927,17 @@ URLRequestContextOwner NetworkContext::A
+@@ -1950,6 +1953,17 @@ URLRequestContextOwner NetworkContext::A
      ct_verifier->AddLogs(ct_logs);
      builder->set_ct_verifier(std::move(ct_verifier));
    }
@@ -353,9 +353,9 @@ diff -up chromium-76.0.3809.132/services/network/network_context.cc.certificate-
  #endif  // BUILDFLAG(IS_CT_SUPPORTED)
  
    const base::CommandLine* command_line =
-diff -up chromium-76.0.3809.132/services/network/network_context_unittest.cc.certificate-transparency chromium-76.0.3809.132/services/network/network_context_unittest.cc
---- chromium-76.0.3809.132/services/network/network_context_unittest.cc.certificate-transparency	2019-08-26 21:02:33.000000000 +0200
-+++ chromium-76.0.3809.132/services/network/network_context_unittest.cc	2019-09-03 22:20:22.382888089 +0200
+diff -up chromium-77.0.3865.75/services/network/network_context_unittest.cc.certificate-transparency chromium-77.0.3865.75/services/network/network_context_unittest.cc
+--- chromium-77.0.3865.75/services/network/network_context_unittest.cc.certificate-transparency	2019-09-09 23:55:22.000000000 +0200
++++ chromium-77.0.3865.75/services/network/network_context_unittest.cc	2019-09-12 16:13:10.479056669 +0200
 @@ -2,6 +2,7 @@
  // Use of this source code is governed by a BSD-style license that can be
  // found in the LICENSE file.
@@ -374,10 +374,10 @@ diff -up chromium-76.0.3809.132/services/network/network_context_unittest.cc.cer
  #include "components/network_session_configurator/common/network_switches.h"
  #include "components/prefs/testing_pref_service.h"
 +#include "crypto/sha2.h"
- #include "mojo/public/cpp/bindings/interface_request.h"
- #include "mojo/public/cpp/bindings/strong_binding.h"
+ #include "mojo/public/cpp/bindings/remote.h"
+ #include "mojo/public/cpp/bindings/self_owned_receiver.h"
  #include "mojo/public/cpp/system/data_pipe_utils.h"
-@@ -113,6 +116,11 @@
+@@ -115,6 +118,11 @@
  #include "url/scheme_host_port.h"
  #include "url/url_constants.h"
  
@@ -386,11 +386,11 @@ diff -up chromium-76.0.3809.132/services/network/network_context_unittest.cc.cer
 +#include "services/network/public/mojom/ct_log_info.mojom.h"
 +#endif
 +
- #if BUILDFLAG(ENABLE_REPORTING)
- #include "net/network_error_logging/network_error_logging_service.h"
- #include "net/reporting/reporting_cache.h"
-@@ -5566,6 +5574,72 @@ TEST_F(NetworkContextTest, BlockAllCooki
-   EXPECT_EQ("None", response_body);
+ #if !BUILDFLAG(DISABLE_FTP_SUPPORT)
+ #include "net/ftp/ftp_auth_cache.h"
+ #endif  // !BUILDFLAG(DISABLE_FTP_SUPPORT)
+@@ -5958,6 +5966,72 @@ TEST_F(NetworkContextSplitCacheTest,
+       true /* was_cached */, true /* is_navigation */);
  }
  
 +#if BUILDFLAG(IS_CT_SUPPORTED)
@@ -462,9 +462,9 @@ diff -up chromium-76.0.3809.132/services/network/network_context_unittest.cc.cer
  }  // namespace
  
  }  // namespace network
-diff -up chromium-76.0.3809.132/services/network/public/mojom/ct_log_info.mojom.certificate-transparency chromium-76.0.3809.132/services/network/public/mojom/ct_log_info.mojom
---- chromium-76.0.3809.132/services/network/public/mojom/ct_log_info.mojom.certificate-transparency	2019-08-26 21:02:33.000000000 +0200
-+++ chromium-76.0.3809.132/services/network/public/mojom/ct_log_info.mojom	2019-09-03 22:08:28.936786554 +0200
+diff -up chromium-77.0.3865.75/services/network/public/mojom/ct_log_info.mojom.certificate-transparency chromium-77.0.3865.75/services/network/public/mojom/ct_log_info.mojom
+--- chromium-77.0.3865.75/services/network/public/mojom/ct_log_info.mojom.certificate-transparency	2019-09-09 23:55:22.000000000 +0200
++++ chromium-77.0.3865.75/services/network/public/mojom/ct_log_info.mojom	2019-09-12 16:09:52.824635180 +0200
 @@ -4,6 +4,8 @@
  
  module network.mojom;
@@ -488,10 +488,10 @@ diff -up chromium-76.0.3809.132/services/network/public/mojom/ct_log_info.mojom.
 +  // If the log is currently qualified, this will not be set.
 +  mojo_base.mojom.TimeDelta? disqualified_at;
  };
-diff -up chromium-76.0.3809.132/services/network/public/mojom/network_context.mojom.certificate-transparency chromium-76.0.3809.132/services/network/public/mojom/network_context.mojom
---- chromium-76.0.3809.132/services/network/public/mojom/network_context.mojom.certificate-transparency	2019-08-26 21:02:33.000000000 +0200
-+++ chromium-76.0.3809.132/services/network/public/mojom/network_context.mojom	2019-09-03 22:08:28.936786554 +0200
-@@ -238,15 +238,6 @@ struct NetworkContextParams {
+diff -up chromium-77.0.3865.75/services/network/public/mojom/network_context.mojom.certificate-transparency chromium-77.0.3865.75/services/network/public/mojom/network_context.mojom
+--- chromium-77.0.3865.75/services/network/public/mojom/network_context.mojom.certificate-transparency	2019-09-09 23:55:22.000000000 +0200
++++ chromium-77.0.3865.75/services/network/public/mojom/network_context.mojom	2019-09-12 16:09:52.825635192 +0200
+@@ -239,15 +239,6 @@ struct NetworkContextParams {
    [EnableIf=is_android]
    bool check_clear_text_permitted = false;
  
@@ -507,7 +507,7 @@ diff -up chromium-76.0.3809.132/services/network/public/mojom/network_context.mo
    // Enables HTTP/0.9 on ports other than 80 for HTTP and 443 for HTTPS.
    bool http_09_on_non_default_ports_enabled = false;
  
-@@ -299,6 +290,15 @@ struct NetworkContextParams {
+@@ -300,6 +291,15 @@ struct NetworkContextParams {
    // servers, so they can discover misconfigurations.
    bool enable_certificate_reporting = false;
  
@@ -523,7 +523,7 @@ diff -up chromium-76.0.3809.132/services/network/public/mojom/network_context.mo
    // Enables Expect CT reporting, which sends reports for opted-in sites that
    // don't serve sufficient Certificate Transparency information.
    [EnableIf=is_ct_supported]
-@@ -310,6 +310,13 @@ struct NetworkContextParams {
+@@ -311,6 +311,13 @@ struct NetworkContextParams {
    [EnableIf=is_ct_supported]
    array<CTLogInfo> ct_logs;
  
