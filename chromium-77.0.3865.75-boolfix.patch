@@ -1,0 +1,24 @@
+diff -up chromium-77.0.3865.75/mojo/public/cpp/bindings/associated_interface_ptr_info.h.boolfix chromium-77.0.3865.75/mojo/public/cpp/bindings/associated_interface_ptr_info.h
+--- chromium-77.0.3865.75/mojo/public/cpp/bindings/associated_interface_ptr_info.h.boolfix	2019-09-09 23:55:20.000000000 +0200
++++ chromium-77.0.3865.75/mojo/public/cpp/bindings/associated_interface_ptr_info.h	2019-09-12 15:43:30.025360946 +0200
+@@ -45,7 +45,7 @@ class AssociatedInterfacePtrInfo {
+ 
+   bool is_valid() const { return handle_.is_valid(); }
+ 
+-  explicit operator bool() const { return handle_.is_valid(); }
++  explicit operator bool() const { return (bool) handle_.is_valid(); }
+ 
+   ScopedInterfaceEndpointHandle PassHandle() {
+     return std::move(handle_);
+diff -up chromium-77.0.3865.75/mojo/public/cpp/bindings/associated_interface_request.h.boolfix chromium-77.0.3865.75/mojo/public/cpp/bindings/associated_interface_request.h
+--- chromium-77.0.3865.75/mojo/public/cpp/bindings/associated_interface_request.h.boolfix	2019-09-09 23:55:20.000000000 +0200
++++ chromium-77.0.3865.75/mojo/public/cpp/bindings/associated_interface_request.h	2019-09-12 15:43:30.025360946 +0200
+@@ -51,7 +51,7 @@ class AssociatedInterfaceRequest {
+   // handle.
+   bool is_pending() const { return handle_.is_valid(); }
+ 
+-  explicit operator bool() const { return handle_.is_valid(); }
++  explicit operator bool() const { return (bool) handle_.is_valid(); }
+ 
+   ScopedInterfaceEndpointHandle PassHandle() { return std::move(handle_); }
+ 
