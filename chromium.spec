@@ -164,14 +164,14 @@ BuildRequires:  libicu-devel >= 5.4
 %global chromoting_client_id %nil
 %endif
 
-%global majorversion 76
+%global majorversion 77
 
 %if %{freeworld}
 Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 %else
 Name:		chromium%{chromium_channel}
 %endif
-Version:	%{majorversion}.0.3809.132
+Version:	%{majorversion}.0.3865.75
 Release:	2%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
@@ -211,20 +211,20 @@ Patch16:	chromium-60.0.3112.78-no-libpng-prefix.patch
 # Do not mangle libjpeg
 Patch17:	chromium-60.0.3112.78-jpeg-nomangle.patch
 # Do not mangle zlib
-Patch18:	chromium-75.0.3770.80-no-zlib-mangle.patch
+Patch18:	chromium-77.0.3865.75-no-zlib-mangle.patch
 # Fix libavutil include pathing to find arch specific timer.h
 # For some reason, this only fails on aarch64. No idea why.
 Patch19:	chromium-60.0.3112.113-libavutil-timer-include-path-fix.patch
 # from gentoo
-Patch20:	chromium-61.0.3163.79-gcc-no-opt-safe-math.patch
+Patch20:	chromium-77.0.3865.75-gcc-no-opt-safe-math.patch
 # From gentoo
-Patch21:	chromium-72.0.3626.121-gcc5-r3.patch
+Patch21:	chromium-77.0.3865.75-gcc5-r3.patch
 # To use round with gcc, you need to #include <cmath>
 Patch22:	chromium-65.0.3325.146-gcc-round-fix.patch
 # Include proper headers to invoke memcpy()
 Patch23:	chromium-65.0.3325.146-memcpy-fix.patch
 # ../../mojo/public/cpp/bindings/associated_interface_ptr_info.h:48:43: error: cannot convert 'const mojo::ScopedInterfaceEndpointHandle' to 'bool' in return
-Patch24:	chromium-68.0.3440.106-boolfix.patch
+Patch24:	chromium-77.0.3865.75-boolfix.patch
 # From Debian
 Patch25:	chromium-71.0.3578.98-skia-aarch64-buildfix.patch
 # Do not use unrar code, it is non-free
@@ -232,7 +232,7 @@ Patch27:	chromium-73.0.3683.75-norar.patch
 # Upstream GCC fixes
 Patch28:	chromium-66.0.3359.117-GCC-fully-declare-ConfigurationPolicyProvider.patch
 # Add "Fedora" to the user agent string
-Patch29:	chromium-72.0.3626.121-fedora-user-agent.patch
+Patch29:	chromium-77.0.3865.75-fedora-user-agent.patch
 # Try to fix version.py for Rawhide
 Patch30:	chromium-71.0.3578.98-py2-bootstrap.patch
 # Fix default on redeclaration error
@@ -260,43 +260,11 @@ Patch41:	chromium-75.0.3770.80-SIOCGSTAMP.patch
 # Revert https://chromium.googlesource.com/chromium/src/+/daff6b66faae53a0cefb88987c9ff4843629b728%5E%21/#F0
 # It might make clang happy but it breaks gcc. F*** clang.
 Patch43:	chromium-75.0.3770.80-revert-daff6b.patch
-# Avoid pure virtual crash destroying RenderProcessUserData
-# https://chromium.googlesource.com/chromium/src/+/cdf306db81efaaaa954487585d5a5a16205a5ebd%5E%21/
-Patch44:	chromium-75.0.3770.80-pure-virtual-crash-fix.patch
 # rename function to avoid conflict with rawhide glibc "gettid()"
 Patch45:	chromium-75.0.3770.80-grpc-gettid-fix.patch
 # fix v8 compile with gcc
 # https://chromium.googlesource.com/v8/v8/+/3b8c624bda58d05aea80dd9626cd550537d6ac3f%5E%21/#F1
-Patch46:	chromium-75.0.3770.100-fix-v8-gcc.patch
-# Fix Vulkan compilation with gcc
-# https://chromium.googlesource.com/chromium/src/+/fdb3bb1f8c41d044a5b0cb80257a26dd3c8f83a3
-Patch47:	chromium-76.0.3809.100-gcc-vulkan.patch
-# https://chromium-review.googlesource.com/c/chromium/src/+/1645297
-Patch48:	chromium-76.0.3809.100-gcc-cc-no-except.patch
-# https://chromium.googlesource.com/chromium/src.git/+/502e6e42633d2571c8236c8649b031fe9915eb5b
-Patch49:	chromium-76.0.3809.100-gcc-net-fetcher.patch
-# https://quiche.googlesource.com/quiche.git/+/9424add9d73432a794b7944790253213cce6dcb8
-Patch50:	chromium-76.0.3809.100-quiche-compile-fix.patch
-# https://chromium.googlesource.com/chromium/src/+/53bb5a463ee956c70230eaa5450022185d0ddc3c
-Patch51:	chromium-76.0.3809.100-throttling-dead-beef.patch
-# https://chromium.googlesource.com/chromium/src/+/52b5ceac95b67491b1c71f0ef9a32b778bbbaa2e
-Patch52:	chromium-76.0.3809.132-gcc-ambigous-instantiation.patch
-# https://chromium.googlesource.com/chromium/src.git/+/715cb38eac889625de0c429d2672562188b4107e
-Patch53:	chromium-76.0.3809.100-weak-ptr-no-except.patch
-# https://chromium.googlesource.com/chromium/src.git/+/c6afbd59c997c2b64f11abdd1eaef71ae8ea2ddc
-Patch54:	chromium-76.0.3809.100-gcc-feature-policy-parser.patch
-# https://chromium.googlesource.com/chromium/src.git/+/cf6d6b40d711fce93a24a2cf517fa3becdbae8bb
-Patch55:	chromium-76.0.3809.100-gcc-hasfraction-constexpr.patch
-# https://chromium.googlesource.com/chromium/src.git/+/dcb55fb8f18abe5f43d260aa67b14b2dc996f992
-Patch56:	chromium-76.0.3809.100-gcc-move-explicit-initialization.patch
-# https://chromium.googlesource.com/chromium/src.git/+/7dc76c8d9f4cfbce7cf11424120aa6f6094916dc
-Patch57:	chromium-76.0.3809.100-gcc-initialization-order.patch
-# https://chromium.googlesource.com/chromium/src.git/+/138904af5d6a4158ef4247fda816a8035e621e59
-Patch58:	chromium-76.0.3809.100-gcc-history-move-noexcept.patch
-# https://chromium.googlesource.com/chromium/src.git/+/bdc24128b75008743d819e298557a53205706e7c
-Patch59:	chromium-76.0.3809.100-gcc-accountinfo-move-noexcept.patch
-# https://chromium.googlesource.com/chromium/src.git/+/5d7f227fa844e79568df64e495e7ef958c12d7b2
-Patch60:	chromium-76.0.3809.100-gcc-themeservice-includes.patch
+Patch46:	chromium-77.0.3865.75-fix-v8-gcc.patch
 # In GCC one can't use alignas() for exported classes
 # https://chromium.googlesource.com/chromium/src.git/+/8148fd96ae04a1150a9c6012634dcd2a7335f87a
 Patch61:	chromium-76.0.3809.100-gcc-no-alignas-and-export.patch
@@ -305,7 +273,7 @@ Patch62:	chromium-76.0.3809.100-gcc-remoting-constexpr.patch
 # Needs to be submitted.. (ugly hack, needs to be added properly to GN files)
 Patch63:	chromium-76.0.3809.100-vtable-symbol-undefined.patch
 # https://chromium.googlesource.com/chromium/src.git/+/3c9720245e440c4b7222f8348d2a2a3c25e098ae
-Patch64:	chromium-76.0.3809.132-certificate-transparency.patch
+Patch64:	chromium-77.0.3865.75-certificate-transparency.patch
 
 # Apply these changes to work around EPEL7 compiler issues
 Patch100:	chromium-62.0.3202.62-kmaxskip-constexpr.patch
@@ -846,7 +814,7 @@ udev.
 %patch22 -p1 -b .gcc-round-fix
 %patch23 -p1 -b .memcpyfix
 %patch24 -p1 -b .boolfix
-%patch25 -p1 -b .aarch64fix
+#%patch25 -p1 -b .aarch64fix
 %patch27 -p1 -b .nounrar
 %patch28 -p1 -b .gcc-cpolicyprovider
 %patch29 -p1 -b .fedora-user-agent
@@ -861,23 +829,8 @@ udev.
 %patch38 -p1 -b .disable-ndnpc
 %patch41 -p1 -b .SIOCGSTAMP
 %patch43 -p1 -b .revert-daff6b
-%patch44 -p1 -b .pure-virtual-fix
 %patch45 -p1 -b .gettid-fix
 %patch46 -p1 -b .fix-v8-gcc
-%patch47 -p1 -b .gcc-vulkan
-%patch48 -p1 -b .gcc-cc-no-except
-%patch49 -p1 -b .gcc-net-fetcher
-%patch50 -p1 -b .quiche-compile-fix
-%patch51 -p1 -b .throttling-dead-beef
-%patch52 -p1 -b .gcc-ambigous-instantiation
-%patch53 -p1 -b .weak-ptr-no-except
-%patch54 -p1 -b .gcc-feature-policy-parser
-%patch55 -p1 -b .gcc-hasfraction-constexpr
-%patch56 -p1 -b .gcc-move-explicit-initialization
-%patch57 -p1 -b .gcc-initialization-order
-%patch58 -p1 -b .gcc-history-move-noexcept
-%patch59 -p1 -b .gcc-accountinfo-move-noexcept
-%patch60 -p1 -b .gcc-themeservice-includes
 %patch61 -p1 -b .gcc-no-alignas-and-export
 %patch62 -p1 -b .gcc-remoting-constexpr
 %patch63 -p1 -b .vtable-symbol-undefined
@@ -1466,6 +1419,7 @@ sed -i.orig -e 's/getenv("CHROME_VERSION_EXTRA")/"Fedora Project"/' $FILE
 . /opt/rh/devtoolset-%{dts_version}/enable
 %endif
 
+echo 
 # Now do the full browser
 %if 0%{freeworld}
 ../depot_tools/ninja -C %{target} -vvv media
