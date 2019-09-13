@@ -262,9 +262,6 @@ Patch41:	chromium-75.0.3770.80-SIOCGSTAMP.patch
 Patch43:	chromium-75.0.3770.80-revert-daff6b.patch
 # rename function to avoid conflict with rawhide glibc "gettid()"
 Patch45:	chromium-75.0.3770.80-grpc-gettid-fix.patch
-# fix v8 compile with gcc
-# https://chromium.googlesource.com/v8/v8/+/3b8c624bda58d05aea80dd9626cd550537d6ac3f%5E%21/#F1
-Patch46:	chromium-77.0.3865.75-fix-v8-gcc.patch
 # In GCC one can't use alignas() for exported classes
 # https://chromium.googlesource.com/chromium/src.git/+/8148fd96ae04a1150a9c6012634dcd2a7335f87a
 Patch61:	chromium-76.0.3809.100-gcc-no-alignas-and-export.patch
@@ -834,7 +831,6 @@ udev.
 %patch41 -p1 -b .SIOCGSTAMP
 %patch43 -p1 -b .revert-daff6b
 %patch45 -p1 -b .gettid-fix
-%patch46 -p1 -b .fix-v8-gcc
 %patch61 -p1 -b .gcc-no-alignas-and-export
 %patch62 -p1 -b .gcc-remoting-constexpr
 %patch63 -p1 -b .vtable-symbol-undefined
