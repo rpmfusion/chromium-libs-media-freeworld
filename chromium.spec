@@ -133,9 +133,9 @@ BuildRequires:  libicu-devel >= 5.4
 %global bundlefontconfig 0
 %endif
 
-# Needs at least harfbuzz 2.3.0 now.
-# 2019-03-13
-%if 0%{?fedora} < 30
+# Needs at least harfbuzz 2.4.0 now.
+# 2019-09-13
+%if 0%{?fedora} < 31
 %global bundleharfbuzz 1
 %else
 %global bundleharfbuzz 0
