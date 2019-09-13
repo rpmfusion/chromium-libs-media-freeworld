@@ -275,6 +275,8 @@ Patch64:	chromium-77.0.3865.75-certificate-transparency.patch
 Patch65:	chromium-77.0.3865.75-unbundle-zlib.patch
 # Needs to be submitted..
 Patch66:	chromium-77.0.3865.75-gcc-include-memory.patch
+# Needs to be submitted..
+Patch67:	chromium-77.0.3865.75-base-gcc-no-alignas.patch
 
 # Apply these changes to work around EPEL7 compiler issues
 Patch100:	chromium-62.0.3202.62-kmaxskip-constexpr.patch
@@ -837,6 +839,7 @@ udev.
 %patch64 -p1 -b .certificate-transparency
 %patch65 -p1 -b .unbundle-zlib
 %patch66 -p1 -b .gcc-include-memory
+%patch67 -p1 -b .base-gcc-no-alignas
 
 # EPEL specific patches
 %if 0%{?rhel} == 7
