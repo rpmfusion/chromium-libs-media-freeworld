@@ -278,6 +278,8 @@ Patch62:	chromium-76.0.3809.100-gcc-remoting-constexpr.patch
 Patch63:	chromium-76.0.3809.100-vtable-symbol-undefined.patch
 # https://chromium.googlesource.com/chromium/src.git/+/3c9720245e440c4b7222f8348d2a2a3c25e098ae
 Patch64:	chromium-77.0.3865.75-certificate-transparency.patch
+# https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-unbundle-zlib.patch
+Patch65:	chromium-77.0.3865.75-unbundle-zlib.patch
 
 # Apply these changes to work around EPEL7 compiler issues
 Patch100:	chromium-62.0.3202.62-kmaxskip-constexpr.patch
@@ -844,6 +846,7 @@ udev.
 %patch62 -p1 -b .gcc-remoting-constexpr
 %patch63 -p1 -b .vtable-symbol-undefined
 %patch64 -p1 -b .certificate-transparency
+%patch65 -p1 -b .unbundle-zlib
 
 # EPEL specific patches
 %if 0%{?rhel} == 7
