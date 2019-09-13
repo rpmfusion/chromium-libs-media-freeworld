@@ -1230,6 +1230,7 @@ build/linux/unbundle/remove_bundled_libraries.py \
 %endif
 	'third_party/openscreen' \
 	'third_party/opus' \
+	'third_party/one_euro_filter' \
 	'third_party/ots' \
 	'third_party/pdfium' \
 	'third_party/pdfium/third_party/agg23' \
