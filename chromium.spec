@@ -277,6 +277,8 @@ Patch65:	chromium-77.0.3865.75-unbundle-zlib.patch
 Patch66:	chromium-77.0.3865.75-gcc-include-memory.patch
 # Needs to be submitted..
 Patch67:	chromium-77.0.3865.75-base-gcc-no-alignas.patch
+# https://chromium.googlesource.com/chromium/src/+/27e25336b8316ff3ec4e464058682ed85801fd06
+Patch68:	chromium-77.0.3865.75-harfbuzz-subset.patch
 
 # Apply these changes to work around EPEL7 compiler issues
 Patch100:	chromium-62.0.3202.62-kmaxskip-constexpr.patch
@@ -362,7 +364,7 @@ BuildRequires:	gperf
 %if 0%{?bundleharfbuzz}
 #nothing
 %else
-BuildRequires:	harfbuzz-devel >= 2.3.0
+BuildRequires:	harfbuzz-devel >= 2.4.0
 %endif
 BuildRequires:	libatomic
 BuildRequires:	libcap-devel
@@ -624,7 +626,7 @@ Provides: bundled(freetype) = 2.9.3
 %endif
 Provides: bundled(gperftools) = svn144
 %if 0%{?bundleharfbuzz}
-Provides: bundled(harfbuzz) = 2.3.0
+Provides: bundled(harfbuzz) = 2.4.0
 %endif
 Provides: bundled(hunspell) = 1.6.0
 Provides: bundled(iccjpeg)
@@ -840,6 +842,7 @@ udev.
 %patch65 -p1 -b .unbundle-zlib
 %patch66 -p1 -b .gcc-include-memory
 %patch67 -p1 -b .base-gcc-no-alignas
+%patch68 -p1 -b .harfbuzz-subset
 
 # EPEL specific patches
 %if 0%{?rhel} == 7
