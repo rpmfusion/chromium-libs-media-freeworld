@@ -283,6 +283,8 @@ Patch66:	chromium-77.0.3865.75-gcc-include-memory.patch
 Patch67:	chromium-77.0.3865.75-base-gcc-no-alignas.patch
 # https://chromium.googlesource.com/chromium/src/+/27e25336b8316ff3ec4e464058682ed85801fd06
 Patch68:	chromium-77.0.3865.75-harfbuzz-subset.patch
+# https://chromium.googlesource.com/chromium/src.git/+/f08cb0022527081c078e8b96062e6c9b4fbda151
+Patch69:	chromium-77.0.3865.75-gcc-abstract-class.patch
 
 # Apply these changes to work around EPEL7 compiler issues
 Patch100:	chromium-62.0.3202.62-kmaxskip-constexpr.patch
@@ -852,6 +854,7 @@ udev.
 %patch66 -p1 -b .gcc-include-memory
 %patch67 -p1 -b .base-gcc-no-alignas
 %patch68 -p1 -b .harfbuzz-subset
+%patch69 -p1 -b .gcc-abstract-class
 
 # EPEL specific patches
 %if 0%{?rhel} == 7
