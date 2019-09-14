@@ -2,6 +2,13 @@
 # https://fedoraproject.org/wiki/Changes/No_more_automagic_Python_bytecompilation_phase_2
 %global _python_bytecompile_extra 1
 
+# Fancy build status, so we at least know, where we are..
+# %1 where
+# %2 what
+%global build_target() \
+	export NINJA_STATUS="[%2:%f/%t] " ; \
+	../depot_tools/ninja -C '%1' -vvv '%2'
+
 # This is faster when it works, but it doesn't always.
 %ifarch aarch64
 %global use_jumbo 0
@@ -28,9 +35,9 @@
 %global useapikeys 1
 
 # Leave this alone, please.
-%global target out/Release
-%global headlesstarget out/Headless
-%global remotingtarget out/Remoting
+%global builddir out/Release
+%global headlessbuilddir out/Headless
+%global remotingbuilddir out/Remoting
 
 # Debuginfo packages aren't very useful here. If you need to debug
 # you should do a proper debug build (not implemented in this spec yet)
@@ -1414,17 +1421,17 @@ if python2 -c 'import google ; print google.__path__' 2> /dev/null ; then \
 fi
 
 tools/gn/bootstrap/bootstrap.py -v "$CHROMIUM_CORE_GN_DEFINES $CHROMIUM_BROWSER_GN_DEFINES"
-%{target}/gn --script-executable=/usr/bin/python2 gen --args="$CHROMIUM_CORE_GN_DEFINES $CHROMIUM_BROWSER_GN_DEFINES" %{target}
+%{builddir}/gn --script-executable=/usr/bin/python2 gen --args="$CHROMIUM_CORE_GN_DEFINES $CHROMIUM_BROWSER_GN_DEFINES" %{builddir}
 
 %if %{freeworld}
 # do not need to do headless gen
 %else
 %if %{build_headless}
-%{target}/gn --script-executable=/usr/bin/python2 gen --args="$CHROMIUM_CORE_GN_DEFINES $CHROMIUM_HEADLESS_GN_DEFINES" %{headlesstarget}
+%{builddir}/gn --script-executable=/usr/bin/python2 gen --args="$CHROMIUM_CORE_GN_DEFINES $CHROMIUM_HEADLESS_GN_DEFINES" %{headlessbuilddir}
 %endif
 %endif
 
-%{target}/gn --script-executable=/usr/bin/python2 gen --args="$CHROMIUM_CORE_GN_DEFINES $CHROMIUM_BROWSER_GN_DEFINES" %{remotingtarget}
+%{builddir}/gn --script-executable=/usr/bin/python2 gen --args="$CHROMIUM_CORE_GN_DEFINES $CHROMIUM_BROWSER_GN_DEFINES" %{remotingbuilddir}
 
 %if %{bundlelibusbx}
 # no hackity hack hack
@@ -1444,34 +1451,36 @@ sed -i.orig -e 's/getenv("CHROME_VERSION_EXTRA")/"Fedora Project"/' $FILE
 . /opt/rh/devtoolset-%{dts_version}/enable
 %endif
 
-echo 
+echo
 # Now do the full browser
 %if 0%{freeworld}
-../depot_tools/ninja -C %{target} -vvv media
+%build_target %{builddir} media
 %else
 %if %{build_headless}
-# Do headless first.  
-../depot_tools/ninja -C %{headlesstarget} -vvv headless_shell
+# Do headless first.
+%build_target %{headlessbuilddir} headless_shell
 %endif
 
-../depot_tools/ninja -C %{target} -vvv chrome chrome_sandbox chromedriver clear_key_cdm policy_templates
+%build_target %{builddir} chrome
+%build_target %{builddir} chrome_sandbox
+%build_target %{builddir} chromedriver
+%build_target %{builddir} clear_key_cdm
+%build_target %{builddir} policy_templates
 
 # remote client
-pushd remoting
-
-# ../../depot_tools/ninja -C ../%{target} -vvv remoting_me2me_host remoting_start_host remoting_it2me_native_messaging_host remoting_me2me_native_messaging_host remoting_native_messaging_manifests remoting_resources
-../../depot_tools/ninja -C ../%{remotingtarget} -vvv remoting_all
+# ../../depot_tools/ninja -C ../%{builddir} -vvv remoting_me2me_host remoting_start_host remoting_it2me_native_messaging_host remoting_me2me_native_messaging_host remoting_native_messaging_manifests remoting_resources
+%build_target %{remotingbuilddir} remoting_all
 %if 0%{?build_remoting_app}
 %if 0%{?nacl}
-GOOGLE_CLIENT_ID_REMOTING_IDENTITY_API=%{chromoting_client_id} ../../depot_tools/ninja -vv -C ../out/Release/ remoting_webapp
+export GOOGLE_CLIENT_ID_REMOTING_IDENTITY_API=%{chromoting_client_id}
+%build_target %{builddir} remoting_webapp
 %endif
 %endif
-popd
 
 %endif
 
 # Nuke nacl/pnacl bits at the end of the build
-rm -rf out/Release/gen/sdk
+rm -rf %{builddir}/gen/sdk
 rm -rf native_client/toolchain
 rm -rf third_party/llvm-build/*
 
@@ -1481,7 +1490,7 @@ rm -rf %{buildroot}
 %if 0%{freeworld}
 mkdir -p %{buildroot}%{chromium_path}
 
-pushd %{target}
+pushd %{builddir}
 cp -a libffmpeg.so* %{buildroot}%{chromium_path}
 cp -a libmedia.so* %{buildroot}%{chromium_path}
 mv %{buildroot}%{chromium_path}/libffmpeg.so{,.%{lsuffix}}
@@ -1510,7 +1519,7 @@ sed -i "s|@@EXTRA_FLAGS@@|$EXTRA_FLAGS|g" %{buildroot}%{chromium_path}/%{chromiu
 ln -s %{chromium_path}/%{chromium_browser_channel}.sh %{buildroot}%{_bindir}/%{chromium_browser_channel}
 mkdir -p %{buildroot}%{_mandir}/man1/
 
-pushd %{target}
+pushd %{builddir}
 cp -a *.pak locales resources icudtl.dat %{buildroot}%{chromium_path}
 %if 0%{?nacl}
 cp -a nacl_helper* *.nexe pnacl tls_edit %{buildroot}%{chromium_path}
@@ -1561,7 +1570,7 @@ popd
 %endif
 popd
 
-pushd %{remotingtarget}
+pushd %{remotingbuilddir}
 
 # See remoting/host/installer/linux/Makefile for logic
 cp -a remoting_native_messaging_host %{buildroot}%{crd_path}/native-messaging-host
@@ -1604,7 +1613,7 @@ cp -a remoting_client_plugin_newlib.* %{buildroot}%{chromium_path}
 %endif
 
 %if %{build_headless}
-pushd %{headlesstarget}
+pushd %{headlessbuilddir}
 cp -a headless_lib.pak headless_shell %{buildroot}%{chromium_path}
 popd
 %endif
