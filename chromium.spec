@@ -1234,6 +1234,7 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/openh264' \
 %endif
 	'third_party/openscreen' \
+	'third_party/openscreen/src/third_party/tinycbor' \
 	'third_party/opus' \
 	'third_party/one_euro_filter' \
 	'third_party/ots' \
