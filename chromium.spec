@@ -862,8 +862,6 @@ udev.
 %patch100 -p1 -b .kmaxskip
 %patch101 -p1 -b .epel7
 %patch102 -p1 -b .el7-noexcept
-# Revert patch58 because it's breaking the build on el7
-%patch58 -R -p1
 %endif
 
 # Feature specific patches
