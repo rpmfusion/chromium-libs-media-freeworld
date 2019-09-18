@@ -300,7 +300,7 @@ Patch100:	chromium-62.0.3202.62-kmaxskip-constexpr.patch
 # Use lstdc++ on EPEL7 only
 Patch101:	chromium-75.0.3770.100-epel7-stdc++.patch
 # el7 only patch
-Patch102:	chromium-76.0.3809.100-el7-noexcept.patch
+Patch102:	chromium-77.0.3865.75-el7-noexcept.patch
 
 # In file included from ../linux/directory.c:21:
 # In file included from ../../../../native_client/src/nonsfi/linux/abi_conversion.h:20:
