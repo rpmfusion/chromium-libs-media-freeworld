@@ -58,6 +58,18 @@ diff -up chromium-77.0.3865.75/components/history/core/browser/history_types.h.e
    ~QueryURLResult();
  
    // Indicates whether the call to HistoryBackend::QueryURL was successfull
+diff -up chromium-77.0.3865.75/components/history/core/browser/url_row.cc.el7-noexcept chromium-77.0.3865.75/components/history/core/browser/url_row.cc
+--- chromium-77.0.3865.75/components/history/core/browser/url_row.cc.el7-noexcept	2019-09-18 08:03:25.458138423 +0200
++++ chromium-77.0.3865.75/components/history/core/browser/url_row.cc	2019-09-18 08:03:34.363234155 +0200
+@@ -26,7 +26,7 @@ URLRow::~URLRow() {
+ }
+ 
+ URLRow& URLRow::operator=(const URLRow& other) = default;
+-URLRow& URLRow::operator=(URLRow&& other) noexcept = default;
++URLRow& URLRow::operator=(URLRow&& other) = default;
+ 
+ void URLRow::Swap(URLRow* other) {
+   std::swap(id_, other->id_);
 diff -up chromium-77.0.3865.75/components/omnibox/browser/suggestion_answer.cc.el7-noexcept chromium-77.0.3865.75/components/omnibox/browser/suggestion_answer.cc
 --- chromium-77.0.3865.75/components/omnibox/browser/suggestion_answer.cc.el7-noexcept	2019-09-17 22:00:18.670108528 +0200
 +++ chromium-77.0.3865.75/components/omnibox/browser/suggestion_answer.cc	2019-09-17 22:00:32.518272148 +0200
