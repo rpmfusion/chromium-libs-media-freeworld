@@ -182,8 +182,8 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 %else
 Name:		chromium%{chromium_channel}
 %endif
-Version:	%{majorversion}.0.3865.75
-Release:	2%{?dist}
+Version:	%{majorversion}.0.3865.90
+Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -1902,6 +1902,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Thu Sep 19 2019 Tomas Popela <tpopela@redhat.com> - 77.0.3865.90-1
+- Update to 77.0.3865.90
+
 * Mon Sep 16 2019 Tomas Popela <tpopela@redhat.com> - 77.0.3865.75-2
 - Update the list of private libraries
 
