@@ -70,31 +70,10 @@
 # If we build with shared on, then chrome-remote-desktop depends on chromium libs.
 # If we build with shared off, then users cannot swap out libffmpeg (and i686 gets a lot harder to build)
 %global shared 1
-# We should not need to turn this on. The app in the webstore _should_ work.
-%global build_remoting_app 0
 
 # AddressSanitizer mode
 # https://www.chromium.org/developers/testing/addresssanitizer
 %global asan 0
-
-# nacl/pnacl are soon to be dead. We're just killing them off early.
-%global killnacl 1
-
-%if 0%{?killnacl}
- %global nacl 0
- %global nonacl 1
-%else
-# TODO: Try arm (nacl disabled)
-%if 0%{?fedora}
- %ifarch i686
- %global nacl 0
- %global nonacl 1
- %else
- %global nacl 1
- %global nonacl 0
- %endif
-%endif
-%endif
 
 %if 0
 # Chromium's fork of ICU is now something we can't unbundle.
@@ -302,16 +281,6 @@ Patch101:	chromium-75.0.3770.100-epel7-stdc++.patch
 # el7 only patch
 Patch102:	chromium-77.0.3865.75-el7-noexcept.patch
 
-# In file included from ../linux/directory.c:21:
-# In file included from ../../../../native_client/src/nonsfi/linux/abi_conversion.h:20:
-# ../../../../native_client/src/nonsfi/linux/linux_syscall_structs.h:44:13: error: GNU-style inline assembly is disabled
-#     __asm__ __volatile__("mov %%gs, %0" : "=r"(gs));
-#             ^
-# 1 error generated.
-Patch200:		chromium-47.0.2526.80-pnacl-fgnu-inline-asm.patch
-# Ignore broken nacl open fd counter
-Patch201:		chromium-47.0.2526.80-nacl-ignore-broken-fd-counter.patch
-
 # Enable VAAPI support on Linux
 # NOTE: This patch will never land upstream
 Patch202:	enable-vaapi.patch
@@ -419,24 +388,6 @@ BuildRequires: libappstream-glib
 # gn needs these
 BuildRequires:  libstdc++-static
 BuildRequires:	libstdc++-devel, openssl-devel
-%if 0%{?nacl}
-BuildRequires:	nacl-gcc, nacl-binutils, nacl-newlib
-BuildRequires:	nacl-arm-gcc, nacl-arm-binutils, nacl-arm-newlib
-# pNaCl needs this monster
-# It's possible that someday this dep will stabilize, but 
-# right now, it needs to be updated everytime chromium bumps
-# a major version.
-BuildRequires:	chromium-native_client >= 52.0.2743.82
-BuildRequires:	clang
-BuildRequires:	llvm
-%ifarch x86_64
-# Really, this is what we want:
-# BuildRequires:  glibc-devel(x86-32) libgcc(x86-32)
-# But, koji only offers glibc32. Maybe that's enough.
-# This BR will pull in either glibc.i686 or glibc32.
-BuildRequires:	/lib/libc.so.6 /usr/lib/libc.so
-%endif
-%endif
 # Fedora tries to use system libs whenever it can.
 BuildRequires:	bzip2-devel
 BuildRequires:	dbus-glib-devel
@@ -874,11 +825,6 @@ udev.
 %endif
 
 # Feature specific patches
-%if ! 0%{?killnacl}
-%patch200 -p1 -b .gnu-inline
-%patch201 -p1 -b .ignore-fd-count
-%endif
-
 %if %{use_vaapi}
 %patch202 -p1 -b .vaapi
 %ifarch i686
@@ -906,101 +852,6 @@ export AR="ar"
 export RANLIB="ranlib"
 
 rm -rf buildtools/third_party/libc++/BUILD.gn
-
-%if 0%{?nacl}
-# prep the nacl tree
-mkdir -p out/Release/gen/sdk/linux_x86/nacl_x86_newlib
-cp -a --no-preserve=context /usr/%{_arch}-nacl/* out/Release/gen/sdk/linux_x86/nacl_x86_newlib
-
-mkdir -p out/Release/gen/sdk/linux_x86/nacl_arm_newlib
-cp -a --no-preserve=context /usr/arm-nacl/* out/Release/gen/sdk/linux_x86/nacl_arm_newlib
-
-# Not sure if we need this or not, but better safe than sorry.
-pushd out/Release/gen/sdk/linux_x86
-ln -s nacl_x86_newlib nacl_x86_newlib_raw
-ln -s nacl_arm_newlib nacl_arm_newlib_raw
-popd
-
-mkdir -p out/Release/gen/sdk/linux_x86/nacl_x86_newlib/bin
-pushd out/Release/gen/sdk/linux_x86/nacl_x86_newlib/bin
-ln -s /usr/bin/x86_64-nacl-gcc gcc
-ln -s /usr/bin/x86_64-nacl-gcc x86_64-nacl-gcc
-ln -s /usr/bin/x86_64-nacl-g++ g++
-ln -s /usr/bin/x86_64-nacl-g++ x86_64-nacl-g++
-# ln -s /usr/bin/x86_64-nacl-ar ar
-ln -s /usr/bin/x86_64-nacl-ar x86_64-nacl-ar
-# ln -s /usr/bin/x86_64-nacl-as as
-ln -s /usr/bin/x86_64-nacl-as x86_64-nacl-as
-# ln -s /usr/bin/x86_64-nacl-ranlib ranlib
-ln -s /usr/bin/x86_64-nacl-ranlib x86_64-nacl-ranlib
-# Cleanups
-rm addr2line
-ln -s /usr/bin/x86_64-nacl-addr2line addr2line
-rm c++filt
-ln -s /usr/bin/x86_64-nacl-c++filt c++filt
-rm gprof
-ln -s /usr/bin/x86_64-nacl-gprof gprof
-rm readelf
-ln -s /usr/bin/x86_64-nacl-readelf readelf
-rm size
-ln -s /usr/bin/x86_64-nacl-size size
-rm strings
-ln -s /usr/bin/x86_64-nacl-strings strings
-popd
-
-mkdir -p out/Release/gen/sdk/linux_x86/nacl_arm_newlib/bin
-pushd out/Release/gen/sdk/linux_x86/nacl_arm_newlib/bin
-ln -s /usr/bin/arm-nacl-gcc gcc
-ln -s /usr/bin/arm-nacl-gcc arm-nacl-gcc
-ln -s /usr/bin/arm-nacl-g++ g++
-ln -s /usr/bin/arm-nacl-g++ arm-nacl-g++
-ln -s /usr/bin/arm-nacl-ar arm-nacl-ar
-ln -s /usr/bin/arm-nacl-as arm-nacl-as
-ln -s /usr/bin/arm-nacl-ranlib arm-nacl-ranlib
-popd
-
-touch out/Release/gen/sdk/linux_x86/nacl_x86_newlib/stamp.untar out/Release/gen/sdk/linux_x86/nacl_x86_newlib/stamp.prep
-touch out/Release/gen/sdk/linux_x86/nacl_x86_newlib/nacl_x86_newlib.json
-touch out/Release/gen/sdk/linux_x86/nacl_arm_newlib/stamp.untar out/Release/gen/sdk/linux_x86/nacl_arm_newlib/stamp.prep
-touch out/Release/gen/sdk/linux_x86/nacl_arm_newlib/nacl_arm_newlib.json
-
-pushd out/Release/gen/sdk/linux_x86/
-mkdir -p pnacl_newlib pnacl_translator
-# Might be able to do symlinks here, but eh.
-cp -a --no-preserve=context /usr/pnacl_newlib/* pnacl_newlib/
-cp -a --no-preserve=context /usr/pnacl_translator/* pnacl_translator/
-for i in lib/libc.a lib/libc++.a lib/libg.a lib/libm.a; do
-	/usr/pnacl_newlib/bin/pnacl-ranlib pnacl_newlib/x86_64_bc-nacl/$i
-	/usr/pnacl_newlib/bin/pnacl-ranlib pnacl_newlib/i686_bc-nacl/$i
-	/usr/pnacl_newlib/bin/pnacl-ranlib pnacl_newlib/le32-nacl/$i
-done
-
-for i in lib/libpthread.a lib/libnacl.a; do
-	/usr/pnacl_newlib/bin/pnacl-ranlib pnacl_newlib/le32-nacl/$i
-done
-
-for i in lib/clang/3.7.0/lib/x86_64_bc-nacl/libpnaclmm.a lib/clang/3.7.0/lib/i686_bc-nacl/libpnaclmm.a; do
-	/usr/pnacl_newlib/bin/pnacl-ranlib pnacl_newlib/$i
-done
-
-for i in lib/clang/3.7.0/lib/le32-nacl/libpnaclmm.a lib/clang/3.7.0/lib/le32-nacl/libgcc.a; do
-	/usr/pnacl_newlib/bin/pnacl-ranlib pnacl_newlib/$i
-done
-
-popd
-
-mkdir -p native_client/toolchain/.tars/linux_x86
-touch native_client/toolchain/.tars/linux_x86/pnacl_translator.json
-
-pushd native_client/toolchain
-ln -s ../../out/Release/gen/sdk/linux_x86 linux_x86
-popd
-
-mkdir -p third_party/llvm-build/Release+Asserts/bin
-pushd third_party/llvm-build/Release+Asserts/bin
-ln -s /usr/bin/clang clang
-popd
-%endif
 
 # Unpack fonts
 %if %{freeworld}
@@ -1072,9 +923,7 @@ export CHROMIUM_CORE_GN_DEFINES
 
 CHROMIUM_BROWSER_GN_DEFINES=""
 CHROMIUM_BROWSER_GN_DEFINES+=' use_gio=true use_pulseaudio=true icu_use_data_file=true'
-%if 0%{?nonacl}
 CHROMIUM_BROWSER_GN_DEFINES+=' enable_nacl=false'
-%endif
 %if 0%{?shared}
 CHROMIUM_BROWSER_GN_DEFINES+=' is_component_ffmpeg=true is_component_build=true'
 %else
@@ -1236,9 +1085,6 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/libwebm' \
 	'third_party/libwebp' \
 	'third_party/libyuv' \
-%if 0%{?nacl}
-	'third_party/llvm-build' \
-%endif
 	'third_party/lss' \
 	'third_party/lzma_sdk' \
 %if 0%{?bundlepylibs}
@@ -1471,19 +1317,7 @@ echo
 # remote client
 # ../../depot_tools/ninja -C ../%{builddir} -vvv remoting_me2me_host remoting_start_host remoting_it2me_native_messaging_host remoting_me2me_native_messaging_host remoting_native_messaging_manifests remoting_resources
 %build_target %{remotingbuilddir} remoting_all
-%if 0%{?build_remoting_app}
-%if 0%{?nacl}
-export GOOGLE_CLIENT_ID_REMOTING_IDENTITY_API=%{chromoting_client_id}
-%build_target %{builddir} remoting_webapp
 %endif
-%endif
-
-%endif
-
-# Nuke nacl/pnacl bits at the end of the build
-rm -rf %{builddir}/gen/sdk
-rm -rf native_client/toolchain
-rm -rf third_party/llvm-build/*
 
 %install
 rm -rf %{buildroot}
@@ -1522,10 +1356,6 @@ mkdir -p %{buildroot}%{_mandir}/man1/
 
 pushd %{builddir}
 cp -a *.pak locales resources icudtl.dat %{buildroot}%{chromium_path}
-%if 0%{?nacl}
-cp -a nacl_helper* *.nexe pnacl tls_edit %{buildroot}%{chromium_path}
-chmod -x %{buildroot}%{chromium_path}/nacl_helper_bootstrap* *.nexe
-%endif
 # Reasonably sure we don't need this anymore. Chrome doesn't include it.
 %if 0
 cp -a protoc pyproto %{buildroot}%{chromium_path}
@@ -1606,12 +1436,6 @@ mkdir -p %{buildroot}%{_sysconfdir}/pam.d/
 pushd %{buildroot}%{_sysconfdir}/pam.d/
 ln -s system-auth chrome-remote-desktop
 popd
-
-%if 0%{?build_remoting_app}
-%if 0%{?nacl}
-cp -a remoting_client_plugin_newlib.* %{buildroot}%{chromium_path}
-%endif
-%endif
 
 %if %{build_headless}
 pushd %{headlessbuilddir}
@@ -1753,12 +1577,6 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %ifarch x86_64 i686 aarch64
 %{chromium_path}/swiftshader/
 %endif
-%if 0%{?nacl}
-%{chromium_path}/nacl_helper*
-%{chromium_path}/*.nexe
-%{chromium_path}/pnacl/
-%{chromium_path}/tls_edit
-%endif
 %dir %{chromium_path}/PepperFlash/
 %if 0
 %{chromium_path}/protoc
@@ -1872,11 +1690,6 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 %{crd_path}/user-session
 %{_unitdir}/chrome-remote-desktop@.service
 /var/lib/chrome-remote-desktop/
-%if 0%{?build_remoting_app}
-%if 0%{?nacl}
-%{chromium_path}/remoting_client_plugin_newlib.*
-%endif
-%endif
 
 %files -n chromedriver
 %doc AUTHORS
