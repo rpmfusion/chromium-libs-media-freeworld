@@ -164,114 +164,61 @@ Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
 
 ### Chromium Fedora Patches ###
-Patch0:		chromium-67.0.3396.62-gcc5.patch
-Patch1:		chromium-45.0.2454.101-linux-path-max.patch
-Patch2:		chromium-55.0.2883.75-addrfix.patch
-Patch3:		chromium-72.0.3626.121-notest.patch
-# Use libusb_interrupt_event_handler from current libusbx (1.0.21-0.1.git448584a)
-Patch4:		chromium-76.0.3809.100-libusb_interrupt_event_handler.patch
-# Use PIE in the Linux sandbox (from openSUSE via Russian Fedora)
-Patch6:		chromium-70.0.3538.67-sandbox-pie.patch
+Patch0:		chromium-70.0.3538.67-sandbox-pie.patch
 # Use /etc/chromium for master_prefs
-Patch7:		chromium-68.0.3440.106-master-prefs-path.patch
+Patch1:		chromium-68.0.3440.106-master-prefs-path.patch
 # Use gn system files
-Patch8:		chromium-67.0.3396.62-gn-system.patch
-# Fix issue where timespec is not defined when sys/stat.h is included.
-Patch9:		chromium-53.0.2785.92-boringssl-time-fix.patch
-# I wouldn't have to do this if there was a standard way to append extra compiler flags
-Patch10:	chromium-63.0.3289.84-nullfix.patch
-# Add explicit includedir for jpeglib.h
-Patch11:	chromium-54.0.2840.59-jpeg-include-dir.patch
-# On i686, pass --no-keep-memory --reduce-memory-overheads to ld.
-Patch12:	chromium-59.0.3071.86-i686-ld-memory-tricks.patch
+Patch2:		chromium-67.0.3396.62-gn-system.patch
 # Revert https://chromium.googlesource.com/chromium/src/+/b794998819088f76b4cf44c8db6940240c563cf4%5E%21/#F0
 # https://bugs.chromium.org/p/chromium/issues/detail?id=712737
 # https://bugzilla.redhat.com/show_bug.cgi?id=1446851
-Patch13:	chromium-58.0.3029.96-revert-b794998819088f76b4cf44c8db6940240c563cf4.patch
-# Correctly compile the stdatomic.h in ffmpeg with gcc 4.8
-Patch14:	chromium-64.0.3282.119-ffmpeg-stdatomic.patch
-# Nacl can't die soon enough
-Patch15:	chromium-66.0.3359.117-system-clang.patch
+Patch3:		chromium-58.0.3029.96-revert-b794998819088f76b4cf44c8db6940240c563cf4.patch
 # Do not prefix libpng functions
-Patch16:	chromium-60.0.3112.78-no-libpng-prefix.patch
+Patch4:		chromium-60.0.3112.78-no-libpng-prefix.patch
 # Do not mangle libjpeg
-Patch17:	chromium-60.0.3112.78-jpeg-nomangle.patch
+Patch5:		chromium-60.0.3112.78-jpeg-nomangle.patch
 # Do not mangle zlib
-Patch18:	chromium-77.0.3865.75-no-zlib-mangle.patch
-# Fix libavutil include pathing to find arch specific timer.h
-# For some reason, this only fails on aarch64. No idea why.
-Patch19:	chromium-60.0.3112.113-libavutil-timer-include-path-fix.patch
-# from gentoo
-Patch20:	chromium-77.0.3865.75-gcc-no-opt-safe-math.patch
-# From gentoo
-Patch21:	chromium-77.0.3865.75-gcc5-r3.patch
-# To use round with gcc, you need to #include <cmath>
-Patch22:	chromium-65.0.3325.146-gcc-round-fix.patch
-# Include proper headers to invoke memcpy()
-Patch23:	chromium-65.0.3325.146-memcpy-fix.patch
-# ../../mojo/public/cpp/bindings/associated_interface_ptr_info.h:48:43: error: cannot convert 'const mojo::ScopedInterfaceEndpointHandle' to 'bool' in return
-Patch24:	chromium-77.0.3865.75-boolfix.patch
-# From Debian
-Patch25:	chromium-71.0.3578.98-skia-aarch64-buildfix.patch
+Patch6:		chromium-77.0.3865.75-no-zlib-mangle.patch
 # Do not use unrar code, it is non-free
-Patch27:	chromium-73.0.3683.75-norar.patch
-# Upstream GCC fixes
-Patch28:	chromium-66.0.3359.117-GCC-fully-declare-ConfigurationPolicyProvider.patch
-# Add "Fedora" to the user agent string
-Patch29:	chromium-77.0.3865.75-fedora-user-agent.patch
-# Try to fix version.py for Rawhide
-Patch30:	chromium-71.0.3578.98-py2-bootstrap.patch
-# Fix default on redeclaration error
-# https://chromium.googlesource.com/chromium/src/+/122692ccee62223f266a988c575ae687e3f4c056%5E%21/#F0
-Patch31:	chromium-68.0.3440.106-fix-default-on-redeclaration.patch
+Patch7:		chromium-73.0.3683.75-norar.patch
 # Use Gentoo's Widevine hack
 # https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-widevine-r3.patch
-Patch32:	chromium-71.0.3578.98-widevine-r3.patch
-# Do not require sysroot
-# Forget about trying to make libc++
-# BUILD SANELY PLEASE
-Patch33:	chromium-69.0.3497.81-build-sanely-please.patch
+Patch8:		chromium-71.0.3578.98-widevine-r3.patch
 # Disable fontconfig cache magic that breaks remoting
-Patch34:	chromium-70.0.3538.67-disable-fontconfig-cache-magic.patch
-# Fix aarch64 build against latest linux kernel headers
-Patch35:	chromium-70.0.3538.77-aarch64-arch-want-new-stat.patch
+Patch9:		chromium-70.0.3538.67-disable-fontconfig-cache-magic.patch
 # drop rsp clobber, which breaks gcc9 (thanks to Jeff Law)
-Patch36:	chromium-71.0.3578.98-gcc9-drop-rsp-clobber.patch
+Patch10:	chromium-71.0.3578.98-gcc9-drop-rsp-clobber.patch
 # Try to load widevine from other places
-Patch37:	chromium-widevine-other-locations.patch
-# Disable -fno-delete-null-pointer-checks
-Patch38:	chromium-73.0.3683.75-disable-fno-delete-null-pointer-checks.patch
-# Linux 5.2 defines SIOCGSTAMP in a slightly different way, so we need to teach chromium where to find it
-Patch41:	chromium-75.0.3770.80-SIOCGSTAMP.patch
-# Revert https://chromium.googlesource.com/chromium/src/+/daff6b66faae53a0cefb88987c9ff4843629b728%5E%21/#F0
-# It might make clang happy but it breaks gcc. F*** clang.
-Patch43:	chromium-75.0.3770.80-revert-daff6b.patch
+Patch11:	chromium-widevine-other-locations.patch
+# Try to fix version.py for Rawhide
+Patch12:	chromium-71.0.3578.98-py2-bootstrap.patch
+# Add "Fedora" to the user agent string
+Patch13:	chromium-77.0.3865.75-fedora-user-agent.patch
+
 # rename function to avoid conflict with rawhide glibc "gettid()"
-Patch45:	chromium-75.0.3770.80-grpc-gettid-fix.patch
+Patch50:	chromium-75.0.3770.80-grpc-gettid-fix.patch
 # In GCC one can't use alignas() for exported classes
 # https://chromium.googlesource.com/chromium/src.git/+/8148fd96ae04a1150a9c6012634dcd2a7335f87a
-Patch61:	chromium-76.0.3809.100-gcc-no-alignas-and-export.patch
+Patch51:	chromium-76.0.3809.100-gcc-no-alignas-and-export.patch
 # Needs to be submitted..
-Patch62:	chromium-76.0.3809.100-gcc-remoting-constexpr.patch
+Patch52:	chromium-76.0.3809.100-gcc-remoting-constexpr.patch
 # Needs to be submitted.. (ugly hack, needs to be added properly to GN files)
-Patch63:	chromium-76.0.3809.100-vtable-symbol-undefined.patch
+Patch53:	chromium-76.0.3809.100-vtable-symbol-undefined.patch
 # https://chromium.googlesource.com/chromium/src.git/+/3c9720245e440c4b7222f8348d2a2a3c25e098ae
-Patch64:	chromium-77.0.3865.75-certificate-transparency.patch
+Patch54:	chromium-77.0.3865.75-certificate-transparency.patch
 # https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-unbundle-zlib.patch
-Patch65:	chromium-77.0.3865.75-unbundle-zlib.patch
+Patch55:	chromium-77.0.3865.75-unbundle-zlib.patch
 # Needs to be submitted..
-Patch66:	chromium-77.0.3865.75-gcc-include-memory.patch
-# Needs to be submitted..
-Patch67:	chromium-77.0.3865.75-base-gcc-no-alignas.patch
+Patch56:	chromium-77.0.3865.75-gcc-include-memory.patch
+# https://chromium.googlesource.com/chromium/src/+/6b633c4b14850df376d5cec571699018772f358e
+Patch57:	chromium-77.0.3865.75-base-gcc-no-alignas.patch
 # https://chromium.googlesource.com/chromium/src/+/27e25336b8316ff3ec4e464058682ed85801fd06
-Patch68:	chromium-77.0.3865.75-harfbuzz-subset.patch
+Patch58:	chromium-77.0.3865.75-harfbuzz-subset.patch
 # https://chromium.googlesource.com/chromium/src.git/+/f08cb0022527081c078e8b96062e6c9b4fbda151
-Patch69:	chromium-77.0.3865.75-gcc-abstract-class.patch
+Patch59:	chromium-77.0.3865.75-gcc-abstract-class.patch
 # https://chromium.googlesource.com/chromium/src/+/5baf7df7f4c5971dab552897eeef94b194650ce5
-Patch70:	chromium-77.0.3865.75-missing-limits.patch
+Patch60:	chromium-77.0.3865.75-missing-limits.patch
 
-# Apply these changes to work around EPEL7 compiler issues
-Patch100:	chromium-62.0.3202.62-kmaxskip-constexpr.patch
 # Use lstdc++ on EPEL7 only
 Patch101:	chromium-75.0.3770.100-epel7-stdc++.patch
 # el7 only patch
@@ -757,60 +704,40 @@ udev.
 %setup -q -n chromium-%{version}
 
 ### Chromium Fedora Patches ###
-%patch0 -p1 -b .gcc5
-%patch1 -p1 -b .pathmax
-%patch2 -p1 -b .addrfix
-%patch3 -p1 -b .notest
-%patch4 -p1 -b .modern-libusbx
-%patch6 -p1 -b .sandboxpie
-%patch7 -p1 -b .etc
-%patch8 -p1 -b .gnsystem
-%patch9 -p1 -b .timefix
-%patch10 -p1 -b .nullfix
-%patch11 -p1 -b .jpegfix
-%patch12 -p1 -b .ldmemory
-%patch13 -p1 -b .revert
-%patch14 -p1 -b .ffmpeg-stdatomic
-%patch15 -p1 -b .system-clang
-%patch16 -p1 -b .noprefix
-%patch17 -p1 -b .nomangle
-%patch18 -p1 -b .nozmangle
-%patch19 -p1 -b .pathfix
-%patch20 -p1 -b .nogccoptmath
-%patch21 -p1 -b .gcc5-r3
-%patch22 -p1 -b .gcc-round-fix
-%patch23 -p1 -b .memcpyfix
-%patch24 -p1 -b .boolfix
-#%patch25 -p1 -b .aarch64fix
-%patch27 -p1 -b .nounrar
-%patch28 -p1 -b .gcc-cpolicyprovider
-%patch29 -p1 -b .fedora-user-agent
-%patch30 -p1 -b .py2
-%patch31 -p1 -b .fix-default-redeclaration
-%patch32 -p1 -b .wvhack
-%patch33 -p1 -b .sanebuild
-%patch34 -p1 -b .nofc
-%patch35 -p1 -b .aarch64-new-stat
-%patch36 -p1 -b .gcc9
-%patch37 -p1 -b .widevine-other-locations
-%patch38 -p1 -b .disable-ndnpc
-%patch41 -p1 -b .SIOCGSTAMP
-%patch43 -p1 -b .revert-daff6b
-%patch45 -p1 -b .gettid-fix
-%patch61 -p1 -b .gcc-no-alignas-and-export
-%patch62 -p1 -b .gcc-remoting-constexpr
-%patch63 -p1 -b .vtable-symbol-undefined
-%patch64 -p1 -b .certificate-transparency
-%patch65 -p1 -b .unbundle-zlib
-%patch66 -p1 -b .gcc-include-memory
-%patch67 -p1 -b .base-gcc-no-alignas
-%patch68 -p1 -b .harfbuzz-subset
-%patch69 -p1 -b .gcc-abstract-class
-%patch70 -p1 -b .missing-limits
+%patch0 -p1 -b .sandboxpie
+%patch1 -p1 -b .etc
+%patch2 -p1 -b .gnsystem
+%patch3 -p1 -b .revert
+%patch4 -p1 -b .nolibpngprefix
+%patch5 -p1 -b .nolibjpegmangle
+%patch6 -p1 -b .nozlibmangle
+%patch7 -p1 -b .nounrar
+%patch8 -p1 -b .widevine-hack
+%patch9 -p1 -b .nofontconfigcache
+%patch10 -p1 -b .gcc9
+%patch11 -p1 -b .widevine-other-locations
+%patch12 -p1 -b .py2
+
+# Short term fixes (usually gcc and backports)
+%patch50 -p1 -b .gettid-fix
+%patch51 -p1 -b .gcc-no-alignas-and-export
+%patch52 -p1 -b .gcc-remoting-constexpr
+%patch53 -p1 -b .vtable-symbol-undefined
+%patch54 -p1 -b .certificate-transparency
+%patch55 -p1 -b .unbundle-zlib
+%patch56 -p1 -b .gcc-include-memory
+%patch57 -p1 -b .base-gcc-no-alignas
+%patch58 -p1 -b .harfbuzz-subset
+%patch59 -p1 -b .gcc-abstract-class
+%patch60 -p1 -b .missing-limits
+
+# Fedora branded user agent
+%if 0%{?fedora}
+%patch13 -p1 -b .fedora-user-agent
+%endif
 
 # EPEL specific patches
 %if 0%{?rhel} == 7
-%patch100 -p1 -b .kmaxskip
 %patch101 -p1 -b .epel7
 %patch102 -p1 -b .el7-noexcept
 %endif
@@ -1285,6 +1212,11 @@ sed -i.orig -e 's/getenv("CHROME_VERSION_EXTRA")/"Fedora Project"/' $FILE
 %build
 %if 0%{?rhel} == 7
 . /opt/rh/devtoolset-%{dts_version}/enable
+%endif
+
+# Decrease the debuginfo verbosity, so it compiles in koji
+%ifarch %{ix86}
+%global optflags %(echo %{optflags} | sed 's/-g /-g1 /')
 %endif
 
 echo
