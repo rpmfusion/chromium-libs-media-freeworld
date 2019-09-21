@@ -177,11 +177,7 @@ BuildRequires:  libicu-devel >= 5.4
 
 %global majorversion 77
 
-%if %{freeworld}
-Name:		chromium%{chromium_channel}-libs-media%{?freeworld:-freeworld}
-%else
-Name:		chromium%{chromium_channel}
-%endif
+Name:		chromium%{chromium_channel}%{?freeworld:%{?shared:-libs-media}-freeworld}
 Version:	%{majorversion}.0.3865.90
 Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
@@ -744,7 +740,7 @@ Requires(preun): %{_sbindir}/update-alternatives
 Shared libraries used by chromium (and chrome-remote-desktop).
 
 %if %{freeworld}
-%package
+%package -n chromium-libs-media-freeworld
 Summary: Chromium media libraries built with all possible codecs
 Provides: chromium-libs-media = %{version}-%{release}
 Provides: chromium-libs-media%{_isa} = %{version}-%{release}
@@ -752,7 +748,7 @@ Requires: chromium-libs%{_isa} = %{version}
 Requires(post): %{_sbindir}/update-alternatives
 Requires(preun): %{_sbindir}/update-alternatives
 
-%description
+%description -n chromium-libs-media-freeworld
 Chromium media libraries built with all possible codecs. Chromium is an
 open-source web browser, powered by WebKit (Blink). This package replaces
 the default chromium-libs-media package, which is limited in what it
@@ -1433,9 +1429,6 @@ tools/gn/bootstrap/bootstrap.py -v "$CHROMIUM_CORE_GN_DEFINES $CHROMIUM_BROWSER_
 %{builddir}/gn --script-executable=/usr/bin/python2 gen --args="$CHROMIUM_CORE_GN_DEFINES $CHROMIUM_HEADLESS_GN_DEFINES" %{headlessbuilddir}
 %endif
 %endif
-%endif
-
-%{target}/gn --script-executable=/usr/bin/python2 gen --args="$CHROMIUM_CORE_GN_DEFINES $CHROMIUM_BROWSER_GN_DEFINES" %{remotingtarget}
 
 %{builddir}/gn --script-executable=/usr/bin/python2 gen --args="$CHROMIUM_CORE_GN_DEFINES $CHROMIUM_BROWSER_GN_DEFINES" %{remotingbuilddir}
 
@@ -1687,7 +1680,7 @@ if st and st.type == "link" then
 end
 
 %if %{freeworld}
-%posttrans
+%posttrans -n chromium-libs-media-freeworld
 %{_sbindir}/update-alternatives --install \
   %{_libdir}/chromium-browser/libffmpeg.so libffmpeg.so \
   %{_libdir}/chromium-browser/libffmpeg.so.freeworld 20 \
@@ -1698,7 +1691,7 @@ end
   --slave %{_libdir}/chromium-browser/libmedia.so.TOC libmedia.so.TOC \
           %{_libdir}/chromium-browser/libmedia.so.TOC.freeworld
 
-%preun
+%preun -n chromium-libs-media-freeworld
 if [ $1 = 0 ]; then
   %{_sbindir}/alternatives --remove libffmpeg.so \
     %{_libdir}/chromium-browser/libffmpeg.so.freeworld
@@ -1893,7 +1886,7 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 %if 0%{?shared}
 %if %{freeworld}
-%files
+%files -n chromium-libs-media-freeworld
 %else
 %files libs-media
 %endif
