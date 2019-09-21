@@ -739,21 +739,7 @@ Requires(preun): %{_sbindir}/update-alternatives
 %description libs
 Shared libraries used by chromium (and chrome-remote-desktop).
 
-%if %{freeworld}
-%package -n chromium-libs-media-freeworld
-Summary: Chromium media libraries built with all possible codecs
-Provides: chromium-libs-media = %{version}-%{release}
-Provides: chromium-libs-media%{_isa} = %{version}-%{release}
-Requires: chromium-libs%{_isa} = %{version}
-Requires(post): %{_sbindir}/update-alternatives
-Requires(preun): %{_sbindir}/update-alternatives
-
-%description -n chromium-libs-media-freeworld
-Chromium media libraries built with all possible codecs. Chromium is an
-open-source web browser, powered by WebKit (Blink). This package replaces
-the default chromium-libs-media package, which is limited in what it
-can include.
-%else
+%if ! %{freeworld}
 %package libs-media
 Summary: Shared libraries used by the chromium media subsystem
 Requires: chromium-libs%{_isa} = %{version}
