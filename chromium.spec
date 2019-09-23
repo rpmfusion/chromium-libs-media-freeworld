@@ -158,7 +158,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 Name:		chromium%{chromium_channel}
 %endif
 Version:	%{majorversion}.0.3865.90
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -218,6 +218,8 @@ Patch58:	chromium-77.0.3865.75-harfbuzz-subset.patch
 Patch59:	chromium-77.0.3865.75-gcc-abstract-class.patch
 # https://chromium.googlesource.com/chromium/src/+/5baf7df7f4c5971dab552897eeef94b194650ce5
 Patch60:	chromium-77.0.3865.75-missing-limits.patch
+# https://chromium.googlesource.com/chromium/src/+/74138b9febd37eac0fc26b8efb110014a83a52c6
+Patch61:	chromium-77.0.3865.90-linked-hash-set.patch
 
 # Use lstdc++ on EPEL7 only
 Patch101:	chromium-75.0.3770.100-epel7-stdc++.patch
@@ -730,6 +732,7 @@ udev.
 %patch58 -p1 -b .harfbuzz-subset
 %patch59 -p1 -b .gcc-abstract-class
 %patch60 -p1 -b .missing-limits
+%patch61 -p1 -b .linked-hash-set
 
 # Fedora branded user agent
 %if 0%{?fedora}
@@ -1632,6 +1635,12 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Mon Sep 23 2019 Tomas Popela <tpopela@redhat.com> - 77.0.3865.90-2
+- Fix the icon
+- Remove quite a few of downstream patches
+- Fix the crashes by backporting an upstream bug
+- Resolves: rhbz#1754179
+
 * Thu Sep 19 2019 Tomas Popela <tpopela@redhat.com> - 77.0.3865.90-1
 - Update to 77.0.3865.90
 
