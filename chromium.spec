@@ -1399,8 +1399,6 @@ mkdir -p %{buildroot}%{_datadir}/icons/hicolor/48x48/apps
 cp -a chrome/app/theme/chromium/product_logo_48.png %{buildroot}%{_datadir}/icons/hicolor/48x48/apps/%{chromium_browser_channel}.png
 mkdir -p %{buildroot}%{_datadir}/icons/hicolor/24x24/apps
 cp -a chrome/app/theme/chromium/product_logo_24.png %{buildroot}%{_datadir}/icons/hicolor/24x24/apps/%{chromium_browser_channel}.png
-mkdir -p %{buildroot}%{_datadir}/icons/hicolor/symbolic/apps
-cp -a chrome/app/theme/chromium/product_logo_22_mono.png %{buildroot}%{_datadir}/icons/hicolor/symbolic/apps/%{chromium_browser_channel}.png
 
 # Install the master_preferences file
 mkdir -p %{buildroot}%{_sysconfdir}/%{name}
