@@ -519,8 +519,8 @@ BuildRequires:	python-markupsafe
 BuildRequires:	python-ply
 %endif
 BuildRequires:	python2-simplejson
-BuildRequires:	python2-devel
 %endif
+BuildRequires:	python2-devel
 %if 0%{?bundlere2}
 # Using bundled bits, do nothing.
 %else
