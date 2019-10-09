@@ -291,9 +291,6 @@ BuildRequires:	flex
 BuildRequires:	fontconfig-devel
 BuildRequires:	GConf2-devel
 BuildRequires:	glib2-devel
-%if 0%{?fedora} <= 27
-BuildRequires:	gnome-keyring-devel
-%endif
 BuildRequires:	glibc-devel
 BuildRequires:	gperf
 %if 0%{?bundleharfbuzz}
