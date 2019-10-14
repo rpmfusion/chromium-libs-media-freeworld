@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # Copyright 2015 Tomas Popela <tpopela@redhat.com>
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -73,7 +73,7 @@ def parse_ffmpeg_gni_file(gni_path, arch_not_arm):
     sys.stderr.write("Something went wrong, no sources parsed!\n")
     sys.exit(1)
 
-  print ' '.join(output_sources)
+  print(' '.join(output_sources))
 
 
 if __name__ == "__main__":
