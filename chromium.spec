@@ -162,7 +162,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 Name:		chromium%{chromium_channel}
 %endif
 Version:	%{majorversion}.0.3865.120
-Release:	1%{?dist}
+Release:	2%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -198,7 +198,6 @@ Patch11:	chromium-widevine-other-locations.patch
 Patch12:	chromium-71.0.3578.98-py2-bootstrap.patch
 # Add "Fedora" to the user agent string
 Patch13:	chromium-77.0.3865.75-fedora-user-agent.patch
-
 # rename function to avoid conflict with rawhide glibc "gettid()"
 Patch50:	chromium-75.0.3770.80-grpc-gettid-fix.patch
 # In GCC one can't use alignas() for exported classes
@@ -239,6 +238,9 @@ Patch204:	chromium-75.0.3770.80-vaapi-libva1-compatibility.patch
 # Pulseaudio changed the API a little in 12.99.1
 Patch205:	chromium-76.0.3809.100-pulse-api-change.patch
 
+# Apply these patches to work around EPEL8 issues
+Patch300:	chromium-76.0.3809.132-rhel8-force-disable-use_gnome_keyring.patch
+
 # Use chromium-latest.py to generate clean tarball from released build tarballs, found here:
 # http://build.chromium.org/buildbot/official/
 # For Chromium Fedora use chromium-latest.py --stable --ffmpegclean --ffmpegarm
@@ -270,8 +272,8 @@ Source15:	http://download.savannah.nongnu.org/releases/freebangfont/MuktiNarrow-
 Source16:	https://github.com/web-platform-tests/wpt/raw/master/fonts/Ahem.ttf
 Source17:	GardinerModBug.ttf
 Source18:	GardinerModCat.ttf
-# RHEL needs newer nodejs
-%if 0%{?rhel}
+# RHEL 7 needs newer nodejs
+%if 0%{?rhel} == 7
 Source19:	node-v8.9.1-linux-x64.tar.gz
 %endif
 
@@ -289,9 +291,6 @@ BuildRequires:	flex
 BuildRequires:	fontconfig-devel
 BuildRequires:	GConf2-devel
 BuildRequires:	glib2-devel
-%if 0%{?fedora} <= 27
-BuildRequires:	gnome-keyring-devel
-%endif
 BuildRequires:	glibc-devel
 BuildRequires:	gperf
 %if 0%{?bundleharfbuzz}
@@ -319,7 +318,9 @@ BuildRequires:	minizip-compat-devel
 BuildRequires:	minizip-devel
 %endif
 # RHEL 7's nodejs is too old
-%if 0%{?fedora}
+%if 0%{?rhel} == 7
+# Use bundled.
+%else
 BuildRequires:	nodejs
 %endif
 BuildRequires:	nss-devel >= 3.26
@@ -434,7 +435,9 @@ BuildRequires:	re2-devel >= 20160401
 BuildRequires:	speech-dispatcher-devel
 BuildRequires:	yasm
 BuildRequires:	zlib-devel
+%if 0%{?rhel} < 8
 BuildRequires:	pkgconfig(gnome-keyring-1)
+%endif
 # remote desktop needs this
 BuildRequires:	pam-devel
 BuildRequires:	systemd
@@ -442,7 +445,7 @@ BuildRequires:	systemd
 %if %{freeworld}
 # dont need fonts for this
 %else
-%if 0%{?rhel} == 7
+%if 0%{?rhel} >= 7
 Source100:      https://github.com/google/fonts/blob/master/apache/arimo/Arimo-Bold.ttf
 Source101:	https://github.com/google/fonts/blob/master/apache/arimo/Arimo-BoldItalic.ttf
 Source102:	https://github.com/google/fonts/blob/master/apache/arimo/Arimo-Italic.ttf
@@ -455,12 +458,15 @@ Source108:	https://github.com/google/fonts/blob/master/apache/tinos/Tinos-Bold.t
 Source109:	https://github.com/google/fonts/blob/master/apache/tinos/Tinos-BoldItalic.ttf
 Source110:	https://github.com/google/fonts/blob/master/apache/tinos/Tinos-Italic.ttf
 Source111:	https://github.com/google/fonts/blob/master/apache/tinos/Tinos-Regular.ttf
-Source112:	https://releases.pagure.org/lohit/lohit-gurmukhi-ttf-2.91.2.tar.gz
-Source113:	https://noto-website-2.storage.googleapis.com/pkgs/NotoSansCJKjp-hinted.zip
 %else
 BuildRequires:	google-croscore-arimo-fonts
 BuildRequires:	google-croscore-cousine-fonts
-BuildRequires:  google-croscore-tinos-fonts
+BuildRequires:	google-croscore-tinos-fonts
+%endif
+%if 0%{?rhel} == 7
+Source112:	https://releases.pagure.org/lohit/lohit-gurmukhi-ttf-2.91.2.tar.gz
+Source113:	https://noto-website-2.storage.googleapis.com/pkgs/NotoSansCJKjp-hinted.zip
+%else
 BuildRequires:  google-noto-sans-cjk-jp-fonts
 BuildRequires:  lohit-gurmukhi-fonts
 %endif
@@ -516,7 +522,7 @@ Provides:	chromium-libs = %{version}-%{release}
 Obsoletes:	chromium-libs <= %{version}-%{release}
 %endif
 
-%if 0%{?rhel}
+%if 0%{?rhel} == 7
 ExclusiveArch:  x86_64 i686
 %else
 ExclusiveArch:	x86_64 i686 aarch64
@@ -767,6 +773,10 @@ udev.
 %patch205 -p1 -b .pulseaudioapichange
 %endif
 
+%if 0%{?rhel} == 8
+%patch300 -p1 -b .disblegnomekeyring
+%endif
+
 # Change shebang in all relevant files in this directory and all subdirectories
 # See `man find` for how the `-exec command {} +` syntax works
 find -type f -exec sed -iE '1s=^#! */usr/bin/\(python\|env python\)[23]\?=#!%{__python2}=' {} +
@@ -797,7 +807,7 @@ rm -rf MuktiNarrow0.94
 cp %{SOURCE16} .
 cp %{SOURCE17} .
 cp %{SOURCE18} .
-%if 0%{?rhel} == 7
+%if 0%{?rhel} >= 7
 cp %{SOURCE100} .
 cp %{SOURCE101} .
 cp %{SOURCE102} .
@@ -810,14 +820,17 @@ cp %{SOURCE108} .
 cp %{SOURCE109} .
 cp %{SOURCE110} .
 cp %{SOURCE111} .
+%else
+cp -a /usr/share/fonts/google-croscore/Arimo-*.ttf .
+cp -a /usr/share/fonts/google-croscore/Cousine-*.ttf .
+cp -a /usr/share/fonts/google-croscore/Tinos-*.ttf .
+%endif
+%if 0%{?rhel} == 7
 tar xf %{SOURCE112}
 mv lohit-gurmukhi-ttf-2.91.2/Lohit-Gurmukhi.ttf .
 rm -rf lohit-gurmukhi-ttf-2.91.2
 unzip %{SOURCE113}
 %else
-cp -a /usr/share/fonts/google-croscore/Arimo-*.ttf .
-cp -a /usr/share/fonts/google-croscore/Cousine-*.ttf .
-cp -a /usr/share/fonts/google-croscore/Tinos-*.ttf .
 cp -a /usr/share/fonts/lohit-gurmukhi/Lohit-Gurmukhi.ttf .
 cp -a /usr/share/fonts/google-noto-cjk/NotoSansCJKjp-Regular.otf .
 %endif
@@ -848,6 +861,9 @@ CHROMIUM_CORE_GN_DEFINES+=' target_cpu="arm64"'
 %endif
 %if %{?use_jumbo}
 CHROMIUM_CORE_GN_DEFINES+=' use_jumbo_build=true jumbo_file_merge_limit=8'
+%endif
+%if 0%{?rhel} == 8
+CHROMIUM_CORE_GN_DEFINES+=' use_gnome_keyring=false use_glib=true'
 %endif
 export CHROMIUM_CORE_GN_DEFINES
 
@@ -880,7 +896,7 @@ CHROMIUM_HEADLESS_GN_DEFINES+=' use_cups=false use_dbus=false use_gio=false use_
 CHROMIUM_HEADLESS_GN_DEFINES+=' use_pulseaudio=false use_udev=false'
 export CHROMIUM_HEADLESS_GN_DEFINES
 
-%if 0%{?rhel}
+%if 0%{?rhel} == 7
 pushd third_party/node/linux
 tar xf %{SOURCE19}
 mv node-v8.9.1-linux-x64 node-linux-x64
@@ -1646,8 +1662,17 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Tue Oct 15 2019 Tom Callaway <spot@fedoraproject.org> - 77.0.3865.120-2
+- fix node handling for EPEL-8
+
 * Mon Oct 14 2019 Tomas Popela <tpopela@redhat.com> - 77.0.3865.120-1
 - Update to 77.0.3865.120
+
+* Thu Oct 10 2019 Tom Callaway <spot@fedoraproject.org> - 77.0.3865.90-4
+- enable aarch64 for EPEL-8
+
+* Wed Oct  9 2019 Tom Callaway <spot@fedoraproject.org> - 77.0.3865.90-3
+- spec cleanups and changes to make EPEL8 try to build
 
 * Mon Sep 23 2019 Tomas Popela <tpopela@redhat.com> - 77.0.3865.90-2
 - Fix the icon
