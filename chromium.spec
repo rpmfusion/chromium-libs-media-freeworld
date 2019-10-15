@@ -272,8 +272,8 @@ Source15:	http://download.savannah.nongnu.org/releases/freebangfont/MuktiNarrow-
 Source16:	https://github.com/web-platform-tests/wpt/raw/master/fonts/Ahem.ttf
 Source17:	GardinerModBug.ttf
 Source18:	GardinerModCat.ttf
-# RHEL needs newer nodejs
-%if 0%{?rhel}
+# RHEL 7 needs newer nodejs
+%if 0%{?rhel} == 7
 Source19:	node-v8.9.1-linux-x64.tar.gz
 %endif
 
@@ -318,7 +318,9 @@ BuildRequires:	minizip-compat-devel
 BuildRequires:	minizip-devel
 %endif
 # RHEL 7's nodejs is too old
-%if 0%{?fedora}
+%if 0%{?rhel} == 7
+# Use bundled.
+%else
 BuildRequires:	nodejs
 %endif
 BuildRequires:	nss-devel >= 3.26
@@ -894,7 +896,7 @@ CHROMIUM_HEADLESS_GN_DEFINES+=' use_cups=false use_dbus=false use_gio=false use_
 CHROMIUM_HEADLESS_GN_DEFINES+=' use_pulseaudio=false use_udev=false'
 export CHROMIUM_HEADLESS_GN_DEFINES
 
-%if 0%{?rhel}
+%if 0%{?rhel} == 7
 pushd third_party/node/linux
 tar xf %{SOURCE19}
 mv node-v8.9.1-linux-x64 node-linux-x64
