@@ -162,7 +162,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 Name:		chromium%{chromium_channel}
 %endif
 Version:	%{majorversion}.0.3865.120
-Release:	2%{?dist}
+Release:	3%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -223,6 +223,8 @@ Patch59:	chromium-77.0.3865.75-gcc-abstract-class.patch
 Patch60:	chromium-77.0.3865.75-missing-limits.patch
 # https://chromium.googlesource.com/chromium/src/+/74138b9febd37eac0fc26b8efb110014a83a52c6
 Patch61:	chromium-77.0.3865.90-linked-hash-set.patch
+# https://chromium.googlesource.com/chromium/src/+/e79d9d0e06b825d2e62b38db03248c0e6ceec7e4
+Patch62:	chromium-77.0.3865.120-silence-outdated-build-noise.patch
 
 # Use lstdc++ on EPEL7 only
 Patch101:	chromium-75.0.3770.100-epel7-stdc++.patch
@@ -748,6 +750,7 @@ udev.
 %patch59 -p1 -b .gcc-abstract-class
 %patch60 -p1 -b .missing-limits
 %patch61 -p1 -b .linked-hash-set
+%patch62 -p1 -b .silence-outdated-build-noise
 
 # Fedora branded user agent
 %if 0%{?fedora}
@@ -1662,6 +1665,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Wed Oct 16 2019 Tom Callaway <spot@fedoraproject.org> - 77.0.3865.120-3
+- silence outdated build noise (bz1745745)
+
 * Tue Oct 15 2019 Tom Callaway <spot@fedoraproject.org> - 77.0.3865.120-2
 - fix node handling for EPEL-8
 
