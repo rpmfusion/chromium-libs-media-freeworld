@@ -162,7 +162,7 @@ Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 Name:		chromium%{chromium_channel}
 %endif
 Version:	%{majorversion}.0.3865.120
-Release:	3%{?dist}
+Release:	4%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -225,6 +225,9 @@ Patch60:	chromium-77.0.3865.75-missing-limits.patch
 Patch61:	chromium-77.0.3865.90-linked-hash-set.patch
 # https://chromium.googlesource.com/chromium/src/+/e79d9d0e06b825d2e62b38db03248c0e6ceec7e4
 Patch62:	chromium-77.0.3865.120-silence-outdated-build-noise.patch
+# https://chromium.googlesource.com/chromium/src/+/9c3aed099b010a75594a0efd523774c4c9a5e3d2
+Patch63:	chromium-77.0.3865.120-gcc-fix-zlib-symbol-visibility.patch
+
 
 # Use lstdc++ on EPEL7 only
 Patch101:	chromium-75.0.3770.100-epel7-stdc++.patch
@@ -751,6 +754,7 @@ udev.
 %patch60 -p1 -b .missing-limits
 %patch61 -p1 -b .linked-hash-set
 %patch62 -p1 -b .silence-outdated-build-noise
+%patch63 -p1 -b .gcc-fix-zlib-symbol-visibility
 
 # Fedora branded user agent
 %if 0%{?fedora}
@@ -1665,6 +1669,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Wed Oct 16 2019 Tom Callaway <spot@fedoraproject.org> - 77.0.3865.120-4
+- upstream fix for zlib symbol exports with gcc
+
 * Wed Oct 16 2019 Tom Callaway <spot@fedoraproject.org> - 77.0.3865.120-3
 - silence outdated build noise (bz1745745)
 
