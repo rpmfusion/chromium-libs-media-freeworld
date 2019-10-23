@@ -220,6 +220,8 @@ Patch58:	chromium-78.0.3904.70-gcc-fix-invalid-pragma.patch
 Patch59:	chromium-78.0.3904.70-gcc-mark-CheckOpResult-constexpr.patch
 # https://chromium.googlesource.com/chromium/src/+/9662ec844017690d5fd56bf0f05ef6a540dd29c1
 Patch60:	chromium-78.0.3904.70-gcc-sizet-fix.patch
+# https://chromium.googlesource.com/chromium/src/+/f4c3c329588b78af63aad8b401da767242b86709
+Patch61:	chromium-78.0.3904.70-gcc-DohUpgradeEntry-nonconst.patch
 
 # Use lstdc++ on EPEL7 only
 Patch101:	chromium-75.0.3770.100-epel7-stdc++.patch
@@ -744,6 +746,7 @@ udev.
 %patch58 -p1 -b .gcc-invalid-pragma
 %patch59 -p1 -b .gcc-mark-CheckOpResult-constexpr
 %patch60 -p1 -b .gcc-sizet
+%patch61 -p1 -b .gcc-DohUpgradeEntry-nonconst
 
 # Fedora branded user agent
 %if 0%{?fedora}
@@ -962,6 +965,7 @@ build/linux/unbundle/remove_bundled_libraries.py \
 	'third_party/catapult/third_party/six' \
 	'third_party/catapult/tracing/third_party/d3' \
 	'third_party/catapult/tracing/third_party/gl-matrix' \
+	'third_party/catapult/tracing/third_party/jpeg-js' \
 	'third_party/catapult/tracing/third_party/jszip' \
 	'third_party/catapult/tracing/third_party/mannwhitneyu' \
 	'third_party/catapult/tracing/third_party/oboe' \
