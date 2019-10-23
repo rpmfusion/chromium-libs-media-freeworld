@@ -32,7 +32,7 @@ index 432e3789eced0..07850fdf80cd7 100644
  #include "chrome/browser/browser_process.h"
  #include "chrome/browser/google/google_brand.h"
  #include "chrome/common/chrome_switches.h"
-@@ -74,6 +75,14 @@ constexpr base::TimeDelta kNotifyCycleTimeForTesting =
+@@ -73,6 +74,14 @@ constexpr base::TimeDelta kNotifyCycleTimeForTesting =
  // The number of days after which we identify a build/install as outdated.
  constexpr base::TimeDelta kOutdatedBuildAge = base::TimeDelta::FromDays(12 * 7);
  
@@ -47,13 +47,14 @@ index 432e3789eced0..07850fdf80cd7 100644
  // Return the string that was passed as a value for the
  // kCheckForUpdateIntervalSec switch.
  std::string CmdLineInterval() {
-@@ -403,6 +412,9 @@ bool UpgradeDetectorImpl::DetectOutdated
-     if (base::IsMachineExternallyManaged())
+@@ -406,6 +415,10 @@ bool UpgradeDetectorImpl::DetectOutdated
        return false;
+     }
  #endif
 +
 +    if (!ShouldDetectOutdatedBuilds())
 +      return false;
++
    }
  
    base::Time network_time;

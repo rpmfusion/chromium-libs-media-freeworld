@@ -154,15 +154,15 @@ BuildRequires:  libicu-devel >= 5.4
 %global chromoting_client_id %nil
 %endif
 
-%global majorversion 77
+%global majorversion 78
 
 %if %{freeworld}
 Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
 %else
 Name:		chromium%{chromium_channel}
 %endif
-Version:	%{majorversion}.0.3865.120
-Release:	4%{?dist}
+Version:	%{majorversion}.0.3904.70
+Release:	1%{?dist}
 Summary:	A WebKit (Blink) powered web browser
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
@@ -191,7 +191,7 @@ Patch8:		chromium-71.0.3578.98-widevine-r3.patch
 # Disable fontconfig cache magic that breaks remoting
 Patch9:		chromium-70.0.3538.67-disable-fontconfig-cache-magic.patch
 # drop rsp clobber, which breaks gcc9 (thanks to Jeff Law)
-Patch10:	chromium-71.0.3578.98-gcc9-drop-rsp-clobber.patch
+Patch10:	chromium-78.0.3904.70-gcc9-drop-rsp-clobber.patch
 # Try to load widevine from other places
 Patch11:	chromium-widevine-other-locations.patch
 # Try to fix version.py for Rawhide
@@ -200,34 +200,24 @@ Patch12:	chromium-71.0.3578.98-py2-bootstrap.patch
 Patch13:	chromium-77.0.3865.75-fedora-user-agent.patch
 # rename function to avoid conflict with rawhide glibc "gettid()"
 Patch50:	chromium-75.0.3770.80-grpc-gettid-fix.patch
-# In GCC one can't use alignas() for exported classes
-# https://chromium.googlesource.com/chromium/src.git/+/8148fd96ae04a1150a9c6012634dcd2a7335f87a
-Patch51:	chromium-76.0.3809.100-gcc-no-alignas-and-export.patch
 # Needs to be submitted..
-Patch52:	chromium-76.0.3809.100-gcc-remoting-constexpr.patch
+Patch51:	chromium-76.0.3809.100-gcc-remoting-constexpr.patch
 # Needs to be submitted.. (ugly hack, needs to be added properly to GN files)
-Patch53:	chromium-76.0.3809.100-vtable-symbol-undefined.patch
-# https://chromium.googlesource.com/chromium/src.git/+/3c9720245e440c4b7222f8348d2a2a3c25e098ae
-Patch54:	chromium-77.0.3865.75-certificate-transparency.patch
+Patch52:	chromium-78.0.3904.70-vtable-symbol-undefined.patch
 # https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-unbundle-zlib.patch
-Patch55:	chromium-77.0.3865.75-unbundle-zlib.patch
+Patch53:	chromium-78.0.3904.70-unbundle-zlib.patch
 # Needs to be submitted..
-Patch56:	chromium-77.0.3865.75-gcc-include-memory.patch
+Patch54:	chromium-77.0.3865.75-gcc-include-memory.patch
 # https://chromium.googlesource.com/chromium/src/+/6b633c4b14850df376d5cec571699018772f358e
-Patch57:	chromium-77.0.3865.75-base-gcc-no-alignas.patch
-# https://chromium.googlesource.com/chromium/src/+/27e25336b8316ff3ec4e464058682ed85801fd06
-Patch58:	chromium-77.0.3865.75-harfbuzz-subset.patch
-# https://chromium.googlesource.com/chromium/src.git/+/f08cb0022527081c078e8b96062e6c9b4fbda151
-Patch59:	chromium-77.0.3865.75-gcc-abstract-class.patch
-# https://chromium.googlesource.com/chromium/src/+/5baf7df7f4c5971dab552897eeef94b194650ce5
-Patch60:	chromium-77.0.3865.75-missing-limits.patch
-# https://chromium.googlesource.com/chromium/src/+/74138b9febd37eac0fc26b8efb110014a83a52c6
-Patch61:	chromium-77.0.3865.90-linked-hash-set.patch
+Patch55:	chromium-77.0.3865.75-base-gcc-no-alignas.patch
 # https://chromium.googlesource.com/chromium/src/+/e79d9d0e06b825d2e62b38db03248c0e6ceec7e4
-Patch62:	chromium-77.0.3865.120-silence-outdated-build-noise.patch
+Patch56:	chromium-77.0.3865.120-silence-outdated-build-noise.patch
 # https://chromium.googlesource.com/chromium/src/+/9c3aed099b010a75594a0efd523774c4c9a5e3d2
-Patch63:	chromium-77.0.3865.120-gcc-fix-zlib-symbol-visibility.patch
-
+Patch57:	chromium-77.0.3865.120-gcc-fix-zlib-symbol-visibility.patch
+# https://chromium.googlesource.com/chromium/src/+/7358ea985cb496fa7fd1a5266f915d98ed4e22e6
+Patch58:	chromium-78.0.3904.70-gcc-fix-invalid-pragma.patch
+# https://chromium.googlesource.com/chromium/src/+/2db67d40ef766c63a73896866a2d66e834cb9716
+Patch59:	chromium-78.0.3904.70-gcc-mark-CheckOpResult-constexpr.patch
 
 # Use lstdc++ on EPEL7 only
 Patch101:	chromium-75.0.3770.100-epel7-stdc++.patch
@@ -742,19 +732,15 @@ udev.
 
 # Short term fixes (usually gcc and backports)
 %patch50 -p1 -b .gettid-fix
-%patch51 -p1 -b .gcc-no-alignas-and-export
-%patch52 -p1 -b .gcc-remoting-constexpr
-%patch53 -p1 -b .vtable-symbol-undefined
-%patch54 -p1 -b .certificate-transparency
-%patch55 -p1 -b .unbundle-zlib
-%patch56 -p1 -b .gcc-include-memory
-%patch57 -p1 -b .base-gcc-no-alignas
-%patch58 -p1 -b .harfbuzz-subset
-%patch59 -p1 -b .gcc-abstract-class
-%patch60 -p1 -b .missing-limits
-%patch61 -p1 -b .linked-hash-set
-%patch62 -p1 -b .silence-outdated-build-noise
-%patch63 -p1 -b .gcc-fix-zlib-symbol-visibility
+%patch51 -p1 -b .gcc-remoting-constexpr
+%patch52 -p1 -b .vtable-symbol-undefined
+%patch53 -p1 -b .unbundle-zlib
+%patch54 -p1 -b .gcc-include-memory
+%patch55 -p1 -b .base-gcc-no-alignas
+%patch56 -p1 -b .silence-outdated-build-noise
+%patch57 -p1 -b .gcc-fix-zlib-symbol-visibility
+%patch58 -p1 -b .gcc-invalid-pragma
+%patch59 -p1 -b .gcc-mark-CheckOpResult-constexpr
 
 # Fedora branded user agent
 %if 0%{?fedora}
@@ -1669,6 +1655,9 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Wed Oct 23 2019 Tom Callaway <spot@fedoraproject.org> - 78.0.3904.80-1
+- update to 78.0.3904.80
+
 * Wed Oct 16 2019 Tom Callaway <spot@fedoraproject.org> - 77.0.3865.120-4
 - upstream fix for zlib symbol exports with gcc
 
