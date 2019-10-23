@@ -218,6 +218,8 @@ Patch57:	chromium-77.0.3865.120-gcc-fix-zlib-symbol-visibility.patch
 Patch58:	chromium-78.0.3904.70-gcc-fix-invalid-pragma.patch
 # https://chromium.googlesource.com/chromium/src/+/2db67d40ef766c63a73896866a2d66e834cb9716
 Patch59:	chromium-78.0.3904.70-gcc-mark-CheckOpResult-constexpr.patch
+# https://chromium.googlesource.com/chromium/src/+/9662ec844017690d5fd56bf0f05ef6a540dd29c1
+Patch60:	chromium-78.0.3904.70-gcc-sizet-fix.patch
 
 # Use lstdc++ on EPEL7 only
 Patch101:	chromium-75.0.3770.100-epel7-stdc++.patch
@@ -741,6 +743,7 @@ udev.
 %patch57 -p1 -b .gcc-fix-zlib-symbol-visibility
 %patch58 -p1 -b .gcc-invalid-pragma
 %patch59 -p1 -b .gcc-mark-CheckOpResult-constexpr
+%patch60 -p1 -b .gcc-sizet
 
 # Fedora branded user agent
 %if 0%{?fedora}
@@ -903,7 +906,7 @@ ln -s %{_bindir}/node third_party/node/linux/node-linux-x64/bin/node
 # Gentoo's Chromium ebuild) are the libraries that needs to be preserved.
 build/linux/unbundle/remove_bundled_libraries.py \
 	'base/third_party/cityhash' \
-	'base/third_party/dmg_fp' \
+	'base/third_party/double_conversion' \
 	'base/third_party/dynamic_annotations' \
 	'base/third_party/icu' \
 	'base/third_party/libevent' \
