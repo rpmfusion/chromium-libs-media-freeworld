@@ -1,7 +1,7 @@
 diff -up chromium-78.0.3904.70/net/dns/dns_util.cc.gcc-DohUpgradeEntry-nonconst chromium-78.0.3904.70/net/dns/dns_util.cc
---- chromium-78.0.3904.70/net/dns/dns_util.cc.gcc-DohUpgradeEntry-nonconst	2019-10-23 11:21:55.805646136 -0400
-+++ chromium-78.0.3904.70/net/dns/dns_util.cc	2019-10-23 11:23:52.693140706 -0400
-@@ -139,11 +139,11 @@ struct DohUpgradeEntry {
+--- chromium-78.0.3904.70/net/dns/dns_util.cc.gcc-DohUpgradeEntry-nonconst	2019-10-21 15:06:38.000000000 -0400
++++ chromium-78.0.3904.70/net/dns/dns_util.cc	2019-10-23 12:55:27.886546918 -0400
+@@ -139,12 +139,12 @@ struct DohUpgradeEntry {
    const DnsConfig::DnsOverHttpsServerConfig dns_over_https_config;
  };
  
@@ -11,10 +11,12 @@ diff -up chromium-78.0.3904.70/net/dns/dns_util.cc.gcc-DohUpgradeEntry-nonconst 
    // DohProviderId histogram suffix list in
    // tools/metrics/histograms/histograms.xml.
 -  static const base::NoDestructor<std::vector<const DohUpgradeEntry>>
+-      upgradable_servers({
 +  static const base::NoDestructor<std::vector<DohUpgradeEntry>>
-       upgradable_servers({
++      upgradable_servers(std::initializer_list<DohUpgradeEntry>{
            DohUpgradeEntry(
                "CleanBrowsingAdult",
+               {"185.228.168.10", "185.228.169.11", "2a0d:2a00:1::1",
 @@ -222,8 +222,7 @@ const std::vector<const DohUpgradeEntry>
  std::vector<const DohUpgradeEntry*> GetDohUpgradeEntriesFromNameservers(
      const std::vector<IPEndPoint>& dns_servers,

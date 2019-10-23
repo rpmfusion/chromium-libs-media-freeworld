@@ -222,6 +222,14 @@ Patch59:	chromium-78.0.3904.70-gcc-mark-CheckOpResult-constexpr.patch
 Patch60:	chromium-78.0.3904.70-gcc-sizet-fix.patch
 # https://chromium.googlesource.com/chromium/src/+/f4c3c329588b78af63aad8b401da767242b86709
 Patch61:	chromium-78.0.3904.70-gcc-DohUpgradeEntry-nonconst.patch
+# https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-78-gcc-noexcept.patch
+Patch62:	chromium-78-gcc-noexcept.patch
+# https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-78-pm-crash.patch
+Patch63:	chromium-78-pm-crash.patch
+# https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-78-protobuf-export.patch
+Patch64:	chromium-78-protobuf-export.patch
+# https://gitweb.gentoo.org/repo/gentoo.git/tree/www-client/chromium/files/chromium-78-include.patch
+Patch65:	chromium-78-include.patch
 
 # Use lstdc++ on EPEL7 only
 Patch101:	chromium-75.0.3770.100-epel7-stdc++.patch
@@ -747,6 +755,10 @@ udev.
 %patch59 -p1 -b .gcc-mark-CheckOpResult-constexpr
 %patch60 -p1 -b .gcc-sizet
 %patch61 -p1 -b .gcc-DohUpgradeEntry-nonconst
+%patch62 -p1 -b .gcc-v8-noexcept
+%patch63 -p1 -b .pm-crash
+%patch64 -p1 -b .protobuf-export
+%patch65 -p1 -b .missing-includes
 
 # Fedora branded user agent
 %if 0%{?fedora}
