@@ -1,0 +1,16 @@
+diff -up chromium-78.0.3904.70/base/allocator/debugallocation_shim.cc.invalid-pragma chromium-78.0.3904.70/base/allocator/debugallocation_shim.cc
+--- chromium-78.0.3904.70/base/allocator/debugallocation_shim.cc.invalid-pragma	2019-10-23 10:00:41.361932768 -0400
++++ chromium-78.0.3904.70/base/allocator/debugallocation_shim.cc	2019-10-23 10:02:09.778100948 -0400
+@@ -7,9 +7,10 @@
+ // AFDO can mess with them. Better not to use AFDO there.  This is a
+ // temporary hack. We will add a mechanism in the build system to
+ // avoid using -fauto-profile for tcmalloc files.
+-#if !defined(__clang__) && (defined(OS_CHROMEOS) || __GNUC__ > 5)
++#if !defined(__clang__) && \
++    (defined(OS_CHROMEOS) || (__GNUC__ > 5 && __GNUC__ < 7))
+ // Note that this option only seems to be available in the chromeos GCC 4.9
+-// toolchain, and stock GCC 5 and up.
++// toolchain, and stock GCC 5 upto 7.
+ #pragma GCC optimize ("no-auto-profile")
+ #endif
+ 

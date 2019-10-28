@@ -1,0 +1,302 @@
+diff -up chromium-78.0.3904.70/third_party/blink/renderer/bindings/core/v8/v8_embedder_graph_builder.cc.v8-tracedreference-fix chromium-78.0.3904.70/third_party/blink/renderer/bindings/core/v8/v8_embedder_graph_builder.cc
+--- chromium-78.0.3904.70/third_party/blink/renderer/bindings/core/v8/v8_embedder_graph_builder.cc.v8-tracedreference-fix	2019-10-21 15:06:42.000000000 -0400
++++ chromium-78.0.3904.70/third_party/blink/renderer/bindings/core/v8/v8_embedder_graph_builder.cc	2019-10-23 14:30:25.679541652 -0400
+@@ -173,8 +173,9 @@ class GC_PLUGIN_IGNORE(
+                              uint16_t class_id) override;
+ 
+   // v8::EmbedderHeapTracer::TracedGlobalHandleVisitor override.
+-  void VisitTracedGlobalHandle(
+-      const v8::TracedGlobal<v8::Value>& value) override;
++  void VisitTracedReference(
++      const v8::TracedReference<v8::Value>& value) override;
++  void VisitTracedGlobalHandle(const v8::TracedGlobal<v8::Value>&) override;
+ 
+   // Visitor overrides.
+   void VisitRoot(void*, TraceDescriptor, const base::Location&) final;
+@@ -508,8 +509,8 @@ void V8EmbedderGraphBuilder::VisitPersis
+   }
+ }
+ 
+-void V8EmbedderGraphBuilder::VisitTracedGlobalHandle(
+-    const v8::TracedGlobal<v8::Value>& value) {
++void V8EmbedderGraphBuilder::VisitTracedReference(
++    const v8::TracedReference<v8::Value>& value) {
+   const uint16_t class_id = value.WrapperClassId();
+   if (class_id != WrapperTypeInfo::kNodeClassId &&
+       class_id != WrapperTypeInfo::kObjectClassId)
+@@ -517,6 +518,11 @@ void V8EmbedderGraphBuilder::VisitTraced
+   VisitPersistentHandleInternal(value.As<v8::Object>().Get(isolate_), class_id);
+ }
+ 
++void V8EmbedderGraphBuilder::VisitTracedGlobalHandle(
++    const v8::TracedGlobal<v8::Value>&) {
++  CHECK(false) << "Blink does not use v8::TracedGlobal.";
++}
++
+ void V8EmbedderGraphBuilder::VisitPersistentHandle(
+     v8::Persistent<v8::Value>* value,
+     uint16_t class_id) {
+diff -up chromium-78.0.3904.70/third_party/blink/renderer/bindings/core/v8/v8_gc_controller.cc.v8-tracedreference-fix chromium-78.0.3904.70/third_party/blink/renderer/bindings/core/v8/v8_gc_controller.cc
+--- chromium-78.0.3904.70/third_party/blink/renderer/bindings/core/v8/v8_gc_controller.cc.v8-tracedreference-fix	2019-10-21 15:06:42.000000000 -0400
++++ chromium-78.0.3904.70/third_party/blink/renderer/bindings/core/v8/v8_gc_controller.cc	2019-10-23 14:30:25.683541568 -0400
+@@ -260,7 +260,11 @@ class DOMWrapperForwardingVisitor final
+     VisitHandle(value, class_id);
+   }
+ 
+-  void VisitTracedGlobalHandle(const v8::TracedGlobal<v8::Value>& value) final {
++  void VisitTracedGlobalHandle(const v8::TracedGlobal<v8::Value>&) final {
++    CHECK(false) << "Blink does not use v8::TracedGlobal.";
++  }
++
++  void VisitTracedReference(const v8::TracedReference<v8::Value>& value) final {
+     VisitHandle(&value, value.WrapperClassId());
+   }
+ 
+diff -up chromium-78.0.3904.70/third_party/blink/renderer/platform/bindings/dom_data_store.h.v8-tracedreference-fix chromium-78.0.3904.70/third_party/blink/renderer/platform/bindings/dom_data_store.h
+--- chromium-78.0.3904.70/third_party/blink/renderer/platform/bindings/dom_data_store.h.v8-tracedreference-fix	2019-10-21 15:06:44.000000000 -0400
++++ chromium-78.0.3904.70/third_party/blink/renderer/platform/bindings/dom_data_store.h	2019-10-23 14:30:25.685541526 -0400
+@@ -229,6 +229,11 @@ class DOMDataStore {
+     DOMWorldWrapperReference(v8::Isolate* isolate, v8::Local<v8::Object> handle)
+         : TraceWrapperV8Reference(isolate, handle) {}
+ 
++    ~DOMWorldWrapperReference() {
++      // Destruction of a reference should clear it immediately.
++      Clear();
++    }
++
+     // Move support without write barrier.
+     DOMWorldWrapperReference(DOMWorldWrapperReference&& other)
+         : TraceWrapperV8Reference() {
+diff -up chromium-78.0.3904.70/third_party/blink/renderer/platform/bindings/script_wrappable.h.v8-tracedreference-fix chromium-78.0.3904.70/third_party/blink/renderer/platform/bindings/script_wrappable.h
+--- chromium-78.0.3904.70/third_party/blink/renderer/platform/bindings/script_wrappable.h.v8-tracedreference-fix	2019-10-21 15:06:44.000000000 -0400
++++ chromium-78.0.3904.70/third_party/blink/renderer/platform/bindings/script_wrappable.h	2019-10-23 14:30:25.687541484 -0400
+@@ -161,6 +161,11 @@ class PLATFORM_EXPORT ScriptWrappable
+     return main_world_wrapper_.NewLocal(isolate);
+   }
+ 
++  static_assert(
++      std::is_trivially_destructible<
++          TraceWrapperV8Reference<v8::Object>>::value,
++      "TraceWrapperV8Reference<v8::Object> should be trivially destructible.");
++
+   TraceWrapperV8Reference<v8::Object> main_world_wrapper_;
+ 
+   DISALLOW_COPY_AND_ASSIGN(ScriptWrappable);
+diff -up chromium-78.0.3904.70/third_party/blink/renderer/platform/bindings/trace_wrapper_v8_reference.h.v8-tracedreference-fix chromium-78.0.3904.70/third_party/blink/renderer/platform/bindings/trace_wrapper_v8_reference.h
+--- chromium-78.0.3904.70/third_party/blink/renderer/platform/bindings/trace_wrapper_v8_reference.h.v8-tracedreference-fix	2019-10-21 15:06:44.000000000 -0400
++++ chromium-78.0.3904.70/third_party/blink/renderer/platform/bindings/trace_wrapper_v8_reference.h	2019-10-23 14:30:25.688541463 -0400
+@@ -11,15 +11,6 @@
+ #include "third_party/blink/renderer/platform/heap/unified_heap_marking_visitor.h"
+ #include "v8/include/v8.h"
+ 
+-namespace v8 {
+-
+-template <typename T>
+-struct TracedGlobalTrait<v8::TracedGlobal<T>> {
+-  static constexpr bool kRequiresExplicitDestruction = false;
+-};
+-
+-}  // namespace v8
+-
+ namespace blink {
+ 
+ /**
+@@ -50,8 +41,8 @@ class TraceWrapperV8Reference {
+ 
+   bool IsEmpty() const { return handle_.IsEmpty(); }
+   void Clear() { handle_.Reset(); }
+-  ALWAYS_INLINE const v8::TracedGlobal<T>& Get() const { return handle_; }
+-  ALWAYS_INLINE v8::TracedGlobal<T>& Get() { return handle_; }
++  ALWAYS_INLINE const v8::TracedReference<T>& Get() const { return handle_; }
++  ALWAYS_INLINE v8::TracedReference<T>& Get() { return handle_; }
+ 
+   template <typename S>
+   const TraceWrapperV8Reference<S>& Cast() const {
+@@ -124,7 +115,7 @@ class TraceWrapperV8Reference {
+     UnifiedHeapMarkingVisitor::WriteBarrier(UnsafeCast<v8::Value>());
+   }
+ 
+-  v8::TracedGlobal<T> handle_;
++  v8::TracedReference<T> handle_;
+ };
+ 
+ }  // namespace blink
+diff -up chromium-78.0.3904.70/third_party/blink/renderer/platform/bindings/wrapper_type_info.h.v8-tracedreference-fix chromium-78.0.3904.70/third_party/blink/renderer/platform/bindings/wrapper_type_info.h
+--- chromium-78.0.3904.70/third_party/blink/renderer/platform/bindings/wrapper_type_info.h.v8-tracedreference-fix	2019-10-21 15:06:44.000000000 -0400
++++ chromium-78.0.3904.70/third_party/blink/renderer/platform/bindings/wrapper_type_info.h	2019-10-23 14:30:25.689541442 -0400
+@@ -122,7 +122,7 @@ struct WrapperTypeInfo {
+     wrapper->SetWrapperClassId(wrapper_class_id);
+   }
+ 
+-  void ConfigureWrapper(v8::TracedGlobal<v8::Object>* wrapper) const {
++  void ConfigureWrapper(v8::TracedReference<v8::Object>* wrapper) const {
+     wrapper->SetWrapperClassId(wrapper_class_id);
+   }
+ 
+@@ -177,7 +177,7 @@ inline T* GetInternalField(const v8::Per
+ }
+ 
+ template <typename T, int offset>
+-inline T* GetInternalField(const v8::TracedGlobal<v8::Object>& global) {
++inline T* GetInternalField(const v8::TracedReference<v8::Object>& global) {
+   DCHECK_LT(offset, v8::Object::InternalFieldCount(global));
+   return reinterpret_cast<T*>(
+       v8::Object::GetAlignedPointerFromInternalField(global, offset));
+@@ -198,7 +198,7 @@ inline ScriptWrappable* ToScriptWrappabl
+ }
+ 
+ inline ScriptWrappable* ToScriptWrappable(
+-    const v8::TracedGlobal<v8::Object>& wrapper) {
++    const v8::TracedReference<v8::Object>& wrapper) {
+   return GetInternalField<ScriptWrappable, kV8DOMWrapperObjectIndex>(wrapper);
+ }
+ 
+@@ -219,7 +219,8 @@ inline void* ToUntypedWrappable(const v8
+   return GetInternalField<void, kV8DOMWrapperObjectIndex>(wrapper);
+ }
+ 
+-inline void* ToUntypedWrappable(const v8::TracedGlobal<v8::Object>& wrapper) {
++inline void* ToUntypedWrappable(
++    const v8::TracedReference<v8::Object>& wrapper) {
+   return GetInternalField<void, kV8DOMWrapperObjectIndex>(wrapper);
+ }
+ 
+@@ -233,7 +234,7 @@ inline const WrapperTypeInfo* ToWrapperT
+ }
+ 
+ inline const WrapperTypeInfo* ToWrapperTypeInfo(
+-    const v8::TracedGlobal<v8::Object>& wrapper) {
++    const v8::TracedReference<v8::Object>& wrapper) {
+   return GetInternalField<WrapperTypeInfo, kV8DOMWrapperTypeIndex>(wrapper);
+ }
+ 
+diff -up chromium-78.0.3904.70/third_party/blink/renderer/platform/heap/thread_state.cc.v8-tracedreference-fix chromium-78.0.3904.70/third_party/blink/renderer/platform/heap/thread_state.cc
+--- chromium-78.0.3904.70/third_party/blink/renderer/platform/heap/thread_state.cc.v8-tracedreference-fix	2019-10-21 15:06:45.000000000 -0400
++++ chromium-78.0.3904.70/third_party/blink/renderer/platform/heap/thread_state.cc	2019-10-23 14:30:25.693541359 -0400
+@@ -1451,11 +1451,15 @@ class ClearReferencesInDeadObjectsVisito
+       value->Reset();
+   }
+ 
+-  void VisitTracedGlobalHandle(const v8::TracedGlobal<v8::Value>& value) final {
++  void VisitTracedGlobalHandle(const v8::TracedGlobal<v8::Value>&) final {
++    CHECK(false) << "Blink does not use v8::TracedGlobal.";
++  }
++
++  void VisitTracedReference(const v8::TracedReference<v8::Value>& value) final {
+     // TODO(mlippautz): Avoid const_cast after changing the API to allow
+-    // modificaton of the TracedGlobal handle.
+-    if (InDeadObject(&const_cast<v8::TracedGlobal<v8::Value>&>(value)))
+-      const_cast<v8::TracedGlobal<v8::Value>&>(value).Reset();
++    // modificaton of the handle.
++    if (InDeadObject(&const_cast<v8::TracedReference<v8::Value>&>(value)))
++      const_cast<v8::TracedReference<v8::Value>&>(value).Reset();
+   }
+ 
+  private:
+@@ -1584,11 +1588,15 @@ class UnpoisonHandlesVisitor final
+     VisitSlot(value, sizeof(v8::Persistent<v8::Value>));
+   }
+ 
+-  void VisitTracedGlobalHandle(const v8::TracedGlobal<v8::Value>& value) final {
++  void VisitTracedGlobalHandle(const v8::TracedGlobal<v8::Value>&) final {
++    CHECK(false) << "Blink does not use v8::TracedGlobal.";
++  }
++
++  void VisitTracedReference(const v8::TracedReference<v8::Value>& value) final {
+     // TODO(mlippautz): Avoid const_cast after changing the API to allow
+-    // modificaton of the TracedGlobal handle.
+-    VisitSlot(&const_cast<v8::TracedGlobal<v8::Value>&>(value),
+-              sizeof(v8::TracedGlobal<v8::Value>));
++    // modificaton of the handle.
++    VisitSlot(&const_cast<v8::TracedReference<v8::Value>&>(value),
++              sizeof(v8::TracedReference<v8::Value>));
+   }
+ 
+  private:
+diff -up chromium-78.0.3904.70/third_party/blink/renderer/platform/heap/unified_heap_controller.cc.v8-tracedreference-fix chromium-78.0.3904.70/third_party/blink/renderer/platform/heap/unified_heap_controller.cc
+--- chromium-78.0.3904.70/third_party/blink/renderer/platform/heap/unified_heap_controller.cc.v8-tracedreference-fix	2019-10-21 15:06:45.000000000 -0400
++++ chromium-78.0.3904.70/third_party/blink/renderer/platform/heap/unified_heap_controller.cc	2019-10-23 14:32:34.722840885 -0400
+@@ -147,16 +147,19 @@ bool UnifiedHeapController::IsTracingDon
+   return is_tracing_done_;
+ }
+ 
+-bool UnifiedHeapController::IsRootForNonTracingGCInternal(
+-    const v8::TracedGlobal<v8::Value>& handle) {
++namespace {
++
++bool IsRootForNonTracingGCInternal(
++    const v8::TracedReference<v8::Value>& handle) {
+   const uint16_t class_id = handle.WrapperClassId();
+-  // Stand-alone TracedGlobal reference or kCustomWrappableId. Keep as root as
++  // Stand-alone reference or kCustomWrappableId. Keep as root as
+   // we don't know better.
+   if (class_id != WrapperTypeInfo::kNodeClassId &&
+       class_id != WrapperTypeInfo::kObjectClassId)
+     return true;
+ 
+-  const v8::TracedGlobal<v8::Object>& traced = handle.As<v8::Object>();
++  const v8::TracedReference<v8::Object>& traced =
++      handle.template As<v8::Object>();
+   if (ToWrapperTypeInfo(traced)->IsActiveScriptWrappable() &&
+       ToScriptWrappable(traced)->HasPendingActivity()) {
+     return true;
+@@ -169,8 +172,10 @@ bool UnifiedHeapController::IsRootForNon
+   return false;
+ }
+ 
++}  // namespace
++
+ void UnifiedHeapController::ResetHandleInNonTracingGC(
+-    const v8::TracedGlobal<v8::Value>& handle) {
++    const v8::TracedReference<v8::Value>& handle) {
+   const uint16_t class_id = handle.WrapperClassId();
+   // Only consider handles that have not been treated as roots, see
+   // IsRootForNonTracingGCInternal.
+@@ -178,15 +183,21 @@ void UnifiedHeapController::ResetHandleI
+       class_id != WrapperTypeInfo::kObjectClassId)
+     return;
+ 
+-  const v8::TracedGlobal<v8::Object>& traced = handle.As<v8::Object>();
++  const v8::TracedReference<v8::Object>& traced = handle.As<v8::Object>();
+   ToScriptWrappable(traced)->UnsetWrapperIfAny();
+ }
+ 
+ bool UnifiedHeapController::IsRootForNonTracingGC(
+-    const v8::TracedGlobal<v8::Value>& handle) {
++    const v8::TracedReference<v8::Value>& handle) {
+   return IsRootForNonTracingGCInternal(handle);
+ }
+ 
++bool UnifiedHeapController::IsRootForNonTracingGC(
++    const v8::TracedGlobal<v8::Value>& handle) {
++  CHECK(false) << "Blink does not use v8::TracedGlobal.";
++  return false;
++}
++
+ void UnifiedHeapController::ReportBufferedAllocatedSizeIfPossible() {
+   DCHECK(base::FeatureList::IsEnabled(
+       blink::features::kBlinkHeapUnifiedGCScheduling));
+diff -up chromium-78.0.3904.70/third_party/blink/renderer/platform/heap/unified_heap_controller.h.v8-tracedreference-fix chromium-78.0.3904.70/third_party/blink/renderer/platform/heap/unified_heap_controller.h
+--- chromium-78.0.3904.70/third_party/blink/renderer/platform/heap/unified_heap_controller.h.v8-tracedreference-fix	2019-10-21 15:06:45.000000000 -0400
++++ chromium-78.0.3904.70/third_party/blink/renderer/platform/heap/unified_heap_controller.h	2019-10-23 14:30:25.695541317 -0400
+@@ -45,8 +45,9 @@ class PLATFORM_EXPORT UnifiedHeapControl
+   void RegisterV8References(const std::vector<std::pair<void*, void*>>&) final;
+   bool AdvanceTracing(double) final;
+   bool IsTracingDone() final;
++  bool IsRootForNonTracingGC(const v8::TracedReference<v8::Value>&) final;
+   bool IsRootForNonTracingGC(const v8::TracedGlobal<v8::Value>&) final;
+-  void ResetHandleInNonTracingGC(const v8::TracedGlobal<v8::Value>&) final;
++  void ResetHandleInNonTracingGC(const v8::TracedReference<v8::Value>&) final;
+ 
+   ThreadState* thread_state() const { return thread_state_; }
+ 
+@@ -59,9 +60,6 @@ class PLATFORM_EXPORT UnifiedHeapControl
+   void DecreaseAllocatedSpace(size_t) final {}
+ 
+  private:
+-  static bool IsRootForNonTracingGCInternal(
+-      const v8::TracedGlobal<v8::Value>& handle);
+-
+   void ReportBufferedAllocatedSizeIfPossible();
+ 
+   ThreadState* const thread_state_;
