@@ -1,0 +1,36 @@
+From 9c3aed099b010a75594a0efd523774c4c9a5e3d2 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=BCri=20Valdmann?= <juri.valdmann@qt.io>
+Date: Tue, 15 Oct 2019 12:10:55 +0000
+Subject: [PATCH] GCC: Fix zlib symbol visibility macro
+
+GCC parses the function __attribute__ syntax a bit differently from Clang,
+associating the attribute with the return type instead of the function if the
+return type is a pointer. This leads to certain zlib symbols, such as
+Cr_z_zError, to fail to be properly exported from the shared library. Fix by
+using ZEXTERN instead of ZEXPORT for the attribute which works the same for both
+GCC and Clang.
+
+Bug: 819294
+Change-Id: I5707d1b0627a503df08df9ac0bb65fda69453989
+Reviewed-on: https://chromium-review.googlesource.com/c/chromium/src/+/1859788
+Reviewed-by: Thomas Anderson <thomasanderson@chromium.org>
+Reviewed-by: Nico Weber <thakis@chromium.org>
+Commit-Queue: Nico Weber <thakis@chromium.org>
+Cr-Commit-Position: refs/heads/master@{#705917}
+---
+ third_party/zlib/chromeconf.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/third_party/zlib/chromeconf.h b/third_party/zlib/chromeconf.h
+index e9aa3867d8512..666093d696a58 100644
+--- a/third_party/zlib/chromeconf.h
++++ b/third_party/zlib/chromeconf.h
+@@ -13,7 +13,7 @@
+ #define ZEXTERN __declspec(dllimport)
+ #endif
+ #elif defined(ZLIB_IMPLEMENTATION)
+-#define ZEXPORT __attribute__((visibility("default")))
++#define ZEXTERN __attribute__((visibility("default")))
+ #endif
+ #endif
+ 
