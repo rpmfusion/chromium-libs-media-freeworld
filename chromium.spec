@@ -1143,6 +1143,7 @@ build/linux/unbundle/remove_bundled_libraries.py \
         'third_party/zlib' \
 	'third_party/zlib/google' \
 	'tools/gn/base/third_party/icu' \
+	'tools/grit/third_party/six' \
 	'url/third_party/mozilla' \
 	'v8/src/third_party/siphash' \
 	'v8/src/third_party/utf8-decoder' \
