@@ -22,12 +22,22 @@
 # We'd like to always have this on.
 %global use_vaapi 0
 
+# If we build with shared on, then chrome-remote-desktop depends on chromium libs.
+# If we build with shared off, then users cannot swap out libffmpeg (and i686 gets a lot harder to build)
+%global shared 1
+
 # NEVER EVER EVER turn this on in official builds
 %global freeworld 0
 %if %{freeworld}
 %global lsuffix freeworld
+%if 0%{?shared}
+%global nsuffix -libs-media-freeworld
+%else
+%global nsuffix -freeworld
+%endif
 %else
 %global lsuffix fedora
+%global nsuffix %{nil}
 %endif
 
 # Some people wish not to use the Fedora Google API keys. Mmkay.
@@ -66,10 +76,6 @@
 %global privlibs libaccessibility|libandroid_mojo_bindings_shared|libanimation|libapdu|libaura_extra|libaura|libauthenticator_test_mojo_bindings_shared|libbase_i18n|libbase|libbindings_base|libbindings|libblink_common|libblink_controller|libblink_core|libblink_embedded_frame_sink_mojo_bindings_shared|libblink_features|libblink_modules|libblink_mojom_broadcastchannel_bindings_shared|libblink_platform|libbluetooth|libboringssl|libbrowser_ui_views|libcaptive_portal|libcapture_base|libcapture_lib|libcbor|libcc_animation|libcc_base|libcc_debug|libcc_mojo_embedder|libcc_paint|libcc|libcertificate_matching|libchrome_features|libchromium_sqlite3|libclient|libcloud_policy_proto_generated_compile|libcodec|libcolor_space|libcolor_utils|libcommon|libcompositor|libcontent_common_mojo_bindings_shared|libcontent_public_common_mojo_bindings_shared|libcontent_service_cpp|libcontent_service_mojom_shared|libcontent_service_mojom|libcontent_settings_features|libcontent|libcrash_key|libcrcrypto|libdbus|libdevice_base|libdevice_event_log|libdevice_features|libdevice_gamepad|libdevices|libdevice_vr_mojo_bindings_blink|libdevice_vr_mojo_bindings_shared|libdevice_vr_mojo_bindings|libdevice_vr|libdevice_vr_test_mojo_bindings_blink|libdevice_vr_test_mojo_bindings_shared|libdevice_vr_test_mojo_bindings|libdiscardable_memory_client|libdiscardable_memory_common|libdiscardable_memory_service|libdisplay|libdisplay_types|libdisplay_util|libdomain_reliability|libEGL|libembedder|libembedder_switches|libevents_base|libevents_devices_x11|libevents_ozone_layout|libevents|libevents_x|libextras|libffmpeg|libfido|libfingerprint|libfreetype_harfbuzz|libgamepad_mojom_blink|libgamepad_mojom_shared|libgamepad_mojom|libgamepad_shared_typemap_traits|libgcm|libgeometry_skia|libgeometry|libgesture_detection|libgfx_ipc_buffer_types|libgfx_ipc_color|libgfx_ipc_geometry|libgfx_ipc_skia|libgfx_ipc|libgfx|libgfx_switches|libgfx_x11|libgin|libgles2_implementation|libgles2|libgles2_utils|libGLESv2|libgl_init|libgl_in_process_context|libgl_wrapper|libgpu_ipc_service|libgpu|libgtkui|libheadless_non_renderer|libhost|libicui18n|libicuuc|libinterfaces_shared|libipc_mojom_shared|libipc_mojom|libipc|libkeycodes_x11|libkeyed_service_content|libkeyed_service_core|liblearning_common|liblearning_impl|libleveldatabase|libleveldb_proto|libmanager|libmedia_blink|libmedia_gpu|libmedia_learning_mojo_impl|libmedia_message_center|libmedia_mojo_services|libmedia_session_base_cpp|libmedia_session_cpp|libmedia|libmedia_webrtc|libmemory_instrumentation|libmenu|libmessage_center|libmessage_support|libmetrics_cpp|libmidi|libmirroring_service|libmojo_base_lib|libmojo_base_mojom_blink|libmojo_base_mojom_shared|libmojo_base_mojom|libmojo_base_shared_typemap_traits|libmojo_core_embedder_internal|libmojo_core_embedder|libmojo_core_ports|libmojo_cpp_platform|libmojom_core_shared|libmojom_mhtml_load_result_shared|libmojom_modules_shared|libmojo_mojom_bindings_shared|libmojo_mojom_bindings|libmojom_platform_shared|libmojo_public_system_cpp|libmojo_public_system|libmpris|libnative_theme|libnet|libnet_with_v8|libnetwork_cpp_base|libnetwork_cpp|libnetwork_service|libnetwork_session_configurator|libonc|libos_crypt|libparsers|libpdfium|libperfetto|libplatform|libplatform_window_handler_libs|libpolicy_component|libpolicy_proto|libppapi_host|libppapi_proxy|libppapi_shared|libprefs|libprinting|libprotobuf_lite|libproxy_config|libpublic|librange|libraster|libresource_coordinator_public_mojom_blink|libresource_coordinator_public_mojom_shared|libresource_coordinator_public_mojom|libsandbox_services|libsandbox|libscheduling_metrics|libseccomp_bpf|libservice_manager_cpp|libservice_manager_cpp_types|libservice_manager_mojom_blink|libservice_manager_mojom_constants_blink|libservice_manager_mojom_constants_shared|libservice_manager_mojom_constants|libservice_manager_mojom_shared|libservice_manager_mojom|libservice_manager_mojom_traits|libservice|libsessions|libshared_memory_support|libshared_with_blink|libshell_dialogs|libskia|libsnapshot|libsql|libstartup_tracing|libstorage_browser|libstorage_common|libstub_window|libsuid_sandbox_client|libsurface|libtab_count_metrics|libthread_linux|libtracing_cpp|libtracing_mojom_shared|libtracing_mojom|libtracing|libui_accessibility_ax_mojom_blink|libui_accessibility_ax_mojom_shared|libui_accessibility_ax_mojom|libui_base_clipboard|libui_base_clipboard_types|libui_base_features|libui_base_idle|libui_base_ime_init|libui_base_ime_linux|libui_base_ime|libui_base_ime_types|libui_base|libui_base_x|libui_data_pack|libui_devtools|libui_message_center_cpp|libui_touch_selection|liburl_ipc|liburl_matcher|liburl|libusb_shared|libuser_manager|libuser_prefs|libv8_libbase|libv8_libplatform|libv8|libviews|libviz_common|libviz_resource_format_utils|libviz_vulkan_context_provider|libVkICD_mock_icd|libvr_base|libvr_common|libvulkan_init|libvulkan_wrapper|libvulkan_x11|libweb_bluetooth_mojo_bindings_shared|libwebdata_common|libweb_dialogs|libweb_feature_mojo_bindings_mojom_blink|libweb_feature_mojo_bindings_mojom_shared|libweb_feature_mojo_bindings_mojom|libwebgpu|libwebview|libwm_public|libwm|libwtf|libx11_events_platform|libx11_window|libzygote|libEGL|libGLESv2|libvk_swiftshader
 %endif
 %global __requires_exclude ^(%{privlibs})\\.so*
-
-# If we build with shared on, then chrome-remote-desktop depends on chromium libs.
-# If we build with shared off, then users cannot swap out libffmpeg (and i686 gets a lot harder to build)
-%global shared 1
 
 # AddressSanitizer mode
 # https://www.chromium.org/developers/testing/addresssanitizer
@@ -157,13 +163,23 @@ BuildRequires:  libicu-devel >= 5.4
 %global majorversion 78
 
 %if %{freeworld}
-Name:		chromium%{chromium_channel}%{?freeworld:-freeworld}
+Name:		chromium%{chromium_channel}%{nsuffix}
 %else
 Name:		chromium%{chromium_channel}
 %endif
-Version:	%{majorversion}.0.3904.70
+Version:	%{majorversion}.0.3904.87
 Release:	1%{?dist}
+%if %{?freeworld}
+%if %{?shared}
+# chromium-libs-media-freeworld
+Summary:	Chromium media libraries built with all possible codecs
+%else
+# chromium-freeworld
+Summary:	A WebKit (Blink) powered web browser built with all possible codecs
+%endif
+%else
 Summary:	A WebKit (Blink) powered web browser
+%endif
 Url:		http://www.chromium.org/Home
 License:	BSD and LGPLv2+ and ASL 2.0 and IJG and MIT and GPLv2+ and ISC and OpenSSL and (MPLv1.1 or GPLv2 or LGPLv2)
 
@@ -529,9 +545,19 @@ Obsoletes:	chromium-v8 <= 3.25.28.18
 Provides:	webrtc = 0.2
 Obsoletes:	webrtc <= 0.1
 %if 0%{?shared}
+%if 0%{?freeworld}
+# chromium-libs-media-freeworld case
+Provides:	chromium-libs-media = %{version}-%{release}
+Provides:	chromium-libs-media%{_isa} = %{version}-%{release}
+Requires:	chromium-libs%{_isa} = %{version}
+Requires(post):		%{_sbindir}/update-alternatives
+Requires(preun):	%{_sbindir}/update-alternatives
+%else
+# chromium case with shared libs
 Requires:       chromium-libs%{_isa} = %{version}-%{release}
 # This is broken out so it can be replaced.
 Requires:	chromium-libs-media%{_isa} = %{version}-%{release}
+%endif
 # Nothing to do here. chromium-libs is real.
 %else
 Provides:	chromium-libs = %{version}-%{release}
@@ -638,8 +664,22 @@ Provides: bundled(xdg-user-dirs)
 Requires(post): /usr/sbin/semanage
 Requires(post): /usr/sbin/restorecon
 
+%if %{?freeworld}
+%if %{?shared}
+%description
+Chromium media libraries built with all possible codecs. Chromium is an
+open-source web browser, powered by WebKit (Blink). This package replaces
+the default chromium-libs-media package, which is limited in what it
+can include.
+%else
+%description
+Chromium built with all possible codecs. Chromium is an
+open-source web browser, powered by WebKit (Blink).
+%endif
+%else
 %description
 Chromium is an open-source web browser, powered by WebKit (Blink).
+%endif
 
 %package common
 Summary: Files needed for both the headless_shell and full Chromium
@@ -665,21 +705,7 @@ Requires(preun): %{_sbindir}/update-alternatives
 %description libs
 Shared libraries used by chromium (and chrome-remote-desktop).
 
-%if %{freeworld}
-%package -n chromium-libs-media-freeworld
-Summary: Chromium media libraries built with all possible codecs
-Provides: chromium-libs-media = %{version}-%{release}
-Provides: chromium-libs-media%{_isa} = %{version}-%{release}
-Requires: chromium-libs%{_isa} = %{version}
-Requires(post): %{_sbindir}/update-alternatives
-Requires(preun): %{_sbindir}/update-alternatives
-
-%description -n chromium-libs-media-freeworld
-Chromium media libraries built with all possible codecs. Chromium is an
-open-source web browser, powered by WebKit (Blink). This package replaces
-the default chromium-libs-media package, which is limited in what it
-can include.
-%else
+%if ! %{freeworld}
 %package libs-media
 Summary: Shared libraries used by the chromium media subsystem
 Requires: chromium-libs%{_isa} = %{version}
@@ -1482,6 +1508,7 @@ if st and st.type == "link" then
   os.remove(path)
 end
 
+%if %{shared}
 %if %{freeworld}
 %posttrans -n chromium-libs-media-freeworld
 %{_sbindir}/update-alternatives --install \
@@ -1516,6 +1543,7 @@ if [ $1 = 0 ]; then
   %{_sbindir}/alternatives --remove libffmpeg.so \
     %{_libdir}/chromium-browser/libffmpeg.so.fedora
 fi
+%endif
 %endif
 
 %pre -n chrome-remote-desktop
@@ -1690,6 +1718,10 @@ getent group chrome-remote-desktop >/dev/null || groupadd -r chrome-remote-deskt
 
 
 %changelog
+* Fri Nov  1 2019 Tom Callaway <spot@fedoraproject.org> - 78.0.3904.87-1
+- update to 78.0.3904.87
+- apply most of the freeworld changes in PR 23/24/25
+
 * Wed Oct 23 2019 Tom Callaway <spot@fedoraproject.org> - 78.0.3904.80-1
 - update to 78.0.3904.80
 
