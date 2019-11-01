@@ -243,7 +243,7 @@ Patch69:	chromium-77-clang.patch
 # Use lstdc++ on EPEL7 only
 Patch101:	chromium-75.0.3770.100-epel7-stdc++.patch
 # el7 only patch
-Patch102:	chromium-77.0.3865.75-el7-noexcept.patch
+Patch102:	chromium-78.0.3904.70-el7-noexcept.patch
 
 # Enable VAAPI support on Linux
 # NOTE: This patch will never land upstream
@@ -423,7 +423,6 @@ BuildRequires:	pkgconfig(gtk+-3.0)
 BuildRequires:	pkgconfig(gtk+-2.0)
 %endif
 BuildRequires:	/usr/bin/python2
-BuildRequires:	python2-devel
 %if 0%{?bundlepylibs}
 # Using bundled bits, do nothing.
 %else
@@ -441,6 +440,7 @@ BuildRequires:	python-markupsafe
 BuildRequires:	python-ply
 %endif
 BuildRequires:	python2-simplejson
+BuildRequires:	python2-devel
 %endif
 %if 0%{?bundlere2}
 # Using bundled bits, do nothing.
